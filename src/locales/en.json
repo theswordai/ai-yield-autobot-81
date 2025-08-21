@@ -73,14 +73,20 @@
       "trustRedefinition": "Redefinition of trust: from 'trusting people' to 'trusting mathematics'",
       "transparencyStandard": "Highest standard of transparency: every line of code is a public promise",
       "participatoryAudit": "Participatory audit civilization: letting every donor become a guardian of the system",
-      "summary": "In one sentence: This is the moral cornerstone of wealth civilization."
+    "summary": "In one sentence: This is the moral cornerstone of wealth civilization.",
+    "viewStrategyDetails": "View Strategy Details",
+    "strategicPartners": "Strategic Partners",
+    "blockchainConscience": "Blockchain's Conscience",
+    "financialIntegrity": "Financial Integrity", 
+    "charityGlory": "Charity's Glory"
     }
   },
   "invest": {
     "title": "Investment Center | On-Chain Staking",
     "description": "Perform USDT on-chain staking here, quickly complete Approve, Deposit, and view positions and rewards.",
     "header": "Charity Investment Center",
-    "subtitle": "USDT On-Chain Staking · One-Stop Smart Investment Hub"
+    "subtitle": "USDT On-Chain Staking · One-Stop Smart Investment Hub",
+    "buttonText": "Charity Injection"
   },
   "user": {
     "title": "User Center & Referral | Asset Management & Promotion",

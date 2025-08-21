@@ -141,9 +141,9 @@ export function HeroSection() {
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-foreground font-medium">这是 USD.online 的 猎鹰之眼。</p>
+                    <p className="text-foreground font-medium">{t("hero.crossChainEngine.eyeTitle")}</p>
                     <p className="text-muted-foreground">
-                      它在多链生态中捕捉 资本缝隙中的瞬间价值，以毫秒级的速度完成套利与 MEV 操作。
+                      {t("hero.crossChainEngine.eyeDesc")}
                     </p>
                   </div>
                   
@@ -194,54 +194,54 @@ export function HeroSection() {
                       <Bot className="w-6 h-6 text-accent-foreground" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold">AI 自动受益轮动</h3>
+                      <h3 className="text-xl font-semibold">{t("hero.aiRotation.title")}</h3>
                       
                     </div>
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-foreground font-medium">这是 USD.online 的 预言者之脑。</p>
-                    <p className="text-muted-foreground">
-                      它融合 GPT-4 的推演能力与链上数据的实时脉动，成为一台 能够自我学习与调仓的财富大脑。
+                    <p className="text-foreground font-medium">{t("hero.aiRotation.brainTitle")}</p>
+                    <p className="text-muted-foreground mt-2 leading-relaxed">
+                      {t("hero.aiRotation.brainDesc")}
                     </p>
                   </div>
                   
                   <div className="space-y-2 text-sm mb-4">
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span>资产范围：BTC、ETH、SOL 等主流资产</span>
+                      <span>{t("hero.aiRotation.assetRange")}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span>调仓频率：基于市场信号的动态调整</span>
+                      <span>{t("hero.aiRotation.rebalanceFreq")}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span>风险等级：中低</span>
+                      <span>{t("hero.aiRotation.riskLevel")}</span>
                     </div>
                   </div>
 
                   <div className="space-y-2 text-sm mb-4">
-                    <p className="font-semibold text-primary">优势叙事：</p>
+                    <p className="font-semibold text-primary">{t("hero.aiRotation.advantages")}</p>
                     <div className="space-y-1 pl-4">
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">AI 不只是工具，而是 资本的感官与直觉</span>
+                        <span className="text-muted-foreground">{t("hero.aiRotation.advantage1")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">主流币种的趋势预测 → 转化为自动执行的收益流</span>
+                        <span className="text-muted-foreground">{t("hero.aiRotation.advantage2")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">算法即投资经理，它永不疲倦、永不恐惧、永不贪婪</span>
+                        <span className="text-muted-foreground">{t("hero.aiRotation.advantage3")}</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="mt-4 p-3 bg-accent/10 rounded-lg">
                     <p className="text-sm text-accent font-medium">
-                      一句话：这是 财富与智能的共鸣体。
+                      {t("hero.aiRotation.summary")}
                     </p>
                   </div>
                 </Card>
@@ -259,48 +259,48 @@ export function HeroSection() {
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-foreground font-medium">这是 USD.online 的 脉动之心。</p>
-                    <p className="text-muted-foreground">
-                      它通过 LSD 质押与稳定币机制，设计出一种 结构化的资本律动，既稳健，又高效。
+                    <p className="text-foreground font-medium">{t("hero.defiVault.heartTitle")}</p>
+                    <p className="text-muted-foreground mt-2 leading-relaxed">
+                      {t("hero.defiVault.heartDesc")}
                     </p>
                   </div>
                   
                   <div className="space-y-2 text-sm mb-4">
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>策略类型：循环质押 + 杠杆</span>
+                      <span>{t("hero.defiVault.strategyType")}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>收益来源：质押奖励 + 再质押</span>
+                      <span>{t("hero.defiVault.revenueSource")}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>风险等级：中等</span>
+                      <span>{t("hero.defiVault.riskLevel")}</span>
                     </div>
                   </div>
 
                   <div className="space-y-2 text-sm mb-4">
-                    <p className="font-semibold text-accent">优势叙事：</p>
+                    <p className="font-semibold text-accent">{t("hero.defiVault.advantages")}</p>
                     <div className="space-y-1 pl-4">
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">质押即流动：资本不再沉睡，而是倍增</span>
+                        <span className="text-muted-foreground">{t("hero.defiVault.advantage1")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">杠杆即效率：让同一单位资本释放多重能量</span>
+                        <span className="text-muted-foreground">{t("hero.defiVault.advantage2")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">金库即文明：它不仅是资金池，更是财富文明的稳定脉搏</span>
+                        <span className="text-muted-foreground">{t("hero.defiVault.advantage3")}</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="mt-4 p-3 bg-primary/10 rounded-lg">
                     <p className="text-sm text-primary font-medium">
-                      一句话：这是 资本与信任的交响金库。
+                      {t("hero.defiVault.summary")}
                     </p>
                   </div>
                 </Card>
@@ -314,15 +314,15 @@ export function HeroSection() {
                       <Shield className="w-6 h-6 text-accent-foreground" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-semibold">链上清晰透明协议</h3>
+                      <h3 className="text-2xl font-semibold">{t("hero.transparentProtocol.title")}</h3>
                       
                     </div>
                   </div>
                   
                   <div className="space-y-4 text-sm mb-6">
-                    <p className="text-foreground font-medium">这是 USD.online 的 灵魂之镜。</p>
-                    <p className="text-muted-foreground">
-                      在一个充斥着黑箱操作与中心化风险的金融世界里，它以 链上全透明 的形式，重新定义 信任的标准。
+                    <p className="text-foreground font-medium">{t("hero.transparentProtocol.soulTitle")}</p>
+                    <p className="text-muted-foreground mt-2 leading-relaxed">
+                      {t("hero.transparentProtocol.soulDesc")}
                     </p>
                   </div>
 
@@ -330,26 +330,20 @@ export function HeroSection() {
                     {/* 技术内核 */}
                     <div>
                       <h4 className="font-semibold text-primary mb-4 flex items-center gap-2">
-                        🔹 技术内核
+                        {t("hero.transparentProtocol.techCore")}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">
-                            <strong>链上可验证账本：</strong>所有资金流动、策略执行、公益捐赠 → 公开可查。
-                          </span>
+                           <span className="text-muted-foreground">{t("hero.transparentProtocol.verifiableLedger")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">
-                            <strong>智能合约守护：</strong>每一笔交易、每一次分红、每一份捐助，均由不可篡改的代码自动执行。
-                          </span>
+                           <span className="text-muted-foreground">{t("hero.transparentProtocol.smartContract")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">
-                            <strong>实时审计机制：</strong>不仅透明，更让所有捐助人 随时成为审计人。
-                          </span>
+                           <span className="text-muted-foreground">{t("hero.transparentProtocol.realTimeAudit")}</span>
                         </div>
                       </div>
                     </div>
@@ -357,38 +351,32 @@ export function HeroSection() {
                     {/* 叙事高度 */}
                     <div>
                       <h4 className="font-semibold text-accent mb-4 flex items-center gap-2">
-                        🔹 叙事高度
+                        {t("hero.transparentProtocol.narrativeHeight")}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">
-                            这是 <strong>金融文明的清算台</strong>：让资本裸露在阳光之下，消除一切幻象。
-                          </span>
+                           <span className="text-muted-foreground">{t("hero.transparentProtocol.trustRedefinition")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">
-                            这是 <strong>华尔街无法复制的制度革命</strong>：没有暗箱，没有操纵，只有光明。
-                          </span>
+                           <span className="text-muted-foreground">{t("hero.transparentProtocol.transparencyStandard")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">
-                            这是 <strong>慈善金融的信任契约</strong>：每一笔捐助流向全球自闭症儿童基金会，链上可见，世界共鸣。
-                          </span>
+                           <span className="text-muted-foreground">{t("hero.transparentProtocol.participatoryAudit")}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   
                   <div className="mt-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg">
-                    <p className="text-sm font-medium text-center">
-                      <span className="text-primary">链上清晰透明协议</span> = 
-                      <span className="text-accent mx-1">区块链的良心</span> + 
-                      <span className="text-primary mx-1">金融的信义</span> + 
-                      <span className="text-accent mx-1">慈善的光辉</span>
-                    </p>
+                     <p className="text-sm font-medium text-center">
+                       <span className="text-primary">{t("hero.transparentProtocol.title")}</span> = 
+                       <span className="text-accent mx-1">{t("hero.blockchainConscience", "区块链的良心")}</span> + 
+                       <span className="text-primary mx-1">{t("hero.financialIntegrity", "金融的信义")}</span> + 
+                       <span className="text-accent mx-1">{t("hero.charityGlory", "慈善的光辉")}</span>
+                     </p>
                   </div>
                 </Card>
               </div>
@@ -404,7 +392,7 @@ export function HeroSection() {
             <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
               <Zap className="w-8 h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">跨链阿尔法引擎</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.crossChainEngine.title")}</h3>
             
           </div>
           
@@ -412,7 +400,7 @@ export function HeroSection() {
             <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
               <Bot className="w-8 h-8 text-accent-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">自适应收益轮动</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.aiRotation.title")}</h3>
             
           </div>
           
@@ -420,7 +408,7 @@ export function HeroSection() {
             <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
               <TrendingUp className="w-8 h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">去中心化质押金库</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.defiVault.title")}</h3>
             
           </div>
           
@@ -437,19 +425,19 @@ export function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16 mb-12">
           <Button size="lg" className="bg-gradient-primary hover:shadow-glow transition-all duration-300 group">
             <Bot className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
-            慈善注入
+            {t("invest.buttonText", "慈善注入")}
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
           <Button size="lg" variant="outline" className="border-border hover:border-primary/50 hover:bg-primary/5 backdrop-blur-sm" onClick={() => setShowDetails(!showDetails)}>
             <Shield className="w-5 h-5 mr-2" />
-            查看策略详情
+            {t("hero.viewStrategyDetails", "查看策略详情")}
             {showDetails ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
           </Button>
         </div>
 
         {/* Partners Section */}
         <div className="mt-8 max-w-6xl mx-auto">
-          <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">战略合作伙伴</h3>
+          <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">{t("hero.strategicPartners")}</h3>
           
           {/* Partner Logos */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
@@ -467,7 +455,7 @@ export function HeroSection() {
           {/* Social Media */}
           <div className="flex justify-center gap-6">
             <div className="text-center">
-              <span className="text-sm text-muted-foreground mb-3 block">关注我们</span>
+              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.followUs")}</span>
               <div className="flex gap-4">
                 <a href="#" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title="Twitter">
                   <Twitter className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
