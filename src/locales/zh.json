@@ -1,0 +1,409 @@
+{
+  "whitepaper": {
+    "title": "🚀 USD.online·白皮书",
+    "subtitle": "释放算法自由 · 汇聚全球流动性 · 点亮人类善意之光",
+    "preface": {
+      "title": "序言",
+      "content1": "人类金融文明正处于新的临界点。",
+      "content2": "当 AI 成为时代的主旋律，资本不再只是冰冷的数字，而是叙事的流动、共识的力量、算法的语言。",
+      "content3": "USD.online的诞生，不是简单的慈善创新，而是财富文明与人性文明的合奏。它让捐助行为与慈善事业相互呼应，使每一份收益都能转化为全球自闭症儿童的温暖与守护。",
+      "here": "在这里：",
+      "point1": "• 捐助的收益 = 公益的力量",
+      "point2": "• 资本的流动 = 善意的涌动",
+      "point3": "• 财富的积累 = 世界的共鸣",
+      "conclusion": "USD.online不仅是资本与慈善的舞台，更是人类文明的新篇章。"
+    },
+    "vision": {
+      "title": "项目愿景",
+      "content1": "USD.online的使命，不止是收益最大化，而是塑造一种金融文明与慈善精神融合的新秩序。",
+      "inThisOrder": "在这一秩序中：",
+      "point1": "• 算法成为自由的语言",
+      "point2": "• 叙事成为财富的源泉",
+      "point3": "• 资本成为世界的脉动",
+      "point4": "• 公益成为人性的光辉",
+      "conclusion": "USD.online将成为全球流动性与人类善意双重秩序的建构者。在这里，财富与人性同行，科技与慈善并进。"
+    },
+    "mission": {
+      "title": "慈善使命",
+      "content1": "USD.online的金融逻辑与公益逻辑深度耦合。我们选择全球自闭症儿童关怀计划作为核心慈善方向。",
+      "commitments": "我们的承诺：",
+      "commitment1": "• 平台净收益的一部分 → 定向捐赠至全球自闭症儿童基金会",
+      "commitment2": "• 链上披露 → 每一笔善款流向透明可见，让\"善意可见、信任可循\"",
+      "valueExpression": "慈善价值表达：",
+      "value1": "• 每一笔捐助，都是一份关怀的播种",
+      "value2": "• 每一次收益，都是一声生命的回响",
+      "value3": "• 每一个捐助者，都是公益的共建者",
+      "conclusion": "USD.online相信：资本不仅创造财富，更应点亮人类的温度。"
+    },
+    "strategy": {
+      "title": "战略高度",
+      "content1": "USD.online意义，不止于捐助，它是财富文明与慈善文明的交汇点：",
+      "point1": "• 它是金融叙事的实验场",
+      "point2": "• 它是科技与人性的汇流点",
+      "point3": "• 它是全球资本与公益精神的交响曲",
+      "conclusion": "USD.online的存在，不仅是资本增值的工具，而是人类金融文明的一次集体跃迁。它创造的不只是财富，更是一种人类共鸣的金融新范式。"
+    },
+    "conclusion": {
+      "title": "结语 · 财富超越利润 资本融汇慈善",
+      "content1": "USD.online是财富的引擎，更是善意的桥梁。",
+      "content2": "它让资本、AI技术、公益三位一体，汇聚成人类未来的金融文明。",
+      "content3": "不仅是一个捐助平台，而是一种链上人类共建文明的宣言。"
+    },
+    "projectIntro": {
+      "title": "🚀 USD.online · 项目介绍",
+      "subtitle": "AI 驱动的全球流动性文明引擎",
+      "transformation": "全球金融体系正在经历百年未有之大变局：",
+      "point1": "• 布雷顿森林体系的信任坍塌",
+      "point2": "• 美元霸权的数字化延伸",
+      "point3": "• AI 驱动的算法文明浪潮",
+      "backdrop": "在这样的背景下，USD.online 不只是一个平台，而是新一代全球资本秩序的实验场。它把华尔街量化智慧、Web3 去中心化精神、AI 的智能演算，融合成一个超越投资本身的国际金融文明引擎。"
+    },
+    "painPoints": {
+      "title": "市场痛点",
+      "traditional": "• 传统金融 → 封闭 & 垄断",
+      "traditionalDesc": "跨境资本流动受制于央行、银行与清算体系。",
+      "crypto": "• 加密金融 → 零散 & 投机",
+      "cryptoDesc": "CEX 与 DEX 流动性割裂，叙事缺乏持久价值锚定。"
+    },
+    "tech": {
+      "title": "技术亮点",
+      "alphaEngine": "🔹 AI 跨链阿尔法引擎",
+      "alphaPoint1": "• 24/7 执行 DEX 套利 + MEV 捕捉",
+      "alphaPoint2": "• 支持 Base / Arbitrum / Solana 跨链生态",
+      "alphaPoint3": "• 10% Performance Fee，与全球顶尖基金对标",
+      "smartRotation": "🔹 AI 智能轮动配置",
+      "rotationPoint1": "• GPT-4 + 链上大数据预测趋势",
+      "rotationPoint2": "• 动态调仓 BTC / ETH / SOL",
+      "rotationPoint3": "• 年化 1–2% 管理费，机构级策略透明化",
+      "globalConnect": "🔹 CEX × DEX 全球互联",
+      "connectPoint1": "• 打通 Binance、Coinbase 与链上流动性",
+      "connectPoint2": "• 构建全球性套利通道，流动性无国界",
+      "transparent": "🔹 去中心化透明协议",
+      "transparentPoint1": "• 每一笔资产流动链上可见",
+      "transparentPoint2": "• 每一次\"善意回报\"透明可循",
+      "transparentPoint3": "• 形成算法即信任的新金融契约"
+    },
+    "visionStatement": "USD.online = 链上时代的布雷顿森林体系 2.0",
+    "positioning": {
+      "title": "国际化定位",
+      "content1": "USD.online 不是\"产品\"，而是未来金融文明的原型。",
+      "content2": "它代表AI × DeFi × Meme × Stablecoin的跨界融合。",
+      "content3": "它承载的不是单一收益，而是全球资本叙事驱动下的共同体秩序。",
+      "content4": "它象征着新国际金融体系的再造。",
+      "allows": "USD.online 让：",
+      "allow1": "• AI → 成为金融语言",
+      "allow2": "• 资本 → 成为全球脉动",
+      "allow3": "• 叙事 → 成为财富源泉",
+      "allow4": "• 善意 → 成为新文明秩序",
+      "conclusion": "USD.online 是人类金融文明的下一次跃迁。"
+    }
+  },
+  "referralWhitepaper": {
+    "title": "邀请与奖励白皮书",
+    "staking": {
+      "title": "锁仓与收益",
+      "period": "• 锁仓周期：3个月/6个月/12个月。",
+      "dailyRate": "• 日化收益：0.25% / 0.4% / 1%（示例：100U 对应 0.25U / 0.4U / 1U 每日）。",
+      "linear": "• 收益线性累计，可随时领取（claim）。"
+    },
+    "fees": {
+      "title": "管理费与提前赎回",
+      "managementFee": "• 管理费：入金金额的 1%，入 feeWallet。",
+      "earlyWithdrawal": "• 提前赎回：罚金 40%（针对本金），入 feeWallet；收益不罚并自动发放。"
+    },
+    "invite": {
+      "title": "邀请与等级体系",
+      "binding": "• 绑定：首次入金≥200U方可绑定上级，短码→地址映射；绑定后不可更改，可自推/成环。",
+      "teamStaking": "• 团队总质押：自己+直推+直推的下一级（A+B+C）的在押净本金实时求和；赎回实时扣减；仅用于定级。",
+      "levels": "• 等级门槛与比例：",
+      "lv1": "Lv1 ≥200U：直推10%，间接0%",
+      "lv2": "Lv2 ≥1,000U：直推11%，间接10%",
+      "lv3": "Lv3 ≥3,000U：直推12%，间接10%",
+      "lv4": "Lv4 ≥10,000U：直推13%，间接10%",
+      "lv5": "Lv5 ≥30,000U：直推15%，间接10%",
+      "levelChange": "• 等级变更仅影响后续入金，历史不追溯。"
+    },
+    "settlement": {
+      "title": "奖励结算与资金流",
+      "rewardBase": "• 奖励基数：按入金毛额 A（未扣 1%）计算。",
+      "distribution": "• 发放形态：每次入金即一次性记入\"可领取余额\"（USDT），非立即转账。"
+    },
+    "usdo": {
+      "title": "USDo 稳定币机制",
+      "totalSupply": "• 总量上限：100,000,000 枚；小数位：6（与 USDT 一致）。",
+      "mintingRule": "• 铸造规则：仅用户自投时按 5 USDo / 1 USDT 即时铸造；不参与推荐奖励。",
+      "capProtection": "• 触顶保护：若当前入金将导致超过上限，拒绝该笔入金。",
+      "transferSwitch": "• 转账开关：由 owner 控制的开关开启后，USDo 可正常转账交易。",
+      "narrative": "• 叙事：USDo 对标稳定币场景，未来规划 1:1 兑换 USD 的使用体验与清算通道。"
+    },
+    "faq": {
+      "title": "常见问答",
+      "q1": "Q：首次未入金可以绑定下级吗？A：不可以，需首次入金≥200U 才能绑定。",
+      "q2": "Q：奖励多久到账？A：入金后即时计入\"可领取余额\"，可随时领取。",
+      "q3": "Q：提前赎回是否影响已得收益？A：不影响，收益不罚，仅本金按 40% 罚金。",
+      "q4": "Q：USDo 是否给推荐奖励？A：否，USDo 仅针对自投铸造。"
+    },
+    "example": {
+      "title": "举例说明",
+      "scenario": "用户 A 入金 1,000U（选择任意锁仓）：",
+      "managementFee": "• 管理费：10U；奖励基数＝1,000U。",
+      "reward": "• 若上级为 Lv3，则直推奖励＝12%×1,000＝120U；上级的上级再得 10%×120＝12U。",
+      "split": "• 剩余金额在扣费与奖励后进行 50%/50% 分流。",
+      "usdo": "• USDo 铸造：5,000 USDo 记入 A；不影响奖励结算。"
+    }
+  },
+  "nav": {
+    "home": "启航",
+    "invest": "善举",
+    "bluePoints": "USDV",
+    "user": "尊享",
+    "whitepaper": "和谐财富引擎"
+  },
+  "meta": {
+    "title": "USD.online | 下一代AI驱动智能资产平台",
+    "description": "旗舰级金融体验：渐变视觉 + 行情跑马灯 + 动态K线，稳重商务风格，链上透明的智能资产平台。",
+    "keywords": "USD.online,智能资产,AI驱动,区块链,DeFi,质押,USDT"
+  },
+  "hero": {
+    "title": "USD.ONLINE",
+    "subtitle": "道义阿尔法 3.0",
+    "description": "跨链阿尔法引擎 • 自适应收益轮动 • 去中心化质押金库 • 链上清晰透明协议",
+    "strategyDetails": "策略详情",
+    "crossChainEngine": {
+      "title": "跨链阿尔法引擎",
+      "description": "毫秒级套利与MEV操作，捕捉资本缝隙中的瞬间价值",
+      "fee": "10%手续费",
+      "eyeTitle": "这是 USD.online 的 猎鹰之眼。",
+      "eyeDesc": "它在多链生态中捕捉 资本缝隙中的瞬间价值，以毫秒级的速度完成套利与 MEV 操作。",
+      "strategyType": "策略类型：DEX 搬砖 + MEV",
+      "executionFreq": "执行频率：24/7 无间断智能执行",
+      "riskLevel": "风险等级：中等",
+      "advantages": "🔹 优势叙事：",
+      "advantage1": "跨链穿梭，捕捉最细微的价格裂缝",
+      "advantage2": "MEV 收割，包括 Sandwich 攻击与时间价值套利",
+      "advantage3": "金融文明的量子引擎，让资本的每一次流动都带有外科手术般的精准",
+      "summary": "一句话：这是 资本战场上的量子猎手。"
+    },
+    "aiRotation": {
+      "title": "AI自适应收益轮动",
+      "description": "GPT-4驱动的财富大脑，主流资产趋势预测与自动调仓",
+      "fee": "1-2%管理费",
+      "brainTitle": "这是 USD.online 的 预言者之脑。",
+      "brainDesc": "它融合 GPT-4 的推演能力与链上数据的实时脉动，成为一台 能够自我学习与调仓的财富大脑。",
+      "assetRange": "资产范围：BTC、ETH、SOL 等主流资产",
+      "rebalanceFreq": "调仓频率：基于市场信号的动态调整",
+      "riskLevel": "风险等级：中低",
+      "advantages": "优势叙事：",
+      "advantage1": "AI 不只是工具，而是 资本的感官与直觉",
+      "advantage2": "主流币种的趋势预测 → 转化为自动执行的收益流",
+      "advantage3": "算法即投资经理，它永不疲倦、永不恐惧、永不贪婪",
+      "summary": "一句话：这是 财富与智能的共鸣体。"
+    },
+    "defiVault": {
+      "title": "去中心化质押金库",
+      "description": "结构化资本律动，循环质押与杠杆的完美融合",
+      "fee": "基础收益",
+      "heartTitle": "这是 USD.online 的 脉动之心。",
+      "heartDesc": "它通过 LSD 质押与稳定币机制，设计出一种 结构化的资本律动，既稳健，又高效。",
+      "strategyType": "策略类型：循环质押 + 杠杆",
+      "revenueSource": "收益来源：质押奖励 + 再质押",
+      "riskLevel": "风险等级：中等",
+      "advantages": "优势叙事：",
+      "advantage1": "质押即流动：资本不再沉睡，而是倍增",
+      "advantage2": "杠杆即效率：让同一单位资本释放多重能量",
+      "advantage3": "金库即文明：它不仅是资金池，更是财富文明的稳定脉搏",
+      "summary": "一句话：这是 资本与信任的交响金库。"
+    },
+    "transparentProtocol": {
+      "title": "链上清晰透明协议",
+      "soulTitle": "这是 USD.online 的 灵魂之镜。",
+      "soulDesc": "在一个充斥着黑箱操作与中心化风险的金融世界里，它以 链上全透明 的形式，重新定义 信任的标准。",
+      "techCore": "🔹 技术内核",
+      "verifiableLedger": "链上可验证账本：所有资金流动、策略执行、公益捐赠 → 公开可查。",
+      "smartContract": "智能合约守护：每一笔交易、每一次分红、每一份捐助，均由不可篡改的代码自动执行。",
+      "realTimeAudit": "实时审计机制：不仅透明，更让所有捐助人 随时成为审计人。",
+      "narrativeHeight": "🔹 叙事高度",
+      "trustRedefinition": "信任的重新定义：从「相信人」到「相信数学」",
+      "transparencyStandard": "透明的最高标准：每一行代码都是公开的承诺",
+      "participatoryAudit": "参与式审计文明：让每一位捐助人都成为系统的守护者",
+      "summary": "一句话：这是 财富文明的道德基石。"
+    }
+  },
+  "invest": {
+    "title": "投资中心 | 链上质押",
+    "description": "在此进行USDT链上质押，快速完成 Approve、Deposit，并查看仓位与奖励。",
+    "header": "慈善投资中心",
+    "subtitle": "USDT 链上质押·一站式智能投资枢纽"
+  },
+  "user": {
+    "title": "用户中心与邀请 | 管理资产与推广",
+    "description": "在一个页面查看用户资产、收益统计与点亮心灯奖励，复制邀请码与链接并查看邀请图谱。",
+    "header": "尊享俱乐部",
+    "subtitle": "善意共鸣·共创尊享荣耀",
+    "tab": {
+      "dashboard": "财富殿堂",
+      "referral": "点亮心灯"
+    }
+  },
+  "dashboard": {
+    "title": "财富殿堂",
+    "totalAssets": "总资产",
+    "dailyEarnings": "今日收益",
+    "totalEarnings": "累计收益",
+    "referralCount": "邀请人数",
+    "referralEarnings": "邀请收益",
+    "myStaking": "我的锁仓",
+    "newStaking": "新增锁仓",
+    "earningsDetail": "收益明细",
+    "stakingRewards": "质押收益",
+    "referralRewards": "邀请奖励",
+    "pendingAmount": "待领取金额",
+    "pending": "待领取",
+    "claimed": "已领取",
+    "completed": "已完成",
+    "days": "天",
+    "connectWallet": "连接钱包",
+    "viewEarnings": "查看详细收益",
+    "inviteFriends": "邀请好友"
+  },
+  "staking": {
+    "title": "USDT 智能质押",
+    "balance": "USDT 余额",
+    "allowance": "授权额度",
+    "amount": "投资金额",
+    "amountPlaceholder": "最低 200 USDT",
+    "lockPeriod": "锁仓期选择",
+    "lockPeriodOptions": {
+      "3months": "3个月",
+      "6months": "6个月",
+      "1year": "1年"
+    },
+    "expectedReturns": "收益预期",
+    "expectedTotalReturns": "预计总收益",
+    "maturityAmount": "到期总金额",
+    "annualRate": "年化",
+    "lockDays": "锁仓",
+    "principal": "本金",
+    "approving": "授权中...",
+    "approve": "授权",
+    "staking": "质押中...",
+    "stake": "质押",
+    "insufficientBalance": "余额不足",
+    "minInvestment": "• 最低投资金额：200 USDT",
+    "realtimeRewards": "• 收益每秒计算，随时可领取",
+    "earlyWithdrawFee": "• 到期后可赎回本金，提前赎回需扣除手续费",
+    "auditedContract": "• 合约地址已通过安全审计",
+    "bindInviterReward": "🎁 可绑定邀请人获得额外奖励"
+  },
+  "inviterBinding": {
+    "title": "绑定邀请人",
+    "description": "请填写您的邀请人钱包地址！",
+    "inviterAddress": "邀请人钱包地址",
+    "invalidAddress": "请输入有效的钱包地址",
+    "binding": "绑定中...",
+    "bind": "绑定邀请人",
+    "skip": "跳过绑定",
+    "note1": "• 绑定邀请人是可选的，不影响您的投资收益",
+    "note2": "• 绑定成功后，您和邀请人都将获得额外奖励",
+    "note3": "• 跳过绑定仍可正常进行投资"
+  },
+  "bluePoints": {
+    "title": "USDV币（蓝光极慈币）",
+    "subtitle": "完成任务，赚取积分，享受VIP特权",
+    "positioning": "定位宣言",
+    "positioningDesc": "蓝光极慈币，不仅是一枚数字资产，更是一份人类善意的见证。它承载了财富的自由流动，也点亮了慈善的永恒光辉。",
+    "donation": "每一份捐助，都是对未来的播种",
+    "holding": "每一次持有，都是对善意的呼应",
+    "light": "每一枚蓝光极慈币，都是为全球自闭症儿童点亮的一束蓝光",
+    "features": "特征",
+    "wealthCertificate": "财富凭证",
+    "wealthDesc": "捐助者的收益凭证与参与生态的钥匙。",
+    "charitySymbol": "慈善符号",
+    "charityDesc": "平台利润的一部分自动注入公益基金会。",
+    "honorSymbol": "荣誉象征",
+    "honorDesc": "积分体系与身份等级绑定，让善意可见、荣耀可循。",
+    "globalResonance": "国际共鸣",
+    "globalDesc": "以蓝色为自闭症公益的国际象征，汇聚全球关怀之心。",
+    "vision": "愿景",
+    "visionDesc": "蓝光极慈币将成为财富文明与慈善文明的交汇点",
+    "connectWalletFirst": "请先连接钱包",
+    "pointsBalance": "积分余额",
+    "fromInvestment": "投资获得",
+    "consecutiveDays": "连签 {{days}} 天",
+    "signIn": "签到",
+    "signedToday": "今日已签到",
+    "luckyDraw": "幸运抽奖",
+    "drawCost": "消耗 100 积分",
+    "insufficientPoints": "积分不足",
+    "earnPoints": "赚取积分",
+    "investmentRule": "• 投资 1 USDT = 100 积分",
+    "signInRule": "• 每日签到获得积分奖励",
+    "inviteRule": "• 邀请好友额外奖励",
+    "signInSuccess": "签到成功！获得 {{reward}} 蓝光极慈币！",
+    "signInDesc": "连续签到 {{streak}} 天，24小时后可再次签到",
+    "drawSuccess": "恭喜！抽中 {{reward}} 蓝光极慈币！"
+  },
+  "positions": {
+    "title": "我的仓位",
+    "connectWallet": "请先连接钱包后查看\"我的仓位\"。",
+    "noPositions": "暂无质押仓位",
+    "inProgress": "进行中",
+    "matured": "已到期",
+    "principal": "本金",
+    "annualRate": "年化 APR",
+    "maturityTime": "到期时间",
+    "currentRewards": "当前可领取收益",
+    "claimRewards": "领取收益",
+    "claiming": "领取中...",
+    "withdraw": "取回本金",
+    "withdrawing": "取回中...",
+    "cannotWithdrawEarly": "到期前不能取回"
+  },
+  "network": {
+    "wrongNetwork": "网络错误",
+    "switchToBSC": "请切换到 BSC 主网",
+    "currentNetwork": "当前网络",
+    "targetNetwork": "目标网络",
+    "switchNetwork": "切换网络",
+    "switchManually": "请在钱包中手动切换到 BSC 主网"
+  },
+  "wallet": {
+    "connect": "连接钱包",
+    "connecting": "连接中...",
+    "connected": "已连接",
+    "disconnect": "断开连接",
+    "noWalletFound": "未发现钱包",
+    "installMetaMask": "请安装 MetaMask"
+  },
+  "partners": {
+    "fca": "英国金融行为监管局",
+    "autism": "香港自闭症儿童基金会",
+    "tether": "USDT发行商",
+    "binance": "全球最大交易所",
+    "jupiter": "Solana DEX聚合器",
+    "wlfi": "Trump Coin",
+    "ethena": "合成美元协议",
+    "tokenpocket": "多链钱包",
+    "bitget": "顶级交易所",
+    "gate": "全球交易所",
+    "uniswap": "以太坊DEX"
+  },
+  "language": {
+    "selector": "语言"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功", 
+    "confirm": "确认",
+    "cancel": "取消",
+    "close": "关闭",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "yes": "是",
+    "no": "否",
+    "next": "下一步",
+    "previous": "上一步"
+  }
+}

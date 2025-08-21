@@ -1,0 +1,409 @@
+{
+  "nav": {
+    "home": "Launch",
+    "invest": "Invest",
+    "bluePoints": "USDV",
+    "user": "Premium",
+    "whitepaper": "Harmony Wealth Engine"
+  },
+  "meta": {
+    "title": "USD.online | Next-Gen AI-Driven Smart Asset Platform",
+    "description": "Flagship financial experience: gradient visuals + ticker + dynamic K-line, stable business style, on-chain transparent smart asset platform.",
+    "keywords": "USD.online,smart assets,AI-driven,blockchain,DeFi,staking,USDT"
+  },
+  "hero": {
+    "title": "USD.ONLINE",
+    "subtitle": "Moral Alpha 3.0",
+    "description": "Cross-chain Alpha Engine • Adaptive Yield Rotation • Decentralized Staking Vault • On-chain Transparent Protocol",
+    "strategyDetails": "Strategy Details",
+    "crossChainEngine": {
+      "title": "Cross-chain Alpha Engine",
+      "description": "Millisecond arbitrage and MEV operations, capturing instantaneous value in capital gaps",
+      "fee": "10% fee",
+      "eyeTitle": "This is USD.online's Falcon Eye.",
+      "eyeDesc": "It captures instantaneous value in capital gaps within multi-chain ecosystems, completing arbitrage and MEV operations at millisecond speed.",
+      "strategyType": "Strategy Type: DEX Arbitrage + MEV",
+      "executionFreq": "Execution Frequency: 24/7 non-stop intelligent execution",
+      "riskLevel": "Risk Level: Medium",
+      "advantages": "🔹 Advantage Narrative:",
+      "advantage1": "Cross-chain shuttle, capturing the most subtle price cracks",
+      "advantage2": "MEV harvesting, including Sandwich attacks and time value arbitrage",
+      "advantage3": "Quantum engine of financial civilization, making every capital flow surgical precise",
+      "summary": "In one sentence: This is the quantum hunter on the capital battlefield."
+    },
+    "aiRotation": {
+      "title": "AI Adaptive Yield Rotation",
+      "description": "GPT-4 driven wealth brain, mainstream asset trend prediction and automatic rebalancing",
+      "fee": "1-2% management fee",
+      "brainTitle": "This is USD.online's Prophet Brain.",
+      "brainDesc": "It fuses GPT-4's reasoning capability with real-time on-chain data pulsation, becoming a wealth brain capable of self-learning and rebalancing.",
+      "assetRange": "Asset Range: BTC, ETH, SOL and other mainstream assets",
+      "rebalanceFreq": "Rebalancing Frequency: Dynamic adjustment based on market signals",
+      "riskLevel": "Risk Level: Medium-Low",
+      "advantages": "Advantage Narrative:",
+      "advantage1": "AI is not just a tool, but the senses and intuition of capital",
+      "advantage2": "Mainstream cryptocurrency trend prediction → converted to automatically executed yield flows",
+      "advantage3": "Algorithm as investment manager, never tired, never fearful, never greedy",
+      "summary": "In one sentence: This is the resonant body of wealth and intelligence."
+    },
+    "defiVault": {
+      "title": "Decentralized Staking Vault",
+      "description": "Structured capital rhythm, perfect fusion of circular staking and leverage",
+      "fee": "Base yield",
+      "heartTitle": "This is USD.online's Pulsating Heart.",
+      "heartDesc": "Through LSD staking and stablecoin mechanisms, it designs a structured capital rhythm that is both stable and efficient.",
+      "strategyType": "Strategy Type: Circular Staking + Leverage",
+      "revenueSource": "Revenue Source: Staking rewards + Re-staking",
+      "riskLevel": "Risk Level: Medium",
+      "advantages": "Advantage Narrative:",
+      "advantage1": "Staking as liquidity: capital no longer sleeps, but multiplies",
+      "advantage2": "Leverage as efficiency: letting the same unit of capital release multiple energies",
+      "advantage3": "Vault as civilization: it's not just a fund pool, but the stable pulse of wealth civilization",
+      "summary": "In one sentence: This is the symphonic vault of capital and trust."
+    },
+    "transparentProtocol": {
+      "title": "On-chain Clear Transparent Protocol",
+      "soulTitle": "This is USD.online's Soul Mirror.",
+      "soulDesc": "In a financial world full of black box operations and centralized risks, it redefines the standard of trust through complete on-chain transparency.",
+      "techCore": "🔹 Technical Core",
+      "verifiableLedger": "On-chain verifiable ledger: All fund flows, strategy executions, charitable donations → publicly verifiable.",
+      "smartContract": "Smart contract guardian: Every transaction, every dividend, every donation is automatically executed by immutable code.",
+      "realTimeAudit": "Real-time audit mechanism: Not only transparent, but also allows all donors to become auditors at any time.",
+      "narrativeHeight": "🔹 Narrative Height",
+      "trustRedefinition": "Redefinition of trust: from 'trusting people' to 'trusting mathematics'",
+      "transparencyStandard": "Highest standard of transparency: every line of code is a public promise",
+      "participatoryAudit": "Participatory audit civilization: letting every donor become a guardian of the system",
+      "summary": "In one sentence: This is the moral cornerstone of wealth civilization."
+    }
+  },
+  "invest": {
+    "title": "Investment Center | On-Chain Staking",
+    "description": "Perform USDT on-chain staking here, quickly complete Approve, Deposit, and view positions and rewards.",
+    "header": "Charity Investment Center",
+    "subtitle": "USDT On-Chain Staking · One-Stop Smart Investment Hub"
+  },
+  "user": {
+    "title": "User Center & Referral | Asset Management & Promotion",
+    "description": "View user assets, earnings statistics, and light up heart lamp rewards on one page, copy invitation codes and links, and view invitation map.",
+    "header": "Premium Club",
+    "subtitle": "Goodwill Resonance · Create Premium Glory Together",
+    "tab": {
+      "dashboard": "Wealth Hall",
+      "referral": "Light Heart Lamps"
+    }
+  },
+  "dashboard": {
+    "title": "Wealth Hall",
+    "totalAssets": "Total Assets",
+    "dailyEarnings": "Daily Earnings",
+    "totalEarnings": "Total Earnings",
+    "referralCount": "Referral Count",
+    "referralEarnings": "Referral Earnings",
+    "myStaking": "My Staking",
+    "newStaking": "New Staking",
+    "earningsDetail": "Earnings Detail",
+    "stakingRewards": "Staking Rewards",
+    "referralRewards": "Referral Rewards",
+    "pendingAmount": "Pending Amount",
+    "pending": "Pending",
+    "claimed": "Claimed",
+    "completed": "Completed",
+    "days": "days",
+    "connectWallet": "Connect Wallet",
+    "viewEarnings": "View Detailed Earnings",
+    "inviteFriends": "Invite Friends"
+  },
+  "staking": {
+    "title": "USDT Smart Staking",
+    "balance": "USDT Balance",
+    "allowance": "Allowance",
+    "amount": "Investment Amount",
+    "amountPlaceholder": "Minimum 200 USDT",
+    "lockPeriod": "Lock Period Selection",
+    "lockPeriodOptions": {
+      "3months": "3 months",
+      "6months": "6 months",
+      "1year": "1 year"
+    },
+    "expectedReturns": "Expected Returns",
+    "expectedTotalReturns": "Expected Total Returns",
+    "maturityAmount": "Maturity Amount",
+    "annualRate": "Annual",
+    "lockDays": "Lock",
+    "principal": "Principal",
+    "approving": "Approving...",
+    "approve": "Approve",
+    "staking": "Staking...",
+    "stake": "Stake",
+    "insufficientBalance": "Insufficient Balance",
+    "minInvestment": "• Minimum investment: 200 USDT",
+    "realtimeRewards": "• Rewards calculated per second, claimable anytime",
+    "earlyWithdrawFee": "• Principal can be redeemed after maturity, early withdrawal incurs fees",
+    "auditedContract": "• Contract address has been security audited",
+    "bindInviterReward": "🎁 Bind inviter for extra rewards"
+  },
+  "inviterBinding": {
+    "title": "Bind Inviter",
+    "description": "Please enter your inviter's wallet address!",
+    "inviterAddress": "Inviter Wallet Address",
+    "invalidAddress": "Please enter a valid wallet address",
+    "binding": "Binding...",
+    "bind": "Bind Inviter",
+    "skip": "Skip Binding",
+    "note1": "• Binding an inviter is optional and does not affect your investment returns",
+    "note2": "• After successful binding, both you and the inviter will receive extra rewards",
+    "note3": "• You can still invest normally if you skip binding"
+  },
+  "bluePoints": {
+    "title": "USDV Coin (Blue Light Charity Coin)",
+    "subtitle": "Complete tasks, earn points, enjoy VIP privileges",
+    "positioning": "Positioning Statement",
+    "positioningDesc": "Blue Light Charity Coin is not just a digital asset, but a witness to human kindness. It carries the free flow of wealth and lights up the eternal glory of charity.",
+    "donation": "Every donation is a seed for the future",
+    "holding": "Every holding is a response to goodwill",
+    "light": "Every Blue Light Charity Coin is a blue light lit for autistic children worldwide",
+    "features": "Features",
+    "wealthCertificate": "Wealth Certificate",
+    "wealthDesc": "Certificate of earnings for donors and key to ecosystem participation.",
+    "charitySymbol": "Charity Symbol",
+    "charityDesc": "Part of platform profits automatically flow into charity foundations.",
+    "honorSymbol": "Honor Symbol",
+    "honorDesc": "Point system linked to identity levels, making goodwill visible and glory traceable.",
+    "globalResonance": "Global Resonance",
+    "globalDesc": "Using blue as the international symbol for autism charity, gathering caring hearts worldwide.",
+    "vision": "Vision",
+    "visionDesc": "Blue Light Charity Coin will become the intersection of wealth civilization and charity civilization",
+    "connectWalletFirst": "Please connect wallet first",
+    "pointsBalance": "Points Balance",
+    "fromInvestment": "From Investment",
+    "consecutiveDays": "Consecutive {{days}} days",
+    "signIn": "Sign In",
+    "signedToday": "Signed in today",
+    "luckyDraw": "Lucky Draw",
+    "drawCost": "Costs 100 points",
+    "insufficientPoints": "Insufficient points",
+    "earnPoints": "Earn Points",
+    "investmentRule": "• Invest 1 USDT = 100 points",
+    "signInRule": "• Daily sign-in rewards",
+    "inviteRule": "• Extra rewards for inviting friends",
+    "signInSuccess": "Sign-in successful! Earned {{reward}} Blue Light Charity Coins!",
+    "signInDesc": "Consecutive sign-in for {{streak}} days, can sign in again after 24 hours",
+    "drawSuccess": "Congratulations! Won {{reward}} Blue Light Charity Coins!"
+  },
+  "positions": {
+    "title": "My Positions",
+    "connectWallet": "Please connect wallet first to view \"My Positions\".",
+    "noPositions": "No staking positions",
+    "inProgress": "In Progress",
+    "matured": "Matured",
+    "principal": "Principal",
+    "annualRate": "Annual APR",
+    "maturityTime": "Maturity Time",
+    "currentRewards": "Current Claimable Rewards",
+    "claimRewards": "Claim Rewards",
+    "claiming": "Claiming...",
+    "withdraw": "Withdraw Principal",
+    "withdrawing": "Withdrawing...",
+    "cannotWithdrawEarly": "Cannot withdraw before maturity"
+  },
+  "network": {
+    "wrongNetwork": "Wrong Network",
+    "switchToBSC": "Please switch to BSC Mainnet",
+    "currentNetwork": "Current Network",
+    "targetNetwork": "Target Network",
+    "switchNetwork": "Switch Network",
+    "switchManually": "Please manually switch to BSC Mainnet in your wallet"
+  },
+  "wallet": {
+    "connect": "Connect Wallet",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "disconnect": "Disconnect",
+    "noWalletFound": "No wallet found",
+    "installMetaMask": "Please install MetaMask"
+  },
+  "partners": {
+    "fca": "Financial Conduct Authority",
+    "autism": "Autism Partnership Hong Kong",
+    "tether": "Tether - USDT Issuer",
+    "binance": "World's Largest Exchange",
+    "jupiter": "Solana DEX Aggregator",
+    "wlfi": "Trump Coin",
+    "ethena": "Synthetic Dollar Protocol",
+    "tokenpocket": "Multi-chain Wallet",
+    "bitget": "Top Exchange",
+    "gate": "Global Exchange",
+    "uniswap": "Ethereum DEX"
+  },
+  "language": {
+    "selector": "Language"
+  },
+  "whitepaper": {
+    "title": "USD.online · Whitepaper",
+    "subtitle": "Unleashing Algorithmic Freedom · Converging Global Liquidity · Illuminating the Light of Human Kindness",
+    "preface": {
+      "title": "Preface",
+      "content1": "Human financial civilization is standing at a new threshold.",
+      "content2": "As AI becomes the main theme of our era, capital is no longer just cold numbers—it is the flow of narratives, the power of consensus, and the language of algorithms.",
+      "content3": "The birth of USD.online is not a simple innovation in charity, but a symphony of wealth civilization and human civilization. It echoes between contribution and philanthropy, turning every yield into warmth and protection for children with autism around the world.",
+      "here": "Here:",
+      "point1": "• Yield from contribution = The power of public good",
+      "point2": "• Capital flows = The surging of kindness", 
+      "point3": "• Wealth accumulation = The resonance of the world",
+      "conclusion": "USD.online is not only a stage for capital and philanthropy, but also a new chapter in human civilization."
+    },
+    "vision": {
+      "title": "Project Vision",
+      "content1": "The mission of USD.online goes beyond maximizing returns—it aims to shape a new order where financial civilization and philanthropic spirit are intertwined.",
+      "inThisOrder": "In this order:",
+      "point1": "• Algorithms become the language of freedom",
+      "point2": "• Narratives become the source of wealth",
+      "point3": "• Capital becomes the pulse of the world",
+      "point4": "• Public good becomes the brilliance of humanity",
+      "conclusion": "USD.online will stand as the builder of a dual order: global liquidity and human kindness. Here, wealth walks hand in hand with humanity, and technology advances side by side with philanthropy."
+    },
+    "mission": {
+      "title": "Philanthropic Mission",
+      "content1": "The financial logic and charitable logic of USD.online are deeply coupled. We have chosen global autism care programs for children as the core direction of our philanthropy.",
+      "commitments": "Our commitments:",
+      "commitment1": "• A portion of net platform revenue → Dedicated donations to global autism foundations",
+      "commitment2": "• On-chain disclosure → Every donation flow is transparent and traceable, making \"kindness visible, trust verifiable\"",
+      "valueExpression": "Philanthropic value expression:",
+      "value1": "• Every donation is a seed of care",
+      "value2": "• Every yield is an echo of life",
+      "value3": "• Every contributor is a co-builder of public good",
+      "conclusion": "USD.online believes: capital does not only create wealth, it should also kindle the warmth of humanity."
+    },
+    "strategy": {
+      "title": "Strategic Horizon",
+      "content1": "The significance of USD.online goes beyond contribution. It is the convergence point of wealth civilization and philanthropic civilization:",
+      "point1": "• It is an experimental ground for financial narratives",
+      "point2": "• It is the confluence of technology and humanity",
+      "point3": "• It is the symphony of global capital and philanthropic spirit",
+      "conclusion": "The existence of USD.online is not just a tool for wealth accumulation—it is a collective leap forward in human financial civilization. What it creates is not only wealth, but a new paradigm of finance that resonates with humanity."
+    },
+    "conclusion": {
+      "title": "Conclusion · Wealth Beyond Profit, Capital in Harmony with Charity",
+      "content1": "USD.online is not only the engine of wealth, but also the bridge of kindness.",
+      "content2": "It unites capital, AI technology, and philanthropy into one, converging into a financial civilization of the human future.",
+      "content3": "It is not merely a donation platform—it is a declaration of humanity's co-built civilization on-chain."
+    },
+    "projectIntro": {
+      "title": "🚀 USD.online · Project Introduction",
+      "subtitle": "AI-Powered Global Liquidity Civilization Engine",
+      "transformation": "The global financial system is undergoing a transformation unseen in a century:",
+      "point1": "• Collapse of the Bretton Woods trust system",
+      "point2": "• Digital extension of US dollar hegemony", 
+      "point3": "• Algorithmic civilization waves driven by AI",
+      "backdrop": "Against this backdrop, USD.online is not just a platform, but an experimental ground for a new global capital order. It merges Wall Street's quantitative wisdom, Web3's decentralization spirit, and AI's intelligent computation into an international financial engine that transcends investment itself."
+    },
+    "painPoints": {
+      "title": "Market Pain Points",
+      "traditional": "• Traditional Finance → Closed & Monopolized",
+      "traditionalDesc": "Cross-border capital flows are restricted by central banks, commercial banks, and clearing systems.",
+      "crypto": "• Crypto Finance → Fragmented & Speculative", 
+      "cryptoDesc": "CEX and DEX liquidity is siloed, with narratives lacking lasting value anchors."
+    },
+    "tech": {
+      "title": "Technological Highlights",
+      "alphaEngine": "🔹 AI Cross-Chain Alpha Engine",
+      "alphaPoint1": "• 24/7 DEX arbitrage + MEV capture",
+      "alphaPoint2": "• Supports Base / Arbitrum / Solana ecosystems",
+      "alphaPoint3": "• 10% performance fee, benchmarked against global top-tier funds",
+      "smartRotation": "🔹 AI Smart Rotation Allocation",
+      "rotationPoint1": "• GPT-4 + on-chain big data trend forecasting",
+      "rotationPoint2": "• Dynamic rebalancing across BTC / ETH / SOL",
+      "rotationPoint3": "• 1–2% annual management fee, with institution-grade strategy transparency",
+      "globalConnect": "🔹 CEX × DEX Global Interconnection",
+      "connectPoint1": "• Bridges Binance, Coinbase, and on-chain liquidity",
+      "connectPoint2": "• Builds global arbitrage channels, making liquidity borderless",
+      "transparent": "🔹 Decentralized Transparent Protocol",
+      "transparentPoint1": "• Every asset flow visible on-chain",
+      "transparentPoint2": "• Every \"return of kindness\" verifiable",
+      "transparentPoint3": "• Establishes a new financial contract where algorithm = trust"
+    },
+    "visionStatement": "USD.online = The Bretton Woods System 2.0 for the On-Chain Era",
+    "positioning": {
+      "title": "International Positioning",
+      "content1": "USD.online is not a \"product\"—it is the prototype of future financial civilization.",
+      "content2": "It represents the fusion of AI × DeFi × Meme × Stablecoin.",
+      "content3": "It carries not just single returns, but a community order driven by global capital narratives.",
+      "content4": "It symbolizes the reconstruction of the international financial system.",
+      "allows": "USD.online allows:",
+      "allow1": "• AI → To become the financial language",
+      "allow2": "• Capital → To become the global pulse", 
+      "allow3": "• Narratives → To become the source of wealth",
+      "allow4": "• Kindness → To become the order of a new civilization",
+      "conclusion": "USD.online is the next leap in human financial civilization."
+    }
+  },
+  "referralWhitepaper": {
+    "title": "Referral & Rewards Whitepaper",
+    "staking": {
+      "title": "Staking & Returns",
+      "period": "• Staking periods: 3 months / 6 months / 12 months.",
+      "dailyRate": "• Daily yield: 0.25% / 0.4% / 1% (Example: 100U corresponds to 0.25U / 0.4U / 1U daily).",
+      "linear": "• Returns accumulate linearly and can be claimed anytime."
+    },
+    "fees": {
+      "title": "Management Fees & Early Withdrawal",
+      "managementFee": "• Management fee: 1% of deposit amount, goes to feeWallet.",
+      "earlyWithdrawal": "• Early withdrawal: 40% penalty (on principal), goes to feeWallet; rewards are not penalized and automatically distributed."
+    },
+    "invite": {
+      "title": "Referral & Level System",
+      "binding": "• Binding: First deposit ≥200U required for binding, short code → address mapping; cannot be changed after binding, allows self-referral/circular referrals.",
+      "teamStaking": "• Team total staking: Real-time sum of net principal under custody for self + direct referrals + next level down (A+B+C); deducted upon redemption; used only for level determination.",
+      "levels": "• Level thresholds & percentages:",
+      "lv1": "Lv1 ≥200U: Direct 10%, Indirect 0%",
+      "lv2": "Lv2 ≥1,000U: Direct 11%, Indirect 10%",
+      "lv3": "Lv3 ≥3,000U: Direct 12%, Indirect 10%",
+      "lv4": "Lv4 ≥10,000U: Direct 13%, Indirect 10%",
+      "lv5": "Lv5 ≥30,000U: Direct 15%, Indirect 10%",
+      "levelChange": "• Level changes only affect future deposits, no retroactive adjustments."
+    },
+    "settlement": {
+      "title": "Reward Settlement & Fund Flow",
+      "rewardBase": "• Reward base: Calculated on gross deposit amount A (before 1% deduction).",
+      "distribution": "• Distribution form: Each deposit immediately records into \"claimable balance\" (USDT), not immediate transfer."
+    },
+    "usdo": {
+      "title": "USDo Stablecoin Mechanism",
+      "totalSupply": "• Total supply cap: 100,000,000 tokens; decimals: 6 (consistent with USDT).",
+      "mintingRule": "• Minting rule: Only minted during user self-investment at 5 USDo / 1 USDT instantly; does not participate in referral rewards.",
+      "capProtection": "• Cap protection: If current deposit would exceed the limit, reject the deposit.",
+      "transferSwitch": "• Transfer switch: USDo can be normally transferred and traded after the owner-controlled switch is enabled.",
+      "narrative": "• Narrative: USDo targets stablecoin scenarios, with future plans for 1:1 USD exchange experience and clearing channels."
+    },
+    "faq": {
+      "title": "FAQ",
+      "q1": "Q: Can I bind subordinates without initial deposit? A: No, you need an initial deposit ≥200U to bind.",
+      "q2": "Q: How long for rewards to arrive? A: Immediately recorded in \"claimable balance\" after deposit, can be claimed anytime.",
+      "q3": "Q: Does early withdrawal affect earned rewards? A: No, rewards are not penalized, only 40% penalty on principal.",
+      "q4": "Q: Does USDo give referral rewards? A: No, USDo is only for self-investment minting."
+    },
+    "example": {
+      "title": "Example",
+      "scenario": "User A deposits 1,000U (any staking period selected):",
+      "managementFee": "• Management fee: 10U; Reward base = 1,000U.",
+      "reward": "• If superior is Lv3, direct referral reward = 12% × 1,000 = 120U; superior's superior gets 10% × 120 = 12U.",
+      "split": "• Remaining amount after fees and rewards undergoes 50%/50% split.",
+      "usdo": "• USDo minting: 5,000 USDo recorded for A; does not affect reward settlement."
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "yes": "Yes",
+    "no": "No",
+    "next": "Next",
+    "previous": "Previous"
+  }
+}

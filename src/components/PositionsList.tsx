@@ -1,0 +1,190 @@
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner";
+import { Contract, formatUnits } from "ethers";
+import { Separator } from "@/components/ui/separator";
+import { useI18n } from "@/hooks/useI18n";
+
+export type PositionsListProps = {
+  account?: string | null;
+  lock: Contract | null;
+  chainId?: number | null;
+  targetChain: number;
+  usdtDecimals: number;
+};
+
+export function PositionsList({ account, lock, chainId, targetChain, usdtDecimals }: PositionsListProps) {
+  const [loading, setLoading] = useState(false);
+  const { t } = useI18n();
+  const [items, setItems] = useState<
+    Array<{
+      id: bigint;
+      principal: bigint;
+      aprBps: bigint;
+      startTime: bigint;
+      lastClaimTime: bigint;
+      lockDuration: bigint;
+      principalWithdrawn: boolean;
+      pending: bigint;
+    }>
+  >([]);
+
+  const canInteract = useMemo(() => !!account && !!lock && chainId === targetChain, [account, lock, chainId, targetChain]);
+
+  const load = async () => {
+    try {
+      if (!account || !lock) { setItems([]); return; }
+      setLoading(true);
+      const ids: bigint[] = await (lock as any).getUserPositions(account);
+      if (!ids || ids.length === 0) {
+        setItems([]);
+        return;
+      }
+      // Fetch details and pending in parallel
+      const details = await Promise.all(
+        ids.map(async (id) => {
+          const [p, pend] = await Promise.all([
+            (lock as any).positions(id),
+            (lock as any).pendingYield(id),
+          ]);
+          // p order: user, principal, startTime, lastClaimTime, lockDuration, aprBps, principalWithdrawn
+          return {
+            id,
+            principal: p[1] as bigint,
+            startTime: p[2] as bigint,
+            lastClaimTime: p[3] as bigint,
+            lockDuration: p[4] as bigint,
+            aprBps: p[5] as bigint,
+            principalWithdrawn: p[6] as boolean,
+            pending: pend as bigint,
+          };
+        })
+      );
+      setItems(details.sort((a, b) => Number(b.id - a.id)));
+    } catch (e: any) {
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, lock]);
+
+  const [busy, setBusy] = useState<Record<string, boolean>>({});
+
+  const claim = async (id: bigint) => {
+    try {
+      if (!lock || !account) throw new Error(t("positions.connectWallet"));
+      if (chainId !== targetChain) {
+        toast.warning("请切换到 Sepolia 再操作");
+        return;
+      }
+      setBusy((s) => ({ ...s, [id.toString()+":claim"]: true }));
+      const tx = await (lock as any).claim(id);
+      toast.info("提交中：" + tx.hash);
+      await tx.wait();
+      toast.success("领取成功");
+      await load();
+    } catch (e: any) {
+      toast.error(e?.shortMessage || e?.message || "领取失败");
+    } finally {
+      setBusy((s) => ({ ...s, [id.toString()+":claim"]: false }));
+    }
+  };
+
+  const withdraw = async (id: bigint) => {
+    try {
+      if (!lock || !account) throw new Error(t("positions.connectWallet"));
+      if (chainId !== targetChain) {
+        toast.warning("请切换到 Sepolia 再操作");
+        return;
+      }
+      
+      // 检查是否到期
+      const position = items.find(item => item.id === id);
+      if (position) {
+        const matureAt = Number(position.startTime + position.lockDuration) * 1000;
+        const matured = Date.now() >= matureAt;
+        if (!matured) {
+          toast.warning(t("positions.cannotWithdrawEarly"));
+          return;
+        }
+      }
+      
+      setBusy((s) => ({ ...s, [id.toString()+":withdraw"]: true }));
+      const tx = await (lock as any).withdraw(id);
+      toast.info("提交中：" + tx.hash);
+      await tx.wait();
+      toast.success("取回成功");
+      await load();
+    } catch (e: any) {
+      toast.error(e?.shortMessage || e?.message || "取回失败");
+    } finally {
+      setBusy((s) => ({ ...s, [id.toString()+":withdraw"]: false }));
+    }
+  };
+
+  if (!account) {
+    return <div className="text-sm text-muted-foreground">请先连接钱包后查看“我的仓位”。</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">{t("common.loading")} {items.length} {t("positions.title")}</p>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" size="sm" onClick={load} disabled={loading}>{t("common.loading")}</Button>
+        </div>
+      </div>
+
+      {items.length === 0 && (
+        <div className="text-sm text-muted-foreground">{t("positions.noPositions")}</div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {items.map((it) => {
+          const matureAt = Number(it.startTime + it.lockDuration) * 1000;
+          const matured = Date.now() >= matureAt;
+          const aprPct = Number(it.aprBps) / 100; // bps -> %
+          const pending = Number(formatUnits(it.pending ?? 0n, usdtDecimals));
+          const principal = Number(formatUnits(it.principal ?? 0n, usdtDecimals));
+          return (
+            <Card key={it.id.toString()}>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">{t("positions.title")} #{it.id.toString()}</div>
+                  <div className="text-xs text-muted-foreground">{matured ? t("positions.matured") : t("positions.inProgress")}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
+                  <span className="text-muted-foreground">{t("positions.principal")}</span>
+                  <span className="font-mono">{principal} USDT</span>
+                  <span className="text-muted-foreground">{t("positions.annualRate")}</span>
+                  <span>{aprPct}%</span>
+                  <span className="text-muted-foreground">{t("dashboard.startTime")}</span>
+                  <span>{new Date(Number(it.startTime) * 1000).toLocaleString()}</span>
+                  <span className="text-muted-foreground">{t("positions.maturityTime")}</span>
+                  <span>{new Date(matureAt).toLocaleString()}</span>
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">{t("positions.currentRewards")}</span>
+                  <span className="font-mono">{pending.toFixed(6)} USDT</span>
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <Button variant="secondary" size="sm" onClick={() => claim(it.id)} disabled={!canInteract || busy[it.id.toString()+":claim"] || it.pending === 0n}>{t("positions.claimRewards")}</Button>
+                  <Button variant="destructive" size="sm" onClick={() => withdraw(it.id)} disabled={!canInteract || busy[it.id.toString()+":withdraw"] || it.principalWithdrawn}>
+                    {t("positions.withdraw")}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

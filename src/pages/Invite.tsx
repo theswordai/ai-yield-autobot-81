@@ -1,0 +1,37 @@
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { decodeAddress } from "@/lib/addressCode";
+
+export default function Invite() {
+  const params = useParams();
+  const inviterParam = (params as any).inviter as string | undefined;
+  const codeParam = (params as any).code as string | undefined;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let addr = inviterParam || "";
+    if (!addr && codeParam) {
+      try { addr = decodeAddress(codeParam); } catch {}
+    }
+    const isAddr = /^0x[a-fA-F0-9]{40}$/.test(addr);
+    if (isAddr) {
+      localStorage.setItem("inviter", addr.toLowerCase());
+    }
+    const t = setTimeout(() => navigate("/invest?scrollToInviter=true", { replace: true }), 400);
+    return () => clearTimeout(t);
+  }, [inviterParam, codeParam, navigate]);
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-gradient-dark flex items-center justify-center">
+      <Helmet>
+        <title>正在处理邀请...</title>
+        <meta name="description" content="正在记录邀请人并跳转到用户中心" />
+      </Helmet>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
+      <div className="text-center text-sm text-muted-foreground relative z-10">
+        正在保存邀请信息并跳转...
+      </div>
+    </div>
+  );
+}
