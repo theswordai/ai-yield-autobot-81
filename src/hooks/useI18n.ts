@@ -23,10 +23,17 @@ export function useI18n() {
     localStorage.setItem('i18nextLng', language);
   };
   
-  // 设置初始 HTML lang 属性
+  // 设置初始 HTML lang 属性和语言检测
   useEffect(() => {
+    // 从URL路径中检测语言
+    const pathname = location.pathname;
+    const pathMatch = pathname.match(/^\/([a-z]{2})(\/|$)/);
+    if (pathMatch && pathMatch[1] !== i18n.language) {
+      console.log('Changing language from path:', pathMatch[1]);
+      i18n.changeLanguage(pathMatch[1]);
+    }
     document.documentElement.lang = i18n.language;
-  }, [i18n.language]);
+  }, [i18n.language, location.pathname]);
   
   return {
     t,

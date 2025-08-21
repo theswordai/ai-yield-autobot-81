@@ -23,14 +23,17 @@ const urlPathDetector = {
     
     // 检查路径前缀
     const pathname = window.location.pathname;
+    console.log('Current pathname:', pathname);
     const pathMatch = pathname.match(/^\/([a-z]{2})(\/|$)/);
     if (pathMatch) {
+      console.log('Language detected from path:', pathMatch[1]);
       found.push(pathMatch[1]);
     }
     
     return found.length > 0 ? found : undefined;
   },
   cacheUserLanguage(lng: string) {
+    console.log('Caching language:', lng);
     // 不需要缓存到URL，因为URL路径本身就是语言状态
     localStorage.setItem('i18nextLng', lng);
   }
@@ -60,7 +63,10 @@ i18n
     
     react: {
       useSuspense: false
-    }
+    },
+    
+    // 添加调试信息
+    debug: true
   });
 
 // 添加自定义检测器
