@@ -125,7 +125,7 @@ export function HeroSection() {
         {/* Strategy Details Section */}
         {showDetails && <div className="mb-16 animate-fade-in">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">策略详情</h2>
+              <h2 className="text-3xl font-bold text-center mb-8">{t("hero.strategyDetails")}</h2>
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* 跨链阿尔法引擎策略 */}
@@ -135,7 +135,7 @@ export function HeroSection() {
                       <Zap className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold">跨链阿尔法引擎</h3>
+                      <h3 className="text-xl font-semibold">{t("hero.crossChainEngine.title")}</h3>
                       
                     </div>
                   </div>
@@ -150,39 +150,39 @@ export function HeroSection() {
                   <div className="space-y-2 text-sm mb-4">
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>策略类型：DEX 搬砖 + MEV</span>
+                      <span>{t("hero.crossChainEngine.strategyType")}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>执行频率：24/7 无间断智能执行</span>
+                      <span>{t("hero.crossChainEngine.executionFreq")}</span>
                     </div>
                     <div className="flex items-start gap-2">
                       <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>风险等级：中等</span>
+                      <span>{t("hero.crossChainEngine.riskLevel")}</span>
                     </div>
                   </div>
 
                   <div className="space-y-2 text-sm mb-4">
-                    <p className="font-semibold text-accent">🔹 优势叙事：</p>
+                    <p className="font-semibold text-accent">{t("hero.crossChainEngine.advantages")}</p>
                     <div className="space-y-1 pl-4">
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">跨链穿梭，捕捉最细微的价格裂缝</span>
+                        <span className="text-muted-foreground">{t("hero.crossChainEngine.advantage1")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">MEV 收割，包括 Sandwich 攻击与时间价值套利</span>
+                        <span className="text-muted-foreground">{t("hero.crossChainEngine.advantage2")}</span>
                       </div>
                       <div className="flex items-start gap-2">
                         <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">金融文明的量子引擎，让资本的每一次流动都带有外科手术般的精准</span>
+                        <span className="text-muted-foreground">{t("hero.crossChainEngine.advantage3")}</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="mt-4 p-3 bg-primary/10 rounded-lg">
                     <p className="text-sm text-primary font-medium">
-                      一句话：这是 资本战场上的量子猎手。
+                      {t("hero.crossChainEngine.summary")}
                     </p>
                   </div>
                 </Card>

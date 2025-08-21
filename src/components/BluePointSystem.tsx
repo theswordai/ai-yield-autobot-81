@@ -136,7 +136,7 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
     localStorage.setItem(`bluePoints_${account}`, (newPoints - userInvestmentAmount * 100 - userReferralReward * 100).toString());
     
     toast.success(t("bluePoints.drawSuccess", { reward: rewardPoints }), {
-      description: '24小时后可以继续抽奖'
+      description: t("bluePoints.drawCooldown", "24小时后可以继续抽奖")
     });
   };
 
@@ -155,7 +155,7 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
             <Coins className="w-5 h-5" />
             <Sparkles className="w-3 h-3 absolute -top-1 -right-1 text-yellow-400 animate-pulse" />
           </div>
-          蓝光极慈币
+          {t("bluePoints.title")}
         </CardTitle>
       </CardHeader>
       
@@ -163,7 +163,7 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
         {!account ? (
           <div className="text-center py-8 text-muted-foreground">
             <Coins className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>请先连接钱包</p>
+            <p>{t("bluePoints.connectWalletFirst")}</p>
           </div>
         ) : (
           <>
@@ -175,22 +175,22 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
                   {formatPoints(points)}
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">积分余额</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("bluePoints.pointsBalance")}</p>
             </div>
 
             {/* 积分来源 */}
             <div className="space-y-2">
               <h4 className="text-sm font-medium flex items-center gap-2">
                 <Zap className="w-4 h-4 text-yellow-400" />
-                积分来源
+                {t("bluePoints.pointsSource", "积分来源")}
               </h4>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">投资获得</span>
+                  <span className="text-muted-foreground">{t("bluePoints.fromInvestment")}</span>
                   <span className="text-blue-400">{formatPoints(userInvestmentAmount * 100)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">点亮心灯奖励</span>
+                  <span className="text-muted-foreground">{t("bluePoints.referralReward", "点亮心灯奖励")}</span>
                   <span className="text-purple-400">{formatPoints(userReferralReward * 100)}</span>
                 </div>
               </div>
@@ -203,12 +203,12 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-medium flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-green-400" />
-                  每日签到
+                  {t("bluePoints.dailySignIn", "每日签到")}
                 </h4>
                 <Badge variant={dailySignedIn ? "default" : "outline"} className={
                   dailySignedIn ? "bg-green-500/20 text-green-400 border-green-500/30" : ""
                 }>
-                  连签 {signInStreak} 天
+                  {t("bluePoints.consecutiveDays", { days: signInStreak })}
                 </Badge>
               </div>
               
@@ -220,12 +220,12 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
                 {dailySignedIn ? (
                   <>
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    今日已签到
+                    {t("bluePoints.signedToday")}
                   </>
                 ) : (
                   <>
                     <Calendar className="w-4 h-4 mr-2" />
-                    签到领取 {10 + Math.min(signInStreak * 2, 50)} 积分
+                    {t("bluePoints.signIn")} {10 + Math.min(signInStreak * 2, 50)} {t("bluePoints.points", "积分")}
                   </>
                 )}
               </Button>
@@ -238,12 +238,12 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-medium flex items-center gap-2">
                   <Trophy className="w-4 h-4 text-yellow-400" />
-                  幸运转盘
+                  {t("bluePoints.luckyDraw")}
                 </h4>
                 <Badge variant={spinUsed ? "outline" : "default"} className={
                   !spinUsed ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30" : ""
                 }>
-                  {spinUsed ? "明日可抽" : "今日可抽"}
+                  {spinUsed ? t("bluePoints.tomorrow", "明日可抽") : t("bluePoints.today", "今日可抽")}
                 </Badge>
               </div>
 
@@ -275,17 +275,17 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
                 {isSpinning ? (
                   <>
                     <RotateCcw className="w-4 h-4 mr-2 animate-spin" />
-                    转盘抽奖中...
+                    {t("bluePoints.spinning", "转盘抽奖中...")}
                   </>
                 ) : spinUsed ? (
                   <>
                     <Clock className="w-4 h-4 mr-2" />
-                    明日再来
+                    {t("bluePoints.comeback", "明日再来")}
                   </>
                 ) : (
                   <>
                     <Trophy className="w-4 h-4 mr-2" />
-                    免费抽奖 (10-1000积分)
+                    {t("bluePoints.freeDraw", "免费抽奖")} (10-1000{t("bluePoints.points", "积分")})
                   </>
                 )}
               </Button>
@@ -295,12 +295,12 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
 
             {/* 积分规则 */}
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-blue-400">💡 积分规则</h4>
+              <h4 className="text-sm font-medium text-blue-400">💡 {t("bluePoints.earnPoints")}</h4>
               <div className="text-xs text-muted-foreground space-y-1">
-                <p>• 投资 1 USDT = 100 积分</p>
-                <p>• 点亮心灯奖励 1 USDT = 100 积分</p>
-                <p>• 每日签到 10-60 积分（连签奖励）</p>
-                <p>• 每日转盘 10-1000 积分</p>
+                <p>{t("bluePoints.investmentRule")}</p>
+                <p>{t("bluePoints.referralRule", "• 点亮心灯奖励 1 USDT = 100 积分")}</p>
+                <p>{t("bluePoints.signInRule")}</p>
+                <p>{t("bluePoints.drawRule", "• 每日转盘 10-1000 积分")}</p>
               </div>
             </div>
           </>

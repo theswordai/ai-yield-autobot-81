@@ -454,15 +454,15 @@ export default function BluePoints() {
                   <div className="space-y-3 text-foreground/90">
                     <div className="flex items-center justify-center gap-2">
                       <TrendingUp className="w-5 h-5 text-green-400" />
-                      <span>它让资本流动转化为爱心流动</span>
+                      <span>{t("bluePoints.capitalFlowKindness", "它让资本流动转化为爱心流动")}</span>
                     </div>
                     <div className="flex items-center justify-center gap-2">
                       <CheckCircle className="w-5 h-5 text-blue-400" />
-                      <span>它让区块链透明见证善意</span>
+                      <span>{t("bluePoints.blockchainWitness", "它让区块链透明见证善意")}</span>
                     </div>
                     <div className="flex items-center justify-center gap-2">
                       <Star className="w-5 h-5 text-yellow-400" />
-                      <span>它让捐助不仅止于利润，更升华为 人类命运共同体的价值共鸣</span>
+                      <span>{t("bluePoints.humanCommunity", "它让捐助不仅止于利润，更升华为 人类命运共同体的价值共鸣")}</span>
                     </div>
                   </div>
                 </div>
@@ -480,8 +480,8 @@ export default function BluePoints() {
         {!account ? <Card className="max-w-md mx-auto">
             <CardContent className="text-center py-12">
               <Coins className="w-16 h-16 mx-auto mb-4 text-blue-400 opacity-50" />
-              <h3 className="text-xl font-semibold mb-2">连接钱包开始</h3>
-              <p className="text-muted-foreground">请连接钱包以开始使用蓝光极慈币系统</p>
+              <h3 className="text-xl font-semibold mb-2">{t("bluePoints.connectWalletStart", "连接钱包开始")}</h3>
+              <p className="text-muted-foreground">{t("bluePoints.connectWalletDesc", "请连接钱包以开始使用蓝光极慈币系统")}</p>
             </CardContent>
           </Card> : <div className="space-y-8">
             {/* 积分说明 */}
@@ -489,7 +489,7 @@ export default function BluePoints() {
               <CardContent className="text-center py-6">
                 <div className="flex items-center justify-center gap-2 mb-3">
                   <Coins className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-lg font-semibold">积分获取规则</h3>
+                  <h3 className="text-lg font-semibold">{t("bluePoints.pointsRules", "积分获取规则")}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="bg-white/5 rounded-lg p-3">
