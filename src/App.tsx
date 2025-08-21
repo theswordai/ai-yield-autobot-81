@@ -27,22 +27,42 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/invest" element={<Invest />} />
-          <Route path="/blue-points" element={<BluePoints />} />
-          <Route path="/stake-new" element={<StakeNew />} />
-          <Route path="/user" element={<UserCenter />} />
-          <Route path="/invite/:inviter" element={<Invite />} />
-          <Route path="/i/:code" element={<Invite />} />
+          {/* Language-specific routes */}
+          <Route path="/zh" element={<Index />} />
+          <Route path="/zh/invest" element={<Invest />} />
+          <Route path="/zh/blue-points" element={<BluePoints />} />
+          <Route path="/zh/stake-new" element={<StakeNew />} />
+          <Route path="/zh/user" element={<UserCenter />} />
+          <Route path="/zh/invite/:inviter" element={<Invite />} />
+          <Route path="/zh/i/:code" element={<Invite />} />
+          <Route path="/zh/whitepaper" element={<Whitepaper />} />
+          
+          <Route path="/en" element={<Index />} />
+          <Route path="/en/invest" element={<Invest />} />
+          <Route path="/en/blue-points" element={<BluePoints />} />
+          <Route path="/en/stake-new" element={<StakeNew />} />
+          <Route path="/en/user" element={<UserCenter />} />
+          <Route path="/en/invite/:inviter" element={<Invite />} />
+          <Route path="/en/i/:code" element={<Invite />} />
+          <Route path="/en/whitepaper" element={<Whitepaper />} />
+
+          {/* Default routes redirect to Chinese */}
+          <Route path="/" element={<Navigate to="/zh" replace />} />
+          <Route path="/invest" element={<Navigate to="/zh/invest" replace />} />
+          <Route path="/blue-points" element={<Navigate to="/zh/blue-points" replace />} />
+          <Route path="/stake-new" element={<Navigate to="/zh/stake-new" replace />} />
+          <Route path="/user" element={<Navigate to="/zh/user" replace />} />
+          <Route path="/invite/:inviter" element={<Navigate to="/zh/invite/:inviter" replace />} />
+          <Route path="/i/:code" element={<Navigate to="/zh/i/:code" replace />} />
+          <Route path="/whitepaper" element={<Navigate to="/zh/whitepaper" replace />} />
 
           {/* Legacy routes -> redirects */}
-          <Route path="/dashboard" element={<Navigate to="/user" replace />} />
-          <Route path="/referral" element={<Navigate to="/user" replace />} />
-          <Route path="/trade" element={<Navigate to="/invest" replace />} />
-          <Route path="/stake" element={<Navigate to="/invest" replace />} />
+          <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />
+          <Route path="/referral" element={<Navigate to="/zh/user" replace />} />
+          <Route path="/trade" element={<Navigate to="/zh/invest" replace />} />
+          <Route path="/stake" element={<Navigate to="/zh/invest" replace />} />
 
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="/whitepaper" element={<Whitepaper />} />
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         </BrowserRouter>

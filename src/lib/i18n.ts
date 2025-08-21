@@ -15,18 +15,11 @@ const resources = {
   }
 };
 
-// URL 参数语言检测器
-const urlParamsDetector = {
-  name: 'urlParams',
+// URL 路径语言检测器
+const urlPathDetector = {
+  name: 'urlPath',
   lookup(options: any) {
     let found: string[] = [];
-    
-    // 检查 URL 查询参数
-    const searchParams = new URLSearchParams(window.location.search);
-    const langParam = searchParams.get('lang');
-    if (langParam) {
-      found.push(langParam);
-    }
     
     // 检查路径前缀
     const pathname = window.location.pathname;
@@ -38,10 +31,7 @@ const urlParamsDetector = {
     return found.length > 0 ? found : undefined;
   },
   cacheUserLanguage(lng: string) {
-    // 更新 URL 和 localStorage
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', lng);
-    window.history.replaceState({}, '', url.toString());
+    // 不需要缓存到URL，因为URL路径本身就是语言状态
     localStorage.setItem('i18nextLng', lng);
   }
 };
@@ -56,8 +46,7 @@ i18n
     
     // 语言检测配置
     detection: {
-      order: ['urlParams', 'localStorage', 'navigator'],
-      lookupQuerystring: 'lang',
+      order: ['urlPath', 'localStorage', 'navigator'],
       lookupLocalStorage: 'i18nextLng',
       caches: ['localStorage']
     },
@@ -75,6 +64,6 @@ i18n
   });
 
 // 添加自定义检测器
-i18n.services.languageDetector.addDetector(urlParamsDetector);
+i18n.services.languageDetector.addDetector(urlPathDetector);
 
 export default i18n;

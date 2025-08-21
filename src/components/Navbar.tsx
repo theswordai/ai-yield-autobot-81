@@ -9,17 +9,18 @@ import { useI18n } from "@/hooks/useI18n";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+
+  // 获取当前语言前缀
+  const langPrefix = language === 'zh' ? '/zh' : '/en';
 
   const navigation = [
-    { name: t("nav.home"), href: "/" },
-    { name: t("nav.invest"), href: "/invest" },
-    { name: t("nav.bluePoints"), href: "/blue-points" },
-    { name: t("nav.user"), href: "/user" },
-    { name: t("nav.whitepaper"), href: "/whitepaper" },
+    { name: t("nav.home"), href: `${langPrefix}` },
+    { name: t("nav.invest"), href: `${langPrefix}/invest` },
+    { name: t("nav.bluePoints"), href: `${langPrefix}/blue-points` },
+    { name: t("nav.user"), href: `${langPrefix}/user` },
+    { name: t("nav.whitepaper"), href: `${langPrefix}/whitepaper` },
   ];
-
-  
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -27,7 +28,7 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center space-x-2" aria-label="USD.ONLINE Home">
+          <Link to={langPrefix} className="flex items-center space-x-2" aria-label="USD.ONLINE Home">
             <img
               src="/lovable-uploads/e273a398-537e-4766-b1d0-aee195477fb3.png"
               alt="USD.ONLINE logo"

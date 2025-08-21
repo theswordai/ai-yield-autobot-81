@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { decodeAddress } from "@/lib/addressCode";
 
@@ -8,6 +8,7 @@ export default function Invite() {
   const inviterParam = (params as any).inviter as string | undefined;
   const codeParam = (params as any).code as string | undefined;
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     let addr = inviterParam || "";
@@ -18,9 +19,15 @@ export default function Invite() {
     if (isAddr) {
       localStorage.setItem("inviter", addr.toLowerCase());
     }
-    const t = setTimeout(() => navigate("/invest?scrollToInviter=true", { replace: true }), 400);
+    
+    // 获取当前语言前缀
+    const currentPath = location.pathname;
+    const langMatch = currentPath.match(/^\/([a-z]{2})/);
+    const langPrefix = langMatch ? `/${langMatch[1]}` : '/zh';
+    
+    const t = setTimeout(() => navigate(`${langPrefix}/invest?scrollToInviter=true`, { replace: true }), 400);
     return () => clearTimeout(t);
-  }, [inviterParam, codeParam, navigate]);
+  }, [inviterParam, codeParam, navigate, location.pathname]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-dark flex items-center justify-center">
