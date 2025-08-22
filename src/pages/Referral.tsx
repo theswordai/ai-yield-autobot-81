@@ -9,6 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
+import { useI18n } from "@/hooks/useI18n";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { LockStaking_ABI } from "@/abis/LockStaking";
@@ -26,6 +27,7 @@ export default function Referral({
     provider,
     signer
   } = useWeb3();
+  const { t } = useI18n();
   const registry = useMemo(() => provider ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, provider) : null, [provider]);
   const registryWrite = useMemo(() => signer ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, signer) : null, [signer]);
   const vault = useMemo(() => provider ? new Contract(VAULT_ADDRESS, RewardsVault_ABI, provider) : null, [provider]);
@@ -265,8 +267,8 @@ export default function Referral({
       <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
       <div className="container mx-auto px-4">
         <div className="mb-8">
-          <Title className="text-3xl font-bold mb-2">邀请好友</Title>
-          <p className="text-muted-foreground">邀请好友投资，获得丰厚返利奖励</p>
+          <Title className="text-3xl font-bold mb-2">{t("referral.inviteFriends")}</Title>
+          <p className="text-muted-foreground">{t("referral.inviteFriendsDesc")}</p>
         </div>
 
         {/* Bind status */}
@@ -358,7 +360,7 @@ export default function Referral({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                奖励机制
+                {t("referral.rewardMechanism")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -405,7 +407,7 @@ export default function Referral({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-primary" />
-                邀请排行榜
+                {t("referral.inviteLeaderboard")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -428,7 +430,7 @@ export default function Referral({
         {/* Referral Tree */}
         <Card className="mt-8">
           <CardHeader>
-            <CardTitle>邀请图谱</CardTitle>
+            <CardTitle>{t("referral.inviteMap")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
