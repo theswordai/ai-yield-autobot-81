@@ -362,6 +362,12 @@
     "noWalletFound": "No wallet found",
     "installMetaMask": "Please install MetaMask"
   },
+  "news": {
+    "maintenance": "Maintenance",
+    "event": "Event", 
+    "general": "Announcement",
+    "urgent": "Urgent"
+  },
   "partners": {
     "fca": "Financial Conduct Authority",
     "autism": "Autism Partnership Hong Kong",

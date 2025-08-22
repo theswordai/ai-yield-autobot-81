@@ -491,6 +491,12 @@
     "noWalletFound": "未发现钱包",
     "installMetaMask": "请安装 MetaMask"
   },
+  "news": {
+    "maintenance": "维护",
+    "event": "活动",
+    "general": "公告",
+    "urgent": "紧急"
+  },
   "partners": {
     "fca": "英国金融行为监管局",
     "autism": "香港自闭症儿童基金会",

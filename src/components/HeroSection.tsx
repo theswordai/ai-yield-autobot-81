@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send } from "lucide-react";
 import { PriceTicker } from "@/components/PriceTicker";
+import { NewsAnnouncement } from "@/components/NewsAnnouncement";
 import { MiniKChart } from "@/components/MiniKChart";
 import { useI18n } from "@/hooks/useI18n";
 export function HeroSection() {
@@ -115,6 +116,8 @@ export function HeroSection() {
           <div className="max-w-5xl mx-auto mb-10">
             <PriceTicker />
           </div>
+          
+          <NewsAnnouncement />
 
           {/* Strategy Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
