@@ -82,8 +82,51 @@
      },
      "followUs": "Follow Us",
      "customerService": "Customer Service",
-     "contactSupport": "Contact Support"
+      "contactSupport": "Contact Support"
    },
+  "moralAlpha": {
+    "title": "What is Moral Alpha 3.0",
+    "conceptOrigin": {
+      "title": "🔹 I. Concept Origin",
+      "alpha": "• Alpha in finance = excess returns, representing the core competitiveness of investment strategies.",
+      "morality": "• Morality/Ethics emphasizes public welfare, charity, social responsibility, belonging to values and civilization levels.",
+      "version": "• 3.0 signifies an upgrade: from profit-oriented → win-win oriented → civilization-oriented."
+    },
+    "evolutionLogic": {
+      "title": "🔹 II. Evolution Logic",
+      "v1": "• Moral Alpha 1.0 → Charitable Donations: wealth and goodwill separated, make money first then donate.",
+      "v2": "• Moral Alpha 2.0 → ESG Investment: balancing returns with social responsibility, but still enterprise-focused.",
+      "v3": "• Moral Alpha 3.0 → <strong>Algorithm-driven × Embedded Charity × Global Co-construction</strong>:<br/>Wealth growth and human goodwill are no longer separated, but dual returns of the same algorithm.",
+      "conclusion": "Wealth growth and human goodwill are no longer separated, but dual returns of the same algorithm."
+    },
+    "narrativeDefinition": {
+      "title": "🔹 III. Narrative Definition",
+      "definition": "Moral Alpha 3.0 =",
+      "desc1": "AI + Blockchain driven excess return model,",
+      "desc2": "where excess portions not only convert to profits, but automatically flow into charitable civilization funds,",
+      "desc3": "making \"investment success\" = \"charity growth\".",
+      "explanation": "In other words:",
+      "mechanismDesc": "In this system, morality itself is a type of Alpha. Stronger goodwill → Greater consensus → Wider capital flow → Higher investment returns."
+    },
+    "international": {
+      "title": "🔹 IV. International Expression",
+      "ethical": "• Ethical Alpha 3.0",
+      "moral": "• Moral Alpha Protocol", 
+      "compassion": "• Compassion-Driven Alpha",
+      "civilizational": "• Civilizational Alpha"
+    },
+    "motto": {
+      "title": "🔹 V. Motto",
+      "quote1": "In the world of Moral Alpha 3.0, goodwill is no longer an extra cost, but the source of excess returns.",
+      "quote2": "Capital flows through algorithms and transcends through morality.",
+      "quote3": "Alpha is not just about excess returns, but the evolutionary dividend of financial civilization."
+    },
+    "conclusion": {
+      "title": "📌 Conclusion",
+      "content1": "Moral Alpha 3.0 can be designed as one of USD.online's philosophical cores, explaining why the project doesn't simply pursue profit, but integrates wealth + charity + civilization co-construction as a trinity.",
+      "content2": "Moral Alpha 3.0 = Perfect fusion of wealth civilization and charitable civilization"
+    }
+  },
   "invest": {
     "title": "Investment Center | On-Chain Staking",
     "description": "Perform USDT on-chain staking here, quickly complete Approve, Deposit, and view positions and rewards.",

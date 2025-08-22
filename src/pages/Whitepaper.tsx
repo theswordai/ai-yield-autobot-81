@@ -287,6 +287,87 @@ export default function Whitepaper() {
             </Card>
           </section>
 
+          <section aria-labelledby="moral-alpha" className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle id="moral-alpha" className="text-2xl">{t('moralAlpha.title')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.conceptOrigin.title')}</h3>
+                  <div className="space-y-3">
+                    <ul className="space-y-2">
+                      <li>{t('moralAlpha.conceptOrigin.alpha')}</li>
+                      <li>{t('moralAlpha.conceptOrigin.morality')}</li>
+                      <li>{t('moralAlpha.conceptOrigin.version')}</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.evolutionLogic.title')}</h3>
+                  <div className="space-y-3">
+                    <ul className="space-y-2">
+                      <li>{t('moralAlpha.evolutionLogic.v1')}</li>
+                      <li>{t('moralAlpha.evolutionLogic.v2')}</li>
+                      <li dangerouslySetInnerHTML={{ __html: t('moralAlpha.evolutionLogic.v3') }}></li>
+                    </ul>
+                    <p className="font-medium text-primary text-center mt-4">{t('moralAlpha.evolutionLogic.conclusion')}</p>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.narrativeDefinition.title')}</h3>
+                  <div className="space-y-4">
+                    <div className="pl-4 border-l-2 border-primary/20">
+                      <p className="font-medium text-foreground mb-2">{t('moralAlpha.narrativeDefinition.definition')}</p>
+                      <p className="mb-2">{t('moralAlpha.narrativeDefinition.desc1')}</p>
+                      <p className="mb-2">{t('moralAlpha.narrativeDefinition.desc2')}</p>
+                      <p className="mb-2">{t('moralAlpha.narrativeDefinition.desc3')}</p>
+                    </div>
+                    <div className="pl-4 border-l-2 border-accent/20">
+                      <p className="font-medium text-foreground mb-2">{t('moralAlpha.narrativeDefinition.explanation')}</p>
+                      <p>{t('moralAlpha.narrativeDefinition.mechanismDesc')}</p>
+                    </div>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.international.title')}</h3>
+                  <div className="space-y-2">
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>{t('moralAlpha.international.ethical')}</li>
+                      <li>{t('moralAlpha.international.moral')}</li>
+                      <li>{t('moralAlpha.international.compassion')}</li>
+                      <li>{t('moralAlpha.international.civilizational')}</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.motto.title')}</h3>
+                  <div className="space-y-3">
+                    <div className="pl-4 border-l-2 border-primary/20">
+                      <ul className="space-y-2">
+                        <li className="font-medium text-foreground">「{t('moralAlpha.motto.quote1')}」</li>
+                        <li className="font-medium text-foreground">「{t('moralAlpha.motto.quote2')}」</li>
+                        <li className="font-medium text-foreground">「{t('moralAlpha.motto.quote3')}」</li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.conclusion.title')}</h3>
+                  <div className="space-y-3">
+                    <p>{t('moralAlpha.conclusion.content1')}</p>
+                    <p className="font-medium text-primary text-center">{t('moralAlpha.conclusion.content2')}</p>
+                  </div>
+                </article>
+              </CardContent>
+            </Card>
+          </section>
+
           <section aria-labelledby="whitepaper-content">
             <ReferralWhitepaper />
           </section>

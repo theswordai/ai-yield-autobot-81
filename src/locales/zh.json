@@ -169,6 +169,49 @@
       "usdo": "• USDo 铸造：5,000 USDo 记入 A；不影响奖励结算。"
     }
   },
+  "moralAlpha": {
+    "title": "什么是道义阿尔法 3.0",
+    "conceptOrigin": {
+      "title": "🔹 一、概念来源",
+      "alpha": "• Alpha（阿尔法） 在金融学里 = 超额收益，代表投资策略的核心竞争力。",
+      "morality": "• 道义（Morality / Ethics） 强调公益、慈善、社会责任，属于价值观和文明层面的东西。",
+      "version": "• 3.0 则意味着一次升级：从 利润导向 → 共赢导向 → 文明导向。"
+    },
+    "evolutionLogic": {
+      "title": "🔹 二、进化逻辑",
+      "v1": "• 道义阿尔法 1.0 → 慈善捐赠：财富与善意分离，先赚钱再捐款。",
+      "v2": "• 道义阿尔法 2.0 → ESG 投资：兼顾收益与社会责任，但依然偏重企业层面。",
+      "v3": "• 道义阿尔法 3.0 → <strong>算法驱动 × 公益内嵌 × 全球共建</strong>：<br/>财富增长与人类善意不再分离，而是 同一个算法的双重回报。",
+      "conclusion": "财富增长与人类善意不再分离，而是同一个算法的双重回报。"
+    },
+    "narrativeDefinition": {
+      "title": "🔹 三、叙事定义",
+      "definition": "道义阿尔法 3.0 =",
+      "desc1": "AI + 区块链 驱动的 超额收益模型，",
+      "desc2": "其超额部分不仅转化为利润，还自动流入 慈善文明基金，",
+      "desc3": "让\"投资的成功\" = \"公益的壮大\"。",
+      "explanation": "换句话说：",
+      "mechanismDesc": "在这个体系下，道义本身就是一种 Alpha，善意越强 → 共识越大 → 资本流动越广 → 投资收益越高。"
+    },
+    "international": {
+      "title": "🔹 四、国际化表达",
+      "ethical": "• Ethical Alpha 3.0",
+      "moral": "• Moral Alpha Protocol",
+      "compassion": "• Compassion-Driven Alpha",
+      "civilizational": "• Civilizational Alpha"
+    },
+    "motto": {
+      "title": "🔹 五、座右铭",
+      "quote1": "在道义阿尔法 3.0 的世界里，善意不再是额外成本，而是超额收益的源泉。",
+      "quote2": "资本因算法而流动，因道义而升华。",
+      "quote3": "Alpha 不止于超额收益，更是金融文明的进化红利。"
+    },
+    "conclusion": {
+      "title": "📌 结束语",
+      "content1": "道义阿尔法 3.0 可以被设计成 USD.online 的哲学核心之一，用来解释为什么项目不是单纯追求利润，而是把 财富 + 慈善 + 文明共建 三位一体。",
+      "content2": "道义阿尔法 3.0 = 财富文明与慈善文明的完美融合"
+    }
+  },
   "nav": {
     "home": "启航",
     "invest": "善举",
