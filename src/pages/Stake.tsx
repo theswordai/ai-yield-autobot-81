@@ -627,7 +627,7 @@ export default function Stake({
                         bind: false
                       }));
                     }
-                      }} className="w-full">
+                      }} className="w-full btn-shimmer btn-pulse relative bg-gradient-primary hover:shadow-glow transition-all duration-300 text-primary-foreground border-primary/20">
                         <Users className="w-4 h-4 mr-2" />
                         {t("staking.bindInviter")}
                       </Button>
