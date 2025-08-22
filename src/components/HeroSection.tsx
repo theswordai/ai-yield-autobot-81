@@ -418,7 +418,7 @@ export function HeroSection() {
             <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
               <Shield className="w-8 h-8 text-accent-foreground" />
             </div>
-            <h3 className="font-semibold mb-2 text-lg">On-chain Clear Transparent Protocol</h3>
+            <h3 className="font-semibold mb-2 text-base">链上清晰透明协议</h3>
             
           </div>
         </div>
