@@ -627,7 +627,7 @@ export default function Stake({
                         bind: false
                       }));
                     }
-                      }} className="w-full">
+                      }} className="w-full electric-button">
                         <Users className="w-4 h-4 mr-2" />
                         {t("staking.bindInviter")}
                       </Button>
