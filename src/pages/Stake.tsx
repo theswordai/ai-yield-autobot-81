@@ -535,37 +535,37 @@ export default function Stake({
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-base font-medium">锚定期限</Label>
+                  <Label className="text-base font-medium">{t("staking.lockPeriodLabel")}</Label>
                   <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-3">
                     <label htmlFor="l0" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l0" value="0" />
                         <div>
-                          <div className="font-semibold">90天锁仓</div>
-                          <div className="text-sm text-muted-foreground">50-91.25% APR (浮动)</div>
+                          <div className="font-semibold">{t("staking.ninetyDaysLock")}</div>
+                          <div className="text-sm text-muted-foreground">50-91.25% APR {t("staking.floatingAPR")}</div>
                         </div>
                       </div>
-                      <Badge variant="outline">短期</Badge>
+                      <Badge variant="outline">{t("staking.shortTerm")}</Badge>
                     </label>
                     <label htmlFor="l1" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l1" value="1" />
                         <div>
-                          <div className="font-semibold">180天锁仓</div>
-                          <div className="text-sm text-muted-foreground">120-146% APR (浮动)</div>
+                          <div className="font-semibold">{t("staking.oneEightyDaysLock")}</div>
+                          <div className="text-sm text-muted-foreground">120-146% APR {t("staking.floatingAPR")}</div>
                         </div>
                       </div>
-                      <Badge variant="outline">中期</Badge>
+                      <Badge variant="outline">{t("staking.mediumTerm")}</Badge>
                     </label>
                     <label htmlFor="l2" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l2" value="2" />
                         <div>
-                          <div className="font-semibold">365天锁仓</div>
-                          <div className="text-sm text-muted-foreground">280-340% APR (浮动)</div>
+                          <div className="font-semibold">{t("staking.threeSixtyFiveDaysLock")}</div>
+                          <div className="text-sm text-muted-foreground">280-340% APR {t("staking.floatingAPR")}</div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-primary/10 text-primary">长期</Badge>
+                      <Badge variant="outline" className="bg-primary/10 text-primary">{t("staking.longTerm")}</Badge>
                     </label>
                   </RadioGroup>
                 </div>

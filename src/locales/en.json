@@ -226,6 +226,7 @@
     "mediumTerm": "Medium-term",
     "threeSixtyFiveDaysLock": "365-day lock",
     "longTerm": "Long-term",
+    "floatingAPR": "(Floating)",
     "referralRelation": "Referral Relationship",
     "boundSuperior": "Bound superior:",
     "bound": "Bound",
