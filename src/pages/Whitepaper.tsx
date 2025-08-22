@@ -248,6 +248,45 @@ export default function Whitepaper() {
             </Card>
           </section>
 
+          <section aria-labelledby="fca-regulation" className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle id="fca-regulation" className="text-2xl">{t('fcaRegulation.title')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
+                <article>
+                  <div className="space-y-4">
+                    <p className="font-medium">{t('fcaRegulation.intro')}</p>
+                    <p>{t('fcaRegulation.description1')}</p>
+                    <p>{t('fcaRegulation.description2')}</p>
+                    
+                    <div className="pl-4 border-l-2 border-primary/20">
+                      <h4 className="font-semibold text-foreground mb-3">{t('fcaRegulation.regulatorySignificance')}</h4>
+                      <ul className="space-y-2">
+                        <li>{t('fcaRegulation.compliance')}</li>
+                        <li>{t('fcaRegulation.transparency')}</li>
+                        <li>{t('fcaRegulation.protection')}</li>
+                        <li>{t('fcaRegulation.passport')}</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="pl-4 border-l-2 border-accent/20">
+                      <h4 className="font-semibold text-foreground mb-3">{t('fcaRegulation.strategicHeight')}</h4>
+                      <p className="mb-2">{t('fcaRegulation.strategicIntro')}</p>
+                      <ul className="space-y-1">
+                        <li>{t('fcaRegulation.anchor')}</li>
+                        <li>{t('fcaRegulation.testbed')}</li>
+                        <li>{t('fcaRegulation.cornerstone')}</li>
+                      </ul>
+                    </div>
+                    
+                    <p className="font-medium text-primary text-center italic">{t('fcaRegulation.conclusion')}</p>
+                  </div>
+                </article>
+              </CardContent>
+            </Card>
+          </section>
+
           <section aria-labelledby="whitepaper-content">
             <ReferralWhitepaper />
           </section>
