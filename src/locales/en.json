@@ -16,6 +16,7 @@
     "subtitle": "Moral Alpha 3.0",
     "description": "Cross-chain Alpha Engine • Adaptive Yield Rotation • Decentralized Staking Vault • On-chain Transparent Protocol",
     "strategyDetails": "Strategy Details",
+    "strategicPartners": "Partners",
     "crossChainEngine": {
       "title": "Cross-chain Alpha Engine",
       "description": "Millisecond arbitrage and MEV operations, capturing instantaneous value in capital gaps",
@@ -75,7 +76,6 @@
       "participatoryAudit": "Participatory audit civilization: letting every donor become a guardian of the system",
     "summary": "In one sentence: This is the moral cornerstone of wealth civilization.",
     "viewStrategyDetails": "View Strategy Details",
-    "strategicPartners": "Strategic Partners",
     "blockchainConscience": "Blockchain's Conscience",
     "financialIntegrity": "Financial Integrity", 
     "charityGlory": "Charity's Glory"
