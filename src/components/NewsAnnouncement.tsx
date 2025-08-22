@@ -16,15 +16,6 @@ export function NewsAnnouncement() {
     date: "2024-12-25",
     type: "event",
     urgent: true
-  }, {
-    id: 2,
-    title: "平台升级维护公告",
-    titleEn: "Platform Upgrade Maintenance Notice", 
-    content: "为提供更好的用户体验，平台将于北京时间12月25日02:00-06:00进行系统升级维护",
-    contentEn: "To provide better user experience, the platform will undergo system upgrade maintenance from 02:00-06:00 Beijing time on December 25th",
-    date: "2024-12-24",
-    type: "maintenance",
-    urgent: false
   }]);
   const getTypeColor = (type: string, urgent: boolean) => {
     if (urgent) return "destructive";
