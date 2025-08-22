@@ -11,12 +11,13 @@ const CG_IDS: Record<string, string> = {
   DOGE: "dogecoin",
 };
 
-const ORDER: Array<keyof typeof CG_IDS | "USD1"> = [
+const ORDER: Array<keyof typeof CG_IDS | "USD1" | "USDV"> = [
   "BTC",
   "ETH", 
   "SOL",
   "USDT",
   "USD1",
+  "USDV",
   "BNB",
   "DOGE",
 ];
@@ -45,6 +46,9 @@ export function PriceTicker() {
         if (symbol === "USD1") {
           return { symbol, price: "1.0000", change: "+0.0%" };
         }
+        if (symbol === "USDV") {
+          return { symbol, price: "0.01", change: "+0.0%" };
+        }
         const id = CG_IDS[symbol];
         const p = data[id]?.usd ?? 0;
         const ch = data[id]?.usd_24h_change ?? 0;
@@ -66,6 +70,7 @@ export function PriceTicker() {
           { symbol: "SOL", price: "--", change: "--" },
           { symbol: "USDT", price: "--", change: "--" },
           { symbol: "USD1", price: "1.0000", change: "+0.0%" },
+          { symbol: "USDV", price: "0.01", change: "+0.0%" },
         ]);
       }
     }
