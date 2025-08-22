@@ -470,7 +470,7 @@ export function HeroSection() {
               <span className="text-sm text-muted-foreground mb-3 block">{t("hero.customerService")}</span>
               <div className="flex justify-center">
                 <button className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" title={t("hero.contactSupport")}>
-                  <Avatar className="w-12 h-12 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
+                  <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
                     <AvatarImage src={customerServiceAvatar} alt="Customer Service" />
                     <AvatarFallback className="bg-gradient-primary">
                       <MessageCircle className="w-5 h-5 text-primary-foreground" />
