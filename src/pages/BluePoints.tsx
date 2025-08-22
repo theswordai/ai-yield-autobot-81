@@ -41,85 +41,85 @@ export default function BluePoints() {
     points: 10,
     weight: 35,
     color: '#ef4444',
-    label: '10积分'
+    label: `10${t('bluePoints.spin.pointsLabel')}`
   }, {
     points: 20,
     weight: 25,
     color: '#f97316',
-    label: '20积分'
+    label: `20${t('bluePoints.spin.pointsLabel')}`
   }, {
     points: 50,
     weight: 20,
     color: '#eab308',
-    label: '50积分'
+    label: `50${t('bluePoints.spin.pointsLabel')}`
   }, {
     points: 100,
     weight: 12,
     color: '#22c55e',
-    label: '100积分'
+    label: `100${t('bluePoints.spin.pointsLabel')}`
   }, {
     points: 200,
     weight: 5,
     color: '#3b82f6',
-    label: '200积分'
+    label: `200${t('bluePoints.spin.pointsLabel')}`
   }, {
     points: 500,
     weight: 2,
     color: '#8b5cf6',
-    label: '500积分'
+    label: `500${t('bluePoints.spin.pointsLabel')}`
   }, {
     points: 1000,
     weight: 1,
     color: '#ec4899',
-    label: '1000积分'
+    label: `1000${t('bluePoints.spin.pointsLabel')}`
   }];
 
   // VIP等级配置
   const vipLevels = [{
     level: 0,
-    name: '新手',
+    name: t('bluePoints.vip.levels.novice'),
     points: 0,
-    benefits: ['基础功能'],
+    benefits: [t('bluePoints.vip.benefits.basicFeatures')],
     color: '#6b7280'
   }, {
     level: 1,
-    name: '青铜',
+    name: t('bluePoints.vip.levels.bronze'),
     points: 50000,
-    benefits: ['签到奖励+10%', '转盘次数+1'],
+    benefits: [t('bluePoints.vip.benefits.signInBonus10'), t('bluePoints.vip.benefits.spinCount1')],
     color: '#cd7f32'
   }, {
     level: 2,
-    name: '白银',
+    name: t('bluePoints.vip.levels.silver'),
     points: 200000,
-    benefits: ['签到奖励+20%', '转盘次数+2'],
+    benefits: [t('bluePoints.vip.benefits.signInBonus20'), t('bluePoints.vip.benefits.spinCount2')],
     color: '#c0c0c0'
   }, {
     level: 3,
-    name: '黄金',
+    name: t('bluePoints.vip.levels.gold'),
     points: 600000,
-    benefits: ['签到奖励+30%', '转盘次数+3'],
+    benefits: [t('bluePoints.vip.benefits.signInBonus30'), t('bluePoints.vip.benefits.spinCount3')],
     color: '#ffd700'
   }, {
     level: 4,
-    name: '铂金',
+    name: t('bluePoints.vip.levels.platinum'),
     points: 3000000,
-    benefits: ['签到奖励+50%', '转盘次数+5'],
+    benefits: [t('bluePoints.vip.benefits.signInBonus50'), t('bluePoints.vip.benefits.spinCount5')],
     color: '#e5e4e2'
   }, {
     level: 5,
-    name: '钻石',
+    name: t('bluePoints.vip.levels.diamond'),
     points: 10000000,
-    benefits: ['签到奖励+100%', '转盘次数+10'],
+    benefits: [t('bluePoints.vip.benefits.signInBonus100'), t('bluePoints.vip.benefits.spinCount10')],
     color: '#b9f2ff'
   }];
 
   // 每日任务配置
   const dailyTasksConfig = [{
     id: 'trade',
-    name: '完成投资',
+    name: t('bluePoints.dailyTasks.completeInvestment'),
     points: 1000,
     icon: TrendingUp,
-    description: '完成投资获得积分，有几个仓位可领取几次',
+    description: t('bluePoints.dailyTasks.completeInvestmentDesc'),
     color: '#06b6d4'
   }];
 
@@ -467,9 +467,9 @@ export default function BluePoints() {
                   </div>
                 </div>
                 <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg p-6 border border-blue-600/30">
-                  <h3 className="text-xl font-bold text-blue-400 mb-2">一句话愿景</h3>
+                  <h3 className="text-xl font-bold text-blue-400 mb-2">{t("bluePoints.oneLineVision")}</h3>
                   <p className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    「蓝光极慈币，每一枚都在为人类点亮善意之光。」
+                    {t("bluePoints.oneLineVisionText")}
                   </p>
                 </div>
               </div>
@@ -493,24 +493,24 @@ export default function BluePoints() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-blue-400 font-medium">投资获得积分</p>
-                    <p className="text-muted-foreground">每投资 1 USDT = 100 积分</p>
+                    <p className="text-blue-400 font-medium">{t('bluePoints.overview.investmentPoints')}</p>
+                    <p className="text-muted-foreground">{t('bluePoints.overview.investmentPointsDesc')}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      当前投资积分：{investmentPoints.toLocaleString()}
+                      {t('bluePoints.overview.currentInvestmentPoints', { points: investmentPoints.toLocaleString() })}
                     </p>
                   </div>
                   <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-green-400 font-medium">投资奖励</p>
-                    <p className="text-muted-foreground">每个仓位可领 1000 积分</p>
+                    <p className="text-green-400 font-medium">{t('bluePoints.overview.investmentRewards')}</p>
+                    <p className="text-muted-foreground">{t('bluePoints.overview.investmentRewardsDesc')}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      可领取：{availableInvestmentRewards} 个仓位奖励
+                      {t('bluePoints.overview.availableRewards', { count: availableInvestmentRewards })}
                     </p>
                   </div>
                   <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-purple-400 font-medium">邀请获得</p>
-                    <p className="text-muted-foreground">已邀请奖励 × 100</p>
+                    <p className="text-purple-400 font-medium">{t('bluePoints.overview.referralPoints')}</p>
+                    <p className="text-muted-foreground">{t('bluePoints.overview.referralPointsDesc')}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      当前邀请积分：{referralPoints.toLocaleString()}
+                      {t('bluePoints.overview.currentReferralPoints', { points: referralPoints.toLocaleString() })}
                     </p>
                   </div>
                 </div>
@@ -529,7 +529,7 @@ export default function BluePoints() {
                   <p className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                     {(points + investmentPoints + referralPoints).toLocaleString()}
                   </p>
-                  <p className="text-sm text-muted-foreground">总积分 (含投资+邀请积分)</p>
+                  <p className="text-sm text-muted-foreground">{t('bluePoints.overview.totalPoints')}</p>
                 </CardContent>
               </Card>
 
@@ -544,7 +544,7 @@ export default function BluePoints() {
                 {nextVip && <div className="mt-2">
                       <Progress value={(points + investmentPoints + referralPoints - currentVip.points) / (nextVip.points - currentVip.points) * 100} className="h-2" />
                       <p className="text-xs text-muted-foreground mt-1">
-                        距离 {nextVip.name} 还需 {formatPoints(nextVip.points - (points + investmentPoints + referralPoints))} 积分
+                        {t('bluePoints.overview.distanceToNext', { level: nextVip.name, points: formatPoints(nextVip.points - (points + investmentPoints + referralPoints)) })}
                       </p>
                     </div>}
                 </CardContent>
@@ -559,7 +559,7 @@ export default function BluePoints() {
                   <div className="flex items-center justify-center gap-4">
                     <div>
                       <p className="text-xl font-bold text-green-400">{completedTasks}/{totalTasks}</p>
-                      <p className="text-sm text-muted-foreground">今日任务完成</p>
+                      <p className="text-sm text-muted-foreground">{t('bluePoints.overview.todayCompletion')}</p>
                       <Progress value={completedTasks / totalTasks * 100} className="h-2 mt-2" />
                     </div>
                     
@@ -570,11 +570,11 @@ export default function BluePoints() {
 
             <Tabs defaultValue="tasks" className="space-y-6">
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="tasks">每日任务</TabsTrigger>
-                <TabsTrigger value="spin">转盘抽奖</TabsTrigger>
-                <TabsTrigger value="exchange">积分换币</TabsTrigger>
-                <TabsTrigger value="vip">VIP特权</TabsTrigger>
-                <TabsTrigger value="ranking">积分排行</TabsTrigger>
+                <TabsTrigger value="tasks">{t('bluePoints.tabs.dailyTasks')}</TabsTrigger>
+                <TabsTrigger value="spin">{t('bluePoints.tabs.spin')}</TabsTrigger>
+                <TabsTrigger value="exchange">{t('bluePoints.tabs.exchange')}</TabsTrigger>
+                <TabsTrigger value="vip">{t('bluePoints.tabs.vip')}</TabsTrigger>
+                <TabsTrigger value="ranking">{t('bluePoints.tabs.ranking')}</TabsTrigger>
               </TabsList>
 
               {/* 每日任务 */}
@@ -602,12 +602,12 @@ export default function BluePoints() {
                               <div>
                                 <h3 className="font-semibold">{task.name}</h3>
                                 <p className="text-sm text-muted-foreground">{task.description}</p>
-                                {task.id === 'trade' && <p className="text-xs text-muted-foreground mt-1">
-                                    可领取：{availableInvestmentRewards} 个仓位奖励
-                                  </p>}
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    {t('bluePoints.overview.availableRewards', { count: availableInvestmentRewards })}
+                                  </p>
                                 <div className="flex items-center gap-2 mt-2">
                                   <Badge variant="outline" className="text-xs">
-                                    +{task.points} 积分
+                                    +{task.points} {t('bluePoints.spin.pointsLabel')}
                                   </Badge>
                                   {vipLevel > 0 && <Badge variant="secondary" className="text-xs">
                                       VIP +{Math.floor(task.points * vipLevel * 0.1)}
@@ -617,7 +617,7 @@ export default function BluePoints() {
                             </div>
                             <div className="flex items-center">
                               {isCompleted ? <CheckCircle className="w-6 h-6 text-green-400" /> : <Button size="sm" onClick={() => completeTask(task.id)} disabled={task.id === 'trade' && (!stakingData?.activePositions || availableInvestmentRewards === 0)}>
-                                  {task.id === 'trade' ? `领取奖励 (${availableInvestmentRewards})` : '完成'}
+                                  {task.id === 'trade' ? `${t('bluePoints.dailyTasks.claimReward')} (${availableInvestmentRewards})` : t('bluePoints.dailyTasks.complete')}
                                 </Button>}
                             </div>
                           </div>
@@ -633,7 +633,7 @@ export default function BluePoints() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-center">
                       <Trophy className="w-6 h-6 text-yellow-400" />
-                      幸运转盘
+                      {t('bluePoints.spin.luckyWheel')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="text-center space-y-6">
@@ -668,13 +668,13 @@ export default function BluePoints() {
                     <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-3" disabled={spinUsed || isSpinning} onClick={handleSpin} size="lg">
                       {isSpinning ? <>
                           <RotateCcw className="w-5 h-5 mr-2 animate-spin" />
-                          转盘抽奖中...
+                          {t('bluePoints.spin.spinning')}
                         </> : spinUsed ? <>
                           <Clock className="w-5 h-5 mr-2" />
-                          明日再来
+                          {t('bluePoints.spin.tomorrowCome')}
                         </> : <>
                           <Trophy className="w-5 h-5 mr-2" />
-                          免费抽奖
+                          {t('bluePoints.spin.freeDrawing')}
                         </>}
                     </Button>
                   </CardContent>
@@ -687,17 +687,16 @@ export default function BluePoints() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-center">
                       <Coins className="w-6 h-6 text-yellow-400" />
-                      积分换币中心
+                      {t('bluePoints.exchange.title')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    {/* 当前积分余额 */}
                     <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-6 text-center">
-                      <h3 className="text-lg font-semibold mb-2">可用积分余额</h3>
+                      <h3 className="text-lg font-semibold mb-2">{t('bluePoints.exchange.availableBalance')}</h3>
                       <p className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                         {(points + investmentPoints + referralPoints).toLocaleString()}
                       </p>
-                      <p className="text-sm text-muted-foreground mt-1">蓝光极慈币</p>
+                      <p className="text-sm text-muted-foreground mt-1">{t('bluePoints.exchange.bluePointsCoin')}</p>
                     </div>
 
                     {/* 兑换选项 */}
@@ -715,12 +714,12 @@ export default function BluePoints() {
                           <Button className="w-full" onClick={() => {
                         const hasPositions = stakingData?.activePositions && stakingData.activePositions.length > 0;
                         if (hasPositions) {
-                          toast.info("积分换币功能即将上线，敬请期待！");
+                          toast.info(t('bluePoints.exchange.comingSoon'));
                         } else {
-                          toast.error("该功能仅面向投资者");
+                          toast.error(t('bluePoints.exchange.investorsOnlyFeature'));
                         }
                       }}>
-                            兑换 USDV
+                            {t('bluePoints.exchange.exchangeUSDV')}
                           </Button>
                         </CardContent>
                       </Card>
@@ -757,24 +756,24 @@ export default function BluePoints() {
                     {/* 兑换规则 */}
                     <Card className="bg-muted/20">
                       <CardHeader>
-                        <CardTitle className="text-lg">兑换规则</CardTitle>
+                        <CardTitle className="text-lg">{t('bluePoints.exchange.exchangeRules')}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">仅限投资用户参与兑换活动</span>
+                          <span className="text-sm">{t('bluePoints.exchange.investorsOnly')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">兑换比例根据市场价格实时调整</span>
+                          <span className="text-sm">{t('bluePoints.exchange.realTimeRates')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">每日兑换有限额，先到先得</span>
+                          <span className="text-sm">{t('bluePoints.exchange.dailyLimit')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">兑换后的代币将直接发送到您的钱包</span>
+                          <span className="text-sm">{t('bluePoints.exchange.directToWallet')}</span>
                         </div>
                       </CardContent>
                     </Card>
@@ -798,7 +797,7 @@ export default function BluePoints() {
                           </span>
                         </div>
                         <p className="text-sm text-muted-foreground mb-3">
-                          需要 {formatPoints(vip.points)} 积分
+                          {t('bluePoints.vip.needPoints', { points: formatPoints(vip.points) })}
                         </p>
                         <div className="space-y-1">
                           {vip.benefits.map((benefit, index) => <Badge key={index} variant="outline" className="text-xs">
@@ -806,7 +805,7 @@ export default function BluePoints() {
                             </Badge>)}
                         </div>
                         {vipLevel >= vip.level && <Badge className="mt-3 bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
-                            已解锁
+                            {t('bluePoints.vip.unlocked')}
                           </Badge>}
                       </CardContent>
                     </Card>)}
@@ -819,14 +818,14 @@ export default function BluePoints() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Award className="w-6 h-6 text-yellow-400" />
-                      积分排行榜
+                      {t('bluePoints.ranking.title')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-center py-12 text-muted-foreground">
                       <Trophy className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                      <p>排行榜功能即将上线</p>
-                      <p className="text-sm">敬请期待...</p>
+                      <p>{t('bluePoints.ranking.comingSoon')}</p>
+                      <p className="text-sm">{t('bluePoints.ranking.stayTuned')}</p>
                     </div>
                   </CardContent>
                 </Card>

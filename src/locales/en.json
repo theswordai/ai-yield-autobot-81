@@ -328,7 +328,84 @@
     "oneLineVisionText": "「Blue Light Charity Coin, each one lights up the light of human kindness.」",
     "connectWalletStart": "Connect Wallet to Start",
     "connectWalletDesc": "Please connect your wallet to start using the Blue Light Charity Coin system",
-    "pointsRules": "Points Earning Rules"
+    "pointsRules": "Points Earning Rules",
+    "tabs": {
+      "dailyTasks": "Daily Tasks",
+      "spin": "Lucky Spin",
+      "exchange": "Points Exchange",
+      "vip": "VIP Privileges",
+      "ranking": "Points Ranking"
+    },
+    "dailyTasks": {
+      "completeInvestment": "Complete Investment",
+      "completeInvestmentDesc": "Get points for completing investments, can claim rewards for each position",
+      "claimReward": "Claim Reward",
+      "complete": "Complete"
+    },
+    "spin": {
+      "luckyWheel": "Lucky Wheel",
+      "spinning": "Spinning...",
+      "tomorrowCome": "Come Tomorrow",
+      "freeDrawing": "Free Draw",
+      "pointsLabel": "points"
+    },
+    "exchange": {
+      "title": "Points Exchange Center", 
+      "availableBalance": "Available Points Balance",
+      "bluePointsCoin": "Blue Light Charity Coins",
+      "exchangeUSDV": "Exchange USDV",
+      "exchangeRules": "Exchange Rules",
+      "investorsOnly": "Only available to investors for exchange activities",
+      "realTimeRates": "Exchange rates adjusted in real-time based on market prices", 
+      "dailyLimit": "Daily exchange limit, first come first served",
+      "directToWallet": "Exchanged tokens will be sent directly to your wallet",
+      "comingSoon": "Points exchange feature coming soon, stay tuned!",
+      "investorsOnlyFeature": "This feature is only available to investors"
+    },
+    "vip": {
+      "levels": {
+        "novice": "Novice",
+        "bronze": "Bronze", 
+        "silver": "Silver",
+        "gold": "Gold",
+        "platinum": "Platinum",
+        "diamond": "Diamond"
+      },
+      "benefits": {
+        "basicFeatures": "Basic Features",
+        "signInBonus10": "Sign-in Bonus +10%",
+        "spinCount1": "Spin Count +1",
+        "signInBonus20": "Sign-in Bonus +20%", 
+        "spinCount2": "Spin Count +2",
+        "signInBonus30": "Sign-in Bonus +30%",
+        "spinCount3": "Spin Count +3",
+        "signInBonus50": "Sign-in Bonus +50%",
+        "spinCount5": "Spin Count +5",
+        "signInBonus100": "Sign-in Bonus +100%",
+        "spinCount10": "Spin Count +10"
+      },
+      "needPoints": "Need {{points}} points",
+      "unlocked": "Unlocked"
+    },
+    "ranking": {
+      "title": "Points Leaderboard",
+      "comingSoon": "Leaderboard feature coming soon",
+      "stayTuned": "Stay tuned..."
+    },
+    "overview": {
+      "totalPoints": "Total Points (including investment + referral points)",
+      "currentInvestmentPoints": "Current investment points: {{points}}",
+      "currentReferralPoints": "Current referral points: {{points}}",
+      "availableRewards": "Available: {{count}} position rewards",
+      "investmentPoints": "Investment Points",
+      "investmentPointsDesc": "1 USDT invested = 100 points",
+      "investmentRewards": "Investment Rewards", 
+      "investmentRewardsDesc": "1000 points per position",
+      "referralPoints": "Referral Points",
+      "referralPointsDesc": "Referral rewards × 100",
+      "todayCompletion": "Today's Task Completion",
+      "distanceToNext": "{{points}} points needed for {{level}}"
+    }
   },
   "positions": {
     "title": "My Positions",
