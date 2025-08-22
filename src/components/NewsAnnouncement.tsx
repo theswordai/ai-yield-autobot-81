@@ -13,7 +13,7 @@ export function NewsAnnouncement() {
     titleEn: "USD.ONLINE LAUNCH SOON🚀",
     content: "USD.ONLINE平台即将正式上线，为用户带来全新的数字资产体验",
     contentEn: "USD.ONLINE platform is launching soon, bringing users a new digital asset experience",
-    date: "2024-12-25",
+    date: "2025-09",
     type: "event",
     urgent: true
   }]);
