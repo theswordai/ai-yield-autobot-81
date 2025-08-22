@@ -36,13 +36,6 @@ export function HeroSection() {
     fee: t("hero.defiVault.fee"),
     color: "text-primary",
     change: "+0.9%"
-  }, {
-    icon: "🔒",
-    title: t("hero.transparentProtocol.title"),
-    description: t("hero.transparentProtocol.description"),
-    fee: t("hero.transparentProtocol.fee"),
-    color: "text-accent",
-    change: "+1.2%"
   }];
   const handleStrategyClick = (strategy: any) => {
     setShowDetails(true);
@@ -136,16 +129,10 @@ export function HeroSection() {
           <NewsAnnouncement />
 
           {/* Strategy Cards */}
-          <div className="grid grid-cols-2 gap-4 mb-12 max-w-4xl mx-auto">
-            {strategies.map((strategy, index) => (
-              <div key={index} className="group cursor-pointer" onClick={() => handleStrategyClick(strategy)}>
-                <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 h-28 flex flex-col justify-center items-center text-center">
-                  <div className="text-2xl mb-2">{strategy.icon}</div>
-                  <h3 className="text-sm font-semibold text-foreground mb-1 line-clamp-2">{strategy.title}</h3>
-                  <p className={`text-xs font-medium ${strategy.color}`}>{strategy.change}</p>
-                </div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
+            {strategies.map((strategy, index) => <div key={index} className="group">
+                
+              </div>)}
           </div>
         </div>
 
@@ -464,14 +451,14 @@ export function HeroSection() {
           <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">{t("hero.strategicPartners")}</h3>
           
           {/* Partner Logos */}
-          <div className="grid grid-cols-4 gap-2 md:gap-4 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             {partners.map(p => <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" className="group">
-                <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-2 md:p-4 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 flex flex-col items-center justify-center h-16 md:h-24">
-                  <img src={p.logo} alt={`${p.name} logo`} className="h-6 md:h-8 w-auto object-contain mb-1 group-hover:scale-105 transition-transform" loading="lazy" width={64} height={24} onError={e => {
+                <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-6 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 flex flex-col items-center justify-center h-28">
+                  <img src={p.logo} alt={`${p.name} logo`} className="h-10 w-auto object-contain mb-2 group-hover:scale-105 transition-transform" loading="lazy" width={128} height={40} onError={e => {
                 (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
               }} />
-                  <div className="text-xs font-semibold hidden md:block">{p.name}</div>
-                  <div className="text-[10px] text-muted-foreground mt-1 hidden lg:block line-clamp-2">{p.tagline}</div>
+                  <div className="text-sm font-semibold">{p.name}</div>
+                  <div className="text-xs text-muted-foreground mt-1">{p.tagline}</div>
                 </div>
               </a>)}
           </div>
