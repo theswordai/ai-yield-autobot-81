@@ -247,8 +247,20 @@
       "summary": "一句话：这是 财富文明的道德基石。"
     },
     "followUs": "关注我们"
-  },
-  "invest": {
+   },
+   "wallet": {
+     "connectWallet": "连接钱包",
+     "selectWallet": "选择钱包", 
+     "noWalletsFound": "未发现钱包插件，请先安装如 MetaMask、OKX、Bitget 等扩展。",
+     "walletConnected": "钱包已连接",
+     "connectionFailed": "连接失败",
+     "copyAddress": "复制地址",
+     "changeWallet": "更换钱包",
+     "disconnect": "断开连接",
+     "addressCopied": "地址已复制",
+     "chainId": "Chain ID"
+   },
+   "invest": {
     "title": "投资中心 | 链上质押",
     "description": "在此进行USDT链上质押，快速完成 Approve、Deposit，并查看仓位与奖励。",
     "header": "慈善投资中心",
