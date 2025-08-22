@@ -427,12 +427,12 @@ export function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16 mb-12">
           <Button size="lg" className="bg-gradient-primary hover:shadow-glow transition-all duration-300 group">
             <Bot className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
-            {t("invest.buttonText", "慈善注入")}
+            {t("invest.charityButtonName")}
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
           <Button size="lg" variant="outline" className="border-border hover:border-primary/50 hover:bg-primary/5 backdrop-blur-sm" onClick={() => setShowDetails(!showDetails)}>
             <Shield className="w-5 h-5 mr-2" />
-            {t("hero.viewStrategyDetails", "查看策略详情")}
+            {t("invest.strategyButtonName")}
             {showDetails ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
           </Button>
         </div>

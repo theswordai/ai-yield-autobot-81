@@ -233,7 +233,9 @@
     "title": "投资中心 | 链上质押",
     "description": "在此进行USDT链上质押，快速完成 Approve、Deposit，并查看仓位与奖励。",
     "header": "慈善投资中心",
-    "subtitle": "USDT 链上质押·一站式智能投资枢纽"
+    "subtitle": "USDT 链上质押·一站式智能投资枢纽",
+    "charityButtonName": "慈善注入",
+    "strategyButtonName": "查看策略详情"
   },
   "user": {
     "title": "用户中心与邀请 | 管理资产与推广",
