@@ -157,3 +157,16 @@ All colors MUST be HSL.
     opacity: 0;
   }
 }
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical 15s linear infinite;
+}

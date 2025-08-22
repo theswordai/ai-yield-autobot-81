@@ -46,33 +46,35 @@ export function NewsAnnouncement() {
         <h3 className="text-xl font-semibold">NEWS</h3>
       </div>
       
-      <div className="space-y-4">
-        {announcements.map(announcement => (
-          <div key={announcement.id} className="border border-border/20 rounded-lg p-4 bg-background/30">
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <div className="flex items-center gap-2">
-                <Badge variant={getTypeColor(announcement.type, announcement.urgent)}>
-                  {getTypeText(announcement.type)}
-                </Badge>
-                {announcement.urgent && (
-                  <Badge variant="destructive" className="animate-pulse">
-                    {t("news.urgent")}
+      <div className="relative h-32 overflow-hidden">
+        <div className="absolute animate-marquee-vertical">
+          {[...announcements, ...announcements].map((announcement, index) => (
+            <div key={`${announcement.id}-${index}`} className="border border-border/20 rounded-lg p-4 bg-background/30 mb-4 min-h-[120px]">
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant={getTypeColor(announcement.type, announcement.urgent)}>
+                    {getTypeText(announcement.type)}
                   </Badge>
-                )}
+                  {announcement.urgent && (
+                    <Badge variant="destructive" className="animate-pulse">
+                      {t("news.urgent")}
+                    </Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Clock className="w-3 h-3" />
+                  {announcement.date}
+                </div>
               </div>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Clock className="w-3 h-3" />
-                {announcement.date}
-              </div>
+              <h4 className="font-medium mb-2 text-foreground">
+                {language === 'en' ? announcement.titleEn : announcement.title}
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                {language === 'en' ? announcement.contentEn : announcement.content}
+              </p>
             </div>
-            <h4 className="font-medium mb-2 text-foreground">
-              {language === 'en' ? announcement.titleEn : announcement.title}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              {language === 'en' ? announcement.contentEn : announcement.content}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </Card>;
 }
