@@ -264,13 +264,6 @@
   "language": {
     "selector": "Language"
   },
-  "referral": {
-    "inviteFriends": "Invite Friends",
-    "inviteFriendsDesc": "Invite friends to invest and earn generous referral rewards",
-    "rewardMechanism": "Reward Mechanism",
-    "inviteLeaderboard": "Invite Leaderboard",
-    "inviteMap": "Invite Graph"
-  },
   "whitepaper": {
     "title": "USD.online · Whitepaper",
     "subtitle": "Unleashing Algorithmic Freedom · Converging Global Liquidity · Illuminating the Light of Human Kindness",
