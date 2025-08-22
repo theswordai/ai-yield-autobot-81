@@ -375,14 +375,7 @@ export function HeroSection() {
                     </div>
                   </div>
                   
-                  <div className="mt-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg">
-                     <p className="text-sm font-medium text-center">
-                       <span className="text-primary">{t("hero.transparentProtocol.title")}</span> = 
-                       <span className="text-accent mx-1">{t("hero.blockchainConscience")}</span> + 
-                       <span className="text-primary mx-1">{t("hero.financialIntegrity")}</span> + 
-                       <span className="text-accent mx-1">{t("hero.charityGlory")}</span>
-                     </p>
-                  </div>
+                  
                 </Card>
               </div>
 
