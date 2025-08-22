@@ -5,7 +5,8 @@ import Referral from "./Referral";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
 export default function UserCenter() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const isEnglish = language === 'en';
   
   return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       <Helmet>
@@ -21,17 +22,21 @@ export default function UserCenter() {
           <p className="text-sm sm:text-base text-muted-foreground">{t("user.subtitle")}</p>
         </header>
         <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto h-9 sm:h-10">
+          <TabsList className={`grid w-full max-w-md mx-auto h-9 sm:h-10 ${isEnglish ? 'grid-cols-1' : 'grid-cols-2'}`}>
             <TabsTrigger value="dashboard" className="text-xs sm:text-sm">{t("user.tab.dashboard")}</TabsTrigger>
-            <TabsTrigger value="referral" className="text-xs sm:text-sm">{t("user.tab.referral")}</TabsTrigger>
+            {!isEnglish && (
+              <TabsTrigger value="referral" className="text-xs sm:text-sm">{t("user.tab.referral")}</TabsTrigger>
+            )}
           </TabsList>
           <div className="mt-4 sm:mt-6">
             <TabsContent value="dashboard">
               <Dashboard embedded />
             </TabsContent>
-            <TabsContent value="referral">
-              <Referral embedded />
-            </TabsContent>
+            {!isEnglish && (
+              <TabsContent value="referral">
+                <Referral embedded />
+              </TabsContent>
+            )}
           </div>
         </Tabs>
       </main>
