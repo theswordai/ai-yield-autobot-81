@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useI18n } from "@/hooks/useI18n";
 import { Navbar } from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ export default function Stake({
 }: {
   embedded?: boolean;
 }) {
+  const { t } = useI18n();
   const {
     account,
     signer,
@@ -146,7 +148,7 @@ export default function Stake({
     const validateContracts = async () => {
       if (!provider || !account) return;
       try {
-        console.log("🔍 开始验证合约...");
+        console.log(t("staking.contractValidationStart"));
 
         // 验证 USDT 合约
         const {
@@ -155,42 +157,42 @@ export default function Stake({
         } = await import("@/utils/contractValidator");
         const validation = await validateUSDTContract(provider);
         if (!validation.isValid) {
-          console.error("USDT 合约验证失败:", validation.error);
-          toast.error(`USDT 合约验证失败: ${validation.error}`);
+          console.error(t("staking.contractValidationFail"), validation.error);
+          toast.error(`${t("staking.contractValidationFail")}: ${validation.error}`);
           return;
         }
-        console.log("✅ USDT 合约验证成功");
+        console.log(t("staking.contractValidationSuccess"));
 
         // 测试合约调用
         const callTest = await testContractCall(provider, account);
         if (!callTest.success) {
-          console.error("合约调用测试失败:", callTest.error);
-          toast.warning(`合约调用异常: ${callTest.error}`);
+          console.error(t("staking.contractCallTestFail"), callTest.error);
+          toast.warning(`${t("staking.contractCallTestFail")}: ${callTest.error}`);
         } else {
-          console.log("✅ 合约调用测试成功");
+          console.log(t("staking.contractCallTestSuccess"));
         }
       } catch (error: any) {
-        console.error("合约验证过程出错:", error);
+        console.error(t("staking.contractValidationError"), error);
       }
     };
     validateContracts();
   }, [provider, account]);
   useEffect(() => {
-    document.title = "USDT 质押 - Jupiter AI";
+    document.title = t("staking.title") + " - Jupiter AI";
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "USDT 质押前端：连接钱包、Approve、Deposit、链上交互");
-  }, []);
+    if (meta) meta.setAttribute("content", t("invest.description"));
+  }, [t]);
   const refresh = async () => {
     try {
       if (!account || !usdt) return;
-      console.log("🔄 刷新用户数据...");
-      console.log("- 账户:", account);
-      console.log("- USDT 合约:", USDT_ADDRESS);
-      console.log("- 锁仓合约:", LOCK_ADDRESS);
+      console.log(t("staking.refreshUserData"));
+      console.log("- " + t("staking.account") + ":", account);
+      console.log("- " + t("staking.usdtContract") + ":", USDT_ADDRESS);
+      console.log("- " + t("staking.lockContract") + ":", LOCK_ADDRESS);
       const [bal, alw] = await Promise.all([(usdt as any).balanceOf(account) as Promise<bigint>, (usdt as any).allowance(account, LOCK_ADDRESS) as Promise<bigint>]);
-      console.log("📊 用户数据:");
-      console.log("- USDT 余额:", bal.toString());
-      console.log("- 授权额度:", alw.toString());
+      console.log(t("staking.userData"));
+      console.log("- " + t("staking.usdtBalance") + ":", bal.toString());
+      console.log("- " + t("staking.authAmount") + ":", alw.toString());
       setBalance(bal);
       setAllowance(alw);
 
@@ -204,8 +206,8 @@ export default function Stake({
         }
       }
     } catch (e: any) {
-      console.error("❌ 刷新数据失败:", e);
-      toast.error(`数据刷新失败: ${e.message}`);
+      console.error(t("staking.refreshFailed"), e);
+      toast.error(`${t("staking.dataRefreshFailed")}: ${e.message}`);
     }
   };
   useEffect(() => {
@@ -237,11 +239,11 @@ export default function Stake({
   const hasPositions = userPositions.length > 0;
   const copyReferralCode = () => {
     navigator.clipboard.writeText(referralCode);
-    toast.success("邀请码已复制到剪贴板");
+    toast.success(t("staking.referralCodeCopied"));
   };
   const copyReferralLink = () => {
     navigator.clipboard.writeText(inviteLink);
-    toast.success("邀请链接已复制到剪贴板");
+    toast.success(t("staking.referralLinkCopied"));
   };
   useEffect(() => {
     refreshVault();
@@ -257,25 +259,25 @@ export default function Stake({
   }, [allowance, amount]);
   const onApprove = async () => {
     try {
-      if (!signer || !usdt) throw new Error("请先连接钱包");
+      if (!signer || !usdt) throw new Error(t("staking.connectWalletFirst"));
       if (chainId !== TARGET_CHAIN) {
-        toast.error("请切换到 BSC 主网 (Chain ID: 56)");
+        toast.error(t("staking.switchToBSC"));
         return;
       }
-      console.log("开始 approve 操作...");
-      console.log("当前网络:", chainId);
-      console.log("目标网络:", TARGET_CHAIN);
-      console.log("USDT 合约地址:", USDT_ADDRESS);
-      console.log("锁仓合约地址:", LOCK_ADDRESS);
-      console.log("授权金额:", amount, "USDT");
+      console.log(t("staking.startApprove"));
+      console.log(t("staking.currentNetwork") + ":", chainId);
+      console.log(t("staking.targetNetwork") + ":", TARGET_CHAIN);
+      console.log(t("staking.usdtContract") + ":", USDT_ADDRESS);
+      console.log(t("staking.lockContract") + ":", LOCK_ADDRESS);
+      console.log(t("staking.authAmountLabel") + ":", amount, "USDT");
       const scaled = parseUnits(amount, USDT_DECIMALS);
-      console.log("解析后金额:", scaled.toString());
+      console.log(t("staking.parsedAmount") + ":", scaled.toString());
 
       // 检查 BNB 余额用于支付 gas
       const balance = await provider?.getBalance(account!);
-      console.log("BNB 余额:", balance ? formatUnits(balance, 18) : "0");
+      console.log(t("staking.bnbBalance") + ":", balance ? formatUnits(balance, 18) : "0");
       if (balance && parseUnits("0.001", 18) > balance) {
-        throw new Error("BNB 余额不足，无法支付交易费用");
+        throw new Error(t("staking.insufficientBNB"));
       }
       setLoading(s => ({
         ...s,
@@ -283,24 +285,24 @@ export default function Stake({
       }));
 
       // 先估算 gas
-      console.log("估算 gas...");
+      console.log(t("staking.gasEstimation"));
       try {
         const gasEstimate = await (usdt as any).approve.estimateGas(LOCK_ADDRESS, scaled);
-        console.log("预估 gas:", gasEstimate.toString());
+        console.log(t("staking.estimatedGas") + ":", gasEstimate.toString());
       } catch (gasError: any) {
-        console.error("Gas 估算失败:", gasError);
-        throw new Error(`交易预检失败: ${gasError.message || gasError.reason || "未知错误"}`);
+        console.error(t("staking.gasEstimateFail"), gasError);
+        throw new Error(`${t("staking.transactionPrecheck")}: ${gasError.message || gasError.reason || "Unknown error"}`);
       }
-      console.log("发送 approve 交易...");
+      console.log(t("staking.sendingApprove"));
       const tx = await (usdt as any).approve(LOCK_ADDRESS, scaled, {
         gasLimit: 100000 // 设置固定 gas limit
       });
-      console.log("交易已提交:", tx.hash);
-      toast.info("提交中：" + tx.hash);
-      console.log("等待交易确认...");
+      console.log(t("staking.txSubmitted") + ":", tx.hash);
+      toast.info(t("staking.submitting") + " " + tx.hash);
+      console.log(t("staking.waitingConfirm"));
       await tx.wait();
-      console.log("Approve 交易确认成功");
-      toast.success("Approve 成功");
+      console.log(t("staking.txConfirmed"));
+      toast.success(t("staking.approveSuccess"));
       await refresh();
     } catch (e: any) {
       toast.error(e?.shortMessage || e?.message || "Approve 失败");
@@ -314,31 +316,31 @@ export default function Stake({
   const onDeposit = async () => {
     const executeDeposit = async (retryCount = 0): Promise<void> => {
       try {
-        if (!signer || !lock) throw new Error("请先连接钱包");
+        if (!signer || !lock) throw new Error(t("staking.connectWalletFirst"));
         if (chainId !== TARGET_CHAIN) {
-          toast.error("请切换到 BSC 主网 (Chain ID: 56)");
+          toast.error(t("staking.switchToBSC"));
           return;
         }
         const scaled = parseUnits(amount, USDT_DECIMALS);
 
         // 检查余额
         if (balance < scaled) {
-          throw new Error(`余额不足，需要 ${formatUnits(scaled, USDT_DECIMALS)} USDT`);
+          throw new Error(`${t("staking.insufficientFunds")} ${formatUnits(scaled, USDT_DECIMALS)} USDT`);
         }
 
         // 检查授权
         if (allowance < scaled) {
-          throw new Error(`请先授权足够的 USDT 额度`);
+          throw new Error(t("staking.checkAuth"));
         }
 
         // 检查 BNB 余额用于支付 gas
         const bnbBalance = await provider?.getBalance(account!);
         if (bnbBalance && parseUnits("0.002", 18) > bnbBalance) {
-          throw new Error("BNB 余额不足，无法支付交易费用");
+          throw new Error(t("staking.insufficientBNB"));
         }
-        console.log("开始投资操作...");
-        console.log("投资金额:", formatUnits(scaled, USDT_DECIMALS), "USDT");
-        console.log("锁仓选择:", lockChoice, "-> 锁仓天数:", lockDays);
+        console.log(t("staking.startInvest"));
+        console.log(t("staking.investAmount") + ":", formatUnits(scaled, USDT_DECIMALS), "USDT");
+        console.log(t("staking.lockChoice") + ":", lockChoice, "-> " + t("staking.lockDaysLabel") + ":", lockDays);
         setLoading(s => ({
           ...s,
           deposit: true
@@ -348,9 +350,9 @@ export default function Stake({
         let gasEstimate: bigint;
         try {
           gasEstimate = await (lock as any).deposit.estimateGas(scaled, Number(lockChoice));
-          console.log("Gas 估算成功:", gasEstimate.toString());
+          console.log(t("staking.gasEstimateSuccess") + ":", gasEstimate.toString());
         } catch (gasError: any) {
-          console.error("Gas 估算失败:", gasError);
+          console.error(t("staking.gasEstimateFailed") + ":", gasError);
           // 使用固定 gas limit 作为后备方案
           gasEstimate = BigInt(200000);
         }
@@ -362,15 +364,15 @@ export default function Stake({
         const tx = await (lock as any).deposit(scaled, Number(lockChoice), {
           gasLimit: gasLimit > 500000n ? 500000n : gasLimit // 最大限制 500k
         });
-        console.log("交易已提交:", tx.hash);
-        toast.info(`交易已提交: ${tx.hash.slice(0, 8)}...`, {
+        console.log(t("staking.txSubmitted") + ":", tx.hash);
+        toast.info(`${t("staking.txSubmitted")}: ${tx.hash.slice(0, 8)}...`, {
           duration: 10000
         });
 
         // 等待交易确认
         const receipt = await tx.wait(1); // 等待1个确认
-        console.log("交易确认成功:", receipt.hash);
-        toast.success("投资成功！收益已开始计算");
+        console.log(t("staking.txConfirmed") + ":", receipt.hash);
+        toast.success(t("staking.investSuccess"));
         await refresh();
         await refreshVault();
       } catch (error: any) {
@@ -453,16 +455,20 @@ export default function Stake({
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl relative z-10`}>
         <div className="mb-8 text-center">
-          <Title className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">这是你的专属 算法驱动舱，AI 自动分配资产，汇聚 DeFi、CEX、跨链策略于一体，让资本流动即刻转化为全球善意回响。</Title>
+          <Title className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{t("staking.heroTitle")}</Title>
           
           <div className="flex items-center justify-center gap-2 mt-4">
             <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
               <Shield className="w-3 h-3 mr-1" />
-              合约保障
+              {t("staking.contractSafeguard")}
             </Badge>
             <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
-              <Lock className="w-3 h-3 mr-1" />
-              安全质押
+              <Users className="w-3 h-3 mr-1" />
+              {t("staking.transparentOnChain")}
+            </Badge>
+            <Badge variant="secondary" className="bg-secondary/10 text-secondary border-secondary/20">
+              <Gift className="w-3 h-3 mr-1" />
+              {t("staking.communityDriven")}
             </Badge>
           </div>
         </div>
@@ -470,45 +476,45 @@ export default function Stake({
         {/* 钱包状态卡片 */}
         <Card className="mb-8 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Wallet className="w-5 h-5" />
-              钱包状态
-            </CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Wallet className="w-5 h-5" />
+                {t("staking.walletStatus")}
+              </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">钱包地址</p>
-                <p className="font-mono text-sm">{short(account) || "未连接"}</p>
+                <p className="text-sm text-muted-foreground mb-1">{t("staking.walletAddress")}</p>
+                <p className="font-mono text-sm">{short(account) || t("staking.notConnected")}</p>
               </div>
               <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">网络</p>
+                <p className="text-sm text-muted-foreground mb-1">{t("staking.network")}</p>
                 <p className="font-semibold">{chainId ?? "-"}</p>
               </div>
               <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">USDT 余额</p>
+                <p className="text-sm text-muted-foreground mb-1">{t("staking.usdtBalance")}</p>
                 <p className="font-semibold">{formatUnits(balance, USDT_DECIMALS)}</p>
               </div>
               <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">授权额度</p>
+                <p className="text-sm text-muted-foreground mb-1">{t("staking.allowance")}</p>
                 <p className="font-semibold">{formatUnits(allowance, USDT_DECIMALS)}</p>
               </div>
             </div>
             {!account && <div className="mt-4 text-center">
-                <Button className="bg-gradient-primary hover:bg-gradient-primary/90" onClick={connect}>
-                  <Wallet className="w-4 h-4 mr-2" />
-                  连接钱包
-                </Button>
+              <Button className="bg-gradient-primary hover:bg-gradient-primary/90" onClick={connect}>
+                <Wallet className="w-4 h-4 mr-2" />
+                {t("staking.connectWallet")}
+              </Button>
               </div>}
           </CardContent>
         </Card>
 
         {/* 投资数据可视化 */}
         {amountNum > 0 && <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-primary" />
-              投资分析
-            </h3>
+          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <DollarSign className="w-5 h-5 text-primary" />
+            {t("staking.investmentAnalysis")}
+          </h3>
             <InvestmentDashboard principalAfterFee={principalAfterFee} aprPercent={aprPercent} expectedEarnings={expectedEarnings} lockDays={lockDays} lockChoice={lockChoice} />
           </div>}
 
@@ -519,47 +525,47 @@ export default function Stake({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="w-5 h-5 text-primary" />
-                  慈善投资配置
+                  {t("staking.charityInvestmentConfig")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="amount" className="text-base font-medium">投资金额 (USDT)</Label>
-                  <Input id="amount" type="number" min={"0"} value={amount} onChange={e => setAmount(e.target.value)} placeholder="输入投资金额" className="text-lg h-12" />
+                  <Label htmlFor="amount" className="text-base font-medium">{t("staking.investAmountLabel")}</Label>
+                  <Input id="amount" type="number" min={"0"} value={amount} onChange={e => setAmount(e.target.value)} placeholder={t("staking.enterAmount")} className="text-lg h-12" />
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-base font-medium">锚定期限</Label>
+                  <Label className="text-base font-medium">{t("staking.lockPeriodLabel")}</Label>
                   <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-3">
                     <label htmlFor="l0" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l0" value="0" />
                         <div>
-                          <div className="font-semibold">90天锁仓</div>
-                          <div className="text-sm text-muted-foreground">50-91.25% APR (浮动)</div>
+                          <div className="font-semibold">{t("staking.ninetyDaysLock")}</div>
+                          <div className="text-sm text-muted-foreground">50-91.25% APR</div>
                         </div>
                       </div>
-                      <Badge variant="outline">短期</Badge>
+                      <Badge variant="outline">{t("staking.shortTerm")}</Badge>
                     </label>
                     <label htmlFor="l1" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l1" value="1" />
                         <div>
-                          <div className="font-semibold">180天锁仓</div>
-                          <div className="text-sm text-muted-foreground">120-146% APR (浮动)</div>
+                          <div className="font-semibold">{t("staking.oneEightyDaysLock")}</div>
+                          <div className="text-sm text-muted-foreground">120-146% APR</div>
                         </div>
                       </div>
-                      <Badge variant="outline">中期</Badge>
+                      <Badge variant="outline">{t("staking.mediumTerm")}</Badge>
                     </label>
                     <label htmlFor="l2" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l2" value="2" />
                         <div>
-                          <div className="font-semibold">365天锁仓</div>
-                          <div className="text-sm text-muted-foreground">280-340% APR (浮动)</div>
+                          <div className="font-semibold">{t("staking.threeSixtyFiveDaysLock")}</div>
+                          <div className="text-sm text-muted-foreground">280-340% APR</div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-primary/10 text-primary">长期</Badge>
+                      <Badge variant="outline" className="bg-primary/10 text-primary">{t("staking.longTerm")}</Badge>
                     </label>
                   </RadioGroup>
                 </div>
