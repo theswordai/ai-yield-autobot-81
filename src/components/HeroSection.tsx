@@ -7,7 +7,9 @@ import { MiniKChart } from "@/components/MiniKChart";
 import { useI18n } from "@/hooks/useI18n";
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
-  const { t } = useI18n();
+  const {
+    t
+  } = useI18n();
   const strategies = [{
     icon: "⚡",
     title: "跨链阿尔法引擎",
@@ -416,7 +418,7 @@ export function HeroSection() {
             <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
               <Shield className="w-8 h-8 text-accent-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">链上清晰透明协议 </h3>
+            <h3 className="font-semibold mb-2 text-sm">On-chain Clear Transparent Protocol</h3>
             
           </div>
         </div>
