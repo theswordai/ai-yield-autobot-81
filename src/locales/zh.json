@@ -395,7 +395,20 @@
     "myInviteAddress": "我的邀请地址",
     "onlyInvestorsCanInvite": "只有投资人才有邀请资格",
     "invitationAddress": "邀请地址",
-    "invitationLink": "邀请链接"
+    "invitationLink": "邀请链接",
+    "connectWalletToView": "请先连接钱包",
+    "cannotConfirmInviter": "无法确认邀请人：请使用邀请链接短码、后8位且已点击过邀请链接，或直接填完整地址",
+    "switchToBSCToOperate": "请切换到 BSC 主网再操作",
+    "bindingSuccess": "绑定成功",
+    "bindingFailed": "绑定失败",
+    "investmentOverview": "投资概览",
+    "investmentPrincipal": "投资本金",
+    "expectedReturns": "预期收益", 
+    "totalReturns": "预期总回报",
+    "lockPeriodComparison": "锁仓期对比",
+    "returnsGrowthTrend": "收益增长趋势",
+    "cumulativeReturns": "累积善意收益",
+    "day": "天"
   },
   "inviterBinding": {
     "title": "绑定邀请人",

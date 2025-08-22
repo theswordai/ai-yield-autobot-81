@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { TrendingUp, DollarSign, Clock, Target, PieChart } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer, PieChart as RechartsPieChart, Cell, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import { MiniKChart } from "./MiniKChart";
+import { useI18n } from "@/hooks/useI18n";
 interface InvestmentDashboardProps {
   principalAfterFee: number;
   aprPercent: number;
@@ -18,6 +19,7 @@ export function InvestmentDashboard({
   lockDays,
   lockChoice
 }: InvestmentDashboardProps) {
+  const { t } = useI18n();
   const fmt = (n: number) => n.toLocaleString(undefined, {
     maximumFractionDigits: 2
   });
@@ -41,63 +43,63 @@ export function InvestmentDashboard({
 
   // 投资分布数据
   const distributionData = useMemo(() => [{
-    name: "本金",
+    name: t("staking.principal"),
     value: principalAfterFee,
     color: "hsl(var(--primary))"
   }, {
-    name: "预期收益",
+    name: t("staking.expectedReturns"),
     value: expectedEarnings,
     color: "hsl(var(--accent))"
-  }], [principalAfterFee, expectedEarnings]);
+  }], [principalAfterFee, expectedEarnings, t]);
 
   // 锁仓期对比数据
   const lockPeriodData = useMemo(() => [{
-    period: "3个月",
+    period: t("staking.lockPeriodOptions.3months"),
     apr: 91.25,
     days: 90,
     active: lockChoice === "0"
   }, {
-    period: "6个月",
+    period: t("staking.lockPeriodOptions.6months"),
     apr: 146,
     days: 180,
     active: lockChoice === "1"
   }, {
-    period: "1年",
+    period: t("staking.lockPeriodOptions.1year"),
     apr: 365,
     days: 365,
     active: lockChoice === "2"
-  }], [lockChoice]);
+  }], [lockChoice, t]);
   return <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* 投资概览 */}
       <Card className="relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-primary">
             <DollarSign className="w-5 h-5" />
-            投资概览
+            {t("staking.investmentOverview")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">投资本金</p>
+              <p className="text-xs text-muted-foreground">{t("staking.investmentPrincipal")}</p>
               <p className="text-lg font-bold">${fmt(principalAfterFee)}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">预期收益</p>
+              <p className="text-xs text-muted-foreground">{t("staking.expectedReturns")}</p>
               <p className="text-lg font-bold text-accent">+${fmt(expectedEarnings)}</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">年化收益率</p>
+              <p className="text-xs text-muted-foreground">{t("staking.annualRate")}</p>
               <p className="text-lg font-bold text-primary">{aprPercent.toFixed(2)}%</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">锁仓天数</p>
-              <p className="text-lg font-bold">{lockDays}天</p>
+              <p className="text-xs text-muted-foreground">{t("staking.lockDays")}</p>
+              <p className="text-lg font-bold">{lockDays}{t("staking.day")}</p>
             </div>
           </div>
           <div className="pt-2">
             <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
-              预期总回报: ${fmt(principalAfterFee + expectedEarnings)}
+              {t("staking.totalReturns")}: ${fmt(principalAfterFee + expectedEarnings)}
             </Badge>
           </div>
         </CardContent>
@@ -108,7 +110,7 @@ export function InvestmentDashboard({
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-primary" />
-            锁仓期对比
+            {t("staking.lockPeriodComparison")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -147,7 +149,7 @@ export function InvestmentDashboard({
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-accent" />
-            收益增长趋势
+            {t("staking.returnsGrowthTrend")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -168,8 +170,8 @@ export function InvestmentDashboard({
               }) => {
                 if (active && payload && payload.length) {
                   return <div className="bg-card border rounded-lg p-3 shadow-lg">
-                          <p className="text-sm font-medium">第 {label} 天</p>
-                          <p className="text-sm text-accent">累积善意收益: ${payload[0].value}</p>
+                          <p className="text-sm font-medium">{t("staking.day")} {label}</p>
+                          <p className="text-sm text-accent">{t("staking.cumulativeReturns")}: ${payload[0].value}</p>
                         </div>;
                 }
                 return null;

@@ -246,7 +246,20 @@
     "myInviteAddress": "My Invitation Address",
     "onlyInvestorsCanInvite": "Only investors are eligible to invite",
     "invitationAddress": "Invitation Address",
-    "invitationLink": "Invitation Link"
+    "invitationLink": "Invitation Link",
+    "connectWalletToView": "Please connect wallet first",
+    "cannotConfirmInviter": "Unable to confirm inviter: Please use invitation link short code, last 8 digits with clicked invitation link, or fill complete address",
+    "switchToBSCToOperate": "Please switch to BSC Mainnet to operate",
+    "bindingSuccess": "Binding successful",
+    "bindingFailed": "Binding failed",
+    "investmentOverview": "Investment Overview",
+    "investmentPrincipal": "Investment Principal", 
+    "expectedReturns": "Expected Returns",
+    "totalReturns": "Total Returns",
+    "lockPeriodComparison": "Lock Period Comparison",
+    "returnsGrowthTrend": "Returns Growth Trend",
+    "cumulativeReturns": "Cumulative Returns",
+    "day": "Day"
   },
   "inviterBinding": {
     "title": "Bind Inviter",

@@ -376,13 +376,13 @@ export default function Stake({
         await refresh();
         await refreshVault();
       } catch (error: any) {
-        console.error("交易错误:", error);
+        console.error(t("staking.txFailed"), error);
 
         // 检查是否是 MetaMask RPC 错误
         const isMetaMaskRPCError = error?.code === -32603 || error?.message?.includes("Transaction does not have a transaction hash") || error?.code === "UNKNOWN_ERROR";
         if (isMetaMaskRPCError && retryCount < 2) {
-          console.log(`MetaMask RPC 错误，尝试重试 (${retryCount + 1}/3)...`);
-          toast.info("检测到网络问题，正在重试...");
+          console.log(`MetaMask RPC ${t("staking.networkIssueRetry")} (${retryCount + 1}/3)...`);
+          toast.info(t("staking.networkIssueRetry"));
 
           // 等待 2 秒后重试
           await new Promise(resolve => setTimeout(resolve, 2000));
@@ -391,24 +391,24 @@ export default function Stake({
 
         // 用户拒绝交易
         if (error?.code === 4001 || error?.code === "ACTION_REJECTED") {
-          toast.info("交易已取消");
+          toast.info(t("staking.transactionCanceled"));
           return;
         }
 
         // 交易失败的具体原因
-        let errorMessage = "投资失败";
+        let errorMessage = t("staking.txFailed");
         if (error?.reason) {
-          errorMessage = `交易失败: ${error.reason}`;
+          errorMessage = `${t("staking.txFailed")}: ${error.reason}`;
         } else if (error?.shortMessage) {
-          errorMessage = `交易失败: ${error.shortMessage}`;
+          errorMessage = `${t("staking.txFailed")}: ${error.shortMessage}`;
         } else if (error?.message?.includes("insufficient funds")) {
-          errorMessage = "余额不足，请检查 USDT 或 BNB 余额";
+          errorMessage = t("staking.insufficientFunds");
         } else if (error?.message?.includes("gas")) {
-          errorMessage = "Gas 费用不足，请增加 BNB 余额";
+          errorMessage = t("staking.insufficientGas");
         } else if (isMetaMaskRPCError) {
-          errorMessage = "网络连接异常，请检查网络后重试";
+          errorMessage = t("staking.networkError");
         } else if (error?.message) {
-          errorMessage = `交易失败: ${error.message}`;
+          errorMessage = `${t("staking.txFailed")}: ${error.message}`;
         }
         toast.error(errorMessage, {
           duration: 8000
@@ -429,20 +429,20 @@ export default function Stake({
   };
   const onVaultClaim = async () => {
     try {
-      if (!signer || !vault) throw new Error("请先连接钱包");
-      if (chainId !== TARGET_CHAIN) toast.warning("请切换到 BSC 主网再操作");
+      if (!signer || !vault) throw new Error(t("staking.connectWalletFirst"));
+      if (chainId !== TARGET_CHAIN) toast.warning(t("staking.switchToBSCToOperate"));
       setLoading(s => ({
         ...s,
         vaultClaim: true
       }));
       const tx = await (vault as any).claim();
-      toast.info("提交中：" + tx.hash);
+      toast.info(t("staking.submitting") + " " + tx.hash);
       await tx.wait();
-      toast.success("奖励已领取");
+      toast.success(t("staking.rewardsClaimed"));
       await refreshVault();
       await refresh();
     } catch (e: any) {
-      toast.error(e?.shortMessage || e?.message || "领取失败");
+      toast.error(e?.shortMessage || e?.message || t("staking.claimFailed"));
     } finally {
       setLoading(s => ({
         ...s,
@@ -574,16 +574,16 @@ export default function Stake({
                 <div id="inviter-section" className="space-y-3">
                   <Label className="text-base font-medium flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    邀请关系
+                    {t("staking.referralRelation")}
                   </Label>
                   {boundInviter && boundInviter !== ZERO ? <div className="flex items-center justify-between p-4 bg-accent/5 border border-accent/20 rounded-lg">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-accent rounded-full"></div>
-                        <span className="text-sm">已绑定上级：<span className="font-mono">0x…{boundInviter.slice(-4)}</span></span>
+                        <span className="text-sm">{t("staking.boundSuperior")}<span className="font-mono">0x…{boundInviter.slice(-4)}</span></span>
                       </div>
-                      <Badge variant="secondary" className="bg-accent/10 text-accent">已绑定</Badge>
+                      <Badge variant="secondary" className="bg-accent/10 text-accent">{t("staking.bound")}</Badge>
                     </div> : <div className="space-y-3">
-                      <Input value={inviterCode} onChange={e => setInviterCode(e.target.value)} placeholder="输入邀请码或邀请人地址" className="h-11" />
+                      <Input value={inviterCode} onChange={e => setInviterCode(e.target.value)} placeholder={t("staking.enterInviterCode")} className="h-11" />
                       <Button variant="outline" disabled={!account || loading.bind} onClick={async () => {
                     const input = inviterCode.trim();
                     const stored = (localStorage.getItem('inviter') || '').toLowerCase();
@@ -600,13 +600,13 @@ export default function Stake({
                       }
                     }
                     if (!addr) {
-                      toast.warning("无法确认邀请人：请使用邀请链接短码、后8位且已点击过邀请链接，或直接填完整地址");
+                      toast.warning(t("staking.cannotConfirmInviter"));
                       return;
                     }
                     try {
-                      if (!registryWrite || !signer) throw new Error("请先连接钱包");
+                      if (!registryWrite || !signer) throw new Error(t("staking.connectWalletFirst"));
                       if (chainId !== TARGET_CHAIN) {
-                        toast.warning("请切换到 BSC 主网再操作");
+                        toast.warning(t("staking.switchToBSCToOperate"));
                         return;
                       }
                       setLoading(s => ({
@@ -614,38 +614,38 @@ export default function Stake({
                         bind: true
                       }));
                       const tx = await (registryWrite as any).bind(addr);
-                      toast.info("提交中：" + tx.hash);
+                      toast.info(t("staking.submitting") + " " + tx.hash);
                       await tx.wait();
-                      toast.success("绑定成功");
+                      toast.success(t("staking.bindingSuccess"));
                       localStorage.setItem('inviter', addr);
                       setBoundInviter(addr);
                     } catch (e: any) {
-                      toast.error(e?.shortMessage || e?.message || "绑定失败");
+                      toast.error(e?.shortMessage || e?.message || t("staking.bindingFailed"));
                     } finally {
                       setLoading(s => ({
                         ...s,
                         bind: false
                       }));
                     }
-                  }} className="w-full">
+                      }} className="w-full">
                         <Users className="w-4 h-4 mr-2" />
-                        绑定邀请人
+                        {t("staking.bindInviter")}
                       </Button>
-                      <p className="text-sm text-slate-50 font-medium">请填写您的邀请人钱包地址！</p>
+                      <p className="text-sm text-slate-50 font-medium">{t("staking.enterInviterAddress")}</p>
                     </div>}
                 </div>
 
                 <div className="flex gap-4 pt-4">
                   <Button className="flex-1 bg-gradient-primary hover:bg-gradient-primary/90 h-12" disabled={!account || loading.approve} onClick={onApprove}>
-                    {loading.approve ? "授权中..." : "授权 (Approve)"}
+                    {loading.approve ? t("staking.approvingButton") : t("staking.approveButton")}
                   </Button>
                   <Button variant="secondary" className="flex-1 h-12" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
                     <DollarSign className="w-4 h-4 mr-2" />
-                    {loading.deposit ? "投资中..." : "开始投资"}
+                    {loading.deposit ? t("staking.investingButton") : t("staking.startInvestButton")}
                   </Button>
                 </div>
                 {needApprove && <p className="text-xs text-muted-foreground text-center">
-                    💡 需先授权 ≥ 投资金额，投资按钮将自动解锁
+                    {t("staking.approveNote")}
                   </p>}
               </CardContent>
             </Card>
@@ -655,7 +655,7 @@ export default function Stake({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Coins className="w-5 h-5 text-accent" />
-                  我的仓位
+                  {t("staking.myPositions")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -671,23 +671,23 @@ export default function Stake({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Gift className="w-5 h-5 text-accent" />
-                  点亮心灯奖励
+                  {t("staking.lightUpRewards")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">可领取奖励</span>
+                    <span className="text-sm text-muted-foreground">{t("staking.claimableRewards")}</span>
                     <span className="font-mono font-semibold">{formatUnits(vaultPending ?? 0n, USDT_DECIMALS)} USDT</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">已点亮心灯奖励</span>
+                    <span className="text-sm text-muted-foreground">{t("staking.lightedHeartRewards")}</span>
                     <span className="font-mono text-xs">{formatUnits(referralClaimed ?? 0n, USDT_DECIMALS)} USDT</span>
                   </div>
                 </div>
                 <Button className="w-full bg-accent hover:bg-accent/90" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
                   <Gift className="w-4 h-4 mr-2" />
-                  {loading.vaultClaim ? "领取中..." : "领取奖励"}
+                  {loading.vaultClaim ? t("staking.claimingButton") : t("staking.claimRewardsButton")}
                 </Button>
               </CardContent>
             </Card>
@@ -697,17 +697,17 @@ export default function Stake({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Share2 className="w-5 h-5 text-primary" />
-                  我的邀请地址
+                  {t("staking.myInviteAddress")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {!account ? <div className="text-sm text-muted-foreground text-center py-4">
-                    请先连接钱包
+                    {t("staking.connectWalletToView")}
                   </div> : !hasPositions ? <div className="text-sm text-muted-foreground text-center py-4">
-                    只有投资人才有邀请资格
+                    {t("staking.onlyInvestorsCanInvite")}
                   </div> : <>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">邀请地址</label>
+                      <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
                       <div className="flex gap-2">
                         <Input value={referralCode} readOnly className="font-mono text-xs" />
                         <Button onClick={copyReferralCode} variant="outline" size="icon">
@@ -717,7 +717,7 @@ export default function Stake({
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">邀请链接</label>
+                      <label className="text-sm font-medium">{t("staking.invitationLink")}</label>
                       <div className="flex gap-2">
                         <Input value={inviteLink} readOnly className="font-mono text-xs" />
                         <Button onClick={copyReferralLink} variant="outline" size="icon">
