@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send, MessageCircle } from "lucide-react";
@@ -10,9 +11,10 @@ import { useI18n } from "@/hooks/useI18n";
 import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
-  const {
-    t
-  } = useI18n();
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentLang = location.pathname.startsWith('/en') ? 'en' : 'zh';
   const strategies = [{
     icon: "⚡",
     title: t("hero.crossChainEngine.title"),
@@ -423,7 +425,11 @@ export function HeroSection() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16 mb-12">
-          <Button size="lg" className="bg-gradient-primary hover:shadow-glow transition-all duration-300 group">
+          <Button 
+            size="lg" 
+            className="bg-gradient-primary hover:shadow-glow transition-all duration-300 group"
+            onClick={() => navigate(`/${currentLang}/invest`)}
+          >
             <Bot className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
             {t("invest.charityButtonName")}
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
