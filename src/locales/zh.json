@@ -169,6 +169,7 @@
     "subtitle": "道义阿尔法 3.0",
     "description": "跨链阿尔法引擎 • 自适应收益轮动 • 去中心化质押金库 • 链上清晰透明协议",
     "strategyDetails": "策略详情",
+    "strategicPartners": "合作伙伴",
     "crossChainEngine": {
       "title": "跨链阿尔法引擎",
       "description": "毫秒级套利与MEV操作，捕捉资本缝隙中的瞬间价值",
@@ -233,9 +234,7 @@
     "title": "投资中心 | 链上质押",
     "description": "在此进行USDT链上质押，快速完成 Approve、Deposit，并查看仓位与奖励。",
     "header": "慈善投资中心",
-    "subtitle": "USDT 链上质押·一站式智能投资枢纽",
-    "charityButtonName": "慈善注入",
-    "strategyButtonName": "查看策略详情"
+    "subtitle": "USDT 链上质押·一站式智能投资枢纽"
   },
   "user": {
     "title": "用户中心与邀请 | 管理资产与推广",
