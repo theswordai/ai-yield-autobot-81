@@ -74,12 +74,13 @@
       "trustRedefinition": "Redefinition of trust: from 'trusting people' to 'trusting mathematics'",
       "transparencyStandard": "Highest standard of transparency: every line of code is a public promise",
       "participatoryAudit": "Participatory audit civilization: letting every donor become a guardian of the system",
-    "summary": "In one sentence: This is the moral cornerstone of wealth civilization.",
-    "viewStrategyDetails": "View Strategy Details",
-    "blockchainConscience": "Blockchain's Conscience",
-    "financialIntegrity": "Financial Integrity", 
-    "charityGlory": "Charity's Glory"
-    }
+     "summary": "In one sentence: This is the moral cornerstone of wealth civilization.",
+     "viewStrategyDetails": "View Strategy Details",
+     "blockchainConscience": "Blockchain's Conscience",
+     "financialIntegrity": "Financial Integrity", 
+     "charityGlory": "Charity's Glory"
+     },
+     "followUs": "Follow Us"
   },
   "invest": {
     "title": "Investment Center | On-Chain Staking",
@@ -97,8 +98,9 @@
     "tab": {
       "dashboard": "Wealth Hall",
       "referral": "Light Heart Lamps"
-    }
-  },
+     },
+     "followUs": "Follow Us"
+   },
   "dashboard": {
     "title": "Wealth Hall",
     "totalAssets": "Total Assets",

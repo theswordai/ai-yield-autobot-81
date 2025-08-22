@@ -13,23 +13,23 @@ export function HeroSection() {
   } = useI18n();
   const strategies = [{
     icon: "⚡",
-    title: "跨链阿尔法引擎",
-    description: "毫秒级套利与MEV操作，捕捉资本缝隙中的瞬间价值",
-    fee: "10%手续费",
+    title: t("hero.crossChainEngine.title"),
+    description: t("hero.crossChainEngine.description"),
+    fee: t("hero.crossChainEngine.fee"),
     color: "text-primary",
     change: "+2.4%"
   }, {
     icon: "🤖",
-    title: "AI自适应收益轮动",
-    description: "GPT-4驱动的财富大脑，主流资产趋势预测与自动调仓",
-    fee: "1-2%管理费",
+    title: t("hero.aiRotation.title"),
+    description: t("hero.aiRotation.description"),
+    fee: t("hero.aiRotation.fee"),
     color: "text-accent",
     change: "+1.8%"
   }, {
     icon: "🏦",
-    title: "去中心化质押金库",
-    description: "结构化资本律动，循环质押与杠杆的完美融合",
-    fee: "基础收益",
+    title: t("hero.defiVault.title"),
+    description: t("hero.defiVault.description"),
+    fee: t("hero.defiVault.fee"),
     color: "text-primary",
     change: "+0.9%"
   }];
@@ -258,7 +258,7 @@ export function HeroSection() {
                       <BarChart3 className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold">去中心化质押金库 </h3>
+                      <h3 className="text-xl font-semibold">{t("hero.defiVault.title")}</h3>
                       
                     </div>
                   </div>
@@ -378,9 +378,9 @@ export function HeroSection() {
                   <div className="mt-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg">
                      <p className="text-sm font-medium text-center">
                        <span className="text-primary">{t("hero.transparentProtocol.title")}</span> = 
-                       <span className="text-accent mx-1">{t("hero.blockchainConscience", "区块链的良心")}</span> + 
-                       <span className="text-primary mx-1">{t("hero.financialIntegrity", "金融的信义")}</span> + 
-                       <span className="text-accent mx-1">{t("hero.charityGlory", "慈善的光辉")}</span>
+                       <span className="text-accent mx-1">{t("hero.blockchainConscience")}</span> + 
+                       <span className="text-primary mx-1">{t("hero.financialIntegrity")}</span> + 
+                       <span className="text-accent mx-1">{t("hero.charityGlory")}</span>
                      </p>
                   </div>
                 </Card>
