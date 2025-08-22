@@ -278,6 +278,17 @@
     "note2": "• After successful binding, both you and the inviter will receive extra rewards",
     "note3": "• You can still invest normally if you skip binding"
   },
+  "wallet": {
+    "connect": "wallet",
+    "connected": "Wallet connected",
+    "connectFailed": "Connection failed",
+    "selectWallet": "Select Wallet",
+    "noWalletFound": "No wallet extensions found. Please install extensions like MetaMask, OKX, Bitget first.",
+    "copyAddress": "Copy Address",
+    "addressCopied": "Address copied",
+    "switchWallet": "Switch Wallet",
+    "disconnect": "Disconnect"
+  },
   "bluePoints": {
     "title": "USDV Coin (Blue Light Charity Coin)",
     "subtitle": "Complete tasks, earn points, enjoy VIP privileges",
