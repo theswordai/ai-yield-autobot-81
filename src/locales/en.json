@@ -80,8 +80,10 @@
      "financialIntegrity": "Financial Integrity", 
      "charityGlory": "Charity's Glory"
      },
-     "followUs": "Follow Us"
-  },
+     "followUs": "Follow Us",
+     "customerService": "Customer Service",
+     "contactSupport": "Contact Support"
+   },
   "invest": {
     "title": "Investment Center | On-Chain Staking",
     "description": "Perform USDT on-chain staking here, quickly complete Approve, Deposit, and view positions and rewards.",

@@ -250,7 +250,9 @@
      "financialIntegrity": "金融的信义", 
      "charityGlory": "慈善的光辉"
     },
-    "followUs": "关注我们"
+    "followUs": "关注我们",
+    "customerService": "客服",
+    "contactSupport": "联系客服"
   },
   "invest": {
     "title": "投资中心 | 链上质押",

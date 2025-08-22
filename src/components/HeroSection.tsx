@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send } from "lucide-react";
+import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send, MessageCircle } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
 import { MiniKChart } from "@/components/MiniKChart";
 import { useI18n } from "@/hooks/useI18n";
+import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
   const {
@@ -450,8 +452,8 @@ export function HeroSection() {
               </a>)}
           </div>
 
-          {/* Social Media */}
-          <div className="flex justify-center gap-6">
+          {/* Social Media & Customer Service */}
+          <div className="flex justify-center gap-12">
             <div className="text-center">
               <span className="text-sm text-muted-foreground mb-3 block">{t("hero.followUs")}</span>
               <div className="flex gap-4">
@@ -461,6 +463,20 @@ export function HeroSection() {
                 <a href="#" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
                   <Send className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
                 </a>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.customerService")}</span>
+              <div className="flex justify-center">
+                <button className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" title={t("hero.contactSupport")}>
+                  <Avatar className="w-12 h-12 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
+                    <AvatarImage src={customerServiceAvatar} alt="Customer Service" />
+                    <AvatarFallback className="bg-gradient-primary">
+                      <MessageCircle className="w-5 h-5 text-primary-foreground" />
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
               </div>
             </div>
           </div>
