@@ -446,20 +446,8 @@
     "event": "Event", 
     "general": "Announcement",
     "urgent": "Urgent"
-   },
-   "wallet": {
-     "connectWallet": "Connect Wallet",
-     "selectWallet": "Select Wallet",
-     "noWalletsFound": "No wallet extension found, please install extensions like MetaMask, OKX, Bitget first.",
-     "walletConnected": "Wallet connected",
-     "connectionFailed": "Connection failed",
-     "copyAddress": "Copy Address",
-     "changeWallet": "Change Wallet",
-     "disconnect": "Disconnect",
-     "addressCopied": "Address copied",
-     "chainId": "Chain ID"
-   },
-   "partners": {
+  },
+  "partners": {
     "fca": "Financial Conduct Authority",
     "autism": "Autism Partnership Hong Kong",
     "tether": "Tether - USDT Issuer",
