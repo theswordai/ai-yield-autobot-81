@@ -234,6 +234,8 @@
     },
     "transparentProtocol": {
       "title": "链上清晰透明协议",
+      "description": "完全透明的链上协议，重新定义信任标准",
+      "fee": "0%透明费",
       "soulTitle": "这是 USD.online 的 灵魂之镜。",
       "soulDesc": "在一个充斥着黑箱操作与中心化风险的金融世界里，它以 链上全透明 的形式，重新定义 信任的标准。",
       "techCore": "🔹 技术内核",

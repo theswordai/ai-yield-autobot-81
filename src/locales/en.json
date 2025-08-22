@@ -64,6 +64,8 @@
     },
     "transparentProtocol": {
       "title": "On-chain Clear Transparent Protocol",
+      "description": "Fully transparent on-chain protocol, redefining trust standards", 
+      "fee": "0% transparency fee",
       "soulTitle": "This is USD.online's Soul Mirror.",
       "soulDesc": "In a financial world full of black box operations and centralized risks, it redefines the standard of trust through complete on-chain transparency.",
       "techCore": "🔹 Technical Core",
