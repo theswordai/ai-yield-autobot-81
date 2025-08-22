@@ -13,7 +13,6 @@ import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { REFERRAL_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, LOCK_ADDRESS } from "@/config/contracts";
-import { useI18n } from "@/hooks/useI18n";
 export default function Referral({
   embedded = false
 }: {
@@ -22,7 +21,6 @@ export default function Referral({
   const {
     toast
   } = useToast();
-  const { t } = useI18n();
   const {
     account,
     provider,
@@ -175,82 +173,82 @@ export default function Referral({
     load();
   }, [account, registry, vault, lock]);
   const rewardTiers = [{
-    level: t("referral.rewards.tiers.lv1.name"),
-    requirement: t("referral.rewards.tiers.lv1.requirement"),
+    level: "仁善之种Lv1",
+    requirement: "≥200U",
     directReward: "10%",
-    indirectReward: t("referral.rewards.none"),
-    description: t("referral.rewards.tiers.lv1.description"),
+    indirectReward: "无",
+    description: "首次≥200U可绑定上级；仅直推奖励",
     icon: "🌱",
     bgColor: "bg-green-500/20 border-green-500/30"
   }, {
-    level: t("referral.rewards.tiers.lv2.name"),
-    requirement: t("referral.rewards.tiers.lv2.requirement"),
+    level: "希望筑者Lv2",
+    requirement: "≥1,000U",
     directReward: "11%",
     indirectReward: "10%",
-    description: t("referral.rewards.tiers.lv2.description"),
+    description: "拥有间接分成10%",
     icon: "🛡️",
     bgColor: "bg-yellow-500/20 border-yellow-500/30"
   }, {
-    level: t("referral.rewards.tiers.lv3.name"),
-    requirement: t("referral.rewards.tiers.lv3.requirement"),
+    level: "慈善守护者Lv3",
+    requirement: "≥3,000U",
     directReward: "12%",
     indirectReward: "10%",
-    description: t("referral.rewards.tiers.lv3.description"),
+    description: "更高直推与间接分成",
     icon: "⭐",
     bgColor: "bg-blue-500/20 border-blue-500/30"
   }, {
-    level: t("referral.rewards.tiers.lv4.name"),
-    requirement: t("referral.rewards.tiers.lv4.requirement"),
+    level: "慈善大使Lv4",
+    requirement: "≥10,000U",
     directReward: "13%",
     indirectReward: "10%",
-    description: t("referral.rewards.tiers.lv4.description"),
+    description: "高等级收益",
     icon: "🌍",
     bgColor: "bg-purple-500/20 border-purple-500/30"
   }, {
-    level: t("referral.rewards.tiers.lv5.name"),
-    requirement: t("referral.rewards.tiers.lv5.requirement"),
+    level: "人类恩主Lv5",
+    requirement: "≥30,000U",
     directReward: "15%",
     indirectReward: "10%",
-    description: t("referral.rewards.tiers.lv5.description"),
+    description: "最高等级，最高直推比例",
     icon: "👑",
     bgColor: "bg-amber-500/20 border-amber-500/30"
   }];
   const copyReferralCode = () => {
     navigator.clipboard.writeText(referralCode);
     toast({
-      title: t("referral.share.copySuccess"),
-      description: t("referral.share.codeDescription")
+      title: "复制成功",
+      description: "邀请码已复制到剪贴板"
     });
   };
   const copyReferralLink = () => {
     navigator.clipboard.writeText(inviteLink);
     toast({
-      title: t("referral.share.copySuccess"),
-      description: t("referral.share.linkDescription")
+      title: "复制成功",
+      description: "邀请链接已复制到剪贴板"
     });
   };
   const onBind = async () => {
     try {
-      if (!account || !registryWrite) throw new Error(t("referral.binding.connectWallet"));
+      if (!account || !registryWrite) throw new Error("请先连接钱包");
       const inv = storedInviter?.toLowerCase();
-      if (!inv || !/^0x[a-fA-F0-9]{40}$/.test(inv)) throw new Error(t("referral.binding.invalidInviter"));
-      if (inv === account.toLowerCase()) throw new Error(t("referral.binding.cannotBindSelf"));
-      if (boundInviter && boundInviter !== ZERO) throw new Error(t("referral.binding.alreadyBound"));
+      if (!inv || !/^0x[a-fA-F0-9]{40}$/.test(inv)) throw new Error("未检测到有效的邀请人");
+      if (inv === account.toLowerCase()) throw new Error("不能绑定自己为上级");
+      if (boundInviter && boundInviter !== ZERO) throw new Error("已绑定，无需重复");
       setBinding(true);
       const tx = await (registryWrite as any).bind(inv);
       toast({
-        title: t("referral.binding.bindSubmitting"),
+        title: "提交中",
         description: tx.hash
       });
       await tx.wait();
       toast({
-        title: t("referral.binding.bindSuccess")
+        title: "绑定成功"
       });
       setBoundInviter(inv);
     } catch (e: any) {
       toast({
-        title: t("referral.binding.bindFailed"),
-        description: e?.shortMessage || e?.message || t("referral.binding.retryLater")
+        title: "绑定失败",
+        description: e?.shortMessage || e?.message || "请稍后重试"
       });
     } finally {
       setBinding(false);
@@ -259,31 +257,31 @@ export default function Referral({
   return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       {!embedded && <Navbar />}
       {!embedded && <Helmet>
-          <title>{t("referral.title")} | AI量化交易</title>
-          <meta name="description" content={t("referral.description")} />
+          <title>点亮心灯奖励 | AI量化交易</title>
+          <meta name="description" content="查看邀请规则、等级门槛、奖励比例与点亮心灯收益说明。" />
           <link rel="canonical" href="/referral" />
         </Helmet>}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
       <div className="container mx-auto px-4">
         <div className="mb-8">
-          <Title className="text-3xl font-bold mb-2">{t("referral.header")}</Title>
-          <p className="text-muted-foreground">{t("referral.subtitle")}</p>
+          <Title className="text-3xl font-bold mb-2">邀请好友</Title>
+          <p className="text-muted-foreground">邀请好友投资，获得丰厚返利奖励</p>
         </div>
 
         {/* Bind status */}
         <div className="mb-6">
           {boundInviter && boundInviter !== ZERO ? <div className="flex items-center justify-between p-3 border border-border rounded-md">
-              <span className="text-sm">{t("referral.binding.bound")}<span className="font-mono">0x…{boundInviter.slice(-4)}</span></span>
-              <span className="text-xs text-muted-foreground">{t("referral.binding.boundNote")}</span>
+              <span className="text-sm">已绑定上级：<span className="font-mono">0x…{boundInviter.slice(-4)}</span></span>
+              <span className="text-xs text-muted-foreground">绑定后不可更改</span>
             </div> : <div className="flex items-center justify-between p-3 border border-dashed rounded-md">
               <span className="text-sm">
                 {storedInviter ? <>
-                  {t("referral.binding.detected")}<span className="font-mono">0x…{storedInviter.slice(-4)}</span>
-                </> : t("referral.binding.notDetected")}
+                  检测到邀请人：<span className="font-mono">0x…{storedInviter.slice(-4)}</span>
+                </> : "未检测到邀请人"}
               </span>
               <div className="flex gap-2">
-                <Button size="sm" variant="secondary" disabled={!storedInviter || binding} onClick={onBind}>{t("referral.binding.bindButton")}</Button>
+                <Button size="sm" variant="secondary" disabled={!storedInviter || binding} onClick={onBind}>一键绑定</Button>
               </div>
             </div>}
         </div>
@@ -294,7 +292,7 @@ export default function Referral({
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Users className="w-4 h-4" />
-                {t("referral.stats.totalReferrals")}
+                总邀请数
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -306,7 +304,7 @@ export default function Referral({
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Gift className="w-4 h-4 text-accent" />
-                {t("referral.stats.totalEarnings")}
+                总收益
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -316,7 +314,7 @@ export default function Referral({
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">{t("referral.stats.directReferrals")}</CardTitle>
+              <CardTitle className="text-sm font-medium">直推人数</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.directReferrals}</div>
@@ -325,7 +323,7 @@ export default function Referral({
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">{t("referral.stats.indirectReferrals")}</CardTitle>
+              <CardTitle className="text-sm font-medium">间推人数</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.indirectReferrals}</div>
@@ -334,7 +332,7 @@ export default function Referral({
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">{t("referral.stats.totalInviteAmount")}</CardTitle>
+              <CardTitle className="text-sm font-medium">总邀请金额</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">${stats.totalInviteAmount}</div>
@@ -343,7 +341,7 @@ export default function Referral({
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">{t("referral.stats.currentLevel")}</CardTitle>
+              <CardTitle className="text-sm font-medium">当前级别</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">L{stats.level}</div>
@@ -360,7 +358,7 @@ export default function Referral({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5" />
-                {t("referral.rewards.title")}
+                奖励机制
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -378,11 +376,11 @@ export default function Referral({
                   </div>
                   <div className="grid grid-cols-2 gap-4 mb-2">
                     <div className="text-center p-2 bg-muted/30 rounded">
-                      <div className="text-xs text-muted-foreground">{t("referral.rewards.directReward")}</div>
+                      <div className="text-xs text-muted-foreground">推荐奖励</div>
                       <div className="font-bold text-accent">{tier.directReward}</div>
                     </div>
                     <div className="text-center p-2 bg-muted/30 rounded">
-                      <div className="text-xs text-muted-foreground">{t("referral.rewards.indirectReward")}</div>
+                      <div className="text-xs text-muted-foreground">间接分成</div>
                       <div className="font-bold text-primary">{tier.indirectReward}</div>
                     </div>
                   </div>
@@ -390,13 +388,13 @@ export default function Referral({
                 </div>)}
               
               <div className="bg-muted/20 p-4 rounded-lg">
-                <h5 className="font-semibold mb-2">{t("referral.rewards.explanation.title")}</h5>
+                <h5 className="font-semibold mb-2">等级说明:</h5>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• {t("referral.rewards.explanation.totalStake")}</li>
-                  <li>• {t("referral.rewards.explanation.directDesc")}</li>
-                  <li>• {t("referral.rewards.explanation.indirectDesc")}</li>
-                  <li>• {t("referral.rewards.explanation.higherLevel")}</li>
-                  <li>• {t("referral.rewards.explanation.realTime")}</li>
+                  <li>• 团队总质押金额决定用户等级</li>
+                  <li>• 推荐奖励：直接邀请用户投资的奖励比例</li>
+                  <li>• 间接分成：下级用户邀请投资的分成比例</li>
+                  <li>• 等级越高，奖励比例越高</li>
+                  <li>• 所有奖励实时到账，可随时提现</li>
                 </ul>
               </div>
             </CardContent>
@@ -407,11 +405,11 @@ export default function Referral({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-primary" />
-                {t("referral.leaderboard.title")}
+                邀请排行榜
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {leaderboard.length === 0 ? <div className="text-sm text-muted-foreground">{t("referral.leaderboard.noData")}</div> : <ol className="space-y-2">
+              {leaderboard.length === 0 ? <div className="text-sm text-muted-foreground">暂无邀请数据</div> : <ol className="space-y-2">
                   {leaderboard.map((it, idx) => <li key={it.user} className="flex items-center justify-between p-3 border border-border rounded-md">
                       <div className="flex items-center gap-3">
                         <div className="w-7 h-7 rounded-full bg-muted/30 flex items-center justify-center text-xs font-semibold">{idx + 1}</div>
@@ -430,29 +428,29 @@ export default function Referral({
         {/* Referral Tree */}
         <Card className="mt-8">
           <CardHeader>
-            <CardTitle>{t("referral.tree.title")}</CardTitle>
+            <CardTitle>邀请图谱</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {tree.map((ref, index) => <div key={index} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/20 transition-colors">
                   <div className="flex items-center gap-4">
                     <Badge variant={ref.level === 1 ? "default" : "secondary"}>
-                      {t("referral.tree.level", { level: ref.level })}
+                      L{ref.level}
                     </Badge>
                     <span className="font-mono text-sm">{ref.user}</span>
                     <span className="text-sm text-muted-foreground">{ref.date}</span>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
-                    <span>{t("referral.tree.investment", { amount: ref.amount })}</span>
-                    <span className="text-accent">{t("referral.tree.earnings", { amount: ref.earnings })}</span>
+                    <span>投资: <span className="font-semibold">${ref.amount}</span></span>
+                    <span className="text-accent">奖励: <span className="font-semibold">+${ref.earnings}</span></span>
                   </div>
                 </div>)}
             </div>
             
             {tree.length === 0 && <div className="text-center py-12 text-muted-foreground">
                 <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>{t("referral.tree.noData")}</p>
-                <p className="text-sm">{t("referral.share.subtitle")}</p>
+                <p>暂无邀请记录</p>
+                <p className="text-sm">分享邀请码给好友开始赚取奖励</p>
               </div>}
           </CardContent>
         </Card>
