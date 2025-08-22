@@ -5,7 +5,7 @@ import { useI18n } from "@/hooks/useI18n";
 
 const languages = [
   { code: 'zh', name: '简体中文', flag: '🇨🇳' },
-  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
 ];
 
 export function LanguageSelector() {
