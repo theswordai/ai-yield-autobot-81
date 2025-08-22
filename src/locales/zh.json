@@ -629,7 +629,8 @@
     "tokenpocket": "多链钱包",
     "bitget": "顶级交易所",
     "gate": "全球交易所",
-    "uniswap": "以太坊DEX"
+    "uniswap": "以太坊DEX",
+    "openai": "人工智能技术合作伙伴"
   },
   "language": {
     "selector": "语言"

@@ -95,6 +95,11 @@ export function HeroSection() {
     href: "https://app.uniswap.org/",
     logo: "/lovable-uploads/8d1300ec-2ed2-44f8-809c-e46e9366dff9.png",
     tagline: t('partners.uniswap')
+  }, {
+    name: "OpenAI",
+    href: "https://openai.com/",
+    logo: "/lovable-uploads/c69e71ce-69a8-4faa-a02b-6cda17287cc3.png",
+    tagline: t('partners.openai')
   }] as const;
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
       

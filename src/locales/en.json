@@ -460,7 +460,8 @@
     "tokenpocket": "Multi-chain Wallet",
     "bitget": "Top Exchange",
     "gate": "Global Exchange",
-    "uniswap": "Ethereum DEX"
+    "uniswap": "Ethereum DEX",
+    "openai": "AI Technology Partner"
   },
   "language": {
     "selector": "Language"
