@@ -612,7 +612,7 @@
       "totalPoints": "总积分 (含投资+邀请积分)",
       "currentInvestmentPoints": "当前投资积分：{{points}}",
       "currentReferralPoints": "当前邀请积分：{{points}}",
-      "availableRewards": "可领取：{{count}} 个仓位奖励",
+      "availableRewards": "可领取：{{count}} 次奖励",
       "investmentPoints": "投资获得积分",
       "investmentPointsDesc": "每投资 1 USDT = 100 积分",
       "investmentRewards": "投资奖励",
