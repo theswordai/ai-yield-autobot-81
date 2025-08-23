@@ -554,7 +554,7 @@
     },
     "dailyTasks": {
       "completeInvestment": "完成投资",
-      "completeInvestmentDesc": "完成投资获得积分，有几个仓位可领取几次",
+      "completeInvestmentDesc": "完成投资获得积分",
       "claimReward": "领取奖励",
       "complete": "完成"
     },
