@@ -310,6 +310,8 @@
     "description": "在一个页面查看用户资产、收益统计与点亮心灯奖励，复制邀请码与链接并查看邀请图谱。",
     "header": "尊享俱乐部",
     "subtitle": "善意共鸣·共创尊享荣耀",
+    "memberOnlyFeature": "该功能只对会员开放",
+    "memberOnlyDescription": "请先在善举页面进行质押投资，成为我们的会员后即可使用此功能。",
     "tab": {
       "dashboard": "财富殿堂",
       "referral": "点亮心灯"

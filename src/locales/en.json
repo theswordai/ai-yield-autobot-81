@@ -140,6 +140,8 @@
     "description": "View user assets, earnings statistics, and light up heart lamp rewards on one page, copy invitation codes and links, and view invitation map.",
     "header": "Premium Club",
     "subtitle": "Goodwill Resonance · Create Premium Glory Together",
+    "memberOnlyFeature": "This feature is only available to members",
+    "memberOnlyDescription": "Please stake on the charity page first to become our member and unlock this feature.",
     "tab": {
       "dashboard": "Wealth Hall",
       "referral": "Light Heart Lamps"
