@@ -489,12 +489,20 @@ export function HeroSection() {
             
             <div className="text-center">
               <span className="text-sm text-muted-foreground mb-3 block">{t("hero.customerService")}</span>
-              <div className="flex justify-center">
+              <div className="flex justify-center gap-4">
                 <button className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" title={t("hero.contactSupport")}>
                   <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
-                    <AvatarImage src={customerServiceAvatar} alt="Customer Service" />
+                    <AvatarImage src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png" alt="Customer Service 1" />
                     <AvatarFallback className="bg-gradient-primary">
                       <MessageCircle className="w-5 h-5 text-primary-foreground" />
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+                <button className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" title={t("hero.contactSupport")}>
+                  <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-accent/50 transition-all duration-300">
+                    <AvatarImage src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png" alt="Customer Service 2" />
+                    <AvatarFallback className="bg-gradient-accent">
+                      <MessageCircle className="w-5 h-5 text-accent-foreground" />
                     </AvatarFallback>
                   </Avatar>
                 </button>

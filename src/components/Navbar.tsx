@@ -30,7 +30,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           <Link to={langPrefix} className="flex items-center space-x-2" aria-label="USD.ONLINE Home">
             <img
-              src="/lovable-uploads/e273a398-537e-4766-b1d0-aee195477fb3.png"
+              src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png"
               alt="USD.ONLINE logo"
               className="w-8 h-8 rounded-md object-cover"
               loading="eager"
