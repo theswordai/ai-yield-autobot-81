@@ -100,6 +100,16 @@ export function HeroSection() {
     href: "https://openai.com/",
     logo: "/lovable-uploads/c69e71ce-69a8-4faa-a02b-6cda17287cc3.png",
     tagline: t('partners.openai')
+  }, {
+    name: "Monetary Authority of Singapore",
+    href: "https://www.mas.gov.sg/",
+    logo: "/lovable-uploads/b47700e7-2fe5-45ea-9469-0135ab829d4e.png",
+    tagline: t('partners.mas')
+  }, {
+    name: "Samsung",
+    href: "https://www.samsung.com/",
+    logo: "/lovable-uploads/4e11cc4b-891e-40c8-8db9-e789b18dddcd.png",
+    tagline: t('partners.samsung')
   }] as const;
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
       
