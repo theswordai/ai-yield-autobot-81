@@ -13,7 +13,8 @@ import { useWeb3 } from "@/hooks/useWeb3";
 import { MockUSDT_ABI } from "@/abis/MockUSDT";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
-import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown } from "lucide-react";
 import { PositionsList } from "@/components/PositionsList";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
@@ -647,6 +648,88 @@ export default function Stake({
                 {needApprove && <p className="text-xs text-muted-foreground text-center">
                     {t("staking.approveNote")}
                   </p>}
+
+                {/* 财富与善意的分配机制 */}
+                <Card className="mt-6 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/10">
+                  <Collapsible>
+                    <CollapsibleTrigger asChild>
+                      <CardHeader className="cursor-pointer hover:bg-muted/20 transition-colors">
+                        <CardTitle className="flex items-center justify-between text-base">
+                          <span>{t("wealthDistribution.title")}</span>
+                          <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                        </CardTitle>
+                      </CardHeader>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <CardContent className="space-y-4 pt-0">
+                        <div className="space-y-3 text-sm">
+                          <div className="space-y-2">
+                            <h4 className="font-semibold text-primary">{t("wealthDistribution.managementFees")}</h4>
+                            <p className="text-muted-foreground">{t("wealthDistribution.managementFeesDesc")}</p>
+                            <ul className="space-y-1 ml-4">
+                              <li>{t("wealthDistribution.managementFee")}</li>
+                              <li>{t("wealthDistribution.handlingFee")}</li>
+                            </ul>
+                            <p className="font-medium text-accent">{t("wealthDistribution.totalFee")}</p>
+                            <p className="text-muted-foreground">{t("wealthDistribution.feeUsage")}</p>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="font-semibold text-primary">{t("wealthDistribution.profitLocking")}</h4>
+                            <p className="text-muted-foreground">{t("wealthDistribution.profitLockingDesc")}</p>
+                            <ul className="space-y-1 ml-4">
+                              <li>{t("wealthDistribution.lock90Days")}</li>
+                              <li>{t("wealthDistribution.lock180Days")}</li>
+                              <li>{t("wealthDistribution.lock365Days")}</li>
+                            </ul>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="font-semibold text-primary">{t("wealthDistribution.profitDistribution")}</h4>
+                            <p className="text-muted-foreground">{t("wealthDistribution.profitDistributionDesc")}</p>
+                            <div className="space-y-3">
+                              <div>
+                                <p className="font-medium text-accent">{t("wealthDistribution.charity50")}</p>
+                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.charityDesc")}</p>
+                              </div>
+                              <div>
+                                <p className="font-medium">{t("wealthDistribution.tech10")}</p>
+                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.techDesc")}</p>
+                              </div>
+                              <div>
+                                <p className="font-medium">{t("wealthDistribution.market10")}</p>
+                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.marketDesc")}</p>
+                              </div>
+                              <div>
+                                <p className="font-medium">{t("wealthDistribution.team10")}</p>
+                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.teamDesc")}</p>
+                              </div>
+                              <div>
+                                <p className="font-medium">{t("wealthDistribution.treasury20")}</p>
+                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.treasuryDesc")}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="font-semibold text-primary">{t("wealthDistribution.strategicValue")}</h4>
+                            <p className="text-muted-foreground">{t("wealthDistribution.strategicValueDesc")}</p>
+                            <ul className="space-y-1 ml-4">
+                              <li>{t("wealthDistribution.forInvestors")}</li>
+                              <li>{t("wealthDistribution.forSociety")}</li>
+                              <li>{t("wealthDistribution.forPlatform")}</li>
+                            </ul>
+                          </div>
+
+                          <div className="border-t pt-3 mt-4">
+                            <p className="font-semibold text-primary">{t("wealthDistribution.summary")}</p>
+                            <p className="text-muted-foreground font-medium">{t("wealthDistribution.summaryText")}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </Card>
               </CardContent>
             </Card>
 
