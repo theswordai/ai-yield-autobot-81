@@ -88,6 +88,7 @@ export default {
 				'scale-in': 'scale-in 0.2s ease-out',
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
 				'breathing-glow': 'breathing-glow 3s ease-in-out infinite',
+				'breathing-blue': 'breathing-blue 3s ease-in-out infinite',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -141,6 +142,16 @@ export default {
 					},
 					"50%": {
 						boxShadow: "0 0 40px hsl(var(--primary) / 0.6), 0 0 80px hsl(var(--primary) / 0.3), 0 0 120px hsl(var(--primary) / 0.1)",
+						transform: "scale(1.02)",
+					},
+				},
+				'breathing-blue': {
+					"0%, 100%": {
+						boxShadow: "0 0 20px hsl(217 91% 60% / 0.3), 0 0 40px hsl(217 91% 60% / 0.1)",
+						transform: "scale(1)",
+					},
+					"50%": {
+						boxShadow: "0 0 40px hsl(217 91% 60% / 0.6), 0 0 80px hsl(217 91% 60% / 0.3), 0 0 120px hsl(217 91% 60% / 0.1)",
 						transform: "scale(1.02)",
 					},
 				},
