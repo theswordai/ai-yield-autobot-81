@@ -478,9 +478,6 @@ export function HeroSection() {
             <div className="text-center">
               <span className="text-sm text-muted-foreground mb-3 block">{t("hero.followUs")}</span>
               <div className="flex gap-4">
-                <a href="#" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title="Twitter">
-                  <Twitter className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                </a>
                 <a href="https://t.me/OfficialUSDONLINE" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
                   <Send className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
                 </a>
@@ -499,14 +496,6 @@ export function HeroSection() {
                     <AvatarImage src="/lovable-uploads/bf7773a4-a71f-4db0-b011-a29216ca2485.png" alt="Telegram Customer Service" />
                     <AvatarFallback className="bg-gradient-primary">
                       <MessageCircle className="w-5 h-5 text-primary-foreground" />
-                    </AvatarFallback>
-                  </Avatar>
-                </button>
-                <button className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" title={t("hero.contactSupport")}>
-                  <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-accent/50 transition-all duration-300">
-                    <AvatarImage src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png" alt="Customer Service 2" />
-                    <AvatarFallback className="bg-gradient-accent">
-                      <MessageCircle className="w-5 h-5 text-accent-foreground" />
                     </AvatarFallback>
                   </Avatar>
                 </button>
