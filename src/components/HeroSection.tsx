@@ -488,9 +488,9 @@ export function HeroSection() {
               <div className="flex justify-center gap-4">
                 <button className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" title={t("hero.contactSupport")}>
                   <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
-                    <AvatarImage src="/lovable-uploads/f64c75c0-6345-4c8c-b12e-10f2527d1c3f.png" alt="Telegram Support" />
+                    <AvatarImage src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png" alt="Customer Service 1" />
                     <AvatarFallback className="bg-gradient-primary">
-                      <MessageCircle className="w-5 h-5 text-primary-foreground" />
+                      
                     </AvatarFallback>
                   </Avatar>
                 </button>
