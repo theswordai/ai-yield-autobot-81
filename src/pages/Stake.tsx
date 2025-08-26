@@ -45,6 +45,10 @@ export default function Stake({
   }>({});
   const [vaultPending, setVaultPending] = useState<bigint>(0n);
   const [referralClaimed, setReferralClaimed] = useState<bigint>(0n);
+  const [totalClaimedRewards, setTotalClaimedRewards] = useState<bigint>(() => {
+    const stored = localStorage.getItem('totalClaimedRewards');
+    return stored ? BigInt(stored) : 0n;
+  });
   const [inviterCode, setInviterCode] = useState<string>("");
   const [userPositions, setUserPositions] = useState<any[]>([]);
   const topPad = embedded ? "pt-8" : "pt-24";
@@ -432,6 +436,10 @@ export default function Stake({
     try {
       if (!signer || !vault) throw new Error(t("staking.connectWalletFirst"));
       if (chainId !== TARGET_CHAIN) toast.warning(t("staking.switchToBSCToOperate"));
+      
+      // 记录领取前的待领取金额
+      const beforeClaim = vaultPending;
+      
       setLoading(s => ({
         ...s,
         vaultClaim: true
@@ -439,6 +447,14 @@ export default function Stake({
       const tx = await (vault as any).claim();
       toast.info(t("staking.submitting") + " " + tx.hash);
       await tx.wait();
+      
+      // 更新累计已领取奖励
+      if (beforeClaim > 0n) {
+        const newTotal = totalClaimedRewards + beforeClaim;
+        setTotalClaimedRewards(newTotal);
+        localStorage.setItem('totalClaimedRewards', newTotal.toString());
+      }
+      
       toast.success(t("staking.rewardsClaimed"));
       await refreshVault();
       await refresh();
@@ -763,10 +779,10 @@ export default function Stake({
                     <span className="text-sm text-muted-foreground">{t("staking.claimableRewards")}</span>
                     <span className="font-mono font-semibold">{formatUnits(vaultPending ?? 0n, USDT_DECIMALS)} USDT</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">{t("staking.lightedHeartRewards")}</span>
-                    <span className="font-mono text-xs">{formatUnits(referralClaimed ?? 0n, USDT_DECIMALS)} USDT</span>
-                  </div>
+                   <div className="flex justify-between">
+                     <span className="text-sm text-muted-foreground">{t("staking.lightedHeartRewards")}</span>
+                     <span className="font-mono text-xs">{formatUnits(totalClaimedRewards ?? 0n, USDT_DECIMALS)} USDT</span>
+                   </div>
                 </div>
                 <Button className="w-full bg-accent hover:bg-accent/90" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
                   <Gift className="w-4 h-4 mr-2" />
