@@ -59,25 +59,7 @@ export default function UserCenter() {
             </TabsContent>
             {!isEnglish && (
               <TabsContent value="referral">
-                {hasPositions ? (
-                  <Referral embedded onRefresh={refreshData} />
-                ) : (
-                  <Card className="text-center py-12">
-                    <CardHeader>
-                      <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                        <Lock className="w-8 h-8 text-muted-foreground" />
-                      </div>
-                      <CardTitle className="text-xl text-muted-foreground">
-                        {t("user.memberOnlyFeature")}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        {t("user.memberOnlyDescription")}
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
+                <Referral embedded onRefresh={refreshData} />
               </TabsContent>
             )}
           </div>

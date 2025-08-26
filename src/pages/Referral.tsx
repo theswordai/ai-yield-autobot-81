@@ -13,6 +13,8 @@ import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { REFERRAL_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, LOCK_ADDRESS } from "@/config/contracts";
+import { encodeAddress } from "@/lib/addressCode";
+import { useLocation } from "react-router-dom";
 export default function Referral({
   embedded = false,
   onRefresh
@@ -57,10 +59,14 @@ export default function Referral({
   const [storedInviter, setStoredInviter] = useState<string | null>(() => localStorage.getItem("inviter"));
   const [binding, setBinding] = useState(false);
   const [claiming, setClaiming] = useState(false);
+  const [inviterInput, setInviterInput] = useState("");
+  const location = useLocation();
   const Title = (embedded ? 'h2' : 'h1') as any;
   const ZERO = "0x0000000000000000000000000000000000000000";
   const referralCode = account || "";
   const inviteLink = account ? `${window.location.origin}/invite/${account}` : `${window.location.origin}/invite/----`;
+  const shortCode = account ? encodeAddress(account) : "";
+  const shortInviteLink = account ? `${window.location.origin}/zh/i/${shortCode}` : "";
 
   // 邀请排行榜（合并直推与间推的贡献奖励，按金额降序，最多10条）
   const leaderboard = useMemo(() => {
@@ -82,6 +88,36 @@ export default function Referral({
     if (!address || address.length < 10) return address;
     return `...${address.slice(-10)}`;
   };
+  // 处理邀请链接自动定位和填充
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldScrollToInviter = urlParams.get('scrollToInviter');
+    const inviterFromStorage = localStorage.getItem('inviter');
+    
+    if (shouldScrollToInviter === 'true' && inviterFromStorage) {
+      // 自动填充邀请人地址
+      setInviterInput(inviterFromStorage);
+
+      // 延迟滚动到邀请关系位置
+      setTimeout(() => {
+        const inviterSection = document.getElementById('inviter-section');
+        if (inviterSection) {
+          inviterSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+        }
+      }, 1000);
+
+      // 清理URL参数
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
+  // 检测storedInviter或手动输入，用于确定最终绑定的地址
+  const finalInviterToShow = inviterInput || storedInviter;
+  const hasInviterToBind = finalInviterToShow && /^0x[a-fA-F0-9]{40}$/.test(finalInviterToShow);
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -247,15 +283,26 @@ export default function Referral({
       description: "邀请链接已复制到剪贴板"
     });
   };
+
+  const copyShortInviteLink = () => {
+    navigator.clipboard.writeText(shortInviteLink);
+    toast({
+      title: "复制成功", 
+      description: "短码邀请链接已复制到剪贴板"
+    });
+  };
   const onBind = async () => {
     try {
       if (!account || !registryWrite) throw new Error("请先连接钱包");
       const inv = storedInviter?.toLowerCase();
-      if (!inv || !/^0x[a-fA-F0-9]{40}$/.test(inv)) throw new Error("未检测到有效的邀请人");
-      if (inv === account.toLowerCase()) throw new Error("不能绑定自己为上级");
+      const inputInv = inviterInput?.toLowerCase();
+      const finalInv = inputInv && /^0x[a-fA-F0-9]{40}$/.test(inputInv) ? inputInv : inv;
+      
+      if (!finalInv || !/^0x[a-fA-F0-9]{40}$/.test(finalInv)) throw new Error("未检测到有效的邀请人");
+      if (finalInv === account.toLowerCase()) throw new Error("不能绑定自己为上级");
       if (boundInviter && boundInviter !== ZERO) throw new Error("已绑定，无需重复");
       setBinding(true);
-      const tx = await (registryWrite as any).bind(inv);
+      const tx = await (registryWrite as any).bind(finalInv);
       toast({
         title: "提交中",
         description: tx.hash
@@ -264,7 +311,7 @@ export default function Referral({
       toast({
         title: "绑定成功"
       });
-      setBoundInviter(inv);
+      setBoundInviter(finalInv);
     } catch (e: any) {
       toast({
         title: "绑定失败",
@@ -322,20 +369,42 @@ export default function Referral({
         </div>
 
         {/* Bind status */}
-        <div className="mb-6">
-          {boundInviter && boundInviter !== ZERO ? <div className="flex items-center justify-between p-3 border border-border rounded-md">
+        <div className="mb-6" id="inviter-section">
+          {boundInviter && boundInviter !== ZERO ? (
+            <div className="flex items-center justify-between p-3 border border-border rounded-md">
               <span className="text-sm">已绑定上级：<span className="font-mono">0x…{boundInviter.slice(-4)}</span></span>
               <span className="text-xs text-muted-foreground">绑定后不可更改</span>
-            </div> : <div className="flex items-center justify-between p-3 border border-dashed rounded-md">
-              <span className="text-sm">
-                {storedInviter ? <>
-                  检测到邀请人：<span className="font-mono">0x…{storedInviter.slice(-4)}</span>
-                </> : "未检测到邀请人"}
-              </span>
-              <div className="flex gap-2">
-                <Button size="sm" variant="secondary" disabled={!storedInviter || binding} onClick={onBind}>一键绑定</Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 border border-dashed rounded-md">
+                <span className="text-sm">
+                  {finalInviterToShow ? (
+                    <>检测到邀请人：<span className="font-mono">0x…{finalInviterToShow.slice(-4)}</span></>
+                  ) : (
+                    "请输入邀请码或邀请人地址"
+                  )}
+                </span>
               </div>
-            </div>}
+              <div className="space-y-2">
+                <Input
+                  placeholder="请输入邀请码或邀请人地址"
+                  value={inviterInput}
+                  onChange={(e) => setInviterInput(e.target.value)}
+                  className="font-mono text-sm"
+                />
+                <Button 
+                  size="sm" 
+                  variant="secondary" 
+                  disabled={!hasInviterToBind || binding} 
+                  onClick={onBind}
+                  className="w-full"
+                >
+                  {hasInviterToBind ? "点击绑定" : "绑定邀请人"}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Stats Grid */}
@@ -422,8 +491,46 @@ export default function Referral({
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Referral Code & Link */}
-          
+          {/* My Invite Address */}
+          {account && (
+            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Share2 className="w-5 h-5 text-primary" />
+                  我的邀请地址
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {(stats.directReferrals + stats.indirectReferrals) === 0 ? (
+                  <div className="text-sm text-muted-foreground text-center py-4">
+                    只有投资人才有邀请资格
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">邀请地址</label>
+                      <div className="flex gap-2">
+                        <Input value={referralCode} readOnly className="font-mono text-xs" />
+                        <Button onClick={copyReferralCode} variant="outline" size="icon">
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">邀请链接</label>
+                      <div className="flex gap-2">
+                        <Input value={shortInviteLink} readOnly className="font-mono text-xs" />
+                        <Button onClick={copyShortInviteLink} variant="outline" size="icon">
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Reward Structure */}
           <Card>
