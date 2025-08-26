@@ -27,14 +27,18 @@ export function InvestmentDashboard({
   // 收益趋势数据
   const earningsTrend = useMemo(() => {
     const points = 12;
-    const dailyRate = aprPercent / 100 / 365;
+    // 年收益 = 本金 × APR
+    const yearlyEarnings = principalAfterFee * (aprPercent / 100);
+    // 日收益 = 年收益 ÷ 365
+    const dailyEarnings = yearlyEarnings / 365;
+    
     return Array.from({
       length: points
     }, (_, i) => {
-      const days = lockDays / points * (i + 1);
-      const earnings = principalAfterFee * dailyRate * days;
+      const days = Math.round(lockDays / points * (i + 1));
+      const earnings = dailyEarnings * days;
       return {
-        day: Math.round(days),
+        day: days,
         earnings: parseFloat(earnings.toFixed(2)),
         total: parseFloat((principalAfterFee + earnings).toFixed(2))
       };
