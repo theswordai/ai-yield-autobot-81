@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Users, Gift, TrendingUp, Share2, Trophy } from "lucide-react";
+import { Copy, Users, Gift, TrendingUp, Share2, Trophy, Link } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
@@ -13,6 +13,8 @@ import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { REFERRAL_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, LOCK_ADDRESS } from "@/config/contracts";
+import { useStakingData } from "@/hooks/useStakingData";
+import { encodeAddress, decodeAddress } from "@/lib/addressCode";
 export default function Referral({
   embedded = false,
   onRefresh
@@ -60,7 +62,43 @@ export default function Referral({
   const Title = (embedded ? 'h2' : 'h1') as any;
   const ZERO = "0x0000000000000000000000000000000000000000";
   const referralCode = account || "";
-  const inviteLink = account ? `${window.location.origin}/invite/${account}` : `${window.location.origin}/invite/----`;
+  const { data: stakingData } = useStakingData();
+  
+  // 检查用户是否有仓位
+  const hasPositions = stakingData && stakingData.activePositions.length > 0;
+  
+  // 生成邀请链接 (使用短码)
+  const generateInviteLink = (address: string) => {
+    try {
+      const shortCode = encodeAddress(address);
+      return `${window.location.origin}/zh/referral?invite=${shortCode}`;
+    } catch {
+      return "";
+    }
+  };
+  
+  const inviteLink = account && hasPositions ? generateInviteLink(account) : "";
+  
+  // 检查URL参数中的邀请码
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('invite');
+    
+    if (inviteCode) {
+      try {
+        // 尝试解析短码
+        const inviterAddress = decodeAddress(inviteCode);
+        setStoredInviter(inviterAddress);
+        localStorage.setItem("inviter", inviterAddress);
+      } catch {
+        // 如果短码解析失败，检查是否是完整地址
+        if (/^0x[a-fA-F0-9]{40}$/.test(inviteCode)) {
+          setStoredInviter(inviteCode);
+          localStorage.setItem("inviter", inviteCode);
+        }
+      }
+    }
+  }, []);
 
   // 邀请排行榜（合并直推与间推的贡献奖励，按金额降序，最多10条）
   const leaderboard = useMemo(() => {
@@ -241,11 +279,13 @@ export default function Referral({
     });
   };
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    toast({
-      title: "复制成功",
-      description: "邀请链接已复制到剪贴板"
-    });
+    if (inviteLink) {
+      navigator.clipboard.writeText(inviteLink);
+      toast({
+        title: "复制成功",
+        description: "邀请链接已复制到剪贴板"
+      });
+    }
   };
   const onBind = async () => {
     try {
@@ -333,7 +373,9 @@ export default function Referral({
                 </> : "未检测到邀请人"}
               </span>
               <div className="flex gap-2">
-                <Button size="sm" variant="secondary" disabled={!storedInviter || binding} onClick={onBind}>一键绑定</Button>
+                <Button size="sm" variant="secondary" disabled={!storedInviter || binding} onClick={onBind}>
+                  {storedInviter ? "点击绑定" : "一键绑定"}
+                </Button>
               </div>
             </div>}
         </div>
@@ -423,7 +465,73 @@ export default function Referral({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Referral Code & Link */}
-          
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Share2 className="w-5 h-5" />
+                我的邀请码
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">邀请地址</label>
+                <div className="flex gap-2">
+                  <Input
+                    value={referralCode}
+                    readOnly
+                    placeholder="请先连接钱包"
+                    className="font-mono"
+                  />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={copyReferralCode}
+                    disabled={!account}
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* 邀请链接 - 只有有仓位的用户才显示 */}
+              {hasPositions && (
+                <div>
+                  <label className="text-sm font-medium mb-2 block">邀请链接（短码）</label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={inviteLink}
+                      readOnly
+                      placeholder="生成中..."
+                      className="font-mono text-xs"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={copyReferralLink}
+                      disabled={!inviteLink}
+                    >
+                      <Link className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    通过此链接邀请的用户将自动绑定您的邀请关系
+                  </p>
+                </div>
+              )}
+
+              {/* 无仓位提示 */}
+              {!hasPositions && (
+                <div className="p-3 border border-dashed rounded-lg text-center">
+                  <p className="text-sm text-muted-foreground">
+                    只有投资人才有邀请资格
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    先进行投资以获得邀请权限
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Reward Structure */}
           <Card>
