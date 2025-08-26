@@ -496,7 +496,7 @@ export function HeroSection() {
                   onClick={() => window.open('https://t.me/usdvservice', '_blank')}
                 >
                   <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
-                    <AvatarImage src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png" alt="Customer Service 1" />
+                    <AvatarImage src="/lovable-uploads/bf7773a4-a71f-4db0-b011-a29216ca2485.png" alt="Telegram Customer Service" />
                     <AvatarFallback className="bg-gradient-primary">
                       <MessageCircle className="w-5 h-5 text-primary-foreground" />
                     </AvatarFallback>
