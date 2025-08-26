@@ -476,7 +476,7 @@
     "expectedReturns": "预期收益", 
     "totalReturns": "预期总回报",
     "lockPeriodComparison": "锁仓期对比",
-    "returnsGrowthTrend": "收益增长趋势",
+    "returnsGrowthTrend": "收益增长趋势（预估）",
     "cumulativeReturns": "累积善意收益",
     "day": "天"
   },

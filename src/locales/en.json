@@ -307,7 +307,7 @@
     "expectedReturns": "Expected Returns",
     "totalReturns": "Total Returns",
     "lockPeriodComparison": "Lock Period Comparison",
-    "returnsGrowthTrend": "Returns Growth Trend",
+    "returnsGrowthTrend": "Returns Growth Trend (Estimated)",
     "cumulativeReturns": "Cumulative Returns",
     "day": "Day"
   },
