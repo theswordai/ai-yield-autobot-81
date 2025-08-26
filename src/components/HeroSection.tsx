@@ -481,7 +481,7 @@ export function HeroSection() {
                 <a href="#" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group" title="Twitter">
                   <Twitter className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </a>
-                <a href="#" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
+                <a href="https://t.me/OfficialUSDONLINE" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
                   <Send className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
                 </a>
               </div>
