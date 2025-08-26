@@ -166,6 +166,17 @@ export function InvestmentDashboard({
                     <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity={0} />
                   </linearGradient>
                 </defs>
+                <XAxis 
+                  dataKey="day" 
+                  tick={{ fontSize: 12 }}
+                  tickFormatter={(value, index) => {
+                    if (index === 0) return "day 0";
+                    if (index === earningsTrend.length - 1) return "last day";
+                    return "";
+                  }}
+                  axisLine={false}
+                  tickLine={false}
+                />
                 <Area type="monotone" dataKey="earnings" stroke="hsl(var(--accent))" strokeWidth={2} fill="url(#earningsGradient)" />
                 <Tooltip content={({
                 active,
