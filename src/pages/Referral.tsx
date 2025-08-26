@@ -51,6 +51,8 @@ export default function Referral({
     earnings: string;
     date: string;
   }[]>([]);
+  const [directReferrals, setDirectReferrals] = useState<string[]>([]);
+  const [indirectReferrals, setIndirectReferrals] = useState<string[]>([]);
   const [boundInviter, setBoundInviter] = useState<string>("0x0000000000000000000000000000000000000000");
   const [storedInviter, setStoredInviter] = useState<string | null>(() => localStorage.getItem("inviter"));
   const [binding, setBinding] = useState(false);
@@ -112,6 +114,10 @@ export default function Referral({
           }),
           level: Number(levelBn ?? 0n)
         });
+        
+        // 设置直推和间推地址
+        setDirectReferrals(directs);
+        setIndirectReferrals(indirects);
         let list: any[] = [];
         try {
           if (lock) {
@@ -491,27 +497,79 @@ export default function Referral({
             <CardTitle>邀请图谱</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {tree.map((ref, index) => <div key={index} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/20 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <Badge variant={ref.level === 1 ? "default" : "secondary"}>
-                      L{ref.level}
-                    </Badge>
-                    <span className="font-mono text-sm">{ref.user}</span>
-                    <span className="text-sm text-muted-foreground">{ref.date}</span>
+            <div className="space-y-4">
+              {/* 直推地址 */}
+              {directReferrals.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-3 text-primary">直推地址 ({directReferrals.length})</h4>
+                  <div className="space-y-2">
+                    {directReferrals.map((address, index) => (
+                      <div key={`direct-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <Badge variant="default">L1</Badge>
+                          <span className="font-mono text-sm">{address}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          直接邀请
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span>投资: <span className="font-semibold">${ref.amount}</span></span>
-                    <span className="text-accent">奖励: <span className="font-semibold">+${ref.earnings}</span></span>
+                </div>
+              )}
+
+              {/* 间推地址 */}
+              {indirectReferrals.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-3 text-secondary">间推地址 ({indirectReferrals.length})</h4>
+                  <div className="space-y-2">
+                    {indirectReferrals.map((address, index) => (
+                      <div key={`indirect-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <Badge variant="secondary">L2</Badge>
+                          <span className="font-mono text-sm">{address}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          间接邀请
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>)}
+                </div>
+              )}
+
+              {/* 交易记录树（保留原有功能） */}
+              {tree.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-3 text-accent">交易记录</h4>
+                  <div className="space-y-2">
+                    {tree.map((ref, index) => (
+                      <div key={`tree-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <Badge variant={ref.level === 1 ? "default" : "secondary"}>
+                            L{ref.level}
+                          </Badge>
+                          <span className="font-mono text-sm">{ref.user}</span>
+                          <span className="text-sm text-muted-foreground">{ref.date}</span>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span>投资: <span className="font-semibold">${ref.amount}</span></span>
+                          <span className="text-accent">奖励: <span className="font-semibold">+${ref.earnings}</span></span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             
-            {tree.length === 0 && <div className="text-center py-12 text-muted-foreground">
+            {directReferrals.length === 0 && indirectReferrals.length === 0 && tree.length === 0 && (
+              <div className="text-center py-12 text-muted-foreground">
                 <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
                 <p>暂无邀请记录</p>
                 <p className="text-sm">分享邀请码给好友开始赚取奖励</p>
-              </div>}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
