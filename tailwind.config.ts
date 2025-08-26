@@ -87,6 +87,7 @@ export default {
 				'fade-in': 'fade-in 0.3s ease-out',
 				'scale-in': 'scale-in 0.2s ease-out',
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+				'breathing-glow': 'breathing-glow 3s ease-in-out infinite',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -131,6 +132,16 @@ export default {
 					},
 					"50%": {
 						boxShadow: "0 0 40px hsl(47 96% 53% / 0.6)",
+					},
+				},
+				'breathing-glow': {
+					"0%, 100%": {
+						boxShadow: "0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1)",
+						transform: "scale(1)",
+					},
+					"50%": {
+						boxShadow: "0 0 40px hsl(var(--primary) / 0.6), 0 0 80px hsl(var(--primary) / 0.3), 0 0 120px hsl(var(--primary) / 0.1)",
+						transform: "scale(1.02)",
 					},
 				},
 			}

@@ -644,7 +644,7 @@ export default function Stake({
                         bind: false
                       }));
                     }
-                      }} className="w-full electric-button">
+                      }} className={`w-full electric-button ${(!boundInviter || boundInviter === ZERO) ? 'animate-breathing-glow' : ''}`}>
                         <Users className="w-4 h-4 mr-2" />
                         {t("staking.bindInviter")}
                       </Button>
