@@ -805,25 +805,15 @@ export default function Stake({
                   </div> : !hasPositions ? <div className="text-sm text-muted-foreground text-center py-4">
                     {t("staking.onlyInvestorsCanInvite")}
                   </div> : <>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
-                      <div className="flex gap-2">
-                        <Input value={referralCode} readOnly className="font-mono text-xs" />
-                        <Button onClick={copyReferralCode} variant="outline" size="icon">
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">{t("staking.invitationLink")}</label>
-                      <div className="flex gap-2">
-                        <Input value={inviteLink} readOnly className="font-mono text-xs" />
-                        <Button onClick={copyReferralLink} variant="outline" size="icon">
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+                     <div className="space-y-2">
+                       <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
+                       <div className="flex gap-2">
+                         <Input value={referralCode} readOnly className="font-mono text-xs" />
+                         <Button onClick={copyReferralCode} variant="outline" size="icon">
+                           <Copy className="w-4 h-4" />
+                         </Button>
+                       </div>
+                     </div>
                   </>}
               </CardContent>
             </Card>
