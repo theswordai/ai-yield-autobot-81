@@ -656,7 +656,7 @@ export default function Stake({
                   <Button className="flex-1 bg-gradient-primary hover:bg-gradient-primary/90 h-12" disabled={!account || loading.approve} onClick={onApprove}>
                     {loading.approve ? t("staking.approvingButton") : t("staking.approveButton")}
                   </Button>
-                  <Button className="flex-1 h-12 bg-blue-600 hover:bg-blue-700 text-white animate-breathing-blue" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
+                  <Button className="flex-1 h-12 text-white animate-breathing-blue animate-marquee-bg bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-[length:200%_100%] hover:from-blue-700 hover:via-blue-600 hover:to-blue-700" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
                     <DollarSign className="w-4 h-4 mr-2" />
                     {loading.deposit ? t("staking.investingButton") : t("staking.startInvestButton")}
                   </Button>
