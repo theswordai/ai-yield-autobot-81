@@ -76,6 +76,12 @@ export default function Referral({
       earnings
     })).sort((a, b) => b.earnings - a.earnings).slice(0, 10);
   }, [tree]);
+  
+  // 地址缩短显示函数
+  const shortenAddress = (address: string) => {
+    if (!address || address.length < 10) return address;
+    return `...${address.slice(-10)}`;
+  };
   useEffect(() => {
     const load = async () => {
       try {
@@ -507,7 +513,7 @@ export default function Referral({
                       <div key={`direct-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
                         <div className="flex items-center gap-3">
                           <Badge variant="default">L1</Badge>
-                          <span className="font-mono text-sm">{address}</span>
+                          <span className="font-mono text-sm">{shortenAddress(address)}</span>
                         </div>
                         <div className="text-xs text-muted-foreground">
                           直接邀请
@@ -527,7 +533,7 @@ export default function Referral({
                       <div key={`indirect-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
                         <div className="flex items-center gap-3">
                           <Badge variant="secondary">L2</Badge>
-                          <span className="font-mono text-sm">{address}</span>
+                          <span className="font-mono text-sm">{shortenAddress(address)}</span>
                         </div>
                         <div className="text-xs text-muted-foreground">
                           间接邀请
@@ -549,7 +555,7 @@ export default function Referral({
                           <Badge variant={ref.level === 1 ? "default" : "secondary"}>
                             L{ref.level}
                           </Badge>
-                          <span className="font-mono text-sm">{ref.user}</span>
+                          <span className="font-mono text-sm">{shortenAddress(ref.user)}</span>
                           <span className="text-sm text-muted-foreground">{ref.date}</span>
                         </div>
                         <div className="flex items-center gap-4 text-sm">
