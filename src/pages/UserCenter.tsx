@@ -10,7 +10,7 @@ import { useStakingData } from "@/hooks/useStakingData";
 export default function UserCenter() {
   const { t, language } = useI18n();
   const isEnglish = language === 'en';
-  const { data: stakingData, loading } = useStakingData();
+  const { data: stakingData, loading, refreshData } = useStakingData();
   
   // Check if user has staking positions to access VIP features
   const hasPositions = !loading && stakingData && stakingData.activePositions.length > 0;
@@ -60,7 +60,7 @@ export default function UserCenter() {
             {!isEnglish && (
               <TabsContent value="referral">
                 {hasPositions ? (
-                  <Referral embedded />
+                  <Referral embedded onRefresh={refreshData} />
                 ) : (
                   <Card className="text-center py-12">
                     <CardHeader>

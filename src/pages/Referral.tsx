@@ -14,9 +14,11 @@ import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { REFERRAL_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, LOCK_ADDRESS } from "@/config/contracts";
 export default function Referral({
-  embedded = false
+  embedded = false,
+  onRefresh
 }: {
   embedded?: boolean;
+  onRefresh?: () => void;
 }) {
   const {
     toast
@@ -29,10 +31,12 @@ export default function Referral({
   const registry = useMemo(() => provider ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, provider) : null, [provider]);
   const registryWrite = useMemo(() => signer ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, signer) : null, [signer]);
   const vault = useMemo(() => provider ? new Contract(VAULT_ADDRESS, RewardsVault_ABI, provider) : null, [provider]);
+  const vaultWrite = useMemo(() => signer ? new Contract(VAULT_ADDRESS, RewardsVault_ABI, signer) : null, [signer]);
   const lock = useMemo(() => provider ? new Contract(LOCK_ADDRESS, LockStaking_ABI, provider) : null, [provider]);
   const [stats, setStats] = useState({
     totalReferrals: 0,
     totalEarnings: "0.00",
+    pendingRewards: "0.00", // 可领取奖励
     // pending + claimed (USDT)
     directReferrals: 0,
     indirectReferrals: 0,
@@ -50,6 +54,7 @@ export default function Referral({
   const [boundInviter, setBoundInviter] = useState<string>("0x0000000000000000000000000000000000000000");
   const [storedInviter, setStoredInviter] = useState<string | null>(() => localStorage.getItem("inviter"));
   const [binding, setBinding] = useState(false);
+  const [claiming, setClaiming] = useState(false);
   const Title = (embedded ? 'h2' : 'h1') as any;
   const ZERO = "0x0000000000000000000000000000000000000000";
   const referralCode = account || "";
@@ -95,6 +100,9 @@ export default function Referral({
         setStats({
           totalReferrals: directs.length + indirects.length,
           totalEarnings: Number(formatUnits(totalEarningsBn, USDT_DECIMALS)).toLocaleString(undefined, {
+            maximumFractionDigits: 2
+          }),
+          pendingRewards: Number(formatUnits(vaultPending ?? 0n, USDT_DECIMALS)).toLocaleString(undefined, {
             maximumFractionDigits: 2
           }),
           directReferrals: directs.length,
@@ -254,6 +262,38 @@ export default function Referral({
       setBinding(false);
     }
   };
+
+  const claimRewards = async () => {
+    try {
+      if (!account || !vaultWrite) throw new Error("请先连接钱包");
+      
+      setClaiming(true);
+      const tx = await (vaultWrite as any).claim();
+      toast({
+        title: "提交中",
+        description: tx.hash
+      });
+      await tx.wait();
+      toast({
+        title: "领取成功"
+      });
+      
+      // 重新加载数据以更新显示
+      if (onRefresh) {
+        onRefresh();
+      } else {
+        // 如果没有外部刷新函数，重新加载当前组件数据
+        window.location.reload();
+      }
+    } catch (e: any) {
+      toast({
+        title: "领取失败",
+        description: e?.shortMessage || e?.message || "请稍后重试"
+      });
+    } finally {
+      setClaiming(false);
+    }
+  };
   return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       {!embedded && <Navbar />}
       {!embedded && <Helmet>
@@ -309,6 +349,26 @@ export default function Referral({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-accent">${stats.totalEarnings}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Gift className="w-4 h-4 text-primary" />
+                可领取奖励
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="text-2xl font-bold text-primary">${stats.pendingRewards}</div>
+              <Button 
+                onClick={claimRewards}
+                disabled={claiming || Number(stats.pendingRewards.replace(/,/g, '')) === 0}
+                size="sm"
+                className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+              >
+                {claiming ? "领取中..." : "立即领取"}
+              </Button>
             </CardContent>
           </Card>
 
