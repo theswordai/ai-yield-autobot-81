@@ -662,7 +662,7 @@ export default function Stake({
                   </Button>
                 </div>
                 {needApprove && <p className="text-xs text-muted-foreground text-center">
-                    {t("staking.approveNote")}
+                    首先点击黄色按钮，通过后，再点击蓝色投资。
                   </p>}
 
                 {/* 财富与善意的分配机制 */}
