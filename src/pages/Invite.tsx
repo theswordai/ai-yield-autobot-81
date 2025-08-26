@@ -25,10 +25,7 @@ export default function Invite() {
     const langMatch = currentPath.match(/^\/([a-z]{2})/);
     const langPrefix = langMatch ? `/${langMatch[1]}` : '/zh';
     
-    // 如果是短码邀请链接 (/i/xxx)，跳转到 referral 页面
-    const isShortCode = currentPath.includes('/i/');
-    const targetPage = isShortCode ? 'user' : 'invest';
-    const t = setTimeout(() => navigate(`${langPrefix}/${targetPage}?scrollToInviter=true`, { replace: true }), 400);
+    const t = setTimeout(() => navigate(`${langPrefix}/invest?scrollToInviter=true`, { replace: true }), 400);
     return () => clearTimeout(t);
   }, [inviterParam, codeParam, navigate, location.pathname]);
 

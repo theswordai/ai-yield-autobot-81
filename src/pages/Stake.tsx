@@ -656,13 +656,13 @@ export default function Stake({
                   <Button className="flex-1 bg-gradient-primary hover:bg-gradient-primary/90 h-12" disabled={!account || loading.approve} onClick={onApprove}>
                     {loading.approve ? t("staking.approvingButton") : t("staking.approveButton")}
                   </Button>
-                  <Button variant="secondary" className="flex-1 h-12 animate-breathing-glow" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
+                  <Button className="flex-1 h-12 text-white animate-breathing-blue animate-marquee-bg bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-[length:200%_100%] hover:from-blue-700 hover:via-blue-600 hover:to-blue-700" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
                     <DollarSign className="w-4 h-4 mr-2" />
                     {loading.deposit ? t("staking.investingButton") : t("staking.startInvestButton")}
                   </Button>
                 </div>
                 {needApprove && <p className="text-xs text-muted-foreground text-center">
-                    {t("staking.approveNote")}
+                    首先点击黄色按钮，通过后，再点击蓝色投资。
                   </p>}
 
                 {/* 财富与善意的分配机制 */}
@@ -805,25 +805,15 @@ export default function Stake({
                   </div> : !hasPositions ? <div className="text-sm text-muted-foreground text-center py-4">
                     {t("staking.onlyInvestorsCanInvite")}
                   </div> : <>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
-                      <div className="flex gap-2">
-                        <Input value={referralCode} readOnly className="font-mono text-xs" />
-                        <Button onClick={copyReferralCode} variant="outline" size="icon">
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">{t("staking.invitationLink")}</label>
-                      <div className="flex gap-2">
-                        <Input value={inviteLink} readOnly className="font-mono text-xs" />
-                        <Button onClick={copyReferralLink} variant="outline" size="icon">
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+                     <div className="space-y-2">
+                       <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
+                       <div className="flex gap-2">
+                         <Input value={referralCode} readOnly className="font-mono text-xs" />
+                         <Button onClick={copyReferralCode} variant="outline" size="icon">
+                           <Copy className="w-4 h-4" />
+                         </Button>
+                       </div>
+                     </div>
                   </>}
               </CardContent>
             </Card>
