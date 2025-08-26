@@ -137,7 +137,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">{t("common.loading")} {items.length} {t("positions.title")}</p>
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" onClick={load} disabled={loading}>{t("common.loading")}</Button>
+          <Button variant="secondary" size="sm" onClick={load} disabled={loading}>刷新</Button>
         </div>
       </div>
 
