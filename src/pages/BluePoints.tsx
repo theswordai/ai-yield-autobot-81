@@ -21,7 +21,7 @@ export default function BluePoints() {
   } = useStakingData();
   const { t } = useI18n();
 
-  // 积分状态
+  // USDV状态
   const [points, setPoints] = useState(0);
   const [dailySignedIn, setDailySignedIn] = useState(false);
   const [spinUsed, setSpinUsed] = useState(false);
@@ -123,13 +123,13 @@ export default function BluePoints() {
     color: '#06b6d4'
   }];
 
-  // 计算投资积分：每1U本金 = 100积分
+  // 计算投资USDV：每1U本金 = 100USDV
   const investmentPoints = stakingData?.activePositions?.reduce((total, position) => {
     const principalInUsdt = Number(formatUnits(position.principal, 18)); // USDT有18位小数
     return total + Math.floor(principalInUsdt * 100);
   }, 0) || 0;
 
-  // 计算邀请积分：已邀请奖励乘以100
+  // 计算邀请USDV：已邀请奖励乘以100
   const referralPoints = stakingData?.rewardsVaultClaimed ? Math.floor(Number(formatUnits(stakingData.rewardsVaultClaimed, 18)) * 100) : 0;
 
   // 检查VIP等级
@@ -141,9 +141,9 @@ export default function BluePoints() {
     setVipLevel(currentLevel);
   }, [points, investmentPoints, referralPoints]);
 
-  // 清空所有积分数据 (开发测试用)
+  // 清空所有USDV数据 (开发测试用)
   const clearAllPoints = () => {
-    // 清空所有localStorage中的积分相关数据
+    // 清空所有localStorage中的USDV相关数据
     const keys = Object.keys(localStorage);
     keys.forEach(key => {
       if (key.includes('bluePoints_') || key.includes('lastSignInTime_') || key.includes('lastSpinTime_') || key.includes('signInStreak_') || key.includes('dailyTasks_') || key.includes('investmentRewardsClaimed_')) {
@@ -162,7 +162,7 @@ export default function BluePoints() {
       spin: false,
       trade: false
     });
-    toast.success('所有积分数据已清空！');
+    toast.success('所有USDV数据已清空！');
   };
 
   // 检查24小时冷却状态
@@ -188,7 +188,7 @@ export default function BluePoints() {
   useEffect(() => {
     if (!account) return;
 
-    // 加载积分
+    // 加载USDV
     const savedPoints = localStorage.getItem(`bluePoints_${account}`) || '0';
     setPoints(parseInt(savedPoints));
 
@@ -220,13 +220,13 @@ export default function BluePoints() {
     let consecutiveBonus = 0;
     const newStreak = signInStreak + 1;
     if (newStreak % 30 === 0) {
-      consecutiveBonus = 200; // 连续30天额外200积分
+      consecutiveBonus = 200; // 连续30天额外200USDV
     } else if (newStreak % 15 === 0) {
-      consecutiveBonus = 100; // 连续15天额外100积分
+      consecutiveBonus = 100; // 连续15天额外100USDV
     } else if (newStreak % 7 === 0) {
-      consecutiveBonus = 50; // 连续7天额外50积分
+      consecutiveBonus = 50; // 连续7天额外50USDV
     } else if (newStreak % 3 === 0) {
-      consecutiveBonus = 20; // 连续3天额外20积分
+      consecutiveBonus = 20; // 连续3天额外20USDV
     }
     const totalReward = baseReward + streakBonus + vipBonus + consecutiveBonus;
     const newPoints = points + totalReward;
@@ -248,7 +248,7 @@ export default function BluePoints() {
     if (vipBonus > 0) {
       description += ` VIP奖励 +${vipBonus}`;
     }
-    toast.success(`签到成功！获得 ${totalReward} 蓝光极慈币！`, {
+    toast.success(`签到成功！获得 ${totalReward} USDV！`, {
       description
     });
   };
@@ -288,7 +288,7 @@ export default function BluePoints() {
       ...prev,
       spin: true
     }));
-    toast.success(`恭喜！抽中 ${totalReward} 蓝光极慈币！`, {
+    toast.success(`恭喜！抽中 ${totalReward} USDV！`, {
       description: `基础奖励 ${rewardPoints} ${vipBonus > 0 ? `+ VIP奖励 ${vipBonus}` : ''} (24小时后可再次抽奖)`
     });
   };
@@ -324,7 +324,7 @@ export default function BluePoints() {
       const newClaimedList = [...investmentRewardsClaimed, positionToReward.posId.toString()];
       setInvestmentRewardsClaimed(newClaimedList);
       localStorage.setItem(`investmentRewardsClaimed_${account}`, JSON.stringify(newClaimedList));
-      toast.success(`投资奖励领取成功！获得 ${totalReward} 蓝光极慈币！`, {
+      toast.success(`投资奖励领取成功！获得 ${totalReward} USDV！`, {
         description: `仓位 #${positionToReward.posId.toString()}`
       });
       return;
@@ -347,12 +347,12 @@ export default function BluePoints() {
       ...JSON.parse(localStorage.getItem(`dailyTasks_${account}`) || '{}'),
       [taskId]: today
     }));
-    toast.success(`任务完成！获得 ${totalReward} 蓝光极慈币！`, {
+    toast.success(`任务完成！获得 ${totalReward} USDV！`, {
       description: task.name
     });
   };
 
-  // 格式化积分显示
+  // 格式化USDV显示
   const formatPoints = (num: number) => {
     if (num >= 10000) return `${(num / 10000).toFixed(1)}万`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
@@ -484,12 +484,12 @@ export default function BluePoints() {
               <p className="text-muted-foreground">{t("bluePoints.connectWalletDesc", "请连接钱包以开始使用蓝光极慈币系统")}</p>
             </CardContent>
           </Card> : <div className="space-y-8">
-            {/* 积分说明 */}
+            {/* USDV说明 */}
             <Card className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/20">
               <CardContent className="text-center py-6">
                 <div className="flex items-center justify-center gap-2 mb-3">
                   <Coins className="w-6 h-6 text-blue-400" />
-                  <h3 className="text-lg font-semibold">{t("bluePoints.pointsRules", "积分获取规则")}</h3>
+                  <h3 className="text-lg font-semibold">{t("bluePoints.pointsRules", "USDV获取规则")}</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="bg-white/5 rounded-lg p-3">
@@ -517,9 +517,9 @@ export default function BluePoints() {
               </CardContent>
             </Card>
 
-            {/* 积分总览 */}
+            {/* USDV总览 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* 积分余额 */}
+              {/* USDV余额 */}
               <Card className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-blue-500/20">
                 <CardContent className="text-center py-6">
                   <div className="flex items-center justify-center gap-2 mb-2">
@@ -569,10 +569,9 @@ export default function BluePoints() {
             </div>
 
             <Tabs defaultValue="tasks" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-5">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="tasks">{t('bluePoints.tabs.dailyTasks')}</TabsTrigger>
                 <TabsTrigger value="spin">{t('bluePoints.tabs.spin')}</TabsTrigger>
-                <TabsTrigger value="exchange">{t('bluePoints.tabs.exchange')}</TabsTrigger>
                 <TabsTrigger value="vip">{t('bluePoints.tabs.vip')}</TabsTrigger>
                 <TabsTrigger value="ranking">{t('bluePoints.tabs.ranking')}</TabsTrigger>
               </TabsList>
@@ -681,106 +680,6 @@ export default function BluePoints() {
                 </Card>
               </TabsContent>
 
-              {/* 积分换币 */}
-              <TabsContent value="exchange" className="space-y-6">
-                <Card className="max-w-4xl mx-auto">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-center">
-                      <Coins className="w-6 h-6 text-yellow-400" />
-                      {t('bluePoints.exchange.title')}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-6 text-center">
-                      <h3 className="text-lg font-semibold mb-2">{t('bluePoints.exchange.availableBalance')}</h3>
-                      <p className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                        {(points + investmentPoints + referralPoints).toLocaleString()}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">{t('bluePoints.exchange.bluePointsCoin')}</p>
-                    </div>
-
-                    {/* 兑换选项 */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {/* USDT 兑换 */}
-                      <Card className="border-yellow-500/20 bg-gradient-to-br from-yellow-500/5 to-orange-500/5">
-                        <CardContent className="p-6 text-center">
-                          <div className="mb-4">
-                            <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                              <Coins className="w-6 h-6 text-yellow-400" />
-                            </div>
-                            <h3 className="font-semibold">USDV</h3>
-                            <p className="text-sm text-muted-foreground">????积分 = 1 USDV</p>
-                          </div>
-                          <Button className="w-full" onClick={() => {
-                        const hasPositions = stakingData?.activePositions && stakingData.activePositions.length > 0;
-                        if (hasPositions) {
-                          toast.info(t('bluePoints.exchange.comingSoon'));
-                        } else {
-                          toast.error(t('bluePoints.exchange.investorsOnlyFeature'));
-                        }
-                      }}>
-                            {t('bluePoints.exchange.exchangeUSDV')}
-                          </Button>
-                        </CardContent>
-                      </Card>
-
-                      {/* BNB 兑换 */}
-                      <Card className="border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-cyan-500/5">
-                        <CardContent className="p-6 text-center">
-                          <div className="mb-4">
-                            <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                              <Gem className="w-6 h-6 text-blue-400" />
-                            </div>
-                            <h3 className="font-semibold">BNB</h3>
-                            <p className="text-sm text-muted-foreground">????积分 = 0.01 BNB</p>
-                          </div>
-                          
-                        </CardContent>
-                      </Card>
-
-                      {/* NFT 兑换 */}
-                      <Card className="border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-pink-500/5">
-                        <CardContent className="p-6 text-center">
-                          <div className="mb-4">
-                            <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                              <Star className="w-6 h-6 text-purple-400" />
-                            </div>
-                            <h3 className="font-semibold">限量NFT</h3>
-                            <p className="text-sm text-muted-foreground">????? 积分 = 1 NFT</p>
-                          </div>
-                          
-                        </CardContent>
-                      </Card>
-                    </div>
-
-                    {/* 兑换规则 */}
-                    <Card className="bg-muted/20">
-                      <CardHeader>
-                        <CardTitle className="text-lg">{t('bluePoints.exchange.exchangeRules')}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">{t('bluePoints.exchange.investorsOnly')}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">{t('bluePoints.exchange.realTimeRates')}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">{t('bluePoints.exchange.dailyLimit')}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-400" />
-                          <span className="text-sm">{t('bluePoints.exchange.directToWallet')}</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
               {/* VIP特权 */}
               <TabsContent value="vip" className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -812,7 +711,7 @@ export default function BluePoints() {
                 </div>
               </TabsContent>
 
-              {/* 积分排行 */}
+              {/* USDV排行 */}
               <TabsContent value="ranking" className="space-y-6">
                 <Card>
                   <CardHeader>

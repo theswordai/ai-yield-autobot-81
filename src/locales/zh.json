@@ -601,17 +601,16 @@
     "oneLineVisionText": "「蓝光极慈币，每一枚都在为人类点亮善意之光。」",
     "connectWalletStart": "连接钱包开始",
     "connectWalletDesc": "请连接钱包以开始使用蓝光极慈币系统",
-    "pointsRules": "积分获取规则",
+    "pointsRules": "USDV获取规则",
     "tabs": {
       "dailyTasks": "每日任务",
       "spin": "转盘抽奖",
-      "exchange": "积分换币",
       "vip": "VIP特权",
-      "ranking": "积分排行"
+      "ranking": "USDV排行"
     },
     "dailyTasks": {
       "completeInvestment": "完成投资",
-      "completeInvestmentDesc": "完成投资获得积分",
+      "completeInvestmentDesc": "完成投资获得USDV",
       "claimReward": "领取奖励",
       "complete": "完成"
     },
@@ -620,7 +619,7 @@
       "spinning": "转盘抽奖中...",
       "tomorrowCome": "明日再来",
       "freeDrawing": "免费抽奖",
-      "pointsLabel": "积分"
+      "pointsLabel": "USDV"
     },
     "exchange": {
       "title": "积分换币中心",

@@ -377,17 +377,16 @@
     "oneLineVisionText": "「Blue Light Charity Coin, each one lights up the light of human kindness.」",
     "connectWalletStart": "Connect Wallet to Start",
     "connectWalletDesc": "Please connect your wallet to start using the Blue Light Charity Coin system",
-    "pointsRules": "Points Earning Rules",
+    "pointsRules": "USDV Earning Rules",
     "tabs": {
       "dailyTasks": "Daily Tasks",
       "spin": "Lucky Spin",
-      "exchange": "Points Exchange",
       "vip": "VIP Privileges",
-      "ranking": "Points Ranking"
+      "ranking": "USDV Ranking"
     },
     "dailyTasks": {
       "completeInvestment": "Complete Investment",
-      "completeInvestmentDesc": "Get points for completing investments, can claim rewards for each position",
+      "completeInvestmentDesc": "Get USDV for completing investments, can claim rewards for each position",
       "claimReward": "Claim Reward",
       "complete": "Complete"
     },
@@ -396,7 +395,7 @@
       "spinning": "Spinning...",
       "tomorrowCome": "Come Tomorrow",
       "freeDrawing": "Free Draw",
-      "pointsLabel": "points"
+      "pointsLabel": "USDV"
     },
     "exchange": {
       "title": "Points Exchange Center", 
