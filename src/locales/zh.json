@@ -674,7 +674,7 @@
       "investmentRewards": "投资奖励",
       "investmentRewardsDesc": "每个仓位可领 1000 USDV",
       "referralPoints": "邀请获得",
-      "referralPointsDesc": "已邀请奖励 × 100",
+      "referralPointsDesc": "已邀请奖励 × 10",
       "todayCompletion": "今日任务完成",
       "distanceToNext": "距离 {{level}} 还需 {{points}} USDV"
     }

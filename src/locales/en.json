@@ -450,7 +450,7 @@
       "investmentRewards": "Investment Rewards", 
       "investmentRewardsDesc": "1000 USDV per position",
       "referralPoints": "Referral Rewards",
-      "referralPointsDesc": "Referral rewards × 100",
+      "referralPointsDesc": "Referral rewards × 10",
       "todayCompletion": "Today's Task Completion",
       "distanceToNext": "{{points}} USDV needed for {{level}}"
     }

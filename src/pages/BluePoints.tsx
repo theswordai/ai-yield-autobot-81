@@ -129,8 +129,8 @@ export default function BluePoints() {
     return total + Math.floor(principalInUsdt * 10);
   }, 0) || 0;
 
-  // 计算邀请USDV：已邀请奖励乘以100
-  const referralPoints = stakingData?.rewardsVaultClaimed ? Math.floor(Number(formatUnits(stakingData.rewardsVaultClaimed, 18)) * 100) : 0;
+  // 计算邀请USDV：已邀请奖励乘以10
+  const referralPoints = stakingData?.rewardsVaultClaimed ? Math.floor(Number(formatUnits(stakingData.rewardsVaultClaimed, 18)) * 10) : 0;
 
   // 检查VIP等级
   useEffect(() => {
