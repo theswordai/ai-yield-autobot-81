@@ -432,27 +432,27 @@
         "signInBonus100": "Sign-in Bonus +100%",
         "spinCount10": "Spin Count +10"
       },
-      "needPoints": "Need {{points}} points",
+      "needPoints": "Need {{points}} USDV",
       "unlocked": "Unlocked"
     },
     "ranking": {
-      "title": "Points Leaderboard",
+      "title": "USDV Leaderboard",
       "comingSoon": "Leaderboard feature coming soon",
       "stayTuned": "Stay tuned..."
     },
     "overview": {
-      "totalPoints": "Total Points (including investment + referral points)",
-      "currentInvestmentPoints": "Current investment points: {{points}}",
-      "currentReferralPoints": "Current referral points: {{points}}",
-      "availableRewards": "Available: {{count}} position rewards",
-      "investmentPoints": "Investment Points",
-      "investmentPointsDesc": "1 USDT invested = 100 points",
+      "totalPoints": "Total USDV (Investment + Referral USDV)",
+      "currentInvestmentPoints": "Current Investment USDV: {{points}} USDV",
+      "currentReferralPoints": "Current Referral USDV: {{points}} USDV",
+      "availableRewards": "Available: {{count}} reward claims",
+      "investmentPoints": "Investment USDV",
+      "investmentPointsDesc": "1 USDT invested = 10 USDV",
       "investmentRewards": "Investment Rewards", 
-      "investmentRewardsDesc": "1000 points per position",
-      "referralPoints": "Referral Points",
+      "investmentRewardsDesc": "1000 USDV per position",
+      "referralPoints": "Referral Rewards",
       "referralPointsDesc": "Referral rewards × 100",
       "todayCompletion": "Today's Task Completion",
-      "distanceToNext": "{{points}} points needed for {{level}}"
+      "distanceToNext": "{{points}} USDV needed for {{level}}"
     }
   },
   "positions": {

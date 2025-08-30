@@ -123,10 +123,10 @@ export default function BluePoints() {
     color: '#06b6d4'
   }];
 
-  // 计算投资USDV：每1U本金 = 100USDV
+  // 计算投资USDV：每1U本金 = 10USDV
   const investmentPoints = stakingData?.activePositions?.reduce((total, position) => {
     const principalInUsdt = Number(formatUnits(position.principal, 18)); // USDT有18位小数
-    return total + Math.floor(principalInUsdt * 100);
+    return total + Math.floor(principalInUsdt * 10);
   }, 0) || 0;
 
   // 计算邀请USDV：已邀请奖励乘以100

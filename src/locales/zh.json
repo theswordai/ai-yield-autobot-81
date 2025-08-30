@@ -656,27 +656,27 @@
         "signInBonus100": "签到奖励+100%",
         "spinCount10": "转盘次数+10"
       },
-      "needPoints": "需要 {{points}} 积分",
+      "needPoints": "需要 {{points}} USDV",
       "unlocked": "已解锁"
     },
     "ranking": {
-      "title": "积分排行榜",
+      "title": "USDV排行榜",
       "comingSoon": "排行榜功能即将上线",
       "stayTuned": "敬请期待..."
     },
     "overview": {
-      "totalPoints": "总积分 (含投资+邀请积分)",
-      "currentInvestmentPoints": "当前投资积分：{{points}}",
-      "currentReferralPoints": "当前邀请积分：{{points}}",
+      "totalPoints": "总USDV (含投资+邀请USDV)",
+      "currentInvestmentPoints": "当前投资USDV：{{points}} USDV",
+      "currentReferralPoints": "当前邀请USDV：{{points}} USDV",
       "availableRewards": "可领取：{{count}} 次奖励",
-      "investmentPoints": "投资获得积分",
-      "investmentPointsDesc": "每投资 1 USDT = 100 积分",
+      "investmentPoints": "投资获得USDV",
+      "investmentPointsDesc": "每投资 1 USDT = 10 USDV",
       "investmentRewards": "投资奖励",
-      "investmentRewardsDesc": "每个仓位可领 1000 积分",
+      "investmentRewardsDesc": "每个仓位可领 1000 USDV",
       "referralPoints": "邀请获得",
       "referralPointsDesc": "已邀请奖励 × 100",
       "todayCompletion": "今日任务完成",
-      "distanceToNext": "距离 {{level}} 还需 {{points}} 积分"
+      "distanceToNext": "距离 {{level}} 还需 {{points}} USDV"
     }
   },
   "positions": {
