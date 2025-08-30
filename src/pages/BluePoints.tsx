@@ -28,7 +28,7 @@ export default function BluePoints() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinResult, setSpinResult] = useState<number | null>(null);
   const [signInStreak, setSignInStreak] = useState(0);
-  const [vipLevel, setVipLevel] = useState(0);
+  
   const [dailyTasks, setDailyTasks] = useState({
     signIn: false,
     spin: false,
@@ -74,44 +74,6 @@ export default function BluePoints() {
     label: `1000${t('bluePoints.spin.pointsLabel')}`
   }];
 
-  // VIP等级配置
-  const vipLevels = [{
-    level: 0,
-    name: t('bluePoints.vip.levels.novice'),
-    points: 0,
-    benefits: [t('bluePoints.vip.benefits.basicFeatures')],
-    color: '#6b7280'
-  }, {
-    level: 1,
-    name: t('bluePoints.vip.levels.bronze'),
-    points: 50000,
-    benefits: [t('bluePoints.vip.benefits.signInBonus10'), t('bluePoints.vip.benefits.spinCount1')],
-    color: '#cd7f32'
-  }, {
-    level: 2,
-    name: t('bluePoints.vip.levels.silver'),
-    points: 200000,
-    benefits: [t('bluePoints.vip.benefits.signInBonus20'), t('bluePoints.vip.benefits.spinCount2')],
-    color: '#c0c0c0'
-  }, {
-    level: 3,
-    name: t('bluePoints.vip.levels.gold'),
-    points: 600000,
-    benefits: [t('bluePoints.vip.benefits.signInBonus30'), t('bluePoints.vip.benefits.spinCount3')],
-    color: '#ffd700'
-  }, {
-    level: 4,
-    name: t('bluePoints.vip.levels.platinum'),
-    points: 3000000,
-    benefits: [t('bluePoints.vip.benefits.signInBonus50'), t('bluePoints.vip.benefits.spinCount5')],
-    color: '#e5e4e2'
-  }, {
-    level: 5,
-    name: t('bluePoints.vip.levels.diamond'),
-    points: 10000000,
-    benefits: [t('bluePoints.vip.benefits.signInBonus100'), t('bluePoints.vip.benefits.spinCount10')],
-    color: '#b9f2ff'
-  }];
 
   // 每日任务配置
   const dailyTasksConfig = [{
@@ -132,14 +94,6 @@ export default function BluePoints() {
   // 计算邀请USDV：已邀请奖励乘以10
   const referralPoints = stakingData?.rewardsVaultClaimed ? Math.floor(Number(formatUnits(stakingData.rewardsVaultClaimed, 18)) * 10) : 0;
 
-  // 检查VIP等级
-  useEffect(() => {
-    const totalPoints = points + investmentPoints + referralPoints;
-    const currentLevel = vipLevels.reduce((level, vip) => {
-      return totalPoints >= vip.points ? vip.level : level;
-    }, 0);
-    setVipLevel(currentLevel);
-  }, [points, investmentPoints, referralPoints]);
 
   // 清空所有USDV数据 (开发测试用)
   const clearAllPoints = () => {
@@ -214,7 +168,7 @@ export default function BluePoints() {
     if (!account || dailySignedIn) return;
     const baseReward = 20;
     const streakBonus = Math.min(signInStreak * 5, 100);
-    const vipBonus = Math.floor(baseReward * (vipLevel * 0.1));
+    const vipBonus = 0;
 
     // 连续签到奖励：3天、7天、15天、30天
     let consecutiveBonus = 0;
@@ -274,7 +228,7 @@ export default function BluePoints() {
       }
     }
     const rewardPoints = selectedPrize.points;
-    const vipBonus = Math.floor(rewardPoints * (vipLevel * 0.1));
+    const vipBonus = 0;
     const totalReward = rewardPoints + vipBonus;
     const newPoints = points + totalReward;
     setPoints(newPoints);
@@ -314,7 +268,7 @@ export default function BluePoints() {
 
       // 领取一个投资奖励
       const positionToReward = availablePositions[0];
-      const vipBonus = Math.floor(task.points * (vipLevel * 0.1));
+      const vipBonus = 0;
       const totalReward = task.points + vipBonus;
       const newPoints = points + totalReward;
       setPoints(newPoints);
@@ -332,7 +286,7 @@ export default function BluePoints() {
 
     // 其他任务的处理（签到等）
     if (dailyTasks[taskId as keyof typeof dailyTasks]) return;
-    const vipBonus = Math.floor(task.points * (vipLevel * 0.1));
+    const vipBonus = 0;
     const totalReward = task.points + vipBonus;
     const newPoints = points + totalReward;
     setPoints(newPoints);
@@ -366,9 +320,6 @@ export default function BluePoints() {
   // 计算可领取的投资奖励数量
   const availableInvestmentRewards = stakingData?.activePositions?.filter(position => !investmentRewardsClaimed.includes(position.posId.toString())).length || 0;
 
-  // 获取当前VIP信息
-  const currentVip = vipLevels[vipLevel];
-  const nextVip = vipLevels[vipLevel + 1];
   return <div className="min-h-screen bg-gradient-dark">
       <Navbar />
       
@@ -518,7 +469,7 @@ export default function BluePoints() {
             </Card>
 
             {/* USDV总览 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* USDV余额 */}
               <Card className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-blue-500/20">
                 <CardContent className="text-center py-6">
@@ -530,23 +481,6 @@ export default function BluePoints() {
                     {(points + investmentPoints + referralPoints).toLocaleString()}
                   </p>
                   <p className="text-sm text-muted-foreground">{t('bluePoints.overview.totalPoints')}</p>
-                </CardContent>
-              </Card>
-
-              {/* VIP等级 */}
-              <Card className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-yellow-500/20">
-                <CardContent className="text-center py-6">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Crown className="w-8 h-8 text-yellow-400" />
-                  </div>
-                  <p className="text-xl font-bold text-yellow-400">{currentVip.name}</p>
-                  <p className="text-sm text-muted-foreground">VIP {vipLevel}</p>
-                {nextVip && <div className="mt-2">
-                      <Progress value={(points + investmentPoints + referralPoints - currentVip.points) / (nextVip.points - currentVip.points) * 100} className="h-2" />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {t('bluePoints.overview.distanceToNext', { level: nextVip.name, points: formatPoints(nextVip.points - (points + investmentPoints + referralPoints)) })}
-                      </p>
-                    </div>}
                 </CardContent>
               </Card>
 
@@ -569,10 +503,9 @@ export default function BluePoints() {
             </div>
 
             <Tabs defaultValue="tasks" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="tasks">{t('bluePoints.tabs.dailyTasks')}</TabsTrigger>
                 <TabsTrigger value="spin">{t('bluePoints.tabs.spin')}</TabsTrigger>
-                <TabsTrigger value="vip">{t('bluePoints.tabs.vip')}</TabsTrigger>
                 <TabsTrigger value="ranking">{t('bluePoints.tabs.ranking')}</TabsTrigger>
               </TabsList>
 
@@ -608,9 +541,6 @@ export default function BluePoints() {
                                   <Badge variant="outline" className="text-xs">
                                     +{task.points} {t('bluePoints.spin.pointsLabel')}
                                   </Badge>
-                                  {vipLevel > 0 && <Badge variant="secondary" className="text-xs">
-                                      VIP +{Math.floor(task.points * vipLevel * 0.1)}
-                                    </Badge>}
                                 </div>
                               </div>
                             </div>
@@ -680,36 +610,6 @@ export default function BluePoints() {
                 </Card>
               </TabsContent>
 
-              {/* VIP特权 */}
-              <TabsContent value="vip" className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {vipLevels.map(vip => <Card key={vip.level} className={`border-2 transition-all ${vipLevel >= vip.level ? 'bg-yellow-500/5 border-yellow-500/30' : 'opacity-60'}`}>
-                      <CardContent className="p-6 text-center">
-                        <div className="flex items-center justify-center gap-2 mb-3">
-                          <Crown className="w-6 h-6" style={{
-                      color: vip.color
-                    }} />
-                          <span className="font-bold text-lg" style={{
-                      color: vip.color
-                    }}>
-                            {vip.name}
-                          </span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-3">
-                          {t('bluePoints.vip.needPoints', { points: formatPoints(vip.points) })}
-                        </p>
-                        <div className="space-y-1">
-                          {vip.benefits.map((benefit, index) => <Badge key={index} variant="outline" className="text-xs">
-                              {benefit}
-                            </Badge>)}
-                        </div>
-                        {vipLevel >= vip.level && <Badge className="mt-3 bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
-                            {t('bluePoints.vip.unlocked')}
-                          </Badge>}
-                      </CardContent>
-                    </Card>)}
-                </div>
-              </TabsContent>
 
               {/* USDV排行 */}
               <TabsContent value="ranking" className="space-y-6">
