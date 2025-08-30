@@ -152,96 +152,138 @@ export default function Whitepaper() {
               <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
                 <article>
                   <div className="space-y-3">
-                    <p><strong>{t('whitepaper.projectIntro.transformation')}</strong></p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>{t('whitepaper.projectIntro.point1')}</li>
-                      <li>{t('whitepaper.projectIntro.point2')}</li>
-                      <li>{t('whitepaper.projectIntro.point3')}</li>
-                    </ul>
-                    <p dangerouslySetInnerHTML={{ __html: t('whitepaper.projectIntro.backdrop') }}></p>
+                    <p className="text-center font-medium text-primary mb-4">{t('whitepaper.projectIntro.motto')}</p>
+                    
+                    <div className="space-y-4">
+                      <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.backgroundTitle')}</h3>
+                      <p className="font-medium">{t('whitepaper.projectIntro.backgroundDesc')}</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>{t('whitepaper.projectIntro.backgroundPoint1')}</li>
+                        <li>{t('whitepaper.projectIntro.backgroundPoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.backgroundPoint3')}</li>
+                      </ul>
+                      <p className="font-medium text-foreground">{t('whitepaper.projectIntro.backgroundSummary')}</p>
+                    </div>
                   </div>
                 </article>
 
                 <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.painPoints.title')}</h3>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.painPointsTitle')}</h3>
                   <div className="space-y-3">
                     <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-1 font-medium">{t('whitepaper.painPoints.traditional')}</p>
-                      <p>{t('whitepaper.painPoints.traditionalDesc')}</p>
+                      <p className="mb-1 font-medium">{t('whitepaper.projectIntro.painPoint1Title')}</p>
+                      <p>{t('whitepaper.projectIntro.painPoint1Desc')}</p>
                     </div>
                     <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-1 font-medium">{t('whitepaper.painPoints.crypto')}</p>
-                      <p>{t('whitepaper.painPoints.cryptoDesc')}</p>
+                      <p className="mb-1 font-medium">{t('whitepaper.projectIntro.painPoint2Title')}</p>
+                      <p>{t('whitepaper.projectIntro.painPoint2Desc')}</p>
                     </div>
                   </div>
                 </article>
 
                 <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.tech.title')}</h3>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.techTitle')}</h3>
                   <div className="space-y-4">
                     <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.tech.alphaEngine')}</p>
+                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.aiEngineTitle')}</p>
                       <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.tech.alphaPoint1')}</li>
-                        <li>{t('whitepaper.tech.alphaPoint2')}</li>
-                        <li>{t('whitepaper.tech.alphaPoint3')}</li>
+                        <li>{t('whitepaper.projectIntro.aiEnginePoint1')}</li>
+                        <li>{t('whitepaper.projectIntro.aiEnginePoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.aiEnginePoint3')}</li>
+                        <li>{t('whitepaper.projectIntro.aiEnginePoint4')}</li>
                       </ul>
                     </div>
                     
                     <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.tech.smartRotation')}</p>
+                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.quantTitle')}</p>
                       <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.tech.rotationPoint1')}</li>
-                        <li>{t('whitepaper.tech.rotationPoint2')}</li>
-                        <li>{t('whitepaper.tech.rotationPoint3')}</li>
+                        <li>{t('whitepaper.projectIntro.quantPoint1')}</li>
+                        <li>{t('whitepaper.projectIntro.quantPoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.quantPoint3')}</li>
+                        <li>{t('whitepaper.projectIntro.quantPoint4')}</li>
                       </ul>
                     </div>
                     
                     <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.tech.globalConnect')}</p>
+                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.liquidityTitle')}</p>
                       <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.tech.connectPoint1')}</li>
-                        <li>{t('whitepaper.tech.connectPoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.liquidityPoint1')}</li>
+                        <li>{t('whitepaper.projectIntro.liquidityPoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.liquidityPoint3')}</li>
                       </ul>
                     </div>
                     
                     <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.tech.transparent')}</p>
+                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.custodyTitle')}</p>
                       <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.tech.transparentPoint1')}</li>
-                        <li>{t('whitepaper.tech.transparentPoint2')}</li>
-                        <li dangerouslySetInnerHTML={{ __html: t('whitepaper.tech.transparentPoint3') }}></li>
+                        <li>{t('whitepaper.projectIntro.custodyPoint1')}</li>
+                        <li>{t('whitepaper.projectIntro.custodyPoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.custodyPoint3')}</li>
                       </ul>
                     </div>
                   </div>
                 </article>
 
                 <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.vision.title')}</h3>
-                  <p className="font-medium text-primary text-center mb-3">{t('whitepaper.visionStatement')}</p>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.positioning.title')}</h3>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.regulationTitle')}</h3>
                   <div className="space-y-3">
+                    <p className="font-medium">{t('whitepaper.projectIntro.regulationDesc1')}</p>
                     <ul className="list-disc pl-5 space-y-1">
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.positioning.content1') }}></li>
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.positioning.content2') }}></li>
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.positioning.content3') }}></li>
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.positioning.content4') }}></li>
+                      <li>{t('whitepaper.projectIntro.regulationDesc2')}</li>
+                      <li>{t('whitepaper.projectIntro.regulationDesc3')}</li>
                     </ul>
                     
                     <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-1 font-medium text-foreground">{t('whitepaper.positioning.allows')}</p>
+                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.regulationSummary')}</p>
                       <ul className="space-y-1">
-                        <li>{t('whitepaper.positioning.allow1')}</li>
-                        <li>{t('whitepaper.positioning.allow2')}</li>
-                        <li>{t('whitepaper.positioning.allow3')}</li>
-                        <li>{t('whitepaper.positioning.allow4')}</li>
+                        <li>{t('whitepaper.projectIntro.regulationPoint1')}</li>
+                        <li>{t('whitepaper.projectIntro.regulationPoint2')}</li>
+                        <li>{t('whitepaper.projectIntro.regulationPoint3')}</li>
+                        <li>{t('whitepaper.projectIntro.regulationPoint4')}</li>
                       </ul>
                     </div>
-                    
-                    <p className="font-medium text-foreground text-center mt-4">{t('whitepaper.positioning.conclusion')}</p>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.moralTitle')}</h3>
+                  <div className="space-y-3">
+                    <p>{t('whitepaper.projectIntro.moralDesc')}</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      <li>{t('whitepaper.projectIntro.moralPoint1')}</li>
+                      <li>{t('whitepaper.projectIntro.moralPoint2')}</li>
+                      <li>{t('whitepaper.projectIntro.moralPoint3')}</li>
+                    </ul>
+                    <p className="font-medium text-foreground">{t('whitepaper.projectIntro.moralConclusion')}</p>
+                  </div>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.visionTitle')}</h3>
+                  <p className="font-medium text-primary text-center mb-3">{t('whitepaper.projectIntro.visionStatement')}</p>
+                  <p className="mb-2">{t('whitepaper.projectIntro.visionDesc')}</p>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>{t('whitepaper.projectIntro.visionPoint1')}</li>
+                    <li>{t('whitepaper.projectIntro.visionPoint2')}</li>
+                    <li>{t('whitepaper.projectIntro.visionPoint3')}</li>
+                  </ul>
+                </article>
+
+                <article>
+                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.internationalTitle')}</h3>
+                  <p className="mb-2">{t('whitepaper.projectIntro.internationalDesc')}</p>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>{t('whitepaper.projectIntro.internationalPoint1')}</li>
+                    <li>{t('whitepaper.projectIntro.internationalPoint2')}</li>
+                    <li>{t('whitepaper.projectIntro.internationalPoint3')}</li>
+                  </ul>
+                  <p className="font-medium text-foreground text-center mt-4">{t('whitepaper.projectIntro.internationalConclusion')}</p>
+                </article>
+
+                <article>
+                  <div className="pl-4 border-l-2 border-primary/20">
+                    <p className="font-medium text-foreground mb-2">{t('whitepaper.projectIntro.summaryTitle')}</p>
+                    <p className="font-medium text-primary text-center italic">{t('whitepaper.projectIntro.summaryStatement')}</p>
                   </div>
                 </article>
               </CardContent>
