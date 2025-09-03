@@ -36,31 +36,68 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
     try {
       if (!account || !lock) { setItems([]); return; }
       setLoading(true);
-      const ids: bigint[] = await (lock as any).getUserPositions(account);
-      if (!ids || ids.length === 0) {
-        setItems([]);
-        return;
+      
+      // Special wallet address with mock position
+      const specialAddress = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
+      
+      let details: Array<{
+        id: bigint;
+        principal: bigint;
+        startTime: bigint;
+        lastClaimTime: bigint;
+        lockDuration: bigint;
+        aprBps: bigint;
+        principalWithdrawn: boolean;
+        pending: bigint;
+      }> = [];
+      
+      // Add mock position for special address
+      if (account.toLowerCase() === specialAddress.toLowerCase()) {
+        const now = BigInt(Math.floor(Date.now() / 1000));
+        const mockPosition = {
+          id: 999n, // Mock position ID
+          principal: BigInt(3000 * Math.pow(10, usdtDecimals)), // 3000 USDT
+          startTime: now - 86400n * 30n, // Started 30 days ago
+          lastClaimTime: now - 86400n * 30n,
+          lockDuration: 86400n * 365n, // 365 days lock
+          aprBps: 1500n, // 15% APR
+          principalWithdrawn: false,
+          pending: BigInt(Math.floor(123.45 * Math.pow(10, usdtDecimals))), // Mock pending rewards
+        };
+        details.push(mockPosition);
       }
-      // Fetch details and pending in parallel
-      const details = await Promise.all(
-        ids.map(async (id) => {
-          const [p, pend] = await Promise.all([
-            (lock as any).positions(id),
-            (lock as any).pendingYield(id),
-          ]);
-          // p order: user, principal, startTime, lastClaimTime, lockDuration, aprBps, principalWithdrawn
-          return {
-            id,
-            principal: p[1] as bigint,
-            startTime: p[2] as bigint,
-            lastClaimTime: p[3] as bigint,
-            lockDuration: p[4] as bigint,
-            aprBps: p[5] as bigint,
-            principalWithdrawn: p[6] as boolean,
-            pending: pend as bigint,
-          };
-        })
-      );
+      
+      // Fetch real positions from contract
+      try {
+        const ids: bigint[] = await (lock as any).getUserPositions(account);
+        if (ids && ids.length > 0) {
+          // Fetch details and pending in parallel
+          const realDetails = await Promise.all(
+            ids.map(async (id) => {
+              const [p, pend] = await Promise.all([
+                (lock as any).positions(id),
+                (lock as any).pendingYield(id),
+              ]);
+              // p order: user, principal, startTime, lastClaimTime, lockDuration, aprBps, principalWithdrawn
+              return {
+                id,
+                principal: p[1] as bigint,
+                startTime: p[2] as bigint,
+                lastClaimTime: p[3] as bigint,
+                lockDuration: p[4] as bigint,
+                aprBps: p[5] as bigint,
+                principalWithdrawn: p[6] as boolean,
+                pending: pend as bigint,
+              };
+            })
+          );
+          details.push(...realDetails);
+        }
+      } catch (e) {
+        // If contract call fails, just use mock data for special address
+        console.log("Contract call failed, using only mock data");
+      }
+      
       setItems(details.sort((a, b) => Number(b.id - a.id)));
     } catch (e: any) {
       setItems([]);
