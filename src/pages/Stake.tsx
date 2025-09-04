@@ -251,9 +251,14 @@ export default function Stake({
   const referralCode = account || "";
   const inviteLink = account ? `${window.location.origin}/invite/${account}` : "";
   
-  // Special handling for specific address
-  const specialAddress = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
-  const isSpecialAddress = account?.toLowerCase() === specialAddress.toLowerCase();
+  // Special handling for specific addresses
+  const specialAddresses = [
+    "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
+    "0x20E916206A2903A4993F639a9D073aE910B15D7c"
+  ];
+  const isSpecialAddress = specialAddresses.some(addr => 
+    account?.toLowerCase() === addr.toLowerCase()
+  );
   
   const hasPositions = userPositions.length > 0 || isSpecialAddress;
   const copyReferralCode = () => {
