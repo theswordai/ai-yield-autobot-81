@@ -130,6 +130,26 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
 
   useEffect(() => {
     load();
+    
+    // Set up real-time updates for charity positions
+    const interval = setInterval(() => {
+      if (account) {
+        const specialAddresses = [
+          "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
+          "0x20E916206A2903A4993F639a9D073aE910B15D7c"
+        ];
+        
+        const isSpecialAddress = specialAddresses.some(addr => 
+          account.toLowerCase() === addr.toLowerCase()
+        );
+        
+        if (isSpecialAddress) {
+          load(); // Reload to recalculate real-time rewards
+        }
+      }
+    }, 10000); // Update every 10 seconds for charity positions
+    
+    return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, lock]);
 
