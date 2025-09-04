@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -16,6 +16,7 @@ export type PositionsListProps = {
 
 export function PositionsList({ account, lock, chainId, targetChain, usdtDecimals }: PositionsListProps) {
   const [loading, setLoading] = useState(false);
+  const [realtimeUpdate, setRealtimeUpdate] = useState(0); // 用于触发实时更新
   const { t } = useI18n();
   const [items, setItems] = useState<
     Array<{
@@ -31,6 +32,33 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
   >([]);
 
   const canInteract = useMemo(() => !!account && !!lock && chainId === targetChain, [account, lock, chainId, targetChain]);
+
+  // 计算特殊地址实时收益的函数
+  const calculateRealTimeRewards = useCallback((address: string, principal: number): bigint => {
+    const startDate = new Date('2025-09-02T00:00:00Z');
+    const now = new Date();
+    const daysSinceStart = Math.max(0, Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+    const aprBps = 28000; // 280% APR
+    const aprPercent = aprBps / 10000; // 转换为小数
+    
+    // 实时收益计算：本金 * 年化收益率 * (投资天数 / 365)
+    const dailyRewards = (principal * aprPercent) / 365;
+    const totalRewards = Math.floor(dailyRewards * daysSinceStart);
+    
+    return BigInt(Math.floor(totalRewards * Math.pow(10, usdtDecimals)));
+  }, [usdtDecimals]);
+
+  // 检查是否为特殊地址
+  const isSpecialAddress = useMemo(() => {
+    if (!account) return false;
+    const specialAddresses = [
+      "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
+      "0x20E916206A2903A4993F639a9D073aE910B15D7c"
+    ];
+    return specialAddresses.some(addr => 
+      account.toLowerCase() === addr.toLowerCase()
+    );
+  }, [account]);
 
   const load = async () => {
     try {
@@ -131,27 +159,25 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
   useEffect(() => {
     load();
     
-    // Set up real-time updates for charity positions
-    const interval = setInterval(() => {
-      if (account) {
-        const specialAddresses = [
-          "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
-          "0x20E916206A2903A4993F639a9D073aE910B15D7c"
-        ];
-        
-        const isSpecialAddress = specialAddresses.some(addr => 
-          account.toLowerCase() === addr.toLowerCase()
-        );
-        
-        if (isSpecialAddress) {
-          load(); // Reload to recalculate real-time rewards
-        }
-      }
-    }, 10000); // Update every 10 seconds for charity positions
+    let interval: NodeJS.Timeout | null = null;
     
-    return () => clearInterval(interval);
+    // 为特殊地址设置每秒实时更新
+    if (isSpecialAddress) {
+      interval = setInterval(() => {
+        setRealtimeUpdate(prev => prev + 1); // 触发重新渲染以显示实时收益
+      }, 1000); // 每秒更新
+    } else {
+      // 普通地址10秒更新一次
+      interval = setInterval(() => {
+        load();
+      }, 10000);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, lock]);
+  }, [account, lock, isSpecialAddress]);
 
   const [busy, setBusy] = useState<Record<string, boolean>>({});
 
@@ -229,7 +255,25 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
           const matureAt = Number(it.startTime + it.lockDuration) * 1000;
           const matured = Date.now() >= matureAt;
           const aprPct = Number(it.aprBps) / 100; // bps -> %
-          const pending = Number(formatUnits(it.pending ?? 0n, usdtDecimals));
+          
+          // 为特殊地址计算实时收益
+          let realTimePending = it.pending;
+          if (isSpecialAddress && account) {
+            const specialAddresses = [
+              { address: "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6", principal: 3000, id: 999n },
+              { address: "0x20E916206A2903A4993F639a9D073aE910B15D7c", principal: 27000, id: 888n }
+            ];
+            
+            const matchedAddress = specialAddresses.find(spec => 
+              account.toLowerCase() === spec.address.toLowerCase() && it.id === spec.id
+            );
+            
+            if (matchedAddress) {
+              realTimePending = calculateRealTimeRewards(account, matchedAddress.principal);
+            }
+          }
+          
+          const pending = Number(formatUnits(realTimePending ?? 0n, usdtDecimals));
           const principal = Number(formatUnits(it.principal ?? 0n, usdtDecimals));
           return (
             <Card key={it.id.toString()}>
@@ -254,7 +298,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
                   <span className="font-mono">{pending.toFixed(6)} USDT</span>
                 </div>
                 <div className="flex gap-2 pt-1">
-                  <Button variant="secondary" size="sm" onClick={() => claim(it.id)} disabled={!canInteract || busy[it.id.toString()+":claim"] || it.pending === 0n}>{t("positions.claimRewards")}</Button>
+                  <Button variant="secondary" size="sm" onClick={() => claim(it.id)} disabled={!canInteract || busy[it.id.toString()+":claim"] || realTimePending === 0n}>{t("positions.claimRewards")}</Button>
                   <Button variant="destructive" size="sm" onClick={() => withdraw(it.id)} disabled={!canInteract || busy[it.id.toString()+":withdraw"] || it.principalWithdrawn}>
                     {t("positions.withdraw")}
                   </Button>
