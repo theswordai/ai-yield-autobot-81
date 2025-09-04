@@ -62,8 +62,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
           lockDuration: 86400n * 365n, // 365 days lock
           aprBps: 28000n, // 280% APR
           principalWithdrawn: false,
-          // Calculate pending rewards: 280% APR for 30 days = ~690 USDT
-          pending: BigInt(Math.floor(690.3 * Math.pow(10, usdtDecimals))), // 30 days at 280% APR
+          pending: BigInt(Math.floor(84 * Math.pow(10, usdtDecimals))), // 84 USDT pending rewards
         };
         details.push(mockPosition);
       }
