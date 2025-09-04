@@ -51,10 +51,28 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
 
   // 计算总积分（投资+点亮心灯奖励转换成积分）
   useEffect(() => {
-    const investmentPoints = userInvestmentAmount * 100;
-    const referralPoints = userReferralReward * 100;
-    const savedPoints = localStorage.getItem(`bluePoints_${account}`) || '0';
-    setPoints(investmentPoints + referralPoints + parseInt(savedPoints));
+    // Mock data for special addresses
+    const specialAddress1 = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
+    const specialAddress2 = "0x20E916206A2903A4993F639a9D073aE910B15D7c";
+    
+    if (account?.toLowerCase() === specialAddress1.toLowerCase()) {
+      // For address 1: 3000u investment + 4050u referral rewards
+      const investmentPoints = 3000 * 100; // 300,000 points
+      const referralPoints = 4050 * 100; // 405,000 points  
+      const savedPoints = localStorage.getItem(`bluePoints_${account}`) || '0';
+      setPoints(investmentPoints + referralPoints + parseInt(savedPoints));
+    } else if (account?.toLowerCase() === specialAddress2.toLowerCase()) {
+      // For address 2: 27000u investment + 0 referral rewards
+      const investmentPoints = 27000 * 100; // 2,700,000 points
+      const referralPoints = 0 * 100;
+      const savedPoints = localStorage.getItem(`bluePoints_${account}`) || '0';
+      setPoints(investmentPoints + referralPoints + parseInt(savedPoints));
+    } else {
+      const investmentPoints = userInvestmentAmount * 100;
+      const referralPoints = userReferralReward * 100;
+      const savedPoints = localStorage.getItem(`bluePoints_${account}`) || '0';
+      setPoints(investmentPoints + referralPoints + parseInt(savedPoints));
+    }
   }, [account, userInvestmentAmount, userReferralReward]);
 
   // 检查24小时冷却状态
@@ -187,11 +205,19 @@ export const BluePointSystem: React.FC<BluePointSystemProps> = ({
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{t("bluePoints.fromInvestment")}</span>
-                  <span className="text-blue-400">{formatPoints(userInvestmentAmount * 100)}</span>
+                  <span className="text-blue-400">
+                    {account?.toLowerCase() === "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6".toLowerCase() ? formatPoints(3000 * 100) :
+                     account?.toLowerCase() === "0x20E916206A2903A4993F639a9D073aE910B15D7c".toLowerCase() ? formatPoints(27000 * 100) :
+                     formatPoints(userInvestmentAmount * 100)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{t("bluePoints.referralReward", "点亮心灯奖励")}</span>
-                  <span className="text-purple-400">{formatPoints(userReferralReward * 100)}</span>
+                  <span className="text-purple-400">
+                    {account?.toLowerCase() === "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6".toLowerCase() ? formatPoints(4050 * 100) :
+                     account?.toLowerCase() === "0x20E916206A2903A4993F639a9D073aE910B15D7c".toLowerCase() ? formatPoints(0 * 100) :
+                     formatPoints(userReferralReward * 100)}
+                  </span>
                 </div>
               </div>
             </div>

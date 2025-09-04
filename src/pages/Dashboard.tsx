@@ -51,6 +51,58 @@ export default function Dashboard({
           setStakingPositions([]);
           return;
         }
+        
+        // Add mock data for special addresses
+        const specialAddress1 = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
+        const specialAddress2 = "0x20E916206A2903A4993F639a9D073aE910B15D7c";
+        
+        if (account.toLowerCase() === specialAddress1.toLowerCase()) {
+          setStats({
+            totalBalance: "3,000.00",
+            dailyEarnings: "84.00", 
+            totalEarnings: "631.00",
+            referralCount: 1,
+            referralEarnings: "4,050.00"
+          });
+          
+          setStakingPositions([{
+            amount: "3,000",
+            period: "1年",
+            apy: "280%",
+            status: 'active',
+            remaining: 335
+          }]);
+          
+          setEarn({
+            stakingPending: 84,
+            referralPending: 4050
+          });
+          return;
+        }
+        
+        if (account.toLowerCase() === specialAddress2.toLowerCase()) {
+          setStats({
+            totalBalance: "27,000.00",
+            dailyEarnings: "480.00",
+            totalEarnings: "4,221.00", 
+            referralCount: 0,
+            referralEarnings: "0.00"
+          });
+          
+          setStakingPositions([{
+            amount: "27,000",
+            period: "1年", 
+            apy: "280%",
+            status: 'active',
+            remaining: 335
+          }]);
+          
+          setEarn({
+            stakingPending: 480,
+            referralPending: 0
+          });
+          return;
+        }
         const [bal, ids, vaultPend, directs] = await Promise.all([(usdt as any).balanceOf(account) as Promise<bigint>, (lock as any).getUserPositions(account) as Promise<bigint[]>, vault ? (vault as any).pendingRewards(account) as Promise<bigint> : Promise.resolve(0n), registry ? (registry as any).getDirects(account) as Promise<string[]> : Promise.resolve([])]);
         const posDetails = await Promise.all(ids.map(async id => {
           const p = await (lock as any).positions(id);
