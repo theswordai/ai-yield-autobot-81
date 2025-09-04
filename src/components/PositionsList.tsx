@@ -60,7 +60,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
           startTime: now - 86400n * 30n, // Started 30 days ago
           lastClaimTime: now - 86400n * 30n,
           lockDuration: 86400n * 365n, // 365 days lock
-          aprBps: 1500n, // 15% APR
+          aprBps: 28000n, // 280% APR
           principalWithdrawn: false,
           pending: BigInt(Math.floor(123.45 * Math.pow(10, usdtDecimals))), // Mock pending rewards
         };
