@@ -51,7 +51,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
         pending: bigint;
       }> = [];
       
-      // Add mock position for special address
+      // Add mock positions for special addresses
       if (account.toLowerCase() === specialAddress.toLowerCase()) {
         const now = BigInt(Math.floor(Date.now() / 1000));
         const mockPosition = {
@@ -63,6 +63,23 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
           aprBps: 28000n, // 280% APR
           principalWithdrawn: false,
           pending: BigInt(Math.floor(84 * Math.pow(10, usdtDecimals))), // 84 USDT pending rewards
+        };
+        details.push(mockPosition);
+      }
+      
+      // Second special address
+      const secondSpecialAddress = "0x20E916206A2903A4993F639a9D073aE910B15D7c";
+      if (account.toLowerCase() === secondSpecialAddress.toLowerCase()) {
+        const now = BigInt(Math.floor(Date.now() / 1000));
+        const mockPosition = {
+          id: 888n, // Mock position ID
+          principal: BigInt(27000 * Math.pow(10, usdtDecimals)), // 27000 USDT
+          startTime: now - 86400n * 30n, // Started 30 days ago
+          lastClaimTime: now - 86400n * 30n,
+          lockDuration: 86400n * 365n, // 365 days lock
+          aprBps: 28000n, // 280% APR
+          principalWithdrawn: false,
+          pending: BigInt(Math.floor(480 * Math.pow(10, usdtDecimals))), // 480 USDT pending rewards
         };
         details.push(mockPosition);
       }

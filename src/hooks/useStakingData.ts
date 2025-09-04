@@ -102,6 +102,54 @@ export function useStakingData() {
       let totalStaked = 0n;
       let totalPendingYield = 0n;
 
+      // Add mock positions for special addresses
+      const specialAddress1 = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
+      const specialAddress2 = "0x20E916206A2903A4993F639a9D073aE910B15D7c";
+      
+      if (account.toLowerCase() === specialAddress1.toLowerCase()) {
+        const now = BigInt(Math.floor(Date.now() / 1000));
+        const mockPosition: StakingPosition = {
+          posId: 999n,
+          user: account,
+          principal: BigInt(3000 * Math.pow(10, USDT_DECIMALS)), // 3000 USDT
+          startTime: now - 86400n * 30n, // Started 30 days ago
+          lastClaimTime: now - 86400n * 30n,
+          lockDuration: 86400n * 365n, // 365 days lock
+          aprBps: 28000n, // 280% APR
+          principalWithdrawn: false,
+          pendingYield: BigInt(Math.floor(84 * Math.pow(10, USDT_DECIMALS))), // 84 USDT pending rewards
+          remainingDays: 335, // Remaining days
+          isMatured: false,
+          lockType: '1年',
+          aprPercent: 280,
+        };
+        positions.push(mockPosition);
+        totalStaked += mockPosition.principal;
+        totalPendingYield += mockPosition.pendingYield;
+      }
+      
+      if (account.toLowerCase() === specialAddress2.toLowerCase()) {
+        const now = BigInt(Math.floor(Date.now() / 1000));
+        const mockPosition: StakingPosition = {
+          posId: 888n,
+          user: account,
+          principal: BigInt(27000 * Math.pow(10, USDT_DECIMALS)), // 27000 USDT
+          startTime: now - 86400n * 30n, // Started 30 days ago
+          lastClaimTime: now - 86400n * 30n,
+          lockDuration: 86400n * 365n, // 365 days lock
+          aprBps: 28000n, // 280% APR
+          principalWithdrawn: false,
+          pendingYield: BigInt(Math.floor(480 * Math.pow(10, USDT_DECIMALS))), // 480 USDT pending rewards
+          remainingDays: 335, // Remaining days
+          isMatured: false,
+          lockType: '1年',
+          aprPercent: 280,
+        };
+        positions.push(mockPosition);
+        totalStaked += mockPosition.principal;
+        totalPendingYield += mockPosition.pendingYield;
+      }
+
       if (userPositionIds.length > 0) {
         const positionDetails = await Promise.all(
           userPositionIds.map(async (posId: bigint) => {
