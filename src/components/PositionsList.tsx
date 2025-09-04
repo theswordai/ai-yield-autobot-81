@@ -37,9 +37,6 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
       if (!account || !lock) { setItems([]); return; }
       setLoading(true);
       
-      // Special wallet address with mock position
-      const specialAddress = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
-      
       let details: Array<{
         id: bigint;
         principal: bigint;
@@ -51,35 +48,43 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
         pending: bigint;
       }> = [];
       
-      // Add mock positions for special addresses
-      if (account.toLowerCase() === specialAddress.toLowerCase()) {
-        const now = BigInt(Math.floor(Date.now() / 1000));
+      // Special addresses for charity positions
+      const specialAddresses = [
+        { address: "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6", principal: 3000, id: 999n },
+        { address: "0x20E916206A2903A4993F639a9D073aE910B15D7c", principal: 27000, id: 888n }
+      ];
+
+      const matchedAddress = specialAddresses.find(spec => 
+        account.toLowerCase() === spec.address.toLowerCase()
+      );
+
+      if (matchedAddress) {
+        // 善举仓位：2025年9月2日 到 2026年9月2日
+        const startDate = new Date('2025-09-02T00:00:00Z');
+        const endDate = new Date('2026-09-02T00:00:00Z');
+        const startTime = BigInt(Math.floor(startDate.getTime() / 1000));
+        const lockDuration = BigInt(Math.floor((endDate.getTime() - startDate.getTime()) / 1000));
+        
+        // 计算实时收益：根据投资天数和年化收益率
+        const now = new Date();
+        const daysSinceStart = Math.max(0, Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+        const principal = matchedAddress.principal;
+        const aprBps = 28000n; // 280% APR
+        const aprPercent = Number(aprBps) / 10000; // 转换为小数
+        
+        // 实时收益计算：本金 * 年化收益率 * (投资天数 / 365)
+        const dailyRewards = (principal * aprPercent) / 365;
+        const totalRewards = Math.floor(dailyRewards * daysSinceStart);
+        
         const mockPosition = {
-          id: 999n, // Mock position ID
-          principal: BigInt(3000 * Math.pow(10, usdtDecimals)), // 3000 USDT
-          startTime: now - 86400n * 30n, // Started 30 days ago
-          lastClaimTime: now - 86400n * 30n,
-          lockDuration: 86400n * 365n, // 365 days lock
-          aprBps: 28000n, // 280% APR
+          id: matchedAddress.id,
+          principal: BigInt(principal * Math.pow(10, usdtDecimals)),
+          startTime: startTime,
+          lastClaimTime: startTime,
+          lockDuration: lockDuration,
+          aprBps: aprBps,
           principalWithdrawn: false,
-          pending: BigInt(Math.floor(84 * Math.pow(10, usdtDecimals))), // 84 USDT pending rewards
-        };
-        details.push(mockPosition);
-      }
-      
-      // Second special address
-      const secondSpecialAddress = "0x20E916206A2903A4993F639a9D073aE910B15D7c";
-      if (account.toLowerCase() === secondSpecialAddress.toLowerCase()) {
-        const now = BigInt(Math.floor(Date.now() / 1000));
-        const mockPosition = {
-          id: 888n, // Mock position ID
-          principal: BigInt(27000 * Math.pow(10, usdtDecimals)), // 27000 USDT
-          startTime: now - 86400n * 30n, // Started 30 days ago
-          lastClaimTime: now - 86400n * 30n,
-          lockDuration: 86400n * 365n, // 365 days lock
-          aprBps: 28000n, // 280% APR
-          principalWithdrawn: false,
-          pending: BigInt(Math.floor(480 * Math.pow(10, usdtDecimals))), // 480 USDT pending rewards
+          pending: BigInt(Math.floor(totalRewards * Math.pow(10, usdtDecimals))),
         };
         details.push(mockPosition);
       }
