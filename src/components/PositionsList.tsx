@@ -33,17 +33,19 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
 
   const canInteract = useMemo(() => !!account && !!lock && chainId === targetChain, [account, lock, chainId, targetChain]);
 
-  // 计算特殊地址实时收益的函数
+  // 计算特殊地址实时收益的函数 - 按分钟累计
   const calculateRealTimeRewards = useCallback((address: string, principal: number): bigint => {
     const startDate = new Date('2025-09-02T00:00:00Z');
     const now = new Date();
-    const daysSinceStart = Math.max(0, Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)));
+    const minutesSinceStart = Math.max(0, Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60)));
     const aprBps = 28000; // 280% APR
     const aprPercent = aprBps / 10000; // 转换为小数
     
-    // 实时收益计算：本金 * 年化收益率 * (投资天数 / 365)
-    const dailyRewards = (principal * aprPercent) / 365;
-    const totalRewards = Math.floor(dailyRewards * daysSinceStart);
+    // 实时收益计算：本金 * 年化收益率，分摊到每分钟累计
+    // 一年 = 365 * 24 * 60 = 525600 分钟
+    const minutesPerYear = 365 * 24 * 60;
+    const perMinuteRewards = (principal * aprPercent) / minutesPerYear;
+    const totalRewards = Math.floor(perMinuteRewards * minutesSinceStart);
     
     return BigInt(Math.floor(totalRewards * Math.pow(10, usdtDecimals)));
   }, [usdtDecimals]);
@@ -161,11 +163,11 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
     
     let interval: NodeJS.Timeout | null = null;
     
-    // 为特殊地址设置每秒实时更新
+    // 为特殊地址设置每10秒实时更新
     if (isSpecialAddress) {
       interval = setInterval(() => {
         setRealtimeUpdate(prev => prev + 1); // 触发重新渲染以显示实时收益
-      }, 1000); // 每秒更新
+      }, 10000); // 每10秒更新
     } else {
       // 普通地址10秒更新一次
       interval = setInterval(() => {
