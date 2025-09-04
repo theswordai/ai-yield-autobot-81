@@ -48,7 +48,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
     const totalRewards = Math.floor(perMinuteRewards * minutesSinceStart);
     
     return BigInt(Math.floor(totalRewards * Math.pow(10, usdtDecimals)));
-  }, [usdtDecimals]);
+  }, [usdtDecimals, realtimeUpdate]);
 
   // 检查是否为特殊地址
   const isSpecialAddress = useMemo(() => {
