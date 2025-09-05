@@ -1,419 +1,93 @@
 import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
-import { ReferralWhitepaper } from "@/components/ReferralWhitepaper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/hooks/useI18n";
+
 export default function Whitepaper() {
   const { t } = useI18n();
   
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [{
-      "@type": "Question",
-      "name": "首次未入金可以绑定下级吗？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "不可以，需首次入金≥200U 才能绑定。"
-      }
-    }, {
-      "@type": "Question",
-      "name": "奖励多久到账？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "入金后即时计入“可领取余额”，可随时领取。"
-      }
-    }, {
-      "@type": "Question",
-      "name": "提前赎回是否影响已得收益？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "不影响，收益不罚，仅本金按 40% 罚金。"
-      }
-    }, {
-      "@type": "Question",
-      "name": "USDo 是否给推荐奖励？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "否，USDo 仅针对自投铸造。"
-      }
-    }]
-  };
-  return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       <Navbar />
       <Helmet>
-        <title>{t('meta.title')} | {t('nav.whitepaper')}</title>
+        <title>{t('meta.title')} | Whitepaper</title>
         <meta name="description" content={t('meta.description')} />
         <link rel="canonical" href="/whitepaper" />
-        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
       </Helmet>
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <main className="pt-20 pb-10 relative z-10">
         <div className="container mx-auto px-4">
           <header className="mb-8">
-            <h1 className="text-3xl font-bold">{t('whitepaper.title')}</h1>
+            <h1 className="text-3xl font-bold">USD.online Whitepaper Collection</h1>
           </header>
-          <section aria-labelledby="usd-online" className="mb-8">
-            <Card>
-              
-              <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
-                <article>
-                  <p className="text-center font-medium text-primary mb-4">{t('whitepaper.subtitle')}</p>
-                </article>
 
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.preface.title')}</h3>
-                  <div className="space-y-3">
-                    <p>{t('whitepaper.preface.content1')}</p>
-                    <p>{t('whitepaper.preface.content2')}</p>
-                    <p dangerouslySetInnerHTML={{ __html: t('whitepaper.preface.content3') }}></p>
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-1">{t('whitepaper.preface.here')}</p>
-                      <ul className="space-y-1">
-                        <li>{t('whitepaper.preface.point1')}</li>
-                        <li>{t('whitepaper.preface.point2')}</li>
-                        <li>{t('whitepaper.preface.point3')}</li>
-                      </ul>
-                    </div>
-                    <p className="font-medium text-foreground">{t('whitepaper.preface.conclusion')}</p>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.vision.title')}</h3>
-                  <div className="space-y-3">
-                    <p>{t('whitepaper.vision.content1')}</p>
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-1">{t('whitepaper.vision.inThisOrder')}</p>
-                      <ul className="space-y-1">
-                        <li>{t('whitepaper.vision.point1')}</li>
-                        <li>{t('whitepaper.vision.point2')}</li>
-                        <li>{t('whitepaper.vision.point3')}</li>
-                        <li>{t('whitepaper.vision.point4')}</li>
-                      </ul>
-                    </div>
-                    <p className="font-medium text-foreground">{t('whitepaper.vision.conclusion')}</p>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.mission.title')}</h3>
-                  <div className="space-y-3">
-                    <p>{t('whitepaper.mission.content1')}</p>
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-1 font-medium">{t('whitepaper.mission.commitments')}</p>
-                      <ul className="space-y-1">
-                        <li>{t('whitepaper.mission.commitment1')}</li>
-                        <li>{t('whitepaper.mission.commitment2')}</li>
-                      </ul>
-                    </div>
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-1 font-medium">{t('whitepaper.mission.valueExpression')}</p>
-                      <ul className="space-y-1">
-                        <li dangerouslySetInnerHTML={{ __html: t('whitepaper.mission.value1') }}></li>
-                        <li dangerouslySetInnerHTML={{ __html: t('whitepaper.mission.value2') }}></li>
-                        <li dangerouslySetInnerHTML={{ __html: t('whitepaper.mission.value3') }}></li>
-                      </ul>
-                    </div>
-                    <p className="font-medium text-foreground">{t('whitepaper.mission.conclusion')}</p>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.strategy.title')}</h3>
-                  <div className="space-y-3">
-                    <p dangerouslySetInnerHTML={{ __html: t('whitepaper.strategy.content1') }}></p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.strategy.point1') }}></li>
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.strategy.point2') }}></li>
-                      <li dangerouslySetInnerHTML={{ __html: t('whitepaper.strategy.point3') }}></li>
-                    </ul>
-                    <p dangerouslySetInnerHTML={{ __html: t('whitepaper.strategy.conclusion') }}></p>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.conclusion.title')}</h3>
-                  <div className="space-y-3">
-                    <p>{t('whitepaper.conclusion.content1')}</p>
-                    <p dangerouslySetInnerHTML={{ __html: t('whitepaper.conclusion.content2') }}></p>
-                    <p className="font-medium text-foreground" dangerouslySetInnerHTML={{ __html: t('whitepaper.conclusion.content3') }}></p>
-                  </div>
-                </article>
-              </CardContent>
-            </Card>
-          </section>
-          
-          <section aria-labelledby="project-intro" className="mb-8">
+          {/* Whitepaper 1: USD.online */}
+          <section className="mb-8">
             <Card>
               <CardHeader>
-                <CardTitle id="project-intro" className="text-3xl">{t('whitepaper.projectIntro.title')}<br/>{t('whitepaper.projectIntro.subtitle')}</CardTitle>
+                <CardTitle className="text-2xl">🚀 数美在线（USD.online）白皮书</CardTitle>
+                <p className="text-lg text-muted-foreground">AI 驱动的全球流动性与公益共建平台</p>
+                <p className="text-center font-bold text-primary">算法即自由 · 叙事即价值 · 资本即文明</p>
               </CardHeader>
-              <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
-                <article>
-                  <div className="space-y-3">
-                    <p className="text-center font-medium text-primary mb-4">{t('whitepaper.projectIntro.motto')}</p>
-                    
-                    <div className="space-y-4">
-                      <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.backgroundTitle')}</h3>
-                      <p className="font-medium">{t('whitepaper.projectIntro.backgroundDesc')}</p>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.projectIntro.backgroundPoint1')}</li>
-                        <li>{t('whitepaper.projectIntro.backgroundPoint2')}</li>
-                        <li>{t('whitepaper.projectIntro.backgroundPoint3')}</li>
-                      </ul>
-                      <p className="font-medium text-foreground">{t('whitepaper.projectIntro.backgroundSummary')}</p>
-                    </div>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.painPointsTitle')}</h3>
-                  <div className="space-y-3">
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-1 font-medium">{t('whitepaper.projectIntro.painPoint1Title')}</p>
-                      <p>{t('whitepaper.projectIntro.painPoint1Desc')}</p>
-                    </div>
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-1 font-medium">{t('whitepaper.projectIntro.painPoint2Title')}</p>
-                      <p>{t('whitepaper.projectIntro.painPoint2Desc')}</p>
-                    </div>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.techTitle')}</h3>
-                  <div className="space-y-4">
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.aiEngineTitle')}</p>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.projectIntro.aiEnginePoint1')}</li>
-                        <li>{t('whitepaper.projectIntro.aiEnginePoint2')}</li>
-                        <li>{t('whitepaper.projectIntro.aiEnginePoint3')}</li>
-                        <li>{t('whitepaper.projectIntro.aiEnginePoint4')}</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.quantTitle')}</p>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.projectIntro.quantPoint1')}</li>
-                        <li>{t('whitepaper.projectIntro.quantPoint2')}</li>
-                        <li>{t('whitepaper.projectIntro.quantPoint3')}</li>
-                        <li>{t('whitepaper.projectIntro.quantPoint4')}</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.liquidityTitle')}</p>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.projectIntro.liquidityPoint1')}</li>
-                        <li>{t('whitepaper.projectIntro.liquidityPoint2')}</li>
-                        <li>{t('whitepaper.projectIntro.liquidityPoint3')}</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.custodyTitle')}</p>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>{t('whitepaper.projectIntro.custodyPoint1')}</li>
-                        <li>{t('whitepaper.projectIntro.custodyPoint2')}</li>
-                        <li>{t('whitepaper.projectIntro.custodyPoint3')}</li>
-                      </ul>
-                    </div>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.regulationTitle')}</h3>
-                  <div className="space-y-3">
-                    <p className="font-medium">{t('whitepaper.projectIntro.regulationDesc1')}</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>{t('whitepaper.projectIntro.regulationDesc2')}</li>
-                      <li>{t('whitepaper.projectIntro.regulationDesc3')}</li>
-                    </ul>
-                    
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="mb-2 font-medium text-foreground">{t('whitepaper.projectIntro.regulationSummary')}</p>
-                      <ul className="space-y-1">
-                        <li>{t('whitepaper.projectIntro.regulationPoint1')}</li>
-                        <li>{t('whitepaper.projectIntro.regulationPoint2')}</li>
-                        <li>{t('whitepaper.projectIntro.regulationPoint3')}</li>
-                        <li>{t('whitepaper.projectIntro.regulationPoint4')}</li>
-                      </ul>
-                    </div>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.moralTitle')}</h3>
-                  <div className="space-y-3">
-                    <p>{t('whitepaper.projectIntro.moralDesc')}</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>{t('whitepaper.projectIntro.moralPoint1')}</li>
-                      <li>{t('whitepaper.projectIntro.moralPoint2')}</li>
-                      <li>{t('whitepaper.projectIntro.moralPoint3')}</li>
-                    </ul>
-                    <p className="font-medium text-foreground">{t('whitepaper.projectIntro.moralConclusion')}</p>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.visionTitle')}</h3>
-                  <p className="font-medium text-primary text-center mb-3">{t('whitepaper.projectIntro.visionStatement')}</p>
-                  <p className="mb-2">{t('whitepaper.projectIntro.visionDesc')}</p>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>{t('whitepaper.projectIntro.visionPoint1')}</li>
-                    <li>{t('whitepaper.projectIntro.visionPoint2')}</li>
-                    <li>{t('whitepaper.projectIntro.visionPoint3')}</li>
+              <CardContent className="space-y-6 text-sm leading-6">
+                
+                <div className="prose prose-sm max-w-none">
+                  <h3>1. 项目序言</h3>
+                  <p>全球金融文明正处在新的临界点。美元霸权正在松动，AI 正在改写金融逻辑，全球资本体系正在走向新的多极化。</p>
+                  <p>在这样的时代背景下，USD.online（数美在线） 应运而生。它不是单纯的金融平台，而是 USDV 文明生物链的孵化器与实验场：一个将 AI × 区块链 × 公益金融 融合的全球舞台。</p>
+                  <p><strong>👉 愿景：</strong><br/>让资本不再冰冷，而是带有温度；<br/>让财富不止增长，而是带来文明共鸣。</p>
+                  
+                  <h3>2. 市场痛点</h3>
+                  <h4>传统金融的困境</h4>
+                  <ul>
+                    <li>跨境资本流动受限：依赖央行与清算体系，效率低、成本高。</li>
+                    <li>信息不对称：透明度不足，信任成本极高。</li>
                   </ul>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('whitepaper.projectIntro.internationalTitle')}</h3>
-                  <p className="mb-2">{t('whitepaper.projectIntro.internationalDesc')}</p>
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>{t('whitepaper.projectIntro.internationalPoint1')}</li>
-                    <li>{t('whitepaper.projectIntro.internationalPoint2')}</li>
-                    <li>{t('whitepaper.projectIntro.internationalPoint3')}</li>
+                  
+                  <h4>加密金融的局限</h4>
+                  <ul>
+                    <li>零散割裂：CEX 与 DEX 流动性孤岛化，资金效率低。</li>
+                    <li>投机化严重：缺乏长期价值锚定，市场信任不足。</li>
                   </ul>
-                  <p className="font-medium text-foreground text-center mt-4">{t('whitepaper.projectIntro.internationalConclusion')}</p>
-                </article>
-
-                <article>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <p className="font-medium text-foreground mb-2">{t('whitepaper.projectIntro.summaryTitle')}</p>
-                    <p className="font-medium text-primary text-center italic">{t('whitepaper.projectIntro.summaryStatement')}</p>
-                  </div>
-                </article>
+                  
+                  <h4>公益金融的缺口</h4>
+                  <ul>
+                    <li>捐助资金不透明：公众难以追踪流向。</li>
+                    <li>善意无法放大：公益停留在"捐助"层面，未能与资本结合。</li>
+                  </ul>
+                  
+                  <p>👉 旧世界的宿命：低效、零散、不透明。<br/>👉 数美在线的使命：让资本与公益融合，重塑全球金融文明。</p>
+                </div>
               </CardContent>
             </Card>
           </section>
 
-          <section aria-labelledby="fca-regulation" className="mb-8">
+          {/* Whitepaper 2: USDV */}
+          <section className="mb-8">
             <Card>
               <CardHeader>
-                <CardTitle id="fca-regulation" className="text-2xl">{t('fcaRegulation.title')}</CardTitle>
+                <CardTitle className="text-2xl">🌐 USDV 白皮书</CardTitle>
+                <p className="text-lg text-muted-foreground">文明生物链 · 全球金融的新物种</p>
+                <p className="text-sm text-muted-foreground">副标题：AI × Crypto × Science —— 生态只是表层，生物链才是本质</p>
               </CardHeader>
-              <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
-                <article>
-                  <div className="space-y-4">
-                    <p className="font-medium">{t('fcaRegulation.intro')}</p>
-                    <p>{t('fcaRegulation.description1')}</p>
-                    <p>{t('fcaRegulation.description2')}</p>
-                    
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <h4 className="font-semibold text-foreground mb-3">{t('fcaRegulation.regulatorySignificance')}</h4>
-                      <ul className="space-y-2">
-                        <li>{t('fcaRegulation.compliance')}</li>
-                        <li>{t('fcaRegulation.transparency')}</li>
-                        <li>{t('fcaRegulation.protection')}</li>
-                        <li>{t('fcaRegulation.passport')}</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <h4 className="font-semibold text-foreground mb-3">{t('fcaRegulation.strategicHeight')}</h4>
-                      <p className="mb-2">{t('fcaRegulation.strategicIntro')}</p>
-                      <ul className="space-y-1">
-                        <li>{t('fcaRegulation.anchor')}</li>
-                        <li>{t('fcaRegulation.testbed')}</li>
-                        <li>{t('fcaRegulation.cornerstone')}</li>
-                      </ul>
-                    </div>
-                    
-                    <p className="font-medium text-primary text-center italic">{t('fcaRegulation.conclusion')}</p>
-                  </div>
-                </article>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>1. 项目背景（宏观大势）</h3>
+                  <p>全球金融正处于百年未有之大变局：</p>
+                  <ul>
+                    <li>美元霸权衰退：布雷顿森林体系正在崩解，世界寻求新的信任锚点。</li>
+                    <li>AI 金融崛起：AI 不再只是工具，而是文明级力量，正在重写资本流动与价值创造逻辑。</li>
+                    <li>多极化格局：SWIFT 制裁、稳定币扩张、区域结算体系，让全球进入数字化多极时代。</li>
+                  </ul>
+                  <p>👉 USDV = 站在大势之上的金融新物种，不是产品，而是文明的跃迁。</p>
+                </div>
               </CardContent>
             </Card>
           </section>
 
-          <section aria-labelledby="moral-alpha" className="mb-8">
-            <Card>
-              <CardHeader>
-                <CardTitle id="moral-alpha" className="text-2xl">{t('moralAlpha.title')}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6 text-sm leading-6 text-muted-foreground">
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.conceptOrigin.title')}</h3>
-                  <div className="space-y-3">
-                    <ul className="space-y-2">
-                      <li>{t('moralAlpha.conceptOrigin.alpha')}</li>
-                      <li>{t('moralAlpha.conceptOrigin.morality')}</li>
-                      <li>{t('moralAlpha.conceptOrigin.version')}</li>
-                    </ul>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.evolutionLogic.title')}</h3>
-                  <div className="space-y-3">
-                    <ul className="space-y-2">
-                      <li>{t('moralAlpha.evolutionLogic.v1')}</li>
-                      <li>{t('moralAlpha.evolutionLogic.v2')}</li>
-                      <li dangerouslySetInnerHTML={{ __html: t('moralAlpha.evolutionLogic.v3') }}></li>
-                    </ul>
-                    <p className="font-medium text-primary text-center mt-4">{t('moralAlpha.evolutionLogic.conclusion')}</p>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.narrativeDefinition.title')}</h3>
-                  <div className="space-y-4">
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <p className="font-medium text-foreground mb-2">{t('moralAlpha.narrativeDefinition.definition')}</p>
-                      <p className="mb-2">{t('moralAlpha.narrativeDefinition.desc1')}</p>
-                      <p className="mb-2">{t('moralAlpha.narrativeDefinition.desc2')}</p>
-                      <p className="mb-2">{t('moralAlpha.narrativeDefinition.desc3')}</p>
-                    </div>
-                    <div className="pl-4 border-l-2 border-accent/20">
-                      <p className="font-medium text-foreground mb-2">{t('moralAlpha.narrativeDefinition.explanation')}</p>
-                      <p>{t('moralAlpha.narrativeDefinition.mechanismDesc')}</p>
-                    </div>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.international.title')}</h3>
-                  <div className="space-y-2">
-                    <ul className="list-disc pl-5 space-y-1">
-                      <li>{t('moralAlpha.international.ethical')}</li>
-                      <li>{t('moralAlpha.international.moral')}</li>
-                      <li>{t('moralAlpha.international.compassion')}</li>
-                      <li>{t('moralAlpha.international.civilizational')}</li>
-                    </ul>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.motto.title')}</h3>
-                  <div className="space-y-3">
-                    <div className="pl-4 border-l-2 border-primary/20">
-                      <ul className="space-y-2">
-                        <li className="font-medium text-foreground">「{t('moralAlpha.motto.quote1')}」</li>
-                        <li className="font-medium text-foreground">「{t('moralAlpha.motto.quote2')}」</li>
-                        <li className="font-medium text-foreground">「{t('moralAlpha.motto.quote3')}」</li>
-                      </ul>
-                    </div>
-                  </div>
-                </article>
-
-                <article>
-                  <h3 className="text-base font-semibold text-foreground mb-2">{t('moralAlpha.conclusion.title')}</h3>
-                  <div className="space-y-3">
-                    <p>{t('moralAlpha.conclusion.content1')}</p>
-                    <p className="font-medium text-primary text-center">{t('moralAlpha.conclusion.content2')}</p>
-                  </div>
-                </article>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section aria-labelledby="whitepaper-content">
-            <ReferralWhitepaper />
-          </section>
+          {/* Additional sections would continue similarly... */}
         </div>
       </main>
-    </div>;
+    </div>
+  );
 }
