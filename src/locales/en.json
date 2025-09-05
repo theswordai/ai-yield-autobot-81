@@ -1,4 +1,317 @@
 {
+  "newWhitepaper": {
+    "usdOnline": {
+      "title": "🚀 USD.online Whitepaper",
+      "subtitle": "AI-Driven Global Liquidity and Philanthropic Co-construction Platform",
+      "motto": "Algorithm as Freedom · Narrative as Value · Capital as Civilization",
+      "preface": {
+        "title": "1. Project Preface",
+        "content1": "Global financial civilization is at a new critical point. The US dollar hegemony is loosening, AI is rewriting financial logic, and the global capital system is moving towards new multipolarity.",
+        "content2": "Against this backdrop, USD.online emerges as more than a simple financial platform, but as an incubator and experimental field for the USDV civilization biochain: a global stage that integrates AI × Blockchain × Philanthropic Finance.",
+        "vision": "👉 Vision:",
+        "visionDesc": "Making capital no longer cold but warm; making wealth not just grow but create civilizational resonance."
+      },
+      "marketPains": {
+        "title": "2. Market Pain Points",
+        "traditional": {
+          "title": "Traditional Finance Dilemmas",
+          "point1": "Cross-border capital flow restrictions: dependence on central banks and clearing systems, low efficiency, high costs.",
+          "point2": "Information asymmetry: insufficient transparency, extremely high trust costs."
+        },
+        "crypto": {
+          "title": "Crypto Finance Limitations",
+          "point1": "Fragmented isolation: CEX and DEX liquidity islands, low capital efficiency.",
+          "point2": "Heavy speculation: lack of long-term value anchoring, insufficient market trust."
+        },
+        "charity": {
+          "title": "Philanthropic Finance Gaps",
+          "point1": "Opaque donation funds: public cannot track fund flows.",
+          "point2": "Goodwill cannot be amplified: philanthropy stuck at 'donation' level, not combined with capital."
+        },
+        "conclusion": "👉 Old world destiny: inefficient, fragmented, opaque. USD.online's mission: integrating capital with philanthropy to reshape global financial civilization."
+      },
+      "techMoat": {
+        "title": "3. Technical Moat",
+        "description": "USD.online's core competitiveness lies in hard technology, not rhetoric.",
+        "aiEngine": {
+          "title": "🔹 AI Cross-Chain Arbitrage Engine",
+          "point1": "24/7 automated execution: cross-exchange spreads, cross-chain delay arbitrage, MEV capture.",
+          "point2": "Multi-chain coverage: Base / Arbitrum / Solana / Layer2.",
+          "point3": "Reinforcement Learning (RL) models: dynamic strategy optimization, real-time yield upgrades.",
+          "logic": "👉 Value logic: Every spread = one cash flow creation."
+        },
+        "aiRotation": {
+          "title": "🔹 AI Smart Rotation Allocation",
+          "point1": "GPT-4 × on-chain big data: building factor rotation models.",
+          "point2": "Multi-dimensional strategies: trend enhancement + volatility hedging + cross-asset arbitrage.",
+          "point3": "Asset allocation: BTC/ETH/SOL core assets automatic rebalancing.",
+          "logic": "👉 Value logic: Bull or bear markets have opportunities, AI captures Alpha for you."
+        },
+        "liquidity": {
+          "title": "🔹 Global Liquidity Interconnection (CEX × DEX Aggregation)",
+          "point1": "Connecting Binance, Coinbase with on-chain liquidity pools.",
+          "point2": "T+0 real-time clearing, replacing traditional bank 2-5 day cycles.",
+          "point3": "Global market maker networks, self-reinforcing liquidity.",
+          "logic": "👉 Value logic: Who controls liquidity controls the heart of new financial civilization."
+        },
+        "security": {
+          "title": "🔹 Decentralized Security Architecture",
+          "point1": "MPC vaults + smart contract custody, eliminating single points of failure.",
+          "point2": "Multi-audit + Bug Bounty, ensuring fund security.",
+          "point3": "On-chain transparency: every asset and philanthropic fund publicly verifiable.",
+          "logic": "👉 Value logic: Trust no longer depends on people, but is written in code."
+        }
+      },
+      "charityIntegration": {
+        "title": "4. Philanthropic Integration Logic",
+        "description": "USD.online = Finance × Philanthropy dual drive.",
+        "point1": "Automatic charity vault injection: part of platform net revenue automatically enters 'Autism Children Care Fund'.",
+        "point2": "On-chain disclosure: philanthropic fund flows fully traceable, achieving 'visible goodwill, traceable trust'.",
+        "point3": "Global charity leaderboard: making donations honorable, creating positive competition and trust resonance.",
+        "conclusion": "👉 Here, capital is not just a wealth amplifier, but an accelerator of goodwill."
+      },
+      "growthModel": {
+        "title": "5. Growth Model",
+        "point1": "Invitation code virality: bind once, effective forever.",
+        "point2": "Landing page conversion: vision slogans + technical logic + charity entry, one-click ecosystem entry.",
+        "point3": "Whitelist cultivation: ignite → attract → viral → consolidate, complete market launch in four weeks.",
+        "point4": "7-day newcomer action camp: replicate SOP, quick implementation, everyone can operate.",
+        "conclusion": "👉 USD.online = market launch engine for USDV civilization biochain."
+      },
+      "compliance": {
+        "title": "6. Compliance Vision",
+        "description": "USD.online always puts compliance and transparency at strategic core.",
+        "point1": "Initiated compliance preparation with UK FCA (Financial Conduct Authority) and Singapore MAS (Monetary Authority of Singapore).",
+        "point2": "Path: filing → sandbox testing → exemption framework → global regulatory alignment.",
+        "point3": "Goal: building global capital market trust passport.",
+        "conclusion": "👉 Compliance is not just a shield, but USD.online's ticket to global expansion."
+      },
+      "strategy": {
+        "title": "7. Strategic Height",
+        "point1": "USDV = civilization narrative (DNA → heart → immune → system → soul → brain)",
+        "point2": "USD.online = implementation platform (making narrative real in market, product, user dimensions)",
+        "conclusion": "👉 One is civilization symbol, one is market engine. Combined, they form narrative + implementation dual-wheel drive."
+      },
+      "conclusion": {
+        "title": "8. Closing Statements",
+        "content1": "Others' ecosystems are functional hodgepodges. USD's ecosystem is a civilization biochain.",
+        "content2": "Others' platforms are just capital stages. USD.online is a symphony of capital × philanthropy × civilization.",
+        "content3": "📌 USD.online = USDV's incubator and experimental field, making new species of financial civilization truly land."
+      }
+    },
+    "usdv": {
+      "title": "🌐 USDV Whitepaper",
+      "subtitle": "Civilization Biochain · Global Finance's New Species",
+      "subsubtitle": "Subtitle: AI × Crypto × Science — Ecosystem is surface, biochain is essence",
+      "background": {
+        "title": "1. Project Background (Macro Trends)",
+        "description": "Global finance faces unprecedented changes in a century:",
+        "point1": "US dollar hegemony decline: Bretton Woods system collapsing, world seeking new trust anchors.",
+        "point2": "AI finance rise: AI is no longer just a tool, but civilization-level force rewriting capital flow and value creation logic.",
+        "point3": "Multipolar landscape: SWIFT sanctions, stablecoin expansion, regional settlement systems push global entry into digital multipolar era.",
+        "conclusion": "👉 USDV = financial new species standing on trends, not a product, but civilization's leap."
+      },
+      "marketPains": {
+        "title": "2. Market Pain Points (Old World Shackles)",
+        "point1": "Traditional finance: closed + monopolistic, cross-border inefficiency, high trust costs.",
+        "point2": "Crypto finance: fragmented + speculative, lack value anchoring, cannot form long-term consensus.",
+        "conclusion": "👉 Old world problems = lack of trust, efficiency, transparency. New world answers = AI × blockchain × civilization narrative."
+      },
+      "biochain": {
+        "title": "3. Technology and Ecosystem (Civilization Biochain)",
+        "description": "USDV's core is not functional hodgepodge, but civilization biochain — evolution chain from DNA to brain.",
+        "sixChains": "Six major ecosystem chains:",
+        "chain1": "Technical ecosystem = DNA → AI engines, cross-chain protocols, oracles, zk modules.",
+        "chain2": "Financial ecosystem = heart → arbitrage, AI rotation, RWA, market maker networks.",
+        "chain3": "Security ecosystem = immune system → MPC vaults, circuit breakers, audit systems.",
+        "chain4": "Governance ecosystem = social system → DAO, veUSDV, Booster NFT.",
+        "chain5": "Philanthropic ecosystem = spiritual system → charity funds, goodwill returns, global charity leaderboards.",
+        "chain6": "AI super intelligence = brain → AI agents, intelligent governance, personalized wealth engines.",
+        "conclusion": "👉 USDV = a financial civilization organism capable of self-growth, self-replication, self-evolution."
+      },
+      "yields": {
+        "title": "4. Yield Logic (Where Wealth Comes From)",
+        "point1": "Arbitrage spreads: CEX × DEX spreads + MEV capture.",
+        "point2": "Trend rotation: AI model-driven, opportunities in both bulls and bears.",
+        "point3": "Staking compound: stable yields + on-chain re-staking.",
+        "point4": "RWA yields: bonds, funds, notes on-chain.",
+        "point5": "Philanthropic Alpha: goodwill injection, trust amplification, capital feedback.",
+        "conclusion": "👉 USDV = technical moat × yield loop × civilization narrative."
+      },
+      "compliance": {
+        "title": "5. Compliance Vision (FCA + MAS)",
+        "description": "USDV always puts compliance and transparency at strategic core:",
+        "point1": "Initiated compliance alignment with UK FCA and Singapore MAS.",
+        "point2": "Path: filing → sandbox testing → exemption framework → full compliance.",
+        "point3": "Vision: FCA + MAS = global trust passport.",
+        "conclusion": "👉 Compliance is not just protection, but USDV's trust cornerstone for entering global capital markets."
+      },
+      "risks": {
+        "title": "6. Risks and Countermeasures",
+        "point1": "Market risk → multi-chain routing, automatic stop-loss, dynamic hedging.",
+        "point2": "Algorithm risk → position splitting strategies, RL optimization, stop-loss thresholds.",
+        "point3": "Contract risk → multi-audit, MPC multi-sig, Bug Bounty.",
+        "point4": "Compliance risk → modular architecture, flexible adaptation to global regulatory changes.",
+        "conclusion": "👉 Engineered hedging + transparent disclosure = amplified trust."
+      },
+      "vision": {
+        "title": "7. Vision and Philosophy (Moral Alpha 3.0)",
+        "point1": "Moral Alpha 3.0: goodwill = trust → trust = liquidity → liquidity = yields.",
+        "point2": "Bretton Woods 2.0: USDV = new anchor for on-chain settlement and international capital.",
+        "point3": "Civilization biochain: technology = DNA, finance = heart, security = immune, governance = system, philanthropy = soul, AI = brain.",
+        "conclusion": "👉 USDV = leap from financial protocol to financial civilization organism."
+      },
+      "conclusion": {
+        "title": "8. Closing Statements",
+        "content1": "📌 Others talk ecosystem = functional hodgepodge.",
+        "content2": "📌 USDV talks biochain = civilization new species.",
+        "content3": "📌 USD.online = global stage where this new species truly lands."
+      }
+    },
+    "extended": {
+      "title": "🚀 USD.online",
+      "subtitle": "AI-Driven Global Liquidity Civilization Engine",
+      "motto": "Algorithm as Freedom · Narrative as Value · Capital as Civilization",
+      "macroBackground": {
+        "title": "🌍 Macro Background: Century's Great Changes",
+        "description": "Global financial system faces historic critical point:",
+        "point1": "Bretton Woods system trust collapse — USD no longer sole global credit anchor.",
+        "point2": "USD hegemony digital extension — SWIFT, stablecoins, geopolitical fragmentation create fragmented order.",
+        "point3": "AI algorithmic civilization rise — intelligent models rewriting capital flow and value creation logic.",
+        "conclusion": "Against this backdrop, USD.online is not just a platform, but civilization's prototype: integrating Wall Street quantitative wisdom × Web3 decentralized spirit × AI adaptive intelligence, creating international financial civilization engine beyond investment itself."
+      },
+      "painPoints": {
+        "title": "❌ Market Pain Points",
+        "traditional": "Traditional finance = closed + monopolistic",
+        "traditionalDesc": "Cross-border capital flow constrained by central banks and clearing systems, low efficiency.",
+        "crypto": "Crypto finance = fragmented + speculative",
+        "cryptoDesc": "CEX and DEX fragmentation, narratives lack long-term anchoring and global trust mechanisms.",
+        "conclusion": "👉 Market needs not products, but civilization-level new order."
+      },
+      "techHighlights": {
+        "title": "🔑 USD.online Technical Highlights",
+        "aiAlpha": {
+          "title": "🔹 AI Cross-Chain Alpha Engine",
+          "point1": "24/7 adaptive execution: DEX arbitrage + MEV capture + cross-chain delay arbitrage.",
+          "point2": "Full-chain ecosystem coverage: Base / Arbitrum / Solana / Layer2.",
+          "point3": "Alpha optimizer: Reinforcement Learning real-time strategy evolution.",
+          "point4": "10% Performance Fee: benchmarked against global top hedge funds.",
+          "logic": "👉 Logic: Every spread is one civilization cash flow creation."
+        },
+        "aiQuant": {
+          "title": "🔹 AI Quantitative Rotation System",
+          "point1": "GPT-4 × on-chain big data → dynamic factor rotation model.",
+          "point2": "Multi-dimensional strategies: trend enhancement + volatility hedging + correlation arbitrage.",
+          "point3": "Core assets: BTC / ETH / SOL → probability distribution modeling.",
+          "point4": "1-2% management fee: institutional-grade strategies, on-chain transparent.",
+          "logic": "👉 Logic: AI captures Alpha for humans, wealth beats 24/7."
+        },
+        "liquidity": {
+          "title": "🔹 Global Liquidity Interconnection (CEX × DEX Aggregation)",
+          "point1": "Connecting Binance / Coinbase with on-chain liquidity pools.",
+          "point2": "T+0 cross-border clearing, replacing traditional bank multi-day cycles.",
+          "point3": "Building global liquidity unity.",
+          "logic": "👉 Logic: Control liquidity, control heart of new civilization."
+        },
+        "custody": {
+          "title": "🔹 Decentralized Custody Architecture",
+          "point1": "MPC vaults + smart contracts, dual security.",
+          "point2": "Fund and donation flows, on-chain visible.",
+          "point3": "Algorithm as trust, contracts as finance.",
+          "logic": "👉 Logic: Trust no longer depends on people, but written in code."
+        }
+      },
+      "regulation": {
+        "title": "🏛 Global Regulatory Endorsement",
+        "description": "USD.online advancing FCA + MAS compliance pathway",
+        "point1": "UK Financial Conduct Authority (FCA) compliance filing and authorization preparation.",
+        "point2": "Singapore Monetary Authority of Singapore (MAS) framework sandbox and exemption pathway.",
+        "passport": "FCA + MAS = Global Trust Passport",
+        "passportPoint1": "📜 Legal compliance: strict alignment with international financial regulatory frameworks.",
+        "passportPoint2": "🔍 Public transparency: funds and data on-chain traceable.",
+        "passportPoint3": "🛡 Investment protection: legal protection for investors & partners.",
+        "passportPoint4": "🌍 International passport: becoming trust anchor for global capital order.",
+        "conclusion": "👉 Compliance is not shield, but ticket for civilization evolution."
+      },
+      "moralAlpha": {
+        "title": "🔮 Moral Alpha: Philosophical Core",
+        "description": "USD.online's uniqueness lies not just in finance and technology, but in civilization philosophy.",
+        "point1": "Algorithm liberates freedom: AI becomes on-chain projection of human will, freeing capital from monopoly, returning to pure free flow.",
+        "point2": "Capital reshapes order: from plunder logic to cross-border public pulsation; from hegemony logic to consensus logic.",
+        "point3": "Narrative becomes wealth engine: in new financial civilization, wealth no longer depends on resources and power, but on narrative, trust, and goodwill.",
+        "conclusion": "👉 Moral Alpha = financial positive returns + technological new order + civilizational consensus dividends. Making USD.online leap from financial protocol to financial civilization experimental prototype."
+      },
+      "vision": {
+        "title": "🌟 Vision",
+        "statement": "USD.online = On-chain Era's Bretton Woods System 2.0",
+        "description": "It's not just financial product, but:",
+        "point1": "AI × DeFi × Stablecoin × Meme consensus cross-border fusion;",
+        "point2": "Global capital narrative-driven community order;",
+        "point3": "New international financial system prototype."
+      },
+      "international": {
+        "title": "🌐 International Positioning",
+        "description": "USD.online = future financial civilization prototype.",
+        "point1": "AI → becomes financial language",
+        "point2": "Capital → becomes global pulsation",
+        "point3": "Narrative → becomes wealth source",
+        "conclusion": "👉 Ultimately, USD.online will become: trust cornerstone for global financial civilization leap."
+      },
+      "summary": {
+        "title": "📌 One-Sentence High-Level Summary",
+        "statement": "USD.online is not a project, but civilization. It makes algorithms liberate freedom, capital reshape order, narrative become eternal engine of wealth."
+      }
+    },
+    "moralAlpha3": {
+      "title": "🔮 Moral Alpha 3.0: USD.online's Civilization Philosophical Core",
+      "origin": {
+        "title": "🔹 I. Concept Origin",
+        "alpha": "Alpha in finance = excess returns, core competitiveness of investment strategies.",
+        "morality": "Morality/Ethics = philanthropy, charity, responsibility, belonging to civilization-level values.",
+        "version": "3.0 = upgrade iteration: from profit-oriented (1.0) → win-win oriented (2.0) → civilization-oriented (3.0).",
+        "conclusion": "👉 Moral Alpha 3.0 = integrating wealth growth with human goodwill in same algorithm."
+      },
+      "evolution": {
+        "title": "🔹 II. Evolution Logic",
+        "v1": "Moral Alpha 1.0 → Charitable Donations",
+        "v1Desc": "Wealth and goodwill separated: make money first, then donate.",
+        "v2": "Moral Alpha 2.0 → ESG Investment",
+        "v2Desc": "Balancing returns with responsibility: enterprise level, still business-logic focused.",
+        "v3": "Moral Alpha 3.0 → Algorithm-driven × Embedded Philanthropy × Global Co-construction",
+        "v3Desc": "Wealth growth and philanthropy no longer separated, but dual returns of same algorithm.",
+        "v3Detail": "👉 Investors' excess returns automatically partially flow to charitable civilization fund."
+      },
+      "narrative": {
+        "title": "🔹 III. Narrative Definition",
+        "definition": "Moral Alpha 3.0 =",
+        "model": "AI + Blockchain driven excess return model.",
+        "result": "Results are:",
+        "profit": "Profit → Investors' excess returns.",
+        "goodwill": "Goodwill → Automatically injected into charity fund, amplifying civilization consensus.",
+        "explanation": "In other words:",
+        "mechanism": "Investment success = charity growth. Stronger goodwill → Greater consensus → Wider capital flow → Higher investment returns."
+      },
+      "international": {
+        "title": "🔹 IV. International Expression",
+        "description": "For unified language in global narratives, Moral Alpha 3.0 can have multiple international definitions:",
+        "ethical": "Ethical Alpha 3.0",
+        "moral": "Moral Alpha Protocol",
+        "compassion": "Compassion-Driven Alpha",
+        "civilizational": "Civilizational Alpha"
+      },
+      "motto": {
+        "title": "🔹 V. Motto",
+        "quote1": "In Moral Alpha 3.0 world, goodwill is no longer extra cost, but source of excess returns.",
+        "quote2": "Capital flows through algorithms and transcends through morality.",
+        "quote3": "Alpha is not just excess returns, but evolutionary dividend of financial civilization."
+      },
+      "conclusion": {
+        "title": "📌 Conclusion",
+        "content1": "Moral Alpha 3.0 = Wealth civilization × Charitable civilization × Global co-construction.",
+        "content2": "It's USD.online's philosophical core, explaining why this project isn't simple profit tool, but human new financial paradigm enabling synchronized wealth multiplication and civilization evolution."
+      }
+    }
+  },
   "nav": {
     "home": "Launch",
     "invest": "Invest",

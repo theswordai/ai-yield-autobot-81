@@ -25,38 +25,111 @@ export default function Whitepaper() {
           <section className="mb-8">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">🚀 数美在线（USD.online）白皮书</CardTitle>
-                <p className="text-lg text-muted-foreground">AI 驱动的全球流动性与公益共建平台</p>
-                <p className="text-center font-bold text-primary">算法即自由 · 叙事即价值 · 资本即文明</p>
+                <CardTitle className="text-2xl">{t('newWhitepaper.usdOnline.title')}</CardTitle>
+                <p className="text-lg text-muted-foreground">{t('newWhitepaper.usdOnline.subtitle')}</p>
+                <p className="text-center font-bold text-primary">{t('newWhitepaper.usdOnline.motto')}</p>
               </CardHeader>
               <CardContent className="space-y-6 text-sm leading-6">
-                
                 <div className="prose prose-sm max-w-none">
-                  <h3>1. 项目序言</h3>
-                  <p>全球金融文明正处在新的临界点。美元霸权正在松动，AI 正在改写金融逻辑，全球资本体系正在走向新的多极化。</p>
-                  <p>在这样的时代背景下，USD.online（数美在线） 应运而生。它不是单纯的金融平台，而是 USDV 文明生物链的孵化器与实验场：一个将 AI × 区块链 × 公益金融 融合的全球舞台。</p>
-                  <p><strong>👉 愿景：</strong><br/>让资本不再冰冷，而是带有温度；<br/>让财富不止增长，而是带来文明共鸣。</p>
+                  <h3>{t('newWhitepaper.usdOnline.preface.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.preface.content1')}</p>
+                  <p>{t('newWhitepaper.usdOnline.preface.content2')}</p>
+                  <p><strong>{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
                   
-                  <h3>2. 市场痛点</h3>
-                  <h4>传统金融的困境</h4>
+                  <h3>{t('newWhitepaper.usdOnline.marketPains.title')}</h3>
+                  <h4>{t('newWhitepaper.usdOnline.marketPains.traditional.title')}</h4>
                   <ul>
-                    <li>跨境资本流动受限：依赖央行与清算体系，效率低、成本高。</li>
-                    <li>信息不对称：透明度不足，信任成本极高。</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.traditional.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.traditional.point2')}</li>
                   </ul>
                   
-                  <h4>加密金融的局限</h4>
+                  <h4>{t('newWhitepaper.usdOnline.marketPains.crypto.title')}</h4>
                   <ul>
-                    <li>零散割裂：CEX 与 DEX 流动性孤岛化，资金效率低。</li>
-                    <li>投机化严重：缺乏长期价值锚定，市场信任不足。</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.crypto.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.crypto.point2')}</li>
                   </ul>
                   
-                  <h4>公益金融的缺口</h4>
+                  <h4>{t('newWhitepaper.usdOnline.marketPains.charity.title')}</h4>
                   <ul>
-                    <li>捐助资金不透明：公众难以追踪流向。</li>
-                    <li>善意无法放大：公益停留在"捐助"层面，未能与资本结合。</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.charity.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.charity.point2')}</li>
                   </ul>
                   
-                  <p>👉 旧世界的宿命：低效、零散、不透明。<br/>👉 数美在线的使命：让资本与公益融合，重塑全球金融文明。</p>
+                  <p>{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdOnline.techMoat.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.description')}</p>
+                  
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.aiEngine.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
+
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.aiRotation.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
+
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.liquidity.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.liquidity.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.liquidity.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.liquidity.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
+
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.security.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.security.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.security.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.security.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
+
+                  <h3>{t('newWhitepaper.usdOnline.charityIntegration.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.charityIntegration.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.charityIntegration.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.charityIntegration.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.charityIntegration.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdOnline.growthModel.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point3')}</li>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdOnline.compliance.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.compliance.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.compliance.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.compliance.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.compliance.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdOnline.strategy.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.strategy.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.strategy.point2')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdOnline.conclusion.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.conclusion.content1')}</p>
+                  <p>{t('newWhitepaper.usdOnline.conclusion.content2')}</p>
+                  <p>{t('newWhitepaper.usdOnline.conclusion.content3')}</p>
                 </div>
               </CardContent>
             </Card>
@@ -66,26 +139,254 @@ export default function Whitepaper() {
           <section className="mb-8">
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">🌐 USDV 白皮书</CardTitle>
-                <p className="text-lg text-muted-foreground">文明生物链 · 全球金融的新物种</p>
-                <p className="text-sm text-muted-foreground">副标题：AI × Crypto × Science —— 生态只是表层，生物链才是本质</p>
+                <CardTitle className="text-2xl">{t('newWhitepaper.usdv.title')}</CardTitle>
+                <p className="text-lg text-muted-foreground">{t('newWhitepaper.usdv.subtitle')}</p>
+                <p className="text-sm text-muted-foreground">{t('newWhitepaper.usdv.subsubtitle')}</p>
               </CardHeader>
               <CardContent className="space-y-6 text-sm leading-6">
                 <div className="prose prose-sm max-w-none">
-                  <h3>1. 项目背景（宏观大势）</h3>
-                  <p>全球金融正处于百年未有之大变局：</p>
+                  <h3>{t('newWhitepaper.usdv.background.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.background.description')}</p>
                   <ul>
-                    <li>美元霸权衰退：布雷顿森林体系正在崩解，世界寻求新的信任锚点。</li>
-                    <li>AI 金融崛起：AI 不再只是工具，而是文明级力量，正在重写资本流动与价值创造逻辑。</li>
-                    <li>多极化格局：SWIFT 制裁、稳定币扩张、区域结算体系，让全球进入数字化多极时代。</li>
+                    <li>{t('newWhitepaper.usdv.background.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.background.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.background.point3')}</li>
                   </ul>
-                  <p>👉 USDV = 站在大势之上的金融新物种，不是产品，而是文明的跃迁。</p>
+                  <p>{t('newWhitepaper.usdv.background.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.marketPains.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.marketPains.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.marketPains.point2')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.marketPains.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.biochain.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.biochain.description')}</p>
+                  <p>{t('newWhitepaper.usdv.biochain.sixChains')}</p>
+                  <ol>
+                    <li>{t('newWhitepaper.usdv.biochain.chain1')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain2')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain3')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain4')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain5')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain6')}</li>
+                  </ol>
+                  <p>{t('newWhitepaper.usdv.biochain.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.yields.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.yields.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point3')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point4')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point5')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.yields.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.compliance.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.compliance.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.compliance.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.compliance.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.compliance.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.compliance.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.risks.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.risks.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.risks.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.risks.point3')}</li>
+                    <li>{t('newWhitepaper.usdv.risks.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.risks.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.vision.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.vision.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.vision.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.vision.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.vision.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.conclusion.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.conclusion.content1')}</p>
+                  <p>{t('newWhitepaper.usdv.conclusion.content2')}</p>
+                  <p>{t('newWhitepaper.usdv.conclusion.content3')}</p>
                 </div>
               </CardContent>
             </Card>
           </section>
 
-          {/* Additional sections would continue similarly... */}
+          {/* Whitepaper 3: USD.online Extended */}
+          <section className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t('newWhitepaper.extended.title')}</CardTitle>
+                <p className="text-lg text-muted-foreground">{t('newWhitepaper.extended.subtitle')}</p>
+                <p className="text-center font-bold text-primary">{t('newWhitepaper.extended.motto')}</p>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>{t('newWhitepaper.extended.macroBackground.title')}</h3>
+                  <p>{t('newWhitepaper.extended.macroBackground.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.macroBackground.point1')}</li>
+                    <li>{t('newWhitepaper.extended.macroBackground.point2')}</li>
+                    <li>{t('newWhitepaper.extended.macroBackground.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.macroBackground.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.painPoints.title')}</h3>
+                  <ul>
+                    <li><strong>{t('newWhitepaper.extended.painPoints.traditional')}</strong><br/>{t('newWhitepaper.extended.painPoints.traditionalDesc')}</li>
+                    <li><strong>{t('newWhitepaper.extended.painPoints.crypto')}</strong><br/>{t('newWhitepaper.extended.painPoints.cryptoDesc')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.painPoints.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.techHighlights.title')}</h3>
+                  
+                  <h4>{t('newWhitepaper.extended.techHighlights.aiAlpha.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point3')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.aiAlpha.logic')}</p>
+
+                  <h4>{t('newWhitepaper.extended.techHighlights.aiQuant.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point3')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.aiQuant.logic')}</p>
+
+                  <h4>{t('newWhitepaper.extended.techHighlights.liquidity.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.liquidity.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.liquidity.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.liquidity.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.liquidity.logic')}</p>
+
+                  <h4>{t('newWhitepaper.extended.techHighlights.custody.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.custody.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.custody.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.custody.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.custody.logic')}</p>
+
+                  <h3>{t('newWhitepaper.extended.regulation.title')}</h3>
+                  <p>{t('newWhitepaper.extended.regulation.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.regulation.point1')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.point2')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.regulation.passport')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint1')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint2')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint3')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.regulation.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.moralAlpha.title')}</h3>
+                  <p>{t('newWhitepaper.extended.moralAlpha.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.moralAlpha.point1')}</li>
+                    <li>{t('newWhitepaper.extended.moralAlpha.point2')}</li>
+                    <li>{t('newWhitepaper.extended.moralAlpha.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.moralAlpha.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.vision.title')}</h3>
+                  <p>{t('newWhitepaper.extended.vision.statement')}</p>
+                  <p>{t('newWhitepaper.extended.vision.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.vision.point1')}</li>
+                    <li>{t('newWhitepaper.extended.vision.point2')}</li>
+                    <li>{t('newWhitepaper.extended.vision.point3')}</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.extended.international.title')}</h3>
+                  <p>{t('newWhitepaper.extended.international.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.international.point1')}</li>
+                    <li>{t('newWhitepaper.extended.international.point2')}</li>
+                    <li>{t('newWhitepaper.extended.international.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.international.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.summary.title')}</h3>
+                  <p>{t('newWhitepaper.extended.summary.statement')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Whitepaper 4: Moral Alpha 3.0 */}
+          <section className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t('newWhitepaper.moralAlpha3.title')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>{t('newWhitepaper.moralAlpha3.origin.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.moralAlpha3.origin.alpha')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.origin.morality')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.origin.version')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.moralAlpha3.origin.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.evolution.title')}</h3>
+                  <ul>
+                    <li><strong>{t('newWhitepaper.moralAlpha3.evolution.v1')}</strong><br/>{t('newWhitepaper.moralAlpha3.evolution.v1Desc')}</li>
+                    <li><strong>{t('newWhitepaper.moralAlpha3.evolution.v2')}</strong><br/>{t('newWhitepaper.moralAlpha3.evolution.v2Desc')}</li>
+                    <li><strong>{t('newWhitepaper.moralAlpha3.evolution.v3')}</strong><br/>{t('newWhitepaper.moralAlpha3.evolution.v3Desc')}<br/>{t('newWhitepaper.moralAlpha3.evolution.v3Detail')}</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.narrative.title')}</h3>
+                  <p><strong>{t('newWhitepaper.moralAlpha3.narrative.definition')}</strong></p>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.model')}</p>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.result')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.moralAlpha3.narrative.profit')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.narrative.goodwill')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.explanation')}</p>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.mechanism')}</p>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.international.title')}</h3>
+                  <p>{t('newWhitepaper.moralAlpha3.international.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.moralAlpha3.international.ethical')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.international.moral')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.international.compassion')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.international.civilizational')}</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.motto.title')}</h3>
+                  <ul>
+                    <li>"{t('newWhitepaper.moralAlpha3.motto.quote1')}"</li>
+                    <li>"{t('newWhitepaper.moralAlpha3.motto.quote2')}"</li>
+                    <li>"{t('newWhitepaper.moralAlpha3.motto.quote3')}"</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.conclusion.title')}</h3>
+                  <p>{t('newWhitepaper.moralAlpha3.conclusion.content1')}</p>
+                  <p>{t('newWhitepaper.moralAlpha3.conclusion.content2')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
         </div>
       </main>
     </div>
