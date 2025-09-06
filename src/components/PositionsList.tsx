@@ -281,7 +281,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
             <Card key={it.id.toString()}>
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="font-medium">{t("positions.title")} #{it.id.toString()}</div>
+                  <div className="font-medium">{t("positions.title")}</div>
                   <div className="text-xs text-muted-foreground">{matured ? t("positions.matured") : t("positions.inProgress")}</div>
                 </div>
                 <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
