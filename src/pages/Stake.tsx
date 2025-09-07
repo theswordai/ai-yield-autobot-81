@@ -14,7 +14,7 @@ import { MockUSDT_ABI } from "@/abis/MockUSDT";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown } from "lucide-react";
+import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, ChevronDown } from "lucide-react";
 import { PositionsList } from "@/components/PositionsList";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
@@ -247,32 +247,11 @@ export default function Stake({
     } catch (e) {}
   };
 
-  // 邀请相关功能
-  const referralCode = account || "";
-  const inviteLink = account ? `${window.location.origin}/invite/${account}` : "";
-  
-  // Special handling for specific addresses
-  const specialAddresses = [
-    "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
-    "0x20E916206A2903A4993F639a9D073aE910B15D7c"
-  ];
-  const isSpecialAddress = specialAddresses.some(addr => 
-    account?.toLowerCase() === addr.toLowerCase()
-  );
-  
-  const hasPositions = userPositions.length > 0 || isSpecialAddress;
-  const copyReferralCode = () => {
-    navigator.clipboard.writeText(referralCode);
-    toast.success(t("staking.referralCodeCopied"));
-  };
-  const copyReferralLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    toast.success(t("staking.referralLinkCopied"));
-  };
   useEffect(() => {
     refreshVault();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, vault]);
+  
   const needApprove = useMemo(() => {
     try {
       const scaled = parseUnits((Number(amount) || 0).toString(), USDT_DECIMALS);
@@ -812,35 +791,9 @@ export default function Stake({
               </CardContent>
             </Card>
 
-            {/* 我的邀请地址 */}
-            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Share2 className="w-5 h-5 text-primary" />
-                  {t("staking.myInviteAddress")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {!account ? <div className="text-sm text-muted-foreground text-center py-4">
-                    {t("staking.connectWalletToView")}
-                  </div> : !hasPositions ? <div className="text-sm text-muted-foreground text-center py-4">
-                    {t("staking.onlyInvestorsCanInvite")}
-                  </div> : <>
-                     <div className="space-y-2">
-                       <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
-                       <div className="flex gap-2">
-                         <Input value={referralCode} readOnly className="font-mono text-xs" />
-                         <Button onClick={copyReferralCode} variant="outline" size="icon">
-                           <Copy className="w-4 h-4" />
-                         </Button>
-                       </div>
-                     </div>
-                  </>}
-              </CardContent>
-            </Card>
-
           </div>
         </div>
       </main>
-    </div>;
+    </div>
+  );
 }
