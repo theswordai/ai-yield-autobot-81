@@ -16,6 +16,7 @@ import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 import BluePoints from "./pages/BluePoints";
+import USDV from "./pages/USDV";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/zh/invest" element={<Invest />} />
           <Route path="/zh/blue-points" element={<BluePoints />} />
           <Route path="/zh/stake-new" element={<StakeNew />} />
+          <Route path="/zh/usdv" element={<USDV />} />
           <Route path="/zh/user" element={<UserCenter />} />
           <Route path="/zh/referral" element={<Referral />} />
           <Route path="/zh/invite/:inviter" element={<Invite />} />
@@ -42,6 +44,7 @@ const App = () => (
           <Route path="/en/invest" element={<Invest />} />
           <Route path="/en/blue-points" element={<BluePoints />} />
           <Route path="/en/stake-new" element={<StakeNew />} />
+          <Route path="/en/usdv" element={<USDV />} />
           <Route path="/en/user" element={<UserCenter />} />
           <Route path="/en/referral" element={<Referral />} />
           <Route path="/en/invite/:inviter" element={<Invite />} />
@@ -53,6 +56,7 @@ const App = () => (
           <Route path="/invest" element={<Navigate to="/zh/invest" replace />} />
           <Route path="/blue-points" element={<Navigate to="/zh/blue-points" replace />} />
           <Route path="/stake-new" element={<Navigate to="/zh/stake-new" replace />} />
+          <Route path="/usdv" element={<Navigate to="/zh/usdv" replace />} />
           <Route path="/user" element={<Navigate to="/zh/user" replace />} />
           <Route path="/invite/:inviter" element={<Navigate to="/zh/invite/:inviter" replace />} />
           <Route path="/i/:code" element={<Navigate to="/zh/i/:code" replace />} />
