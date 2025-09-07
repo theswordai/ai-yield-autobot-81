@@ -5,12 +5,12 @@ import { useUSDVData } from "@/hooks/useUSDVData";
 import { useUSDVActions } from "@/hooks/useUSDVActions";
 import { Navbar } from "@/components/Navbar";
 import { WalletConnector } from "@/components/WalletConnector";
+import { SpinWheel } from "@/components/SpinWheel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
 import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1 } from "lucide-react";
 
 export default function USDV() {
@@ -58,10 +58,6 @@ export default function USDV() {
         return data.canSpin.reason;
     }
   };
-
-  const dailyProgress = data?.dailyProgress && data.dailyProgress.cap > 0
-    ? (Number(data.dailyProgress.minted) / Number(data.dailyProgress.cap)) * 100 
-    : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -213,31 +209,14 @@ export default function USDV() {
                       每 24 小时一次；开奖为 1–100 USDV；今日上限用尽则不可抽
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>今日进度</span>
-                        <span>
-                          {formatAmount(data.dailyProgress.minted)} / {formatAmount(data.dailyProgress.cap)}
-                        </span>
-                      </div>
-                      <Progress value={dailyProgress} className="h-2" />
-                    </div>
-
-                    {!data.canSpin.ok && (
-                      <div className="text-sm text-muted-foreground bg-muted p-3 rounded">
-                        {getSpinStatusText()}
-                      </div>
-                    )}
-
-                    <Button
-                      onClick={() => handleAction(spin)}
+                  <CardContent className="py-8">
+                    <SpinWheel
+                      onSpin={spin}
                       disabled={!data.canSpin.ok || actionLoading.spin}
-                      className="w-full"
-                    >
-                      {actionLoading.spin && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                      {data.canSpin.ok ? "开始抽奖" : "暂不可用"}
-                    </Button>
+                      loading={actionLoading.spin}
+                      canSpin={data.canSpin.ok}
+                      statusText={getSpinStatusText()}
+                    />
                   </CardContent>
                 </Card>
               </div>
