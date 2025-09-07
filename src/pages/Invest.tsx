@@ -34,7 +34,7 @@ export default function Invest() {
     const langMatch = currentPath.match(/^\/([a-z]{2})/);
     const langPrefix = langMatch ? `/${langMatch[1]}` : '/zh';
     
-    navigate(`${langPrefix}/referral`);
+    navigate(`${langPrefix}/stake-new`);
   };
 
   if (showLandingPage) {
