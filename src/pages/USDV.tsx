@@ -138,7 +138,7 @@ export default function USDV() {
                       每日抽奖
                     </CardTitle>
                     <CardDescription>
-                      每 24 小时一次；大概率 1–10 USDV，100 USDV 极低概率；今日上限用尽则不可抽
+                      每 24 小时一次；开奖为 1–100 USDV；今日上限用尽则不可抽
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -181,7 +181,7 @@ export default function USDV() {
                       按天生息
                     </CardTitle>
                     <CardDescription>
-                      按天领取你的 USDV 奖励（计到锁期结束）
+                      按"整天"结算，不足 24 小时会返回 nothing to claim
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -227,17 +227,17 @@ export default function USDV() {
                       利润跟随
                     </CardTitle>
                     <CardDescription>
-                      请先在收益页领取 USDT，再来领取 10×USDV
+                      先去 LockStakingV2.claim(posId) 领取 USDT，再来领 10×USDV
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Button
                       onClick={handleClaimProfitFollow}
-                      disabled={selectedPositions.size === 0 || actionLoading.claimProfit}
+                      disabled={actionLoading.claimProfit}
                       className="w-full"
                     >
                       {actionLoading.claimProfit && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                      领取奖励 ({selectedPositions.size})
+                      领取奖励 {selectedPositions.size > 0 ? `(${selectedPositions.size})` : ""}
                     </Button>
                   </CardContent>
                 </Card>

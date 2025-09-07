@@ -97,41 +97,39 @@ export function useUSDVData() {
     return () => clearInterval(interval);
   }, [refreshData]);
 
-  const formatAmount = useCallback((amount: any, decimals = 18) => {
-    console.log("formatAmount called with:", amount, "type:", typeof amount);
-    
+  const formatAmount = useCallback((amount: any, decimals = 18): string => {
     if (amount === null || amount === undefined || amount === "" || amount === "0x") {
-      console.log("formatAmount: returning 0.00 for null/undefined/empty value");
-      return "0.00";
+      return "0";
     }
     
     try {
       // Convert to BigInt if it's not already
       const bigIntAmount = typeof amount === 'bigint' ? amount : BigInt(amount);
-      const result = formatUnits(bigIntAmount, decimals);
-      console.log("formatAmount success:", result);
-      return result;
+      const formatted = formatUnits(bigIntAmount, decimals);
+      
+      // Parse to number and format with appropriate precision
+      const num = parseFloat(formatted);
+      if (num === 0) return "0";
+      if (num < 0.01) return num.toFixed(6);
+      if (num < 1) return num.toFixed(4);
+      if (num < 1000) return num.toFixed(2);
+      return Math.floor(num).toLocaleString();
     } catch (error) {
-      console.error("Error formatting amount:", error, "amount:", amount, "type:", typeof amount);
-      return "0.00";
+      console.error("Format amount error:", error);
+      return "0";
     }
   }, []);
 
-  const formatPercent = useCallback((bps: any) => {
-    console.log("formatPercent called with:", bps, "type:", typeof bps);
-    
+  const formatPercent = useCallback((bps: any): string => {
     if (bps === null || bps === undefined || bps === "" || bps === "0x") {
-      console.log("formatPercent: returning 0.00 for null/undefined/empty value");
       return "0.00";
     }
     
     try {
       const bigIntBps = typeof bps === 'bigint' ? bps : BigInt(bps);
-      const result = (Number(bigIntBps) / 100).toFixed(2);
-      console.log("formatPercent success:", result);
-      return result;
+      return (Number(bigIntBps) / 100).toFixed(2);
     } catch (error) {
-      console.error("Error formatting percent:", error, "bps:", bps, "type:", typeof bps);
+      console.error("Error formatting percent:", error);
       return "0.00";
     }
   }, []);
