@@ -39,7 +39,7 @@ export default function Invite() {
     const langMatch = currentPath.match(/^\/([a-z]{2})/);
     const langPrefix = langMatch ? `/${langMatch[1]}` : '/zh';
     
-    navigate(`${langPrefix}`, { replace: true });
+    navigate(`${langPrefix}/invest`, { replace: true });
   };
 
   const handleProceed = () => {
