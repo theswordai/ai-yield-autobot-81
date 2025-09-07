@@ -2,9 +2,24 @@ import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
+import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Index = () => {
   const { t } = useI18n();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get current language prefix
+  const currentPath = location.pathname;
+  const langMatch = currentPath.match(/^\/([a-z]{2})/);
+  const langPrefix = langMatch ? `/${langMatch[1]}` : '/zh';
+
+  // Test function to simulate clicking an invitation link
+  const testInvitationLanding = () => {
+    // Simulate an invitation link with a test address
+    navigate(`${langPrefix}/invite/0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6`);
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -33,6 +48,16 @@ const Index = () => {
       </Helmet>
       <Navbar />
       <HeroSection />
+      
+      {/* Temporary test button - remove this after testing */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <Button 
+          onClick={testInvitationLanding}
+          className="bg-accent hover:bg-accent/90 text-white shadow-lg"
+        >
+          测试邀请落地页
+        </Button>
+      </div>
     </div>
   );
 };
