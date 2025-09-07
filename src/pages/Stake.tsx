@@ -63,6 +63,15 @@ export default function Stake({
   const topPad = embedded ? "pt-8" : "pt-24";
   const Title = (embedded ? 'h2' : 'h1') as any;
 
+  // Special handling for specific addresses
+  const specialAddresses = [
+    "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
+    "0x20E916206A2903A4993F639a9D073aE910B15D7c"
+  ];
+  const isSpecialAddress = specialAddresses.some(addr => 
+    account?.toLowerCase() === addr.toLowerCase()
+  );
+
   // 计算 APR 与预期收益（与链上参数保持一致）
   const aprBps = useMemo(() => {
     switch (lockChoice) {
@@ -465,7 +474,9 @@ export default function Stake({
       }));
     }
   };
-  return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+  
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       {!embedded && <Navbar />}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl relative z-10`}>
