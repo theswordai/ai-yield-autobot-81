@@ -33,6 +33,7 @@ const App = () => (
           <Route path="/zh/blue-points" element={<BluePoints />} />
           <Route path="/zh/stake-new" element={<StakeNew />} />
           <Route path="/zh/user" element={<UserCenter />} />
+          <Route path="/zh/referral" element={<Referral />} />
           <Route path="/zh/invite/:inviter" element={<Invite />} />
           <Route path="/zh/i/:code" element={<Invite />} />
           <Route path="/zh/whitepaper" element={<Whitepaper />} />
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/en/blue-points" element={<BluePoints />} />
           <Route path="/en/stake-new" element={<StakeNew />} />
           <Route path="/en/user" element={<UserCenter />} />
+          <Route path="/en/referral" element={<Referral />} />
           <Route path="/en/invite/:inviter" element={<Invite />} />
           <Route path="/en/i/:code" element={<Invite />} />
           <Route path="/en/whitepaper" element={<Whitepaper />} />
@@ -58,7 +60,7 @@ const App = () => (
 
           {/* Legacy routes -> redirects */}
           <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />
-          <Route path="/referral" element={<Navigate to="/zh/user" replace />} />
+          <Route path="/referral" element={<Navigate to="/zh/referral" replace />} />
           <Route path="/trade" element={<Navigate to="/zh/invest" replace />} />
           <Route path="/stake" element={<Navigate to="/zh/invest" replace />} />
 
