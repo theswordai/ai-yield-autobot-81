@@ -369,7 +369,7 @@ export default function Referral({
       ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 24px Arial';
       ctx.textAlign = 'center';
-      ctx.fillText('扫码加入善举计划', canvas.width / 2, 80);
+      ctx.fillText('加入 全球善举计划', canvas.width / 2, 80);
 
       // QR Code
       const qrSize = 200;
@@ -397,7 +397,7 @@ export default function Referral({
       ctx.fillStyle = '#cccccc';
       ctx.font = '12px Arial';
       ctx.fillText('扫描二维码或长按保存图片分享给好友', canvas.width / 2, 450);
-      ctx.fillText('好友投资成功后您将获得丰厚奖励', canvas.width / 2, 470);
+      ctx.fillText('芝麻开门 · 善举即财富 · 价值裂变起航', canvas.width / 2, 470);
 
       // Download
       const link = document.createElement('a');
