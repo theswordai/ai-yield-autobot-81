@@ -24,8 +24,17 @@ export default function StakeNew() {
   // Check if user has seen the landing page before
   useEffect(() => {
     const hasSeenLanding = localStorage.getItem('hasSeenStakeLandingPage');
+    console.log('Landing page check:', { hasSeenLanding, showLandingPage });
+    
+    // Clear localStorage for testing - remove this line after testing
+    localStorage.removeItem('hasSeenStakeLandingPage');
+    
     if (!hasSeenLanding) {
+      console.log('First visit detected, showing landing page');
       setShowLandingPage(true);
+    } else {
+      console.log('User has seen landing page before');
+      setShowLandingPage(false);
     }
   }, []);
 
