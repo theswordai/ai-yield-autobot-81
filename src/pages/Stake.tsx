@@ -823,8 +823,6 @@ export default function Stake({
               <CardContent className="space-y-4">
                 {!account ? <div className="text-sm text-muted-foreground text-center py-4">
                     {t("staking.connectWalletToView")}
-                  </div> : !hasPositions ? <div className="text-sm text-muted-foreground text-center py-4">
-                    {t("staking.onlyInvestorsCanInvite")}
                   </div> : <>
                      <div className="space-y-2">
                        <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
