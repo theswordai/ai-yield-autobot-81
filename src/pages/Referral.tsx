@@ -603,6 +603,9 @@ export default function Referral({
                     <p className="text-xs text-muted-foreground">
                       好友通过此链接进入将自动绑定邀请关系
                     </p>
+                    <p className="text-xs text-primary font-medium mt-2">
+                      邀请二维码海报请到尊享-点亮心灯页面获取
+                    </p>
                   </div>
                 </div>
               )}
