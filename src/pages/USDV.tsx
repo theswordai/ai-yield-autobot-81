@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
 import { useUSDVData } from "@/hooks/useUSDVData";
 import { useUSDVActions } from "@/hooks/useUSDVActions";
+import { Navbar } from "@/components/Navbar";
 import { WalletConnector } from "@/components/WalletConnector";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -63,13 +64,15 @@ export default function USDV() {
     : 0;
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <Helmet>
         <title>USDV 奖励系统 - 善举即财富</title>
         <meta name="description" content="领取 USDV 奖励，参与抽奖，获得更多收益" />
       </Helmet>
+      
+      <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
+      <div className="pt-16 min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Header */}
@@ -338,6 +341,6 @@ export default function USDV() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
