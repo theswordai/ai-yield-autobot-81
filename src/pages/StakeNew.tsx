@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Navbar } from "@/components/Navbar";
@@ -11,13 +11,43 @@ import { useStakingData } from "@/hooks/useStakingData";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { Lock, Users, TrendingUp, Wallet, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import InvitationLandingPage from "@/components/InvitationLandingPage";
 
 export default function StakeNew() {
   const { account, chainId } = useWeb3();
   const { data, refreshData, formatAmount } = useStakingData();
   const [activeTab, setActiveTab] = useState("stake");
+  const [showLandingPage, setShowLandingPage] = useState(false);
 
   const isCorrectNetwork = chainId === 56; // BSC Mainnet
+
+  // Check if user has seen the landing page before
+  useEffect(() => {
+    const hasSeenLanding = localStorage.getItem('hasSeenStakeLandingPage');
+    if (!hasSeenLanding) {
+      setShowLandingPage(true);
+    }
+  }, []);
+
+  const handleCloseLanding = () => {
+    localStorage.setItem('hasSeenStakeLandingPage', 'true');
+    setShowLandingPage(false);
+  };
+
+  const handleProceed = () => {
+    localStorage.setItem('hasSeenStakeLandingPage', 'true');
+    setShowLandingPage(false);
+  };
+
+  // Show landing page on first visit
+  if (showLandingPage) {
+    return (
+      <InvitationLandingPage
+        onClose={handleCloseLanding}
+        onProceed={handleProceed}
+      />
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
