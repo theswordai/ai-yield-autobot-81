@@ -1083,6 +1083,70 @@
       "usdo": "• USDo minting: 5,000 USDo recorded for A; does not affect reward settlement."
     }
   },
+  "invitationLanding": {
+    "title": "🌐 USD.Online · USDV Incubator",
+    "positioning": {
+      "title": "🚀 One-Line Positioning", 
+      "line1": "USD.Online = The only gateway to USDV",
+      "line2": "USDV = Ultimate engine driving civilization-level wealth multiplication"
+    },
+    "whyChoose": {
+      "title": "🔑 Why Choose USD.Online?",
+      "stableReturns": {
+        "title": "1️⃣ Stable Returns",
+        "desc": "Wealth is not cold numbers, but civilizational pulsation. Daily releases, on-chain transparency; not linear, but curved acceleration; not single-point eruption, but sustained geometric amplification."
+      },
+      "security": {
+        "title": "2️⃣ Security Escort",
+        "desc": "Security is not post-incident remediation, but civilization-level foundational design. All fund flows are automatically executed by smart contracts, combined with multiple independent audits and MPC decentralized vaults."
+      },
+      "flexibility": {
+        "title": "3️⃣ Flexible Exit", 
+        "desc": "Exit is a regularized civilizational contract. Investors can freely choose cycles, returns are distributed daily, maturity is automatically paid. 👉 Withdrawal = wealth secured 👉 Reinvestment = wealth geometric multiplication"
+      },
+      "narrative": {
+        "title": "4️⃣ Civilization Narrative",
+        "desc": "Moral Alpha 3.0 = Wealth growth + Philanthropic amplification = Civilization dividend. Your every return is both personal reward and global goodwill diffusion."
+      },
+      "futureRewards": {
+        "title": "5️⃣ Future Dividends",
+        "desc": "Join USD.Online = Get USDV's civilization ticket.",
+        "static": "• Static like DNA self-replication",
+        "dynamic": "• Dynamic like heart driving circulation", 
+        "team": "• Team leaders like systems amplifying consensus"
+      }
+    },
+    "advantage": {
+      "title": "🌌 USD.Online's Absolute Advantage",
+      "subtitle": "Ecology is surface, biological chain is essence. Six major ecosystems jointly build a self-growing, self-evolving financial life form:",
+      "tech": "1️⃣ Technical Ecosystem = DNA",
+      "finance": "2️⃣ Financial Ecosystem = Heart", 
+      "security": "3️⃣ Security Ecosystem = Immune System",
+      "governance": "4️⃣ Governance Ecosystem = Social System",
+      "charity": "5️⃣ Philanthropic Ecosystem = Spiritual System",
+      "ai": "6️⃣ AI Super Intelligence Ecosystem = Brain"
+    },
+    "giftPackage": {
+      "title": "🎁 Exclusive Newcomer Package",
+      "subtitle": "✨ Register to receive priceless wealth civilization gift package:",
+      "item1": "• 《USDV Wealth Civilization Simplified Whitepaper》",
+      "item2": "• 《Old World vs New World》Comparison Scripts", 
+      "item3": "• 《Civilization Biological Chain》Illustrated Poster",
+      "item4": "• 《7-Day Newcomer Action Camp》Operation Manual",
+      "item5": "• 《Wealth Evolution Path Diagram》",
+      "item6": "• 《100 Q&A Quick Reference Manual》"
+    },
+    "compliance": {
+      "title": "📌 Global Compliance & Security Declaration",
+      "risk": "• Risk Warning: Digital assets and blockchain investments have market risks and volatility. Please participate cautiously according to your risk tolerance.",
+      "terms": "• Service Terms: Using this platform indicates your agreement to comply with our service agreement, including account registration, investment participation, return distribution, referral mechanisms, etc.",
+      "privacy": "• Privacy Policy: We strictly protect user privacy. All data is only used for compliant platform operations and will not be sold or abused."
+    },
+    "buttons": {
+      "toCharity": "Go to Charity Page",
+      "startExperience": "Start Experience"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "Error",
