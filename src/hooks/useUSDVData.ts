@@ -97,26 +97,41 @@ export function useUSDVData() {
     return () => clearInterval(interval);
   }, [refreshData]);
 
-  const formatAmount = useCallback((amount: bigint | null | undefined, decimals = 18) => {
-    if (!amount || amount === null || amount === undefined) {
+  const formatAmount = useCallback((amount: any, decimals = 18) => {
+    console.log("formatAmount called with:", amount, "type:", typeof amount);
+    
+    if (amount === null || amount === undefined || amount === "" || amount === "0x") {
+      console.log("formatAmount: returning 0.00 for null/undefined/empty value");
       return "0.00";
     }
+    
     try {
-      return formatUnits(amount, decimals);
+      // Convert to BigInt if it's not already
+      const bigIntAmount = typeof amount === 'bigint' ? amount : BigInt(amount);
+      const result = formatUnits(bigIntAmount, decimals);
+      console.log("formatAmount success:", result);
+      return result;
     } catch (error) {
-      console.error("Error formatting amount:", error, amount);
+      console.error("Error formatting amount:", error, "amount:", amount, "type:", typeof amount);
       return "0.00";
     }
   }, []);
 
-  const formatPercent = useCallback((bps: bigint | null | undefined) => {
-    if (!bps || bps === null || bps === undefined) {
+  const formatPercent = useCallback((bps: any) => {
+    console.log("formatPercent called with:", bps, "type:", typeof bps);
+    
+    if (bps === null || bps === undefined || bps === "" || bps === "0x") {
+      console.log("formatPercent: returning 0.00 for null/undefined/empty value");
       return "0.00";
     }
+    
     try {
-      return (Number(bps) / 100).toFixed(2);
+      const bigIntBps = typeof bps === 'bigint' ? bps : BigInt(bps);
+      const result = (Number(bigIntBps) / 100).toFixed(2);
+      console.log("formatPercent success:", result);
+      return result;
     } catch (error) {
-      console.error("Error formatting percent:", error, bps);
+      console.error("Error formatting percent:", error, "bps:", bps, "type:", typeof bps);
       return "0.00";
     }
   }, []);

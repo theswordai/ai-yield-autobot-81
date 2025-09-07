@@ -14,7 +14,7 @@ import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1 } from "lucide-react";
 
 export default function USDV() {
   const { t } = useI18n();
-  const { data, loading, formatAmount, refreshData } = useUSDVData();
+  const { data, loading, formatAmount, formatPercent, refreshData } = useUSDVData();
   const { loading: actionLoading, claimStakeUSDV, claimProfitFollow, claimNewcomer, spin } = useUSDVActions();
   const [selectedPositions, setSelectedPositions] = useState<Set<string>>(new Set());
 
@@ -282,9 +282,9 @@ export default function USDV() {
                               </label>
                             </div>
                             <div className="flex gap-2">
-                              <Badge variant="outline">
-                                {formatAmount(position.aprBps, 2)}% APR
-                              </Badge>
+                               <Badge variant="outline">
+                                 {formatPercent(position.aprBps || BigInt(0))}% APR
+                               </Badge>
                               <Badge variant={position.principalWithdrawn ? "secondary" : "default"}>
                                 {position.principalWithdrawn ? "已提取" : "锁定中"}
                               </Badge>
@@ -292,22 +292,22 @@ export default function USDV() {
                           </div>
 
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                            <div>
-                              <div className="text-muted-foreground">本金</div>
-                              <div className="font-medium">
-                                {formatAmount(position.principal)} USDT
-                              </div>
-                            </div>
-                            <div>
-                              <div className="text-muted-foreground">锁定期</div>
-                              <div className="font-medium">{lockDays} 天</div>
-                            </div>
-                            <div>
-                              <div className="text-muted-foreground">开始时间</div>
-                              <div className="font-medium">
-                                {startDate.toLocaleDateString()}
-                              </div>
-                            </div>
+                             <div>
+                               <div className="text-muted-foreground">本金</div>
+                               <div className="font-medium">
+                                 {formatAmount(position.principal || BigInt(0))} USDT
+                               </div>
+                             </div>
+                             <div>
+                               <div className="text-muted-foreground">锁定期</div>
+                               <div className="font-medium">{lockDays} 天</div>
+                             </div>
+                             <div>
+                               <div className="text-muted-foreground">开始时间</div>
+                               <div className="font-medium">
+                                 {startDate.toLocaleDateString()}
+                               </div>
+                             </div>
                              <div>
                                <div className="text-muted-foreground">上次领取</div>
                                <div className="font-medium">
