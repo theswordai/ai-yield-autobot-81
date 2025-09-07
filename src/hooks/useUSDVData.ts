@@ -31,38 +31,52 @@ export function useUSDVData() {
       setLoading(true);
       setError(null);
 
-      // Get basic data
+      // Get basic data with null checks
       const [usdvBalance, bnbBalance, positionIds, hasJoined, canSpinResult, dailyCap] = await Promise.all([
-        contracts.usdv.balanceOf(account),
-        provider.getBalance(account),
-        contracts.lockStaking.getUserPositions(account),
-        contracts.emissionsController.joined(account),
-        contracts.spinWheel.canSpin(account),
-        contracts.spinWheel.dailyCap(),
+        contracts.usdv.balanceOf(account).catch(() => BigInt(0)),
+        provider.getBalance(account).catch(() => BigInt(0)),
+        contracts.lockStaking.getUserPositions(account).catch(() => []),
+        contracts.emissionsController.joined(account).catch(() => false),
+        contracts.spinWheel.canSpin(account).catch(() => ({ ok: false, reason: "网络错误" })),
+        contracts.spinWheel.dailyCap().catch(() => BigInt(0)),
       ]);
 
-      // Get position details
+      // Get position details with error handling
       const positions = await Promise.all(
-        positionIds.map(async (posId: bigint) => {
-          const position = await contracts.lockStaking.positions(posId);
-          return { ...position, posId };
+        (positionIds || []).map(async (posId: bigint) => {
+          try {
+            const position = await contracts.lockStaking.positions(posId);
+            // Ensure all position fields have valid values
+            return { 
+              ...position, 
+              posId,
+              principal: position.principal || BigInt(0),
+              startTime: position.startTime || BigInt(0),
+              lastClaimTime: position.lastClaimTime || BigInt(0),
+              lockDuration: position.lockDuration || BigInt(0),
+              aprBps: position.aprBps || BigInt(0),
+            };
+          } catch (error) {
+            console.error(`Failed to fetch position ${posId}:`, error);
+            return null;
+          }
         })
-      );
+      ).then(results => results.filter(Boolean)); // Filter out null results
 
-      // Get daily progress
+      // Get daily progress with error handling
       const currentDayId = BigInt(Math.floor(Date.now() / 1000 / 86400));
-      const mintedToday = await contracts.spinWheel.mintedPerDay(currentDayId);
+      const mintedToday = await contracts.spinWheel.mintedPerDay(currentDayId).catch(() => BigInt(0));
 
       const userData: USDVUserData = {
         address: account,
-        usdvBalance,
-        bnbBalance,
-        positions,
-        hasJoined,
-        canSpin: canSpinResult,
+        usdvBalance: usdvBalance || BigInt(0),
+        bnbBalance: bnbBalance || BigInt(0),
+        positions: positions || [],
+        hasJoined: hasJoined || false,
+        canSpin: canSpinResult || { ok: false, reason: "未知错误" },
         dailyProgress: {
-          minted: mintedToday,
-          cap: dailyCap
+          minted: mintedToday || BigInt(0),
+          cap: dailyCap || BigInt(0)
         }
       };
 
@@ -83,12 +97,28 @@ export function useUSDVData() {
     return () => clearInterval(interval);
   }, [refreshData]);
 
-  const formatAmount = useCallback((amount: bigint, decimals = 18) => {
-    return formatUnits(amount, decimals);
+  const formatAmount = useCallback((amount: bigint | null | undefined, decimals = 18) => {
+    if (!amount || amount === null || amount === undefined) {
+      return "0.00";
+    }
+    try {
+      return formatUnits(amount, decimals);
+    } catch (error) {
+      console.error("Error formatting amount:", error, amount);
+      return "0.00";
+    }
   }, []);
 
-  const formatPercent = useCallback((bps: bigint) => {
-    return (Number(bps) / 100).toFixed(2);
+  const formatPercent = useCallback((bps: bigint | null | undefined) => {
+    if (!bps || bps === null || bps === undefined) {
+      return "0.00";
+    }
+    try {
+      return (Number(bps) / 100).toFixed(2);
+    } catch (error) {
+      console.error("Error formatting percent:", error, bps);
+      return "0.00";
+    }
   }, []);
 
   return {

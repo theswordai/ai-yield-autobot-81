@@ -58,7 +58,7 @@ export default function USDV() {
     }
   };
 
-  const dailyProgress = data?.dailyProgress 
+  const dailyProgress = data?.dailyProgress && data.dailyProgress.cap > 0
     ? (Number(data.dailyProgress.minted) / Number(data.dailyProgress.cap)) * 100 
     : 0;
 
@@ -252,11 +252,11 @@ export default function USDV() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {data.positions.map((position) => {
-                      const posIdStr = position.posId.toString();
-                      const isSelected = selectedPositions.has(posIdStr);
-                      const startDate = new Date(Number(position.startTime) * 1000);
-                      const lockDays = Number(position.lockDuration) / (24 * 60 * 60);
+                     {data.positions.map((position) => {
+                       const posIdStr = position.posId?.toString() || "0";
+                       const isSelected = selectedPositions.has(posIdStr);
+                       const startDate = new Date(Number(position.startTime || 0) * 1000);
+                       const lockDays = Number(position.lockDuration || 0) / (24 * 60 * 60);
 
                       return (
                         <div
@@ -308,12 +308,15 @@ export default function USDV() {
                                 {startDate.toLocaleDateString()}
                               </div>
                             </div>
-                            <div>
-                              <div className="text-muted-foreground">上次领取</div>
-                              <div className="font-medium">
-                                {new Date(Number(position.lastClaimTime) * 1000).toLocaleDateString()}
-                              </div>
-                            </div>
+                             <div>
+                               <div className="text-muted-foreground">上次领取</div>
+                               <div className="font-medium">
+                                 {position.lastClaimTime && Number(position.lastClaimTime) > 0 
+                                   ? new Date(Number(position.lastClaimTime) * 1000).toLocaleDateString()
+                                   : "未领取"
+                                 }
+                               </div>
+                             </div>
                           </div>
                         </div>
                       );
