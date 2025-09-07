@@ -7,10 +7,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 interface InvitationLandingPageProps {
   onClose: () => void;
   onProceed: () => void;
-  onGoToReferral?: () => void;
 }
 
-export default function InvitationLandingPage({ onClose, onProceed, onGoToReferral }: InvitationLandingPageProps) {
+export default function InvitationLandingPage({ onClose, onProceed }: InvitationLandingPageProps) {
   const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,11 +20,7 @@ export default function InvitationLandingPage({ onClose, onProceed, onGoToReferr
   const langPrefix = langMatch ? `/${langMatch[1]}` : '/zh';
   
   const goToReferral = () => {
-    if (onGoToReferral) {
-      onGoToReferral();
-    } else {
-      navigate(`${langPrefix}/referral`);
-    }
+    navigate(`${langPrefix}/referral`);
   };
 
   return (
