@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Users, Gift, TrendingUp, Share2, Trophy } from "lucide-react";
+import { Copy, Users, Gift, TrendingUp, Share2, Trophy, QrCode, Download } from "lucide-react";
+import QRCode from "qrcode";
 import { useToast } from "@/hooks/use-toast";
 import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
@@ -57,10 +58,11 @@ export default function Referral({
   const [storedInviter, setStoredInviter] = useState<string | null>(() => localStorage.getItem("inviter"));
   const [binding, setBinding] = useState(false);
   const [claiming, setClaiming] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState<string>("");
   const Title = (embedded ? 'h2' : 'h1') as any;
   const ZERO = "0x0000000000000000000000000000000000000000";
   const referralCode = account || "";
-  const inviteLink = account ? `${window.location.origin}/invite/${account}` : `${window.location.origin}/invite/----`;
+  const inviteLink = account ? `${window.location.origin}/zh/referral?inviter=${account}` : `${window.location.origin}/zh/referral?inviter=----`;
 
   // 邀请排行榜（合并直推与间推的贡献奖励，按金额降序，最多10条）
   const leaderboard = useMemo(() => {
@@ -83,6 +85,20 @@ export default function Referral({
     return `...${address.slice(-10)}`;
   };
   useEffect(() => {
+    // Check for inviter parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviterFromUrl = urlParams.get('inviter');
+    
+    if (inviterFromUrl && /^0x[a-fA-F0-9]{40}$/.test(inviterFromUrl)) {
+      localStorage.setItem('inviter', inviterFromUrl);
+      setStoredInviter(inviterFromUrl);
+      
+      // Remove the parameter from URL to clean it up
+      urlParams.delete('inviter');
+      const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+      window.history.replaceState({}, '', newUrl);
+    }
+
     const load = async () => {
       try {
         if (!account || !registry) {
@@ -311,6 +327,86 @@ export default function Referral({
       setClaiming(false);
     }
   };
+
+  // Generate QR code
+  useEffect(() => {
+    if (account && inviteLink) {
+      QRCode.toDataURL(inviteLink, {
+        width: 256,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      }).then(url => {
+        setQrDataUrl(url);
+      }).catch(console.error);
+    }
+  }, [account, inviteLink]);
+
+  const downloadQRPoster = () => {
+    if (!qrDataUrl || !account) return;
+
+    // Create canvas for poster
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = 400;
+    canvas.height = 600;
+
+    // Background gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#1a1a2e');
+    gradient.addColorStop(1, '#16213e');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Load and draw QR code
+    const qrImg = new Image();
+    qrImg.onload = () => {
+      // Title
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('扫码加入善举计划', canvas.width / 2, 80);
+
+      // QR Code
+      const qrSize = 200;
+      const qrX = (canvas.width - qrSize) / 2;
+      const qrY = 120;
+      
+      // QR background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20);
+      
+      ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+
+      // Invite text
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '16px Arial';
+      ctx.fillText('我的邀请地址:', canvas.width / 2, 380);
+      
+      // Address (shortened)
+      ctx.font = '14px monospace';
+      ctx.fillStyle = '#ffd700';
+      const shortAddr = `${account.slice(0, 10)}...${account.slice(-10)}`;
+      ctx.fillText(shortAddr, canvas.width / 2, 410);
+
+      // Instructions
+      ctx.fillStyle = '#cccccc';
+      ctx.font = '12px Arial';
+      ctx.fillText('扫描二维码或长按保存图片分享给好友', canvas.width / 2, 450);
+      ctx.fillText('好友投资成功后您将获得丰厚奖励', canvas.width / 2, 470);
+
+      // Download
+      const link = document.createElement('a');
+      link.download = `邀请海报_${account.slice(-6)}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    };
+    qrImg.src = qrDataUrl;
+  };
   return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       {!embedded && <Navbar />}
       {!embedded && <Helmet>
@@ -428,7 +524,90 @@ export default function Referral({
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Referral Code & Link */}
-          
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Share2 className="w-5 h-5" />
+                我的邀请地址
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Referral Code */}
+              <div>
+                <label className="text-sm font-medium mb-2 block">邀请码</label>
+                <div className="flex gap-2">
+                  <Input 
+                    value={referralCode} 
+                    readOnly 
+                    className="font-mono text-sm bg-muted/30"
+                  />
+                  <Button 
+                    onClick={copyReferralCode} 
+                    size="icon" 
+                    variant="outline"
+                    className="shrink-0"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Referral Link */}
+              <div>
+                <label className="text-sm font-medium mb-2 block">邀请链接</label>
+                <div className="flex gap-2">
+                  <Input 
+                    value={inviteLink} 
+                    readOnly 
+                    className="font-mono text-xs bg-muted/30"
+                  />
+                  <Button 
+                    onClick={copyReferralLink} 
+                    size="icon" 
+                    variant="outline"
+                    className="shrink-0"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* QR Code Poster */}
+              {qrDataUrl && (
+                <div className="border border-border rounded-lg p-4 bg-muted/20">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium">邀请二维码海报</span>
+                    <Button
+                      onClick={downloadQRPoster}
+                      size="sm"
+                      variant="outline"
+                      className="gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      下载海报
+                    </Button>
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="bg-white p-3 rounded-lg">
+                      <img 
+                        src={qrDataUrl} 
+                        alt="邀请二维码" 
+                        className="w-32 h-32"
+                      />
+                    </div>
+                  </div>
+                  <div className="text-center mt-3">
+                    <p className="text-xs text-muted-foreground">
+                      扫码或点击下载海报分享给好友
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      好友通过此链接进入将自动绑定邀请关系
+                    </p>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Reward Structure */}
           <Card>
