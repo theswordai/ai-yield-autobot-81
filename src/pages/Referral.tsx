@@ -10,7 +10,6 @@ import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
-import { useStakingData } from "@/hooks/useStakingData";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { LockStaking_ABI } from "@/abis/LockStaking";
@@ -30,17 +29,6 @@ export default function Referral({
     provider,
     signer
   } = useWeb3();
-  const { data: stakingData } = useStakingData();
-  
-  // Check if user has positions or is special address
-  const specialAddresses = [
-    "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6",
-    "0x20E916206A2903A4993F639a9D073aE910B15D7c"
-  ];
-  const isSpecialAddress = specialAddresses.some(addr => 
-    account?.toLowerCase() === addr.toLowerCase()
-  );
-  const hasPositions = (stakingData?.activePositions?.length || 0) > 0 || isSpecialAddress;
   const registry = useMemo(() => provider ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, provider) : null, [provider]);
   const registryWrite = useMemo(() => signer ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, signer) : null, [signer]);
   const vault = useMemo(() => provider ? new Contract(VAULT_ADDRESS, RewardsVault_ABI, provider) : null, [provider]);
@@ -544,94 +532,79 @@ export default function Referral({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {!account ? (
-                <div className="text-sm text-muted-foreground text-center py-4">
-                  请先连接钱包
+              {/* Referral Code */}
+              <div>
+                <label className="text-sm font-medium mb-2 block">邀请码</label>
+                <div className="flex gap-2">
+                  <Input 
+                    value={referralCode} 
+                    readOnly 
+                    className="font-mono text-sm bg-muted/30"
+                  />
+                  <Button 
+                    onClick={copyReferralCode} 
+                    size="icon" 
+                    variant="outline"
+                    className="shrink-0"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
                 </div>
-              ) : !hasPositions ? (
-                <div className="text-sm text-muted-foreground text-center py-4">
-                  只有投资人才有邀请资格
-                  <div className="mt-2 text-xs">
-                    请先在善举页面进行质押投资，成为我们的会员后即可使用此功能。
+              </div>
+
+              {/* Referral Link */}
+              <div>
+                <label className="text-sm font-medium mb-2 block">邀请链接</label>
+                <div className="flex gap-2">
+                  <Input 
+                    value={inviteLink} 
+                    readOnly 
+                    className="font-mono text-xs bg-muted/30"
+                  />
+                  <Button 
+                    onClick={copyReferralLink} 
+                    size="icon" 
+                    variant="outline"
+                    className="shrink-0"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* QR Code Poster */}
+              {qrDataUrl && (
+                <div className="border border-border rounded-lg p-4 bg-muted/20">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm font-medium">邀请二维码海报</span>
+                    <Button
+                      onClick={downloadQRPoster}
+                      size="sm"
+                      variant="outline"
+                      className="gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      下载海报
+                    </Button>
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="bg-white p-3 rounded-lg">
+                      <img 
+                        src={qrDataUrl} 
+                        alt="邀请二维码" 
+                        className="w-32 h-32"
+                      />
+                    </div>
+                  </div>
+                  <div className="text-center mt-3">
+                    <p className="text-xs text-muted-foreground">
+                      扫码或点击下载海报分享给好友
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      好友通过此链接进入将自动绑定邀请关系
+                    </p>
                   </div>
                 </div>
-              ) : (
-                <>
-                  {/* Referral Code */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">邀请码</label>
-                    <div className="flex gap-2">
-                      <Input 
-                        value={referralCode} 
-                        readOnly 
-                        className="font-mono text-sm bg-muted/30"
-                      />
-                      <Button 
-                        onClick={copyReferralCode} 
-                        size="icon" 
-                        variant="outline"
-                        className="shrink-0"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Referral Link */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">邀请链接</label>
-                    <div className="flex gap-2">
-                      <Input 
-                        value={inviteLink} 
-                        readOnly 
-                        className="font-mono text-xs bg-muted/30"
-                      />
-                      <Button 
-                        onClick={copyReferralLink} 
-                        size="icon" 
-                        variant="outline"
-                        className="shrink-0"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* QR Code Poster */}
-                  {qrDataUrl && (
-                    <div className="border border-border rounded-lg p-4 bg-muted/20">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm font-medium">邀请二维码海报</span>
-                        <Button
-                          onClick={downloadQRPoster}
-                          size="sm"
-                          variant="outline"
-                          className="gap-2"
-                        >
-                          <Download className="w-4 h-4" />
-                          下载海报
-                        </Button>
-                      </div>
-                      <div className="flex justify-center">
-                        <div className="bg-white p-3 rounded-lg">
-                          <img 
-                            src={qrDataUrl} 
-                            alt="邀请二维码" 
-                            className="w-32 h-32"
-                          />
-                        </div>
-                      </div>
-                      <div className="text-center mt-3">
-                        <p className="text-xs text-muted-foreground">
-                          扫码或点击下载海报分享给好友
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          好友通过此链接进入将自动绑定邀请关系
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </>
               )}
             </CardContent>
           </Card>
