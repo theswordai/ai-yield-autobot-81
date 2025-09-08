@@ -7,358 +7,388 @@ export default function Whitepaper() {
   const { t } = useI18n();
   
   return (
-    <div className="min-h-screen bg-background">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
       <Navbar />
       <Helmet>
         <title>{t('meta.title')} | Whitepaper</title>
         <meta name="description" content={t('meta.description')} />
         <link rel="canonical" href="/whitepaper" />
       </Helmet>
-      
-      <div className="pt-16 min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 cyber-grid">
-        <div className="container mx-auto px-4 py-8">
-          <div className="max-w-6xl mx-auto space-y-12">
-            {/* Header */}
-            <div className="text-center space-y-6 mb-16">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">
-                和谐财富引擎
-              </h1>
-              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full electric-border"></div>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                构建财富与慈善的和谐统一，通过区块链技术实现透明、高效的价值创造
-              </p>
-            </div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
+      <main className="pt-20 pb-10 relative z-10">
+        <div className="container mx-auto px-4">
+          <header className="mb-8">
+            <h1 className="text-3xl font-bold">USD.online Whitepaper Collection</h1>
+          </header>
 
-            {/* Whitepaper 1: USD.online */}
-            <section className="mb-12">
-              <Card className="cyberpunk-card hologram">
-                <CardHeader>
-                  <CardTitle className="text-3xl bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                    {t('newWhitepaper.usdOnline.title')}
-                  </CardTitle>
-                  <p className="text-xl text-muted-foreground mt-4">{t('newWhitepaper.usdOnline.subtitle')}</p>
-                  <div className="text-center mt-6 p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border border-primary/20">
-                    <p className="text-lg font-bold text-primary">{t('newWhitepaper.usdOnline.motto')}</p>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-8 text-base leading-7">
-                  <div className="prose prose-lg max-w-none text-foreground">
-                    <div className="space-y-8">
-                      <div className="ml-0 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-cyan-400 electric-border-inline">{t('newWhitepaper.usdOnline.preface.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed">{t('newWhitepaper.usdOnline.preface.content1')}</p>
-                          <p className="leading-relaxed">{t('newWhitepaper.usdOnline.preface.content2')}</p>
-                          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 p-4 rounded-lg border-l-4 border-blue-400">
-                            <p><strong className="text-blue-600 dark:text-blue-400">{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="ml-8 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-purple-400 electric-border-inline">{t('newWhitepaper.usdOnline.marketPains.title')}</h3>
-                        <div className="space-y-6 ml-4">
-                          <div>
-                            <h4 className="text-lg font-medium mb-3 text-cyan-300">{t('newWhitepaper.usdOnline.marketPains.traditional.title')}</h4>
-                            <ul className="space-y-2 ml-6">
-                              <li className="flex items-start gap-2">
-                                <span className="text-cyan-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.traditional.point1')}</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-cyan-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.traditional.point2')}</span>
-                              </li>
-                            </ul>
-                          </div>
-                          
-                          <div>
-                            <h4 className="text-lg font-medium mb-3 text-purple-300">{t('newWhitepaper.usdOnline.marketPains.crypto.title')}</h4>
-                            <ul className="space-y-2 ml-6">
-                              <li className="flex items-start gap-2">
-                                <span className="text-purple-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.crypto.point1')}</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-purple-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.crypto.point2')}</span>
-                              </li>
-                            </ul>
-                          </div>
-                          
-                          <div>
-                            <h4 className="text-lg font-medium mb-3 text-blue-300">{t('newWhitepaper.usdOnline.marketPains.charity.title')}</h4>
-                            <ul className="space-y-2 ml-6">
-                              <li className="flex items-start gap-2">
-                                <span className="text-blue-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.charity.point1')}</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-blue-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.charity.point2')}</span>
-                              </li>
-                            </ul>
-                          </div>
-                          
-                          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950 dark:to-orange-950 p-4 rounded-lg border-l-4 border-yellow-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
-                          </div>
-                        </div>
-                      </div>
+          {/* Whitepaper 1: USD.online */}
+          <section className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t('newWhitepaper.usdOnline.title')}</CardTitle>
+                <p className="text-lg text-muted-foreground">{t('newWhitepaper.usdOnline.subtitle')}</p>
+                <p className="text-center font-bold text-primary">{t('newWhitepaper.usdOnline.motto')}</p>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>{t('newWhitepaper.usdOnline.preface.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.preface.content1')}</p>
+                  <p>{t('newWhitepaper.usdOnline.preface.content2')}</p>
+                  <p><strong>{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
+                  
+                  <h3>{t('newWhitepaper.usdOnline.marketPains.title')}</h3>
+                  <h4>{t('newWhitepaper.usdOnline.marketPains.traditional.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.traditional.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.traditional.point2')}</li>
+                  </ul>
+                  
+                  <h4>{t('newWhitepaper.usdOnline.marketPains.crypto.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.crypto.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.crypto.point2')}</li>
+                  </ul>
+                  
+                  <h4>{t('newWhitepaper.usdOnline.marketPains.charity.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.charity.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.marketPains.charity.point2')}</li>
+                  </ul>
+                  
+                  <p>{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
 
-                      <div className="ml-4 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-green-400 electric-border-inline">{t('newWhitepaper.usdOnline.techMoat.title')}</h3>
-                        <div className="space-y-6 ml-4">
-                          <p className="leading-relaxed text-lg">{t('newWhitepaper.usdOnline.techMoat.description')}</p>
-                          
-                          <div className="space-y-6">
-                            <div>
-                              <h4 className="text-lg font-medium mb-3 text-cyan-300">{t('newWhitepaper.usdOnline.techMoat.aiEngine.title')}</h4>
-                              <ul className="space-y-2 ml-6">
-                                <li className="flex items-start gap-2">
-                                  <span className="text-cyan-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point1')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-cyan-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point2')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-cyan-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point3')}</span>
-                                </li>
-                              </ul>
-                              <div className="mt-4 p-4 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 rounded-lg border border-cyan-200 dark:border-cyan-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
-                              </div>
-                            </div>
+                  <h3>{t('newWhitepaper.usdOnline.techMoat.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.description')}</p>
+                  
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.aiEngine.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
 
-                            <div>
-                              <h4 className="text-lg font-medium mb-3 text-purple-300">{t('newWhitepaper.usdOnline.techMoat.aiRotation.title')}</h4>
-                              <ul className="space-y-2 ml-6">
-                                <li className="flex items-start gap-2">
-                                  <span className="text-purple-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point1')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-purple-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point2')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-purple-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point3')}</span>
-                                </li>
-                              </ul>
-                              <div className="mt-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-lg border border-purple-200 dark:border-purple-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
-                              </div>
-                            </div>
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.aiRotation.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
 
-                            <div>
-                              <h4 className="text-lg font-medium mb-3 text-green-300">{t('newWhitepaper.usdOnline.techMoat.liquidity.title')}</h4>
-                              <ul className="space-y-2 ml-6">
-                                <li className="flex items-start gap-2">
-                                  <span className="text-green-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.liquidity.point1')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-green-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.liquidity.point2')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-green-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.liquidity.point3')}</span>
-                                </li>
-                              </ul>
-                              <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border border-green-200 dark:border-green-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
-                              </div>
-                            </div>
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.liquidity.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.liquidity.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.liquidity.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.liquidity.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
 
-                            <div>
-                              <h4 className="text-lg font-medium mb-3 text-orange-300">{t('newWhitepaper.usdOnline.techMoat.security.title')}</h4>
-                              <ul className="space-y-2 ml-6">
-                                <li className="flex items-start gap-2">
-                                  <span className="text-orange-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.security.point1')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-orange-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.security.point2')}</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                  <span className="text-orange-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.security.point3')}</span>
-                                </li>
-                              </ul>
-                              <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950 dark:to-red-950 rounded-lg border border-orange-200 dark:border-orange-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                  <h4>{t('newWhitepaper.usdOnline.techMoat.security.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.security.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.security.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.techMoat.security.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
 
-                      <div className="ml-12 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-pink-400 electric-border-inline">{t('newWhitepaper.usdOnline.charityIntegration.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed text-lg">{t('newWhitepaper.usdOnline.charityIntegration.description')}</p>
-                          <ul className="space-y-2 ml-6">
-                            <li className="flex items-start gap-2">
-                              <span className="text-pink-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.charityIntegration.point1')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-pink-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.charityIntegration.point2')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-pink-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.charityIntegration.point3')}</span>
-                            </li>
-                          </ul>
-                          <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 p-4 rounded-lg border-l-4 border-pink-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
-                          </div>
-                        </div>
-                      </div>
+                  <h3>{t('newWhitepaper.usdOnline.charityIntegration.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.charityIntegration.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.charityIntegration.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.charityIntegration.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.charityIntegration.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
 
-                      <div className="ml-2 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-yellow-400 electric-border-inline">{t('newWhitepaper.usdOnline.growthModel.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <ul className="space-y-2 ml-6">
-                            <li className="flex items-start gap-2">
-                              <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point1')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point2')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point3')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point4')}</span>
-                            </li>
-                          </ul>
-                          <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950 dark:to-amber-950 p-4 rounded-lg border-l-4 border-yellow-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
-                          </div>
-                        </div>
-                      </div>
+                  <h3>{t('newWhitepaper.usdOnline.growthModel.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point3')}</li>
+                    <li>{t('newWhitepaper.usdOnline.growthModel.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
 
-                      <div className="ml-6 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-indigo-400 electric-border-inline">{t('newWhitepaper.usdOnline.compliance.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed text-lg">{t('newWhitepaper.usdOnline.compliance.description')}</p>
-                          <ul className="space-y-2 ml-6">
-                            <li className="flex items-start gap-2">
-                              <span className="text-indigo-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.compliance.point1')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-indigo-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.compliance.point2')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-indigo-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.compliance.point3')}</span>
-                            </li>
-                          </ul>
-                          <div className="bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-950 dark:to-violet-950 p-4 rounded-lg border-l-4 border-indigo-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
-                          </div>
-                        </div>
-                      </div>
+                  <h3>{t('newWhitepaper.usdOnline.compliance.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.compliance.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.compliance.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.compliance.point2')}</li>
+                    <li>{t('newWhitepaper.usdOnline.compliance.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
 
-                      <div className="ml-10 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-teal-400 electric-border-inline">{t('newWhitepaper.usdOnline.strategy.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <ul className="space-y-2 ml-6">
-                            <li className="flex items-start gap-2">
-                              <span className="text-teal-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.strategy.point1')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-teal-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.strategy.point2')}</span>
-                            </li>
-                          </ul>
-                          <div className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-950 dark:to-cyan-950 p-4 rounded-lg border-l-4 border-teal-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
-                          </div>
-                        </div>
-                      </div>
+                  <h3>{t('newWhitepaper.usdOnline.strategy.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdOnline.strategy.point1')}</li>
+                    <li>{t('newWhitepaper.usdOnline.strategy.point2')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
 
-                      <div className="ml-4 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-red-400 electric-border-inline">{t('newWhitepaper.usdOnline.conclusion.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-950 dark:to-pink-950 p-6 rounded-lg border border-red-200 dark:border-red-800">
-                            <p className="leading-relaxed mb-4">{t('newWhitepaper.usdOnline.conclusion.content1')}</p>
-                            <p className="leading-relaxed mb-4">{t('newWhitepaper.usdOnline.conclusion.content2')}</p>
-                            <p className="leading-relaxed font-semibold text-red-600 dark:text-red-400">{t('newWhitepaper.usdOnline.conclusion.content3')}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
+                  <h3>{t('newWhitepaper.usdOnline.conclusion.title')}</h3>
+                  <p>{t('newWhitepaper.usdOnline.conclusion.content1')}</p>
+                  <p>{t('newWhitepaper.usdOnline.conclusion.content2')}</p>
+                  <p>{t('newWhitepaper.usdOnline.conclusion.content3')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
 
-            {/* Whitepaper 2: USDV */}
-            <section className="mb-12">
-              <Card className="cyberpunk-card data-stream">
-                <CardHeader>
-                  <CardTitle className="text-3xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    {t('newWhitepaper.usdv.title')}
-                  </CardTitle>
-                  <p className="text-xl text-muted-foreground mt-4">{t('newWhitepaper.usdv.subtitle')}</p>
-                  <p className="text-lg text-muted-foreground">{t('newWhitepaper.usdv.subsubtitle')}</p>
-                </CardHeader>
-                <CardContent className="space-y-8 text-base leading-7">
-                  <div className="prose prose-lg max-w-none text-foreground">
-                    <div className="space-y-8">
-                      <div className="ml-0 transform transition-all duration-300 hover:translate-x-2">
-                        <h3 className="text-2xl font-semibold mb-4 text-blue-400 electric-border-inline">{t('newWhitepaper.usdv.background.title')}</h3>
-                        <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed">{t('newWhitepaper.usdv.background.description')}</p>
-                          <ul className="space-y-2 ml-6">
-                            <li className="flex items-start gap-2">
-                              <span className="text-blue-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdv.background.point1')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-blue-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdv.background.point2')}</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-blue-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdv.background.point3')}</span>
-                            </li>
-                          </ul>
-                          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 p-4 rounded-lg border-l-4 border-blue-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdv.background.conclusion')}</p>
-                          </div>
-                        </div>
-                      </div>
+          {/* Whitepaper 2: USDV */}
+          <section className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t('newWhitepaper.usdv.title')}</CardTitle>
+                <p className="text-lg text-muted-foreground">{t('newWhitepaper.usdv.subtitle')}</p>
+                <p className="text-sm text-muted-foreground">{t('newWhitepaper.usdv.subsubtitle')}</p>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>{t('newWhitepaper.usdv.background.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.background.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.background.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.background.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.background.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.background.conclusion')}</p>
 
-                      {/* Continue with similar patterns for all other sections... */}
-                      {/* This is a condensed version to avoid overly long file */}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
+                  <h3>{t('newWhitepaper.usdv.marketPains.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.marketPains.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.marketPains.point2')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.marketPains.conclusion')}</p>
 
-            {/* Continue with other whitepapers using similar cyberpunk styling... */}
-            {/* For brevity, I'm showing the pattern but not repeating all sections */}
-          </div>
+                  <h3>{t('newWhitepaper.usdv.biochain.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.biochain.description')}</p>
+                  <p>{t('newWhitepaper.usdv.biochain.sixChains')}</p>
+                  <ol>
+                    <li>{t('newWhitepaper.usdv.biochain.chain1')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain2')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain3')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain4')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain5')}</li>
+                    <li>{t('newWhitepaper.usdv.biochain.chain6')}</li>
+                  </ol>
+                  <p>{t('newWhitepaper.usdv.biochain.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.yields.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.yields.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point3')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point4')}</li>
+                    <li>{t('newWhitepaper.usdv.yields.point5')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.yields.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.compliance.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.compliance.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.compliance.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.compliance.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.compliance.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.compliance.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.risks.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.risks.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.risks.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.risks.point3')}</li>
+                    <li>{t('newWhitepaper.usdv.risks.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.risks.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.vision.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.usdv.vision.point1')}</li>
+                    <li>{t('newWhitepaper.usdv.vision.point2')}</li>
+                    <li>{t('newWhitepaper.usdv.vision.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.usdv.vision.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.usdv.conclusion.title')}</h3>
+                  <p>{t('newWhitepaper.usdv.conclusion.content1')}</p>
+                  <p>{t('newWhitepaper.usdv.conclusion.content2')}</p>
+                  <p>{t('newWhitepaper.usdv.conclusion.content3')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Whitepaper 3: USD.online Extended */}
+          <section className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t('newWhitepaper.extended.title')}</CardTitle>
+                <p className="text-lg text-muted-foreground">{t('newWhitepaper.extended.subtitle')}</p>
+                <p className="text-center font-bold text-primary">{t('newWhitepaper.extended.motto')}</p>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>{t('newWhitepaper.extended.macroBackground.title')}</h3>
+                  <p>{t('newWhitepaper.extended.macroBackground.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.macroBackground.point1')}</li>
+                    <li>{t('newWhitepaper.extended.macroBackground.point2')}</li>
+                    <li>{t('newWhitepaper.extended.macroBackground.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.macroBackground.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.painPoints.title')}</h3>
+                  <ul>
+                    <li><strong>{t('newWhitepaper.extended.painPoints.traditional')}</strong><br/>{t('newWhitepaper.extended.painPoints.traditionalDesc')}</li>
+                    <li><strong>{t('newWhitepaper.extended.painPoints.crypto')}</strong><br/>{t('newWhitepaper.extended.painPoints.cryptoDesc')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.painPoints.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.techHighlights.title')}</h3>
+                  
+                  <h4>{t('newWhitepaper.extended.techHighlights.aiAlpha.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point3')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiAlpha.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.aiAlpha.logic')}</p>
+
+                  <h4>{t('newWhitepaper.extended.techHighlights.aiQuant.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point3')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.aiQuant.point4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.aiQuant.logic')}</p>
+
+                  <h4>{t('newWhitepaper.extended.techHighlights.liquidity.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.liquidity.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.liquidity.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.liquidity.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.liquidity.logic')}</p>
+
+                  <h4>{t('newWhitepaper.extended.techHighlights.custody.title')}</h4>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.techHighlights.custody.point1')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.custody.point2')}</li>
+                    <li>{t('newWhitepaper.extended.techHighlights.custody.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.techHighlights.custody.logic')}</p>
+
+                  <h3>{t('newWhitepaper.extended.regulation.title')}</h3>
+                  <p>{t('newWhitepaper.extended.regulation.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.regulation.point1')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.point2')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.regulation.passport')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint1')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint2')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint3')}</li>
+                    <li>{t('newWhitepaper.extended.regulation.passportPoint4')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.regulation.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.moralAlpha.title')}</h3>
+                  <p>{t('newWhitepaper.extended.moralAlpha.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.moralAlpha.point1')}</li>
+                    <li>{t('newWhitepaper.extended.moralAlpha.point2')}</li>
+                    <li>{t('newWhitepaper.extended.moralAlpha.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.moralAlpha.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.vision.title')}</h3>
+                  <p>{t('newWhitepaper.extended.vision.statement')}</p>
+                  <p>{t('newWhitepaper.extended.vision.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.vision.point1')}</li>
+                    <li>{t('newWhitepaper.extended.vision.point2')}</li>
+                    <li>{t('newWhitepaper.extended.vision.point3')}</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.extended.international.title')}</h3>
+                  <p>{t('newWhitepaper.extended.international.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.extended.international.point1')}</li>
+                    <li>{t('newWhitepaper.extended.international.point2')}</li>
+                    <li>{t('newWhitepaper.extended.international.point3')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.extended.international.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.extended.summary.title')}</h3>
+                  <p>{t('newWhitepaper.extended.summary.statement')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Whitepaper 4: Moral Alpha 3.0 */}
+          <section className="mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">{t('newWhitepaper.moralAlpha3.title')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 text-sm leading-6">
+                <div className="prose prose-sm max-w-none">
+                  <h3>{t('newWhitepaper.moralAlpha3.origin.title')}</h3>
+                  <ul>
+                    <li>{t('newWhitepaper.moralAlpha3.origin.alpha')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.origin.morality')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.origin.version')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.moralAlpha3.origin.conclusion')}</p>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.evolution.title')}</h3>
+                  <ul>
+                    <li><strong>{t('newWhitepaper.moralAlpha3.evolution.v1')}</strong><br/>{t('newWhitepaper.moralAlpha3.evolution.v1Desc')}</li>
+                    <li><strong>{t('newWhitepaper.moralAlpha3.evolution.v2')}</strong><br/>{t('newWhitepaper.moralAlpha3.evolution.v2Desc')}</li>
+                    <li><strong>{t('newWhitepaper.moralAlpha3.evolution.v3')}</strong><br/>{t('newWhitepaper.moralAlpha3.evolution.v3Desc')}<br/>{t('newWhitepaper.moralAlpha3.evolution.v3Detail')}</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.narrative.title')}</h3>
+                  <p><strong>{t('newWhitepaper.moralAlpha3.narrative.definition')}</strong></p>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.model')}</p>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.result')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.moralAlpha3.narrative.profit')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.narrative.goodwill')}</li>
+                  </ul>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.explanation')}</p>
+                  <p>{t('newWhitepaper.moralAlpha3.narrative.mechanism')}</p>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.international.title')}</h3>
+                  <p>{t('newWhitepaper.moralAlpha3.international.description')}</p>
+                  <ul>
+                    <li>{t('newWhitepaper.moralAlpha3.international.ethical')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.international.moral')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.international.compassion')}</li>
+                    <li>{t('newWhitepaper.moralAlpha3.international.civilizational')}</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.motto.title')}</h3>
+                  <ul>
+                    <li>"{t('newWhitepaper.moralAlpha3.motto.quote1')}"</li>
+                    <li>"{t('newWhitepaper.moralAlpha3.motto.quote2')}"</li>
+                    <li>"{t('newWhitepaper.moralAlpha3.motto.quote3')}"</li>
+                  </ul>
+
+                  <h3>{t('newWhitepaper.moralAlpha3.conclusion.title')}</h3>
+                  <p>{t('newWhitepaper.moralAlpha3.conclusion.content1')}</p>
+                  <p>{t('newWhitepaper.moralAlpha3.conclusion.content2')}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
