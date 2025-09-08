@@ -47,10 +47,10 @@ export default function Whitepaper() {
                       <div className="ml-0 transform transition-all duration-300 hover:translate-x-2">
                         <h3 className="text-2xl font-semibold mb-4 text-cyan-400 electric-border-inline">{t('newWhitepaper.usdOnline.preface.title')}</h3>
                         <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed">{t('newWhitepaper.usdOnline.preface.content1')}</p>
-                          <p className="leading-relaxed">{t('newWhitepaper.usdOnline.preface.content2')}</p>
+                          <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.preface.content1')}</p>
+                          <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.preface.content2')}</p>
                           <div className="p-4 rounded-lg border-l-4 border-blue-400">
-                            <p className="text-gray-800 dark:text-gray-200"><strong className="text-blue-600 dark:text-blue-400">{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
+                            <p className="text-white"><strong className="text-blue-400">{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
                           </div>
                         </div>
                       </div>
@@ -63,11 +63,11 @@ export default function Whitepaper() {
                             <ul className="space-y-2 ml-6">
                               <li className="flex items-start gap-2">
                                 <span className="text-cyan-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.traditional.point1')}</span>
+                                <span className="text-white">{t('newWhitepaper.usdOnline.marketPains.traditional.point1')}</span>
                               </li>
                               <li className="flex items-start gap-2">
                                 <span className="text-cyan-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.traditional.point2')}</span>
+                                <span className="text-white">{t('newWhitepaper.usdOnline.marketPains.traditional.point2')}</span>
                               </li>
                             </ul>
                           </div>
@@ -77,11 +77,11 @@ export default function Whitepaper() {
                             <ul className="space-y-2 ml-6">
                               <li className="flex items-start gap-2">
                                 <span className="text-purple-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.crypto.point1')}</span>
+                                <span className="text-white">{t('newWhitepaper.usdOnline.marketPains.crypto.point1')}</span>
                               </li>
                               <li className="flex items-start gap-2">
                                 <span className="text-purple-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.crypto.point2')}</span>
+                                <span className="text-white">{t('newWhitepaper.usdOnline.marketPains.crypto.point2')}</span>
                               </li>
                             </ul>
                           </div>
@@ -91,17 +91,17 @@ export default function Whitepaper() {
                             <ul className="space-y-2 ml-6">
                               <li className="flex items-start gap-2">
                                 <span className="text-blue-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.charity.point1')}</span>
+                                <span className="text-white">{t('newWhitepaper.usdOnline.marketPains.charity.point1')}</span>
                               </li>
                               <li className="flex items-start gap-2">
                                 <span className="text-blue-400 mt-2">▶</span>
-                                <span>{t('newWhitepaper.usdOnline.marketPains.charity.point2')}</span>
+                                <span className="text-white">{t('newWhitepaper.usdOnline.marketPains.charity.point2')}</span>
                               </li>
                             </ul>
                           </div>
                           
                           <div className="p-4 rounded-lg border-l-4 border-yellow-400">
-                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
+                            <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -109,7 +109,7 @@ export default function Whitepaper() {
                       <div className="ml-4 transform transition-all duration-300 hover:translate-x-2">
                         <h3 className="text-2xl font-semibold mb-4 text-green-400 electric-border-inline">{t('newWhitepaper.usdOnline.techMoat.title')}</h3>
                         <div className="space-y-6 ml-4">
-                          <p className="leading-relaxed text-lg">{t('newWhitepaper.usdOnline.techMoat.description')}</p>
+                          <p className="leading-relaxed text-lg text-white">{t('newWhitepaper.usdOnline.techMoat.description')}</p>
                           
                           <div className="space-y-6">
                             <div>
@@ -117,19 +117,19 @@ export default function Whitepaper() {
                               <ul className="space-y-2 ml-6">
                                 <li className="flex items-start gap-2">
                                   <span className="text-cyan-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point1')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.aiEngine.point1')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-cyan-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point2')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.aiEngine.point2')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-cyan-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiEngine.point3')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.aiEngine.point3')}</span>
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 rounded-lg border border-cyan-200 dark:border-cyan-800">
-                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
+                                <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
                               </div>
                             </div>
 
@@ -138,19 +138,19 @@ export default function Whitepaper() {
                               <ul className="space-y-2 ml-6">
                                 <li className="flex items-start gap-2">
                                   <span className="text-purple-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point1')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.aiRotation.point1')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-purple-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point2')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.aiRotation.point2')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-purple-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.aiRotation.point3')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.aiRotation.point3')}</span>
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
-                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
+                                <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
                               </div>
                             </div>
 
@@ -159,19 +159,19 @@ export default function Whitepaper() {
                               <ul className="space-y-2 ml-6">
                                 <li className="flex items-start gap-2">
                                   <span className="text-green-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.liquidity.point1')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.liquidity.point1')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-green-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.liquidity.point2')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.liquidity.point2')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-green-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.liquidity.point3')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.liquidity.point3')}</span>
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 rounded-lg border border-green-200 dark:border-green-800">
-                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
+                                <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
                               </div>
                             </div>
 
@@ -180,19 +180,19 @@ export default function Whitepaper() {
                               <ul className="space-y-2 ml-6">
                                 <li className="flex items-start gap-2">
                                   <span className="text-orange-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.security.point1')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.security.point1')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-orange-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.security.point2')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.security.point2')}</span>
                                 </li>
                                 <li className="flex items-start gap-2">
                                   <span className="text-orange-400 mt-2">▶</span>
-                                  <span>{t('newWhitepaper.usdOnline.techMoat.security.point3')}</span>
+                                  <span className="text-white">{t('newWhitepaper.usdOnline.techMoat.security.point3')}</span>
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
-                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
+                                <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
                               </div>
                             </div>
                           </div>
@@ -202,23 +202,23 @@ export default function Whitepaper() {
                       <div className="ml-12 transform transition-all duration-300 hover:translate-x-2">
                         <h3 className="text-2xl font-semibold mb-4 text-pink-400 electric-border-inline">{t('newWhitepaper.usdOnline.charityIntegration.title')}</h3>
                         <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed text-lg">{t('newWhitepaper.usdOnline.charityIntegration.description')}</p>
+                          <p className="leading-relaxed text-lg text-white">{t('newWhitepaper.usdOnline.charityIntegration.description')}</p>
                           <ul className="space-y-2 ml-6">
                             <li className="flex items-start gap-2">
                               <span className="text-pink-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.charityIntegration.point1')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.charityIntegration.point1')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-pink-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.charityIntegration.point2')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.charityIntegration.point2')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-pink-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.charityIntegration.point3')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.charityIntegration.point3')}</span>
                             </li>
                           </ul>
                           <div className="p-4 rounded-lg border-l-4 border-pink-400">
-                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
+                            <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -229,23 +229,23 @@ export default function Whitepaper() {
                           <ul className="space-y-2 ml-6">
                             <li className="flex items-start gap-2">
                               <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point1')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.growthModel.point1')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point2')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.growthModel.point2')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point3')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.growthModel.point3')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-yellow-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.growthModel.point4')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.growthModel.point4')}</span>
                             </li>
                           </ul>
                           <div className="p-4 rounded-lg border-l-4 border-yellow-400">
-                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
+                            <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -253,23 +253,23 @@ export default function Whitepaper() {
                       <div className="ml-6 transform transition-all duration-300 hover:translate-x-2">
                         <h3 className="text-2xl font-semibold mb-4 text-indigo-400 electric-border-inline">{t('newWhitepaper.usdOnline.compliance.title')}</h3>
                         <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed text-lg">{t('newWhitepaper.usdOnline.compliance.description')}</p>
+                          <p className="leading-relaxed text-lg text-white">{t('newWhitepaper.usdOnline.compliance.description')}</p>
                           <ul className="space-y-2 ml-6">
                             <li className="flex items-start gap-2">
                               <span className="text-indigo-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.compliance.point1')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.compliance.point1')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-indigo-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.compliance.point2')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.compliance.point2')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-indigo-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.compliance.point3')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.compliance.point3')}</span>
                             </li>
                           </ul>
                           <div className="p-4 rounded-lg border-l-4 border-indigo-400">
-                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
+                            <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -280,15 +280,15 @@ export default function Whitepaper() {
                           <ul className="space-y-2 ml-6">
                             <li className="flex items-start gap-2">
                               <span className="text-teal-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.strategy.point1')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.strategy.point1')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-teal-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdOnline.strategy.point2')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdOnline.strategy.point2')}</span>
                             </li>
                           </ul>
                           <div className="p-4 rounded-lg border-l-4 border-teal-400">
-                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
+                            <p className="leading-relaxed text-white">{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -296,11 +296,11 @@ export default function Whitepaper() {
                       <div className="ml-4 transform transition-all duration-300 hover:translate-x-2">
                         <h3 className="text-2xl font-semibold mb-4 text-red-400 electric-border-inline">{t('newWhitepaper.usdOnline.conclusion.title')}</h3>
                         <div className="space-y-4 ml-4">
-                            <div className="p-6 rounded-lg border border-red-200 dark:border-red-800">
-                              <p className="leading-relaxed mb-4">{t('newWhitepaper.usdOnline.conclusion.content1')}</p>
-                              <p className="leading-relaxed mb-4">{t('newWhitepaper.usdOnline.conclusion.content2')}</p>
-                              <p className="leading-relaxed font-semibold text-red-600 dark:text-red-400">{t('newWhitepaper.usdOnline.conclusion.content3')}</p>
-                            </div>
+                          <div className="p-6 rounded-lg border border-red-200 dark:border-red-800">
+                            <p className="leading-relaxed mb-4 text-white">{t('newWhitepaper.usdOnline.conclusion.content1')}</p>
+                            <p className="leading-relaxed mb-4 text-white">{t('newWhitepaper.usdOnline.conclusion.content2')}</p>
+                            <p className="leading-relaxed font-semibold text-red-400">{t('newWhitepaper.usdOnline.conclusion.content3')}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -325,23 +325,23 @@ export default function Whitepaper() {
                       <div className="ml-0 transform transition-all duration-300 hover:translate-x-2">
                         <h3 className="text-2xl font-semibold mb-4 text-blue-400 electric-border-inline">{t('newWhitepaper.usdv.background.title')}</h3>
                         <div className="space-y-4 ml-4">
-                          <p className="leading-relaxed">{t('newWhitepaper.usdv.background.description')}</p>
+                          <p className="leading-relaxed text-white">{t('newWhitepaper.usdv.background.description')}</p>
                           <ul className="space-y-2 ml-6">
                             <li className="flex items-start gap-2">
                               <span className="text-blue-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdv.background.point1')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdv.background.point1')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-blue-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdv.background.point2')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdv.background.point2')}</span>
                             </li>
                             <li className="flex items-start gap-2">
                               <span className="text-blue-400 mt-2">▶</span>
-                              <span>{t('newWhitepaper.usdv.background.point3')}</span>
+                              <span className="text-white">{t('newWhitepaper.usdv.background.point3')}</span>
                             </li>
                           </ul>
                           <div className="p-4 rounded-lg border-l-4 border-blue-400">
-                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdv.background.conclusion')}</p>
+                            <p className="leading-relaxed text-white">{t('newWhitepaper.usdv.background.conclusion')}</p>
                           </div>
                         </div>
                       </div>
