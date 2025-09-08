@@ -68,12 +68,12 @@ export default function USDV() {
       
       <Navbar />
 
-      <div className="pt-16 min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
+      <div className="pt-16 min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 cyber-grid">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Header */}
             <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent neon-text">
                 USDV 奖励系统
               </h1>
               <p className="text-muted-foreground text-lg">
@@ -82,7 +82,7 @@ export default function USDV() {
             </div>
 
             {/* USDV介绍 */}
-            <Card className="max-w-4xl mx-auto">
+            <Card className="max-w-4xl mx-auto hologram">
               <CardContent className="p-8 space-y-6">
                 <div className="text-center space-y-4">
                   <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
@@ -167,10 +167,10 @@ export default function USDV() {
             {data && (
               <div className="grid gap-8 lg:grid-cols-2">
                 {/* 资产概览 */}
-                <Card>
+                <Card className="cyberpunk-card data-stream">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Wallet className="h-5 w-5" />
+                      <Wallet className="h-5 w-5 text-cyan-400" />
                       资产概览
                     </CardTitle>
                   </CardHeader>
@@ -199,10 +199,10 @@ export default function USDV() {
                 </Card>
 
                 {/* 抽奖 */}
-                <Card>
+                <Card className="cyberpunk-glow">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Dice1 className="h-5 w-5" />
+                      <Dice1 className="h-5 w-5 text-cyan-400" />
                       每日抽奖
                     </CardTitle>
                     <CardDescription>
@@ -225,10 +225,10 @@ export default function USDV() {
             {data && (
               <div className="grid gap-8 lg:grid-cols-3">
                 {/* 按天生息 */}
-                <Card>
+                <Card className="electric-border">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <TrendingUp className="h-5 w-5" />
+                      <TrendingUp className="h-5 w-5 text-green-400" />
                       按天生息
                     </CardTitle>
                     <CardDescription>
@@ -248,10 +248,10 @@ export default function USDV() {
                 </Card>
 
                 {/* 新人奖励 */}
-                <Card>
+                <Card className="electric-border">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Gift className="h-5 w-5" />
+                      <Gift className="h-5 w-5 text-yellow-400" />
                       新人奖励
                     </CardTitle>
                     <CardDescription>
@@ -271,10 +271,10 @@ export default function USDV() {
                 </Card>
 
                 {/* 利润跟随 */}
-                <Card>
+                <Card className="electric-border">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Target className="h-5 w-5" />
+                      <Target className="h-5 w-5 text-purple-400" />
                       利润跟随
                     </CardTitle>
                     <CardDescription>
@@ -297,7 +297,7 @@ export default function USDV() {
 
             {/* 我的质押仓位 */}
             {data && data.positions.length > 0 && (
-              <Card>
+              <Card className="cyberpunk-card">
                 <CardHeader>
                   <CardTitle>我的质押仓位</CardTitle>
                   <CardDescription>

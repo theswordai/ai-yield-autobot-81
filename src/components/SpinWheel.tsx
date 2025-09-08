@@ -67,7 +67,7 @@ export function SpinWheel({ onSpin, disabled, loading, canSpin, statusText }: Sp
       <div className="relative w-64 h-64">
         {/* 转盘背景 */}
         <div 
-          className="w-full h-full rounded-full border-4 border-border relative overflow-hidden transition-transform duration-3000 ease-out"
+          className="w-full h-full rounded-full border-4 border-cyan-400 relative overflow-hidden transition-transform duration-3000 ease-out shadow-[0_0_30px_hsl(180_100%_70%_/_0.5)]"
           style={{ transform: `rotate(${rotation}deg)` }}
         >
           {WHEEL_SEGMENTS.map((segment, index) => {
@@ -98,16 +98,16 @@ export function SpinWheel({ onSpin, disabled, loading, canSpin, statusText }: Sp
         </div>
 
         {/* 中心圆 */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-foreground rounded-full border-2 border-background z-10" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-cyan-400 rounded-full border-2 border-background z-10 shadow-[0_0_20px_hsl(180_100%_70%)]" />
 
         {/* 指针 */}
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-8 bg-foreground z-20" 
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-8 bg-cyan-400 z-20 shadow-[0_0_15px_hsl(180_100%_70%)]" 
              style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }} />
       </div>
 
       {/* 结果显示 */}
       {result && (
-        <div className="animate-scale-in bg-primary text-primary-foreground px-6 py-3 rounded-lg text-xl font-bold">
+        <div className="animate-scale-in bg-gradient-to-r from-cyan-400 to-blue-400 text-white px-6 py-3 rounded-lg text-xl font-bold shadow-[0_0_30px_hsl(180_100%_70%_/_0.8)] neon-text">
           🎉 恭喜获得 {result} USDV!
         </div>
       )}
@@ -123,7 +123,7 @@ export function SpinWheel({ onSpin, disabled, loading, canSpin, statusText }: Sp
       <Button
         onClick={handleSpin}
         disabled={disabled || loading || !canSpin || isSpinning}
-        className="w-32 h-12 text-lg font-semibold"
+        className="w-32 h-12 text-lg font-semibold electric-border bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white shadow-[0_0_20px_hsl(180_100%_70%_/_0.4)]"
         size="lg"
       >
         {(loading || isSpinning) && <Loader2 className="h-5 w-5 animate-spin mr-2" />}
