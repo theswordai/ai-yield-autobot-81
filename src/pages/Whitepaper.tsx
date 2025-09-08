@@ -50,7 +50,7 @@ export default function Whitepaper() {
                           <p className="leading-relaxed">{t('newWhitepaper.usdOnline.preface.content1')}</p>
                           <p className="leading-relaxed">{t('newWhitepaper.usdOnline.preface.content2')}</p>
                           <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950 dark:to-cyan-950 p-4 rounded-lg border-l-4 border-blue-400">
-                            <p><strong className="text-blue-600 dark:text-blue-400">{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
+                            <p className="text-gray-800 dark:text-gray-200"><strong className="text-blue-600 dark:text-blue-400">{t('newWhitepaper.usdOnline.preface.vision')}</strong><br/>{t('newWhitepaper.usdOnline.preface.visionDesc')}</p>
                           </div>
                         </div>
                       </div>
@@ -101,7 +101,7 @@ export default function Whitepaper() {
                           </div>
                           
                           <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950 dark:to-orange-950 p-4 rounded-lg border-l-4 border-yellow-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
+                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.marketPains.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -129,7 +129,7 @@ export default function Whitepaper() {
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 rounded-lg border border-cyan-200 dark:border-cyan-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
+                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.aiEngine.logic')}</p>
                               </div>
                             </div>
 
@@ -150,7 +150,7 @@ export default function Whitepaper() {
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950 rounded-lg border border-purple-200 dark:border-purple-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
+                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.aiRotation.logic')}</p>
                               </div>
                             </div>
 
@@ -171,7 +171,7 @@ export default function Whitepaper() {
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border border-green-200 dark:border-green-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
+                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.liquidity.logic')}</p>
                               </div>
                             </div>
 
@@ -192,7 +192,7 @@ export default function Whitepaper() {
                                 </li>
                               </ul>
                               <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-950 dark:to-red-950 rounded-lg border border-orange-200 dark:border-orange-800">
-                                <p className="leading-relaxed">{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
+                                <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.techMoat.security.logic')}</p>
                               </div>
                             </div>
                           </div>
@@ -218,7 +218,7 @@ export default function Whitepaper() {
                             </li>
                           </ul>
                           <div className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 p-4 rounded-lg border-l-4 border-pink-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
+                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.charityIntegration.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -245,7 +245,7 @@ export default function Whitepaper() {
                             </li>
                           </ul>
                           <div className="bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950 dark:to-amber-950 p-4 rounded-lg border-l-4 border-yellow-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
+                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.growthModel.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -269,7 +269,7 @@ export default function Whitepaper() {
                             </li>
                           </ul>
                           <div className="bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-950 dark:to-violet-950 p-4 rounded-lg border-l-4 border-indigo-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
+                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.compliance.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -288,7 +288,7 @@ export default function Whitepaper() {
                             </li>
                           </ul>
                           <div className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-950 dark:to-cyan-950 p-4 rounded-lg border-l-4 border-teal-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
+                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdOnline.strategy.conclusion')}</p>
                           </div>
                         </div>
                       </div>
@@ -341,7 +341,7 @@ export default function Whitepaper() {
                             </li>
                           </ul>
                           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950 p-4 rounded-lg border-l-4 border-blue-400">
-                            <p className="leading-relaxed">{t('newWhitepaper.usdv.background.conclusion')}</p>
+                            <p className="leading-relaxed text-gray-800 dark:text-gray-200">{t('newWhitepaper.usdv.background.conclusion')}</p>
                           </div>
                         </div>
                       </div>
