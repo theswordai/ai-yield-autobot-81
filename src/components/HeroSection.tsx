@@ -110,6 +110,11 @@ export function HeroSection() {
     href: "https://www.samsung.com/",
     logo: "/lovable-uploads/4e11cc4b-891e-40c8-8db9-e789b18dddcd.png",
     tagline: t('partners.samsung')
+  }, {
+    name: "OKX Wallet",
+    href: "https://web3.okx.com",
+    logo: "/lovable-uploads/okx-wallet-logo.png",
+    tagline: t('partners.okxwallet')
   }] as const;
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
       
