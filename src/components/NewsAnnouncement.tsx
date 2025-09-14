@@ -16,6 +16,15 @@ export function NewsAnnouncement() {
     date: "2025-09",
     type: "event",
     urgent: true
+  }, {
+    id: 2,
+    title: "加入全球善意计划",
+    titleEn: "Join the Global Goodwill Plan",
+    content: "芝麻开门 · 善意化为财富 · 价值融合之旅启程",
+    contentEn: "Open Sesame· Goodwill Becomes Wealth · The Journey of Value Fusion Begins",
+    date: "2025-09-14",
+    type: "event",
+    urgent: false
   }]);
   const getTypeColor = (type: string, urgent: boolean) => {
     if (urgent) return "destructive";
