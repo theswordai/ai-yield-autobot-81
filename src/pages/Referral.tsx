@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { ReferralAddressCard } from "@/components/ReferralAddressCard";
-import { RootAddressManager } from "@/components/RootAddressManager";
-import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Copy, Users, Gift, TrendingUp, Share2, Trophy, QrCode, Download } from "lucide-react";
 import QRCode from "qrcode";
 import { useToast } from "@/hooks/use-toast";
-import { useRootAddress } from "@/hooks/useRootAddress";
 import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
 import { Contract, formatUnits } from "ethers";
@@ -25,9 +22,14 @@ export default function Referral({
   embedded?: boolean;
   onRefresh?: () => void;
 }) {
-  const { toast } = useToast();
-  const { account, provider, signer } = useWeb3();
-  const { rootAddress } = useRootAddress();
+  const {
+    toast
+  } = useToast();
+  const {
+    account,
+    provider,
+    signer
+  } = useWeb3();
   const registry = useMemo(() => provider ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, provider) : null, [provider]);
   const registryWrite = useMemo(() => signer ? new Contract(REFERRAL_ADDRESS, ReferralRegistry_ABI, signer) : null, [signer]);
   const vault = useMemo(() => provider ? new Contract(VAULT_ADDRESS, RewardsVault_ABI, provider) : null, [provider]);
@@ -106,22 +108,12 @@ export default function Referral({
 
     const load = async () => {
       try {
-        // Use rootAddress as the query target
-        const queryAddress = rootAddress || account;
-        if (!queryAddress || !registry) {
+        if (!account || !registry) {
           setStats(s => s);
           setTree([]);
           return;
         }
-        const [directs, indirects, vaultPending, bound, pDir, pInd, levelBn] = await Promise.all([
-          (registry as any).getDirects(queryAddress) as Promise<string[]>, 
-          (registry as any).getIndirectsL1(queryAddress) as Promise<string[]>, 
-          vault ? (vault as any).pendingRewards(queryAddress) as Promise<bigint> : Promise.resolve(0n), 
-          (registry as any).inviterOf(queryAddress) as Promise<string>, 
-          (registry as any).pDirect(queryAddress) as Promise<bigint>, 
-          (registry as any).pIndirect1(queryAddress) as Promise<bigint>, 
-          (registry as any).getLevel(queryAddress) as Promise<bigint>
-        ]);
+        const [directs, indirects, vaultPending, bound, pDir, pInd, levelBn] = await Promise.all([(registry as any).getDirects(account) as Promise<string[]>, (registry as any).getIndirectsL1(account) as Promise<string[]>, vault ? (vault as any).pendingRewards(account) as Promise<bigint> : Promise.resolve(0n), (registry as any).inviterOf(account) as Promise<string>, (registry as any).pDirect(account) as Promise<bigint>, (registry as any).pIndirect1(account) as Promise<bigint>, (registry as any).getLevel(account) as Promise<bigint>]);
 
         // Sum claimed rewards from Vault events
         let claimed: bigint = 0n;
@@ -139,7 +131,7 @@ export default function Referral({
         
         // Special handling for specific address
         const specialAddress = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
-        const isSpecialAddress = queryAddress.toLowerCase() === specialAddress.toLowerCase();
+        const isSpecialAddress = account.toLowerCase() === specialAddress.toLowerCase();
         
         setStats({
           totalReferrals: directs.length + indirects.length,
@@ -165,10 +157,7 @@ export default function Referral({
           if (lock) {
             const fromBlock: any = 0n;
             const toBlock: any = "latest";
-            const [accDir, accInd] = await Promise.all([
-              (lock as any).queryFilter((lock as any).filters.ReferralAccrued(queryAddress, null), fromBlock, toBlock), 
-              (lock as any).queryFilter((lock as any).filters.ReferralAccrued(null, queryAddress), fromBlock, toBlock)
-            ]);
+            const [accDir, accInd] = await Promise.all([(lock as any).queryFilter((lock as any).filters.ReferralAccrued(account, null), fromBlock, toBlock), (lock as any).queryFilter((lock as any).filters.ReferralAccrued(null, account), fromBlock, toBlock)]);
             const directTx = new Map<string, bigint>();
             for (const lg of accDir as any[]) {
               const h = (lg as any).transactionHash as string;
@@ -260,7 +249,7 @@ export default function Referral({
       }
     };
     load();
-  }, [rootAddress, account, registry, vault, lock]);
+  }, [account, registry, vault, lock]);
   const rewardTiers = [{
     level: "仁善之种Lv1",
     requirement: "≥200U",
@@ -466,12 +455,9 @@ export default function Referral({
       <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
       <div className="container mx-auto px-4">
         <div className="mb-8">
-          <Title className="text-3xl font-bold mb-2">点亮心灯</Title>
+          <Title className="text-3xl font-bold mb-2">邀请好友</Title>
           <p className="text-muted-foreground">邀请好友投资，获得丰厚返利奖励</p>
         </div>
-
-        {/* Root Address Manager */}
-        <RootAddressManager />
 
         {/* Bind status */}
         <div className="mb-6">
@@ -796,6 +782,5 @@ export default function Referral({
         </Card>
       </div>
       </div>
-      <Footer />
     </div>;
 }
