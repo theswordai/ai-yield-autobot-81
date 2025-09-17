@@ -1,7 +1,5 @@
 import { Navbar } from "@/components/Navbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lock } from "lucide-react";
 import Dashboard from "./Dashboard";
 import Referral from "./Referral";
 import { Helmet } from "react-helmet-async";
@@ -43,47 +41,11 @@ export default function UserCenter() {
           </TabsList>
           <div className="mt-4 sm:mt-6">
             <TabsContent value="dashboard">
-              {hasPositions ? (
-                <Dashboard embedded />
-              ) : (
-                <Card className="text-center py-12">
-                  <CardHeader>
-                    <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                      <Lock className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                    <CardTitle className="text-xl text-muted-foreground">
-                      {t("user.memberOnlyFeature")}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {t("user.memberOnlyDescription")}
-                    </p>
-                  </CardContent>
-                </Card>
-              )}
+              <Dashboard embedded />
             </TabsContent>
             {!isEnglish && (
               <TabsContent value="referral">
-                {hasPositions ? (
-                  <Referral embedded onRefresh={refreshData} />
-                ) : (
-                  <Card className="text-center py-12">
-                    <CardHeader>
-                      <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                        <Lock className="w-8 h-8 text-muted-foreground" />
-                      </div>
-                      <CardTitle className="text-xl text-muted-foreground">
-                        {t("user.memberOnlyFeature")}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        {t("user.memberOnlyDescription")}
-                      </p>
-                    </CardContent>
-                  </Card>
-                )}
+                <Referral embedded onRefresh={refreshData} />
               </TabsContent>
             )}
           </div>
