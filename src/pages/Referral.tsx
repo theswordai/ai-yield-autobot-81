@@ -170,22 +170,15 @@ export default function Referral({
               let depLogs: any[] = [];
               try {
                 depLogs = await (lock as any).queryFilter((lock as any).filters.Deposited(addr), fromBlock, toBlock);
-                console.log(`查询${addr}的Deposited事件，找到${depLogs.length}条记录`);
-              } catch (e) {
-                console.error(`查询${addr}的Deposited事件失败:`, e);
-              }
+              } catch {}
               let invest = 0n;
               let reward = 0n;
               for (const lg of depLogs) {
                 const amt = BigInt((lg as any).args?.[2] ?? 0);
-                console.log(`${addr}投资金额:`, amt.toString(), '解析后:', toStr(amt));
                 invest += amt;
                 const h = (lg as any).transactionHash as string;
-                const txReward = level === 1 ? directTx.get(h) ?? 0n : indirectTx.get(h) ?? 0n;
-                console.log(`${addr}交易${h}的奖励:`, txReward.toString());
-                reward += txReward;
+                reward += level === 1 ? directTx.get(h) ?? 0n : indirectTx.get(h) ?? 0n;
               }
-              console.log(`${addr}最终数据 - 投资:${toStr(invest)}, 奖励:${toStr(reward)}`);
               return {
                 level,
                 user: addr,
