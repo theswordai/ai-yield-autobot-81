@@ -696,17 +696,25 @@ export default function Referral({
                 <div>
                   <h4 className="font-semibold mb-3 text-primary">直推地址 ({directReferrals.length})</h4>
                   <div className="space-y-2">
-                    {directReferrals.map((address, index) => (
-                      <div key={`direct-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <Badge variant="default">L1</Badge>
-                          <span className="font-mono text-sm">{shortenAddress(address)}</span>
+                    {directReferrals.map((address, index) => {
+                      const referralData = tree.find(t => t.user.toLowerCase() === address.toLowerCase() && t.level === 1);
+                      return (
+                        <div key={`direct-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <Badge variant="default">L1</Badge>
+                            <span className="font-mono text-sm">{shortenAddress(address)}</span>
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            <div className="text-sm font-medium">
+                              投资: <span className="text-primary">{referralData?.amount || "0.00"} USDT</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              奖励: <span className="text-accent">{referralData?.earnings || "0.00"} USDT</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-muted-foreground">
-                          直接邀请
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -716,17 +724,25 @@ export default function Referral({
                 <div>
                   <h4 className="font-semibold mb-3 text-secondary">间推地址 ({indirectReferrals.length})</h4>
                   <div className="space-y-2">
-                    {indirectReferrals.map((address, index) => (
-                      <div key={`indirect-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <Badge variant="secondary">L2</Badge>
-                          <span className="font-mono text-sm">{shortenAddress(address)}</span>
+                    {indirectReferrals.map((address, index) => {
+                      const referralData = tree.find(t => t.user.toLowerCase() === address.toLowerCase() && t.level === 2);
+                      return (
+                        <div key={`indirect-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <Badge variant="secondary">L2</Badge>
+                            <span className="font-mono text-sm">{shortenAddress(address)}</span>
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            <div className="text-sm font-medium">
+                              投资: <span className="text-primary">{referralData?.amount || "0.00"} USDT</span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              奖励: <span className="text-accent">{referralData?.earnings || "0.00"} USDT</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-muted-foreground">
-                          间接邀请
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
