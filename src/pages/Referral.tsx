@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { ReferralAddressCard } from "@/components/ReferralAddressCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,12 +51,6 @@ export default function Referral({
     amount: string;
     earnings: string;
     date: string;
-    investments: Array<{
-      amount: string;
-      earnings: string;
-      date: string;
-      txHash: string;
-    }>;
   }[]>([]);
   const [directReferrals, setDirectReferrals] = useState<string[]>([]);
   const [indirectReferrals, setIndirectReferrals] = useState<string[]>([]);
@@ -178,67 +171,37 @@ export default function Referral({
               try {
                 depLogs = await (lock as any).queryFilter((lock as any).filters.Deposited(addr), fromBlock, toBlock);
               } catch {}
-              
-              let totalInvest = 0n;
-              let totalReward = 0n;
-              const investments: Array<{
-                amount: string;
-                earnings: string;
-                date: string;
-                txHash: string;
-              }> = [];
-              
+              let invest = 0n;
+              let reward = 0n;
               for (const lg of depLogs) {
                 const amt = BigInt((lg as any).args?.[2] ?? 0);
+                invest += amt;
                 const h = (lg as any).transactionHash as string;
-                const reward = level === 1 ? directTx.get(h) ?? 0n : indirectTx.get(h) ?? 0n;
-                
-                totalInvest += amt;
-                totalReward += reward;
-                
-                // Get block info for date
-                let date = "-";
-                try {
-                  const block = await provider?.getBlock(lg.blockNumber);
-                  if (block) {
-                    date = new Date(block.timestamp * 1000).toLocaleDateString();
-                  }
-                } catch {}
-                
-                investments.push({
-                  amount: toStr(amt),
-                  earnings: toStr(reward),
-                  date,
-                  txHash: h
-                });
+                reward += level === 1 ? directTx.get(h) ?? 0n : indirectTx.get(h) ?? 0n;
               }
-              
               return {
                 level,
                 user: addr,
-                amount: toStr(totalInvest),
-                earnings: toStr(totalReward),
-                date: "-",
-                investments
+                amount: toStr(invest),
+                earnings: toStr(reward),
+                date: "-"
               };
             };
             const [directList, indirectList] = await Promise.all([Promise.all(directs.map(a => buildFor(a, 1))), Promise.all(indirects.map(a => buildFor(a, 2)))]);
             list = [...directList, ...indirectList];
           } else {
             list = [...directs.map(addr => ({
-              level: 1 as 1 | 2,
+              level: 1,
               user: addr,
               amount: "-",
               earnings: "-",
-              date: "-",
-              investments: []
+              date: "-"
             })), ...indirects.map(addr => ({
-              level: 2 as 1 | 2,
+              level: 2,
               user: addr,
               amount: "-",
               earnings: "-",
-              date: "-",
-              investments: []
+              date: "-"
             }))];
           }
         } catch {}
@@ -733,18 +696,17 @@ export default function Referral({
                 <div>
                   <h4 className="font-semibold mb-3 text-primary">直推地址 ({directReferrals.length})</h4>
                   <div className="space-y-2">
-                    {directReferrals.map((address, index) => {
-                      const referralData = tree.find(t => t.user.toLowerCase() === address.toLowerCase() && t.level === 1);
-                      return (
-                        <ReferralAddressCard 
-                          key={`direct-${index}`}
-                          address={address}
-                          level={1}
-                          referralData={referralData}
-                          shortenAddress={shortenAddress}
-                        />
-                      );
-                    })}
+                    {directReferrals.map((address, index) => (
+                      <div key={`direct-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <Badge variant="default">L1</Badge>
+                          <span className="font-mono text-sm">{shortenAddress(address)}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          直接邀请
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -754,18 +716,41 @@ export default function Referral({
                 <div>
                   <h4 className="font-semibold mb-3 text-secondary">间推地址 ({indirectReferrals.length})</h4>
                   <div className="space-y-2">
-                    {indirectReferrals.map((address, index) => {
-                      const referralData = tree.find(t => t.user.toLowerCase() === address.toLowerCase() && t.level === 2);
-                      return (
-                        <ReferralAddressCard 
-                          key={`indirect-${index}`}
-                          address={address}
-                          level={2}
-                          referralData={referralData}
-                          shortenAddress={shortenAddress}
-                        />
-                      );
-                    })}
+                    {indirectReferrals.map((address, index) => (
+                      <div key={`indirect-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <Badge variant="secondary">L2</Badge>
+                          <span className="font-mono text-sm">{shortenAddress(address)}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          间接邀请
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 交易记录树（保留原有功能） */}
+              {tree.length > 0 && (
+                <div>
+                  <h4 className="font-semibold mb-3 text-accent">交易记录</h4>
+                  <div className="space-y-2">
+                    {tree.map((ref, index) => (
+                      <div key={`tree-${index}`} className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/20 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <Badge variant={ref.level === 1 ? "default" : "secondary"}>
+                            L{ref.level}
+                          </Badge>
+                          <span className="font-mono text-sm">{shortenAddress(ref.user)}</span>
+                          <span className="text-sm text-muted-foreground">{ref.date}</span>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span>投资: <span className="font-semibold">${ref.amount}</span></span>
+                          <span className="text-accent">奖励: <span className="font-semibold">+${ref.earnings}</span></span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
