@@ -6,6 +6,11 @@
     <title>AI链上资产管理平台 | Jupiter-Style Trading</title>
     <meta name="description" content="AI驱动的链上智能资产管理平台 - 多链套利、智能轮动、DeFi质押" />
     <meta name="author" content="Jupiter AI" />
+    
+    <!-- Disable HTML caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
     <meta property="og:title" content="AI链上资产管理平台" />
     <meta property="og:description" content="下一代加密ETF + AI投顾平台 - 多链套利、智能轮动、DeFi质押、链上透明" />
@@ -35,5 +40,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
