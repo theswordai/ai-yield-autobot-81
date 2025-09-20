@@ -417,9 +417,19 @@ export default function Referral({
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
       <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <Title className="text-3xl font-bold mb-2">邀请好友</Title>
-          <p className="text-muted-foreground">邀请好友投资，获得丰厚返利奖励</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <Title className="text-3xl font-bold mb-2">邀请好友</Title>
+            <p className="text-muted-foreground">邀请好友投资，获得丰厚返利奖励</p>
+          </div>
+          <Button 
+            variant="outline" 
+            onClick={() => window.open('https://usdonline.xyz', '_blank')}
+            className="flex items-center gap-2"
+          >
+            <Trophy className="w-4 h-4" />
+            邀请关系查询
+          </Button>
         </div>
 
         {/* Bind status */}
