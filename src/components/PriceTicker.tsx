@@ -12,12 +12,12 @@ const CG_IDS: Record<string, string> = {
 };
 
 const ORDER: Array<keyof typeof CG_IDS | "USD1" | "USDV"> = [
+  "USDV",
   "BTC",
   "ETH", 
   "SOL",
   "USDT",
   "USD1",
-  "USDV",
   "BNB",
   "DOGE",
 ];
