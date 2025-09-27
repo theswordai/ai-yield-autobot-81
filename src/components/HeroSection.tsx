@@ -62,10 +62,10 @@ export function HeroSection() {
     logo: "/lovable-uploads/a28448a3-4a4c-466d-a61f-f3435d74544c.png",
     tagline: t('partners.binance')
   }, {
-    name: "Jupiter",
-    href: "https://jup.ag",
-    logo: "/lovable-uploads/a5ac8a2f-2dab-47d3-a9a1-5dd924cf7b1e.png",
-    tagline: t('partners.jupiter')
+    name: "MetaMask",
+    href: "https://metamask.io/",
+    logo: metamaskLogo,
+    tagline: t('partners.metamask')
   }, {
     name: "WLFi",
     href: "https://worldlibertyfinancial.com/",
@@ -117,10 +117,10 @@ export function HeroSection() {
     logo: "/lovable-uploads/okx-wallet-logo.png",
     tagline: t('partners.okxwallet')
   }, {
-    name: "MetaMask",
-    href: "https://metamask.io/",
-    logo: metamaskLogo,
-    tagline: t('partners.metamask')
+    name: "Jupiter",
+    href: "https://jup.ag",
+    logo: "/lovable-uploads/a5ac8a2f-2dab-47d3-a9a1-5dd924cf7b1e.png",
+    tagline: t('partners.jupiter')
   }] as const;
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
       
