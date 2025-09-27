@@ -9,6 +9,7 @@ import { NewsAnnouncement } from "@/components/NewsAnnouncement";
 import { MiniKChart } from "@/components/MiniKChart";
 import { useI18n } from "@/hooks/useI18n";
 import customerServiceAvatar from "@/assets/customer-service-avatar.png";
+import metamaskLogo from "@/assets/metamask-logo.png";
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
   const { t } = useI18n();
@@ -115,6 +116,11 @@ export function HeroSection() {
     href: "https://web3.okx.com",
     logo: "/lovable-uploads/okx-wallet-logo.png",
     tagline: t('partners.okxwallet')
+  }, {
+    name: "MetaMask",
+    href: "https://metamask.io/",
+    logo: metamaskLogo,
+    tagline: t('partners.metamask')
   }] as const;
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
       
