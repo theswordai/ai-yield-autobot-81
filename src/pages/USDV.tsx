@@ -11,7 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1 } from "lucide-react";
+import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy } from "lucide-react";
+import { USDV_ADDRESS } from "@/config/contracts";
+import { toast } from "sonner";
 
 export default function USDV() {
   const { t } = useI18n();
@@ -147,6 +149,27 @@ export default function USDV() {
                       <p className="text-lg font-medium text-blue-700 dark:text-blue-300">
                         「蓝光极慈币，每一枚都在为人类点亮善意之光。」
                       </p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-semibold text-center">$USDV Contract</h3>
+                    <div className="flex items-center justify-center gap-2">
+                      <code className="text-sm bg-muted px-4 py-2 rounded-lg font-mono">
+                        {USDV_ADDRESS}
+                      </code>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          navigator.clipboard.writeText(USDV_ADDRESS);
+                          toast.success("合约地址已复制");
+                        }}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>
