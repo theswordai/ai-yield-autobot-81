@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { MiniKChart } from "@/components/MiniKChart";
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { useWeb3 } from "@/hooks/useWeb3";
+import { useUSDVContracts } from "@/hooks/useUSDVContracts";
+import { formatUnits } from "ethers";
 
 type PriceData = {
   price: string;
@@ -12,6 +15,10 @@ type PriceData = {
 export function FeaturedPrices() {
   const [usdvData, setUsdvData] = useState<PriceData | null>(null);
   const [btcData, setBtcData] = useState<PriceData | null>(null);
+  const [usdvBalance, setUsdvBalance] = useState<bigint>(BigInt(0));
+  
+  const { account } = useWeb3();
+  const { contracts } = useUSDVContracts();
 
   const fetchPrices = async () => {
     try {
@@ -56,18 +63,51 @@ export function FeaturedPrices() {
     }
   };
 
+  // Fetch USDV balance when account or contracts change
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (account && contracts) {
+        try {
+          const balance = await contracts.usdv.balanceOf(account);
+          setUsdvBalance(balance);
+        } catch (error) {
+          console.error("Failed to fetch USDV balance:", error);
+        }
+      } else {
+        setUsdvBalance(BigInt(0));
+      }
+    };
+    
+    fetchBalance();
+    const interval = setInterval(fetchBalance, 30000);
+    return () => clearInterval(interval);
+  }, [account, contracts]);
+
   useEffect(() => {
     fetchPrices();
     const interval = setInterval(fetchPrices, 30000);
     return () => clearInterval(interval);
   }, []);
 
+  const formatBalance = (balance: bigint) => {
+    const formatted = formatUnits(balance, 18);
+    const num = parseFloat(formatted);
+    return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const calculateUsdValue = () => {
+    if (!usdvData) return "0.00";
+    const balance = parseFloat(formatUnits(usdvBalance, 18));
+    const value = balance * parseFloat(usdvData.price);
+    return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
   return (
     <div className="max-w-5xl mx-auto mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* USDV Card */}
       <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
         <div className="flex items-start justify-between mb-4">
-          <div>
+          <div className="flex-1">
             <h3 className="text-sm text-muted-foreground font-medium mb-1">USDV Token</h3>
             <div className="flex items-baseline gap-2">
               <span className="text-3xl font-bold">
@@ -86,6 +126,18 @@ export function FeaturedPrices() {
                 </div>
               )}
             </div>
+            
+            {account && (
+              <div className="mt-4 pt-4 border-t border-border">
+                <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
+                <div className="text-lg font-semibold text-foreground">
+                  {formatBalance(usdvBalance)} USDV
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  ≈ ${calculateUsdValue()}
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="h-24">
