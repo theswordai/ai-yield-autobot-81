@@ -12,54 +12,130 @@ type PriceData = {
   isPositive: boolean;
 };
 
+const USDV_CACHE_KEY = "usdv_price_cache";
+const BTC_CACHE_KEY = "btc_price_cache";
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export function FeaturedPrices() {
-  const [usdvData, setUsdvData] = useState<PriceData | null>(null);
-  const [btcData, setBtcData] = useState<PriceData | null>(null);
+  const [usdvData, setUsdvData] = useState<PriceData | null>(() => {
+    try {
+      const cached = localStorage.getItem(USDV_CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) return data;
+      }
+    } catch (e) {
+      console.warn("Failed to load cached USDV price:", e);
+    }
+    return null;
+  });
+  
+  const [btcData, setBtcData] = useState<PriceData | null>(() => {
+    try {
+      const cached = localStorage.getItem(BTC_CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) return data;
+      }
+    } catch (e) {
+      console.warn("Failed to load cached BTC price:", e);
+    }
+    return null;
+  });
+  
   const [usdvBalance, setUsdvBalance] = useState<bigint>(BigInt(0));
   
   const { account } = useWeb3();
   const { contracts } = useUSDVContracts();
 
-  const fetchPrices = async () => {
+  const fetchPrices = async (retryCount = 0) => {
     try {
-      // Fetch USDV from GeckoTerminal
-      const usdvRes = await fetch(
-        "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0x9a88bdcf549c0ae0ddb675abb22680673010bdb0"
-      );
-      if (usdvRes.ok) {
-        const usdvJson = await usdvRes.json();
-        const attributes = usdvJson.data?.attributes;
-        if (attributes) {
-          const price = parseFloat(attributes.base_token_price_usd);
-          const change = parseFloat(attributes.price_change_percentage?.h24 || "0");
-          setUsdvData({
-            price: price.toFixed(4),
-            change24h: change.toFixed(2),
-            isPositive: change >= 0,
-          });
+      // Fetch USDV from GeckoTerminal with timeout
+      const usdvController = new AbortController();
+      const usdvTimeout = setTimeout(() => usdvController.abort(), 10000);
+      
+      try {
+        const usdvRes = await fetch(
+          "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0x9a88bdcf549c0ae0ddb675abb22680673010bdb0",
+          { signal: usdvController.signal }
+        );
+        clearTimeout(usdvTimeout);
+        
+        if (usdvRes.ok) {
+          const usdvJson = await usdvRes.json();
+          const attributes = usdvJson.data?.attributes;
+          if (attributes) {
+            const price = parseFloat(attributes.base_token_price_usd);
+            const change = parseFloat(attributes.price_change_percentage?.h24 || "0");
+            const newData = {
+              price: price.toFixed(4),
+              change24h: change.toFixed(2),
+              isPositive: change >= 0,
+            };
+            setUsdvData(newData);
+            
+            try {
+              localStorage.setItem(USDV_CACHE_KEY, JSON.stringify({
+                data: newData,
+                timestamp: Date.now()
+              }));
+            } catch (e) {
+              console.warn("Failed to cache USDV price:", e);
+            }
+          }
         }
+      } catch (e) {
+        clearTimeout(usdvTimeout);
+        console.warn("Failed to fetch USDV price:", e);
       }
 
-      // Fetch BTC from CoinGecko
-      const btcRes = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true"
-      );
-      if (btcRes.ok) {
-        const btcJson = await btcRes.json();
-        const btcInfo = btcJson.bitcoin;
-        if (btcInfo) {
-          setBtcData({
-            price: new Intl.NumberFormat("en-US", {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            }).format(btcInfo.usd),
-            change24h: btcInfo.usd_24h_change.toFixed(2),
-            isPositive: btcInfo.usd_24h_change >= 0,
-          });
+      // Fetch BTC from CoinGecko with timeout
+      const btcController = new AbortController();
+      const btcTimeout = setTimeout(() => btcController.abort(), 10000);
+      
+      try {
+        const btcRes = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true",
+          { signal: btcController.signal }
+        );
+        clearTimeout(btcTimeout);
+        
+        if (btcRes.ok) {
+          const btcJson = await btcRes.json();
+          const btcInfo = btcJson.bitcoin;
+          if (btcInfo) {
+            const newData = {
+              price: new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(btcInfo.usd),
+              change24h: btcInfo.usd_24h_change.toFixed(2),
+              isPositive: btcInfo.usd_24h_change >= 0,
+            };
+            setBtcData(newData);
+            
+            try {
+              localStorage.setItem(BTC_CACHE_KEY, JSON.stringify({
+                data: newData,
+                timestamp: Date.now()
+              }));
+            } catch (e) {
+              console.warn("Failed to cache BTC price:", e);
+            }
+          }
         }
+      } catch (e) {
+        clearTimeout(btcTimeout);
+        console.warn("Failed to fetch BTC price:", e);
       }
     } catch (error) {
-      console.error("Failed to fetch prices:", error);
+      console.warn(`Failed to fetch prices (attempt ${retryCount + 1}):`, error);
+      
+      // Retry up to 2 times with exponential backoff
+      if (retryCount < 2) {
+        const delay = Math.pow(2, retryCount) * 1000;
+        setTimeout(() => fetchPrices(retryCount + 1), delay);
+      }
     }
   };
 
