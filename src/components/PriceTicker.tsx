@@ -31,7 +31,10 @@ export function PriceTicker() {
       const ids = Object.values(CG_IDS).join(",");
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
       const res = await fetch(url);
-      if (!res.ok) throw new Error("price fetch failed");
+      if (!res.ok) {
+        console.warn("CoinGecko API response not ok:", res.status);
+        throw new Error("price fetch failed");
+      }
       const data = await res.json() as Record<string, { usd: number; usd_24h_change: number }>;
 
       const formatPrice = (n: number, decimals = 2) => {
@@ -60,18 +63,20 @@ export function PriceTicker() {
         };
       };
 
-      setItems(ORDER.map((s) => toItem(s)));
+      const newItems = ORDER.map((s) => toItem(s));
+      // Only update if we got valid data
+      if (newItems.some(item => item.price !== "0" && item.price !== "--")) {
+        setItems(newItems);
+      }
     } catch (e) {
+      console.warn("Failed to fetch crypto prices, keeping previous data:", e);
       // Keep old data on error; if none, set a minimal fallback
       if (!items) {
-        setItems([
-          { symbol: "BTC", price: "--", change: "--" },
-          { symbol: "ETH", price: "--", change: "--" },
-          { symbol: "SOL", price: "--", change: "--" },
-          { symbol: "USDT", price: "--", change: "--" },
-          { symbol: "USD1", price: "1.0000", change: "+0.0%" },
-          { symbol: "USDV", price: "0.01", change: "+0.0%" },
-        ]);
+        setItems(ORDER.map(symbol => {
+          if (symbol === "USD1") return { symbol, price: "1.0000", change: "+0.0%" };
+          if (symbol === "USDV") return { symbol, price: "0.01", change: "+0.0%" };
+          return { symbol, price: "--", change: "--" };
+        }));
       }
     }
   };
