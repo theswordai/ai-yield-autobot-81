@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
 import { MiniKChart } from "@/components/MiniKChart";
+import { FeaturedPrices } from "@/components/FeaturedPrices";
 import { useI18n } from "@/hooks/useI18n";
 import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 import metamaskLogo from "@/assets/metamask-logo.png";
@@ -146,6 +147,8 @@ export function HeroSection() {
           <div className="max-w-5xl mx-auto mb-10">
             <PriceTicker />
           </div>
+          
+          <FeaturedPrices />
           
           <NewsAnnouncement />
 
