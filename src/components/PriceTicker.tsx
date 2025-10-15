@@ -22,19 +22,43 @@ const ORDER: Array<keyof typeof CG_IDS | "USD1" | "USDV"> = [
   "DOGE",
 ];
 
+const CACHE_KEY = "crypto_prices_cache";
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export function PriceTicker() {
-  const [items, setItems] = useState<Item[] | null>(null);
+  const [items, setItems] = useState<Item[] | null>(() => {
+    // Load cached data on initial render
+    try {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          return data;
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to load cached prices:", e);
+    }
+    return null;
+  });
   const timerRef = useRef<number | null>(null);
 
-  const fetchPrices = async () => {
+  const fetchPrices = async (retryCount = 0) => {
     try {
       const ids = Object.values(CG_IDS).join(",");
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
-      const res = await fetch(url);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+      
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      
       if (!res.ok) {
         console.warn("CoinGecko API response not ok:", res.status);
-        throw new Error("price fetch failed");
+        throw new Error(`API returned ${res.status}`);
       }
+      
       const data = await res.json() as Record<string, { usd: number; usd_24h_change: number }>;
 
       const formatPrice = (n: number, decimals = 2) => {
@@ -64,13 +88,31 @@ export function PriceTicker() {
       };
 
       const newItems = ORDER.map((s) => toItem(s));
+      
       // Only update if we got valid data
       if (newItems.some(item => item.price !== "0" && item.price !== "--")) {
         setItems(newItems);
+        // Cache the successful data
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
+            data: newItems,
+            timestamp: Date.now()
+          }));
+        } catch (e) {
+          console.warn("Failed to cache prices:", e);
+        }
       }
     } catch (e) {
-      console.warn("Failed to fetch crypto prices, keeping previous data:", e);
-      // Keep old data on error; if none, set a minimal fallback
+      console.warn(`Failed to fetch crypto prices (attempt ${retryCount + 1}):`, e);
+      
+      // Retry up to 2 times with exponential backoff
+      if (retryCount < 2) {
+        const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s
+        setTimeout(() => fetchPrices(retryCount + 1), delay);
+        return;
+      }
+      
+      // If all retries failed and we have no data, show fallback
       if (!items) {
         setItems(ORDER.map(symbol => {
           if (symbol === "USD1") return { symbol, price: "1.0000", change: "+0.0%" };
