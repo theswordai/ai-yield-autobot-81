@@ -63,20 +63,17 @@ export default function Stake({
   const topPad = embedded ? "pt-8" : "pt-24";
   const Title = (embedded ? 'h2' : 'h1') as any;
 
-  // 计算 APR 与预期收益（与链上参数保持一致）
+  // 计算 APR 与预期收益（复利算法）
   const aprBps = useMemo(() => {
     switch (lockChoice) {
       case "0":
-        return 25 * 365;
-      // 0.25%/day -> 91.25% APR -> 9125 bps (浮动范围: 50-91.25%)
+        return 5000;  // 50% APR
       case "1":
-        return 40 * 365;
-      // 0.4%/day  -> 146% APR   -> 14600 bps (浮动范围: 120-146%)
+        return 12000; // 120% APR
       case "2":
-        return 93.15 * 365;
-      // 0.9315%/day -> 340% APR -> 34000 bps (浮动范围: 280-340%)
+        return 28000; // 280% APR
       default:
-        return 25 * 365;
+        return 5000;
     }
   }, [lockChoice]);
   const lockDays = useMemo(() => lockChoice === "0" ? 90 : lockChoice === "1" ? 180 : 365, [lockChoice]);
@@ -86,7 +83,12 @@ export default function Stake({
   }, [amount]);
   const principalAfterFee = useMemo(() => amountNum * 0.99, [amountNum]); // 扣除1%管理费
   const aprPercent = useMemo(() => aprBps / 100, [aprBps]); // 显示为百分比
-  const expectedEarnings = useMemo(() => principalAfterFee * (aprBps / 10000) * (lockDays / 365), [principalAfterFee, aprBps, lockDays]);
+  // 使用复利公式: FV = P × (1 + APR/365)^days
+  const expectedEarnings = useMemo(() => {
+    const dailyRate = (aprBps / 10000) / 365;
+    const finalAmount = principalAfterFee * Math.pow(1 + dailyRate, lockDays);
+    return finalAmount - principalAfterFee;
+  }, [principalAfterFee, aprBps, lockDays]);
   const fmt = (n: number) => n.toLocaleString(undefined, {
     maximumFractionDigits: 2
   });

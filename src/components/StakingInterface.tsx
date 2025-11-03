@@ -28,20 +28,24 @@ export function StakingInterface({ onSuccess, initialAmount }: StakingInterfaceP
   const [lockChoice, setLockChoice] = useState<"0" | "1" | "2">("0");
   const [showInviterDialog, setShowInviterDialog] = useState(false);
 
-  // 计算收益预期
+  // 计算收益预期 - 使用复利算法
   const stakingCalc = useMemo(() => {
     const amountNum = Number(amount) || 0;
-    const aprBps = lockChoice === "0" ? 9125 : lockChoice === "1" ? 14600 : 36500;
+    const aprBps = lockChoice === "0" ? 5000 : lockChoice === "1" ? 12000 : 28000;
     const lockDays = lockChoice === "0" ? 90 : lockChoice === "1" ? 180 : 365;
     const aprPercent = aprBps / 100;
-    const expectedEarnings = amountNum * (aprBps / 10000) * (lockDays / 365);
+    
+    // 复利公式: FV = P × (1 + APR/365)^days
+    const dailyRate = (aprBps / 10000) / 365;
+    const finalAmount = amountNum * Math.pow(1 + dailyRate, lockDays);
+    const expectedEarnings = finalAmount - amountNum;
     
     return {
       principal: amountNum,
       aprPercent,
       lockDays,
       expectedEarnings,
-      totalReturn: amountNum + expectedEarnings,
+      totalReturn: finalAmount,
     };
   }, [amount, lockChoice]);
 
@@ -117,9 +121,9 @@ export function StakingInterface({ onSuccess, initialAmount }: StakingInterfaceP
   };
 
   const lockOptions = [
-    { value: "0", label: t("staking.lockPeriodOptions.3months"), days: 90, apr: "91.25%" },
-    { value: "1", label: t("staking.lockPeriodOptions.6months"), days: 180, apr: "146%" },
-    { value: "2", label: t("staking.lockPeriodOptions.1year"), days: 365, apr: "365%" },
+    { value: "0", label: t("staking.lockPeriodOptions.3months"), days: 90, apr: "50%" },
+    { value: "1", label: t("staking.lockPeriodOptions.6months"), days: 180, apr: "120%" },
+    { value: "2", label: t("staking.lockPeriodOptions.1year"), days: 365, apr: "280%" },
   ];
 
   return (

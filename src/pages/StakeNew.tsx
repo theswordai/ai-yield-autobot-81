@@ -188,15 +188,15 @@ export default function StakeNew() {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center p-3 bg-muted/20 rounded-lg">
                         <span>3个月</span>
-                        <span className="font-semibold text-accent">91.25% 年化</span>
+                        <span className="font-semibold text-accent">50% 年化</span>
                       </div>
                       <div className="flex justify-between items-center p-3 bg-muted/20 rounded-lg">
                         <span>6个月</span>
-                        <span className="font-semibold text-accent">146% 年化</span>
+                        <span className="font-semibold text-accent">120% 年化</span>
                       </div>
                       <div className="flex justify-between items-center p-3 bg-muted/20 rounded-lg">
                         <span>12个月</span>
-                        <span className="font-semibold text-accent">365% 年化</span>
+                        <span className="font-semibold text-accent">280% 年化</span>
                       </div>
                     </div>
                   </Card>
