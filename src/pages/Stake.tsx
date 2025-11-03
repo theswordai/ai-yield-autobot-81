@@ -580,7 +580,9 @@ export default function Stake({
                         <RadioGroupItem id="l0" value="0" />
                         <div>
                           <div className="font-semibold">{t("staking.ninetyDaysLock")}</div>
-                          <div className="text-sm text-muted-foreground">50-91.25% APR {t("staking.floatingAPR")}</div>
+                          <div className="text-sm text-muted-foreground">
+                            APR: 50% | APY: 64.82% <span className="text-accent">(复利)</span>
+                          </div>
                         </div>
                       </div>
                       <Badge variant="outline">{t("staking.shortTerm")}</Badge>
@@ -590,7 +592,9 @@ export default function Stake({
                         <RadioGroupItem id="l1" value="1" />
                         <div>
                           <div className="font-semibold">{t("staking.oneEightyDaysLock")}</div>
-                          <div className="text-sm text-muted-foreground">120-146% APR {t("staking.floatingAPR")}</div>
+                          <div className="text-sm text-muted-foreground">
+                            APR: 120% | APY: 231.36% <span className="text-accent">(复利)</span>
+                          </div>
                         </div>
                       </div>
                       <Badge variant="outline">{t("staking.mediumTerm")}</Badge>
@@ -600,7 +604,9 @@ export default function Stake({
                         <RadioGroupItem id="l2" value="2" />
                         <div>
                           <div className="font-semibold">{t("staking.threeSixtyFiveDaysLock")}</div>
-                          <div className="text-sm text-muted-foreground">280-340% APR {t("staking.floatingAPR")}</div>
+                          <div className="text-sm text-muted-foreground">
+                            APR: 280% | APY: 1526.99% <span className="text-accent font-semibold">(复利 🚀)</span>
+                          </div>
                         </div>
                       </div>
                       <Badge variant="outline" className="bg-primary/10 text-primary">{t("staking.longTerm")}</Badge>
