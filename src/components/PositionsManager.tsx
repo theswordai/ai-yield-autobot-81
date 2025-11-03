@@ -23,10 +23,14 @@ export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProp
   } | null>(null);
 
   const handleClaimClick = (posId: bigint, pendingYield: bigint) => {
+    console.log('🎯 点击领取收益按钮', { posId: posId.toString(), pendingYield: pendingYield.toString() });
+    const yieldAmountStr = formatAmount(pendingYield);
+    console.log('💰 格式化后的收益金额:', yieldAmountStr);
     setSelectedPosition({
       posId,
-      yieldAmount: formatAmount(pendingYield),
+      yieldAmount: yieldAmountStr,
     });
+    console.log('📝 设置 showClaimDialog 为 true');
     setShowClaimDialog(true);
   };
 

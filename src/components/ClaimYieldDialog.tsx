@@ -25,6 +25,8 @@ export function ClaimYieldDialog({
   onClaim,
   loading = false,
 }: ClaimYieldDialogProps) {
+  console.log('🔔 ClaimYieldDialog render:', { open, yieldAmount, loading });
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
