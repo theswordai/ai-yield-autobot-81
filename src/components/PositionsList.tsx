@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Contract, formatUnits } from "ethers";
 import { Separator } from "@/components/ui/separator";
 import { useI18n } from "@/hooks/useI18n";
+import { ClaimYieldDialog } from "./ClaimYieldDialog";
 
 export type PositionsListProps = {
   account?: string | null;
@@ -30,6 +31,11 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
       pending: bigint;
     }>
   >([]);
+  const [showClaimDialog, setShowClaimDialog] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState<{
+    posId: bigint;
+    yieldAmount: string;
+  } | null>(null);
 
   const canInteract = useMemo(() => !!account && !!lock && chainId === targetChain, [account, lock, chainId, targetChain]);
 
@@ -183,11 +189,47 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
 
   const [busy, setBusy] = useState<Record<string, boolean>>({});
 
+  const handleClaimClick = (id: bigint, pendingYield: bigint) => {
+    console.log('🎯 点击领取收益按钮', { id: id.toString(), pendingYield: pendingYield.toString() });
+    const yieldAmountStr = Number(formatUnits(pendingYield, usdtDecimals)).toFixed(6);
+    console.log('💰 格式化后的收益金额:', yieldAmountStr);
+    setSelectedPosition({
+      posId: id,
+      yieldAmount: yieldAmountStr,
+    });
+    console.log('📝 设置 showClaimDialog 为 true');
+    setShowClaimDialog(true);
+  };
+
+  const handleDirectClaim = async () => {
+    if (!selectedPosition) return;
+    
+    try {
+      if (!lock || !account) throw new Error(t("positions.connectWallet"));
+      if (chainId !== targetChain) {
+        toast.warning("请切换到 BSC 主网再操作");
+        return;
+      }
+      setBusy((s) => ({ ...s, [selectedPosition.posId.toString()+":claim"]: true }));
+      const tx = await (lock as any).claim(selectedPosition.posId);
+      toast.info("提交中：" + tx.hash);
+      await tx.wait();
+      toast.success("领取成功");
+      setShowClaimDialog(false);
+      setSelectedPosition(null);
+      await load();
+    } catch (e: any) {
+      toast.error(e?.shortMessage || e?.message || "领取失败");
+    } finally {
+      setBusy((s) => ({ ...s, [selectedPosition.posId.toString()+":claim"]: false }));
+    }
+  };
+
   const claim = async (id: bigint) => {
     try {
       if (!lock || !account) throw new Error(t("positions.connectWallet"));
       if (chainId !== targetChain) {
-        toast.warning("请切换到 Sepolia 再操作");
+        toast.warning("请切换到 BSC 主网再操作");
         return;
       }
       setBusy((s) => ({ ...s, [id.toString()+":claim"]: true }));
@@ -300,7 +342,14 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
                   <span className="font-mono">{pending.toFixed(6)} USDT</span>
                 </div>
                 <div className="flex gap-2 pt-1">
-                  <Button variant="secondary" size="sm" onClick={() => claim(it.id)} disabled={!canInteract || busy[it.id.toString()+":claim"] || realTimePending === 0n}>{t("positions.claimRewards")}</Button>
+                  <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    onClick={() => handleClaimClick(it.id, realTimePending)} 
+                    disabled={!canInteract || busy[it.id.toString()+":claim"]}
+                  >
+                    {t("positions.claimRewards")}
+                  </Button>
                   <Button variant="destructive" size="sm" onClick={() => withdraw(it.id)} disabled={!canInteract || busy[it.id.toString()+":withdraw"] || it.principalWithdrawn}>
                     {t("positions.withdraw")}
                   </Button>
@@ -310,6 +359,19 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
           );
         })}
       </div>
+
+      <ClaimYieldDialog
+        open={showClaimDialog}
+        onOpenChange={setShowClaimDialog}
+        yieldAmount={selectedPosition?.yieldAmount || "0"}
+        onReinvest={() => {
+          toast.info("请前往质押投资页面进行复投");
+          setShowClaimDialog(false);
+          setSelectedPosition(null);
+        }}
+        onClaim={handleDirectClaim}
+        loading={selectedPosition ? busy[selectedPosition.posId.toString()+":claim"] : false}
+      />
     </div>
   );
 }
