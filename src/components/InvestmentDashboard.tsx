@@ -24,23 +24,23 @@ export function InvestmentDashboard({
     maximumFractionDigits: 2
   });
 
-  // 收益趋势数据
+  // 收益趋势数据 - 使用复利算法
   const earningsTrend = useMemo(() => {
     const points = 12;
-    // 年收益 = 本金 × APR
-    const yearlyEarnings = principalAfterFee * (aprPercent / 100);
-    // 日收益 = 年收益 ÷ 365
-    const dailyEarnings = yearlyEarnings / 365;
+    // 日复利公式: FV = P × (1 + APR/365)^days
+    const dailyRate = aprPercent / 100 / 365;
     
     return Array.from({
       length: points
     }, (_, i) => {
       const days = Math.round(lockDays / points * (i + 1));
-      const earnings = dailyEarnings * days;
+      // 复利计算到期总金额
+      const total = principalAfterFee * Math.pow(1 + dailyRate, days);
+      const earnings = total - principalAfterFee;
       return {
         day: days,
         earnings: parseFloat(earnings.toFixed(2)),
-        total: parseFloat((principalAfterFee + earnings).toFixed(2))
+        total: parseFloat(total.toFixed(2))
       };
     });
   }, [principalAfterFee, aprPercent, lockDays]);
@@ -56,20 +56,20 @@ export function InvestmentDashboard({
     color: "hsl(var(--accent))"
   }], [principalAfterFee, expectedEarnings, t]);
 
-  // 锁仓期对比数据
+  // 锁仓期对比数据 - 使用新的 APR 值
   const lockPeriodData = useMemo(() => [{
     period: t("staking.lockPeriodOptions.3months"),
-    apr: 91.25,
+    apr: 50,
     days: 90,
     active: lockChoice === "0"
   }, {
     period: t("staking.lockPeriodOptions.6months"),
-    apr: 146,
+    apr: 120,
     days: 180,
     active: lockChoice === "1"
   }, {
     period: t("staking.lockPeriodOptions.1year"),
-    apr: 365,
+    apr: 280,
     days: 365,
     active: lockChoice === "2"
   }], [lockChoice, t]);
