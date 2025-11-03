@@ -60,16 +60,19 @@ export function InvestmentDashboard({
   const lockPeriodData = useMemo(() => [{
     period: t("staking.lockPeriodOptions.3months"),
     apr: 50,
+    apy: 64.82, // APY = (1 + 0.50/365)^365 - 1
     days: 90,
     active: lockChoice === "0"
   }, {
     period: t("staking.lockPeriodOptions.6months"),
     apr: 120,
+    apy: 231.36, // APY = (1 + 1.20/365)^365 - 1
     days: 180,
     active: lockChoice === "1"
   }, {
     period: t("staking.lockPeriodOptions.1year"),
     apr: 280,
+    apy: 1526.99, // APY = (1 + 2.80/365)^365 - 1
     days: 365,
     active: lockChoice === "2"
   }], [lockChoice, t]);
@@ -135,15 +138,24 @@ export function InvestmentDashboard({
                 payload
               }) => {
                 if (active && payload && payload.length) {
-                  return <div className="bg-card border rounded-lg p-2 shadow-lg">
-                          <p className="text-sm">{payload[0].payload.period}</p>
-                          <p className="text-sm text-primary">APR: {payload[0].value}%</p>
+                  const data = payload[0].payload;
+                  return <div className="bg-card border rounded-lg p-3 shadow-lg space-y-1">
+                          <p className="text-sm font-semibold">{data.period}</p>
+                          <p className="text-sm text-primary">APR: {data.apr}%</p>
+                          <p className="text-sm text-accent font-semibold">APY: {data.apy}%</p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            (复利年化收益率)
+                          </p>
                         </div>;
                 }
                 return null;
               }} />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+          <div className="mt-3 pt-3 border-t text-xs text-muted-foreground space-y-1">
+            <p>💡 APR = 年化利率（名义利率）</p>
+            <p>🚀 APY = 复利年化收益率（实际收益率）</p>
           </div>
         </CardContent>
       </Card>
