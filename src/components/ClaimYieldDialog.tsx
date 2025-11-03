@@ -15,6 +15,7 @@ interface ClaimYieldDialogProps {
   onReinvest: () => void;
   onClaim: () => void;
   loading?: boolean;
+  lockChoice?: 0 | 1 | 2; // 默认锁定期选择
 }
 
 export function ClaimYieldDialog({
@@ -24,8 +25,9 @@ export function ClaimYieldDialog({
   onReinvest,
   onClaim,
   loading = false,
+  lockChoice = 2, // 默认使用最高收益的 12 个月
 }: ClaimYieldDialogProps) {
-  console.log('🔔 ClaimYieldDialog render:', { open, yieldAmount, loading });
+  console.log('🔔 ClaimYieldDialog render:', { open, yieldAmount, loading, lockChoice });
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

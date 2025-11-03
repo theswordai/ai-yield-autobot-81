@@ -15,30 +15,35 @@ interface PositionsManagerProps {
 
 export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProps) {
   const { data, formatAmount, loading: dataLoading } = useStakingData();
-  const { loading, claimYield, withdraw } = useStakingActions();
+  const { loading, claimYield, withdraw, compoundYield } = useStakingActions();
   const [showClaimDialog, setShowClaimDialog] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<{
     posId: bigint;
     yieldAmount: string;
+    lockChoice: 0 | 1 | 2;
   } | null>(null);
 
-  const handleClaimClick = (posId: bigint, pendingYield: bigint) => {
-    console.log('🎯 点击领取收益按钮', { posId: posId.toString(), pendingYield: pendingYield.toString() });
+  const handleClaimClick = (posId: bigint, pendingYield: bigint, lockChoice: 0 | 1 | 2) => {
+    console.log('🎯 点击领取收益按钮', { posId: posId.toString(), pendingYield: pendingYield.toString(), lockChoice });
     const yieldAmountStr = formatAmount(pendingYield);
     console.log('💰 格式化后的收益金额:', yieldAmountStr);
     setSelectedPosition({
       posId,
       yieldAmount: yieldAmountStr,
+      lockChoice,
     });
     console.log('📝 设置 showClaimDialog 为 true');
     setShowClaimDialog(true);
   };
 
-  const handleReinvest = () => {
-    if (selectedPosition && onReinvest) {
-      onReinvest(selectedPosition.yieldAmount);
+  const handleReinvest = async () => {
+    if (selectedPosition) {
+      const success = await compoundYield(selectedPosition.posId, selectedPosition.lockChoice);
       setShowClaimDialog(false);
       setSelectedPosition(null);
+      if (success && onRefresh) {
+        onRefresh();
+      }
     }
   };
 
@@ -183,13 +188,14 @@ export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProp
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('🎯 按钮被点击');
-                    handleClaimClick(position.posId, position.pendingYield);
+                    const lockChoice = position.lockType === "3个月" ? 0 : position.lockType === "6个月" ? 1 : 2;
+                    handleClaimClick(position.posId, position.pendingYield, lockChoice);
                   }}
-                  disabled={loading.claim}
+                  disabled={loading.claim || loading.compound}
                   className="flex-1"
                 >
                   <DollarSign className="w-4 h-4 mr-2" />
-                  {loading.claim ? "领取中..." : "领取收益"}
+                  {loading.claim || loading.compound ? "处理中..." : "领取收益"}
                 </Button>
                 
                 {position.isMatured && (
@@ -231,7 +237,8 @@ export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProp
         yieldAmount={selectedPosition?.yieldAmount || "0"}
         onReinvest={handleReinvest}
         onClaim={handleDirectClaim}
-        loading={loading.claim}
+        loading={loading.claim || loading.compound}
+        lockChoice={selectedPosition?.lockChoice}
       />
     </Card>
   );

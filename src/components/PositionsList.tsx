@@ -6,6 +6,7 @@ import { Contract, formatUnits } from "ethers";
 import { Separator } from "@/components/ui/separator";
 import { useI18n } from "@/hooks/useI18n";
 import { ClaimYieldDialog } from "./ClaimYieldDialog";
+import { useStakingActions } from "@/hooks/useStakingActions";
 
 export type PositionsListProps = {
   account?: string | null;
@@ -35,7 +36,10 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
   const [selectedPosition, setSelectedPosition] = useState<{
     posId: bigint;
     yieldAmount: string;
+    lockChoice: 0 | 1 | 2;
   } | null>(null);
+  
+  const { compoundYield } = useStakingActions();
 
   const canInteract = useMemo(() => !!account && !!lock && chainId === targetChain, [account, lock, chainId, targetChain]);
 
@@ -189,16 +193,32 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
 
   const [busy, setBusy] = useState<Record<string, boolean>>({});
 
-  const handleClaimClick = (id: bigint, pendingYield: bigint) => {
-    console.log('🎯 点击领取收益按钮', { id: id.toString(), pendingYield: pendingYield.toString() });
+  const handleClaimClick = (id: bigint, pendingYield: bigint, lockDuration: bigint) => {
+    console.log('🎯 点击领取收益按钮', { id: id.toString(), pendingYield: pendingYield.toString(), lockDuration: lockDuration.toString() });
     const yieldAmountStr = Number(formatUnits(pendingYield, usdtDecimals)).toFixed(6);
     console.log('💰 格式化后的收益金额:', yieldAmountStr);
+    
+    // 根据锁定时长确定 lockChoice
+    const lockChoice = lockDuration <= 7776000n ? 0 : lockDuration <= 15552000n ? 1 : 2;
+    
     setSelectedPosition({
       posId: id,
       yieldAmount: yieldAmountStr,
+      lockChoice,
     });
-    console.log('📝 设置 showClaimDialog 为 true');
+    console.log('📝 设置 showClaimDialog 为 true, lockChoice:', lockChoice);
     setShowClaimDialog(true);
+  };
+
+  const handleReinvest = async () => {
+    if (!selectedPosition) return;
+    
+    const success = await compoundYield(selectedPosition.posId, selectedPosition.lockChoice);
+    setShowClaimDialog(false);
+    setSelectedPosition(null);
+    if (success) {
+      await load();
+    }
   };
 
   const handleDirectClaim = async () => {
@@ -345,7 +365,7 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
                   <Button 
                     variant="secondary" 
                     size="sm" 
-                    onClick={() => handleClaimClick(it.id, realTimePending)} 
+                    onClick={() => handleClaimClick(it.id, realTimePending, it.lockDuration)} 
                     disabled={!canInteract || busy[it.id.toString()+":claim"]}
                   >
                     {t("positions.claimRewards")}
@@ -364,13 +384,10 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
         open={showClaimDialog}
         onOpenChange={setShowClaimDialog}
         yieldAmount={selectedPosition?.yieldAmount || "0"}
-        onReinvest={() => {
-          toast.info("请前往质押投资页面进行复投");
-          setShowClaimDialog(false);
-          setSelectedPosition(null);
-        }}
+        onReinvest={handleReinvest}
         onClaim={handleDirectClaim}
         loading={selectedPosition ? busy[selectedPosition.posId.toString()+":claim"] : false}
+        lockChoice={selectedPosition?.lockChoice}
       />
     </div>
   );

@@ -249,6 +249,79 @@ export function useStakingActions() {
     }
   }, [checkConnection, checkNetwork, writeContracts, setActionLoading, account]);
 
+  // 一键复投（claim + approve + deposit）
+  const compoundYield = useCallback(async (posId: bigint, lockChoice: 0 | 1 | 2) => {
+    if (!checkConnection() || !checkNetwork()) return false;
+
+    const actionKey = 'compound';
+    setActionLoading(actionKey, true);
+
+    try {
+      // 第1步：领取收益
+      toast.info("第 1/3 步：正在领取收益...");
+      const claimTx = await writeContracts!.lockStaking.claim(posId);
+      const claimReceipt = await claimTx.wait();
+      
+      // 从交易收据中解析实际领取金额
+      let claimedAmount = 0n;
+      for (const log of claimReceipt.logs) {
+        try {
+          // 查找 Transfer 事件 (USDT 合约触发的)
+          if (log.topics[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef') {
+            // Transfer(from, to, value)
+            const value = log.data;
+            claimedAmount = BigInt(value);
+            break;
+          }
+        } catch (e) {
+          console.error('解析事件失败:', e);
+        }
+      }
+
+      if (claimedAmount === 0n) {
+        toast.error("无法确定领取金额，请手动操作");
+        return false;
+      }
+
+      const claimedAmountFormatted = Number(formatUnits(claimedAmount, USDT_DECIMALS)).toFixed(2);
+      toast.success(`收益已领取：${claimedAmountFormatted} USDT`);
+
+      // 第2步：检查金额是否足够复投
+      const minDeposit = parseUnits("200", USDT_DECIMALS);
+      if (claimedAmount < minDeposit) {
+        toast.warning(`复投金额不足 200 USDT（实际 ${claimedAmountFormatted} USDT），收益已领取到钱包`);
+        return false;
+      }
+
+      // 第3步：授权 USDT
+      toast.info(`第 2/3 步：正在授权 ${claimedAmountFormatted} USDT...`);
+      const approveTx = await writeContracts!.usdt.approve(LOCK_ADDRESS, claimedAmount);
+      await approveTx.wait();
+      toast.success("授权成功");
+
+      // 第4步：重新质押
+      toast.info(`第 3/3 步：正在复投 ${claimedAmountFormatted} USDT...`);
+      const depositTx = await writeContracts!.lockStaking.deposit(claimedAmount, lockChoice);
+      await depositTx.wait();
+      
+      toast.success(`🎉 复投成功！${claimedAmountFormatted} USDT 已重新质押`);
+      return true;
+
+    } catch (error: any) {
+      console.error('Compound failed:', error);
+      if (error.code === 4001) {
+        toast.info("交易已取消");
+      } else {
+        const step = error?.message?.includes('claim') ? '领取' : 
+                     error?.message?.includes('approve') ? '授权' : '复投';
+        toast.error(error?.shortMessage || error?.message || `${step}失败`);
+      }
+      return false;
+    } finally {
+      setActionLoading(actionKey, false);
+    }
+  }, [checkConnection, checkNetwork, writeContracts, setActionLoading]);
+
   return {
     loading,
     approveUSDT,
@@ -257,5 +330,6 @@ export function useStakingActions() {
     withdraw,
     claimReferralRewards,
     bindReferrer,
+    compoundYield,
   };
 }
