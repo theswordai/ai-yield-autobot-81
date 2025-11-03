@@ -44,8 +44,8 @@ export function ClaimYieldDialog({
   // 计算复投收益
   const calculatorData = useMemo(() => {
     const principal = parseFloat(yieldAmount) || 0;
-    if (principal < 200) {
-      return null; // 不满足最低投资额
+    if (principal <= 0) {
+      return null;
     }
     
     // 计算 12 个月后的收益对比
@@ -62,6 +62,8 @@ export function ClaimYieldDialog({
     const difference = compoundProfit - 0; // 与不复投的差距
     const percentageGain = ((withCompound / principal - 1) * 100).toFixed(2);
     
+    const belowMinimum = principal < 200;
+    
     return {
       principal,
       withCompound: withCompound.toFixed(2),
@@ -69,6 +71,7 @@ export function ClaimYieldDialog({
       difference: difference.toFixed(2),
       percentageGain,
       apr,
+      belowMinimum,
     };
   }, [yieldAmount, apr]);
   
