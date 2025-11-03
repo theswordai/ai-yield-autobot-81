@@ -179,8 +179,13 @@ export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProp
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleClaimClick(position.posId, position.pendingYield)}
-                  disabled={position.pendingYield === 0n || loading.claim}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🎯 按钮被点击');
+                    handleClaimClick(position.posId, position.pendingYield);
+                  }}
+                  disabled={loading.claim}
                   className="flex-1"
                 >
                   <DollarSign className="w-4 h-4 mr-2" />
