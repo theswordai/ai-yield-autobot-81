@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,14 +16,15 @@ import { useI18n } from "@/hooks/useI18n";
 
 interface StakingInterfaceProps {
   onSuccess?: () => void;
+  initialAmount?: string;
 }
 
-export function StakingInterface({ onSuccess }: StakingInterfaceProps) {
+export function StakingInterface({ onSuccess, initialAmount }: StakingInterfaceProps) {
   const { data, formatAmount, refreshData } = useStakingData();
   const { loading, approveUSDT, deposit } = useStakingActions();
   const { t } = useI18n();
   
-  const [amount, setAmount] = useState("200");
+  const [amount, setAmount] = useState(initialAmount || "200");
   const [lockChoice, setLockChoice] = useState<"0" | "1" | "2">("0");
   const [showInviterDialog, setShowInviterDialog] = useState(false);
 
@@ -68,6 +69,13 @@ export function StakingInterface({ onSuccess }: StakingInterfaceProps) {
 
   // 检查是否已绑定邀请人
   const isReferrerBound = data?.referralStats.inviterAddress !== "0x0000000000000000000000000000000000000000";
+
+  // 当initialAmount改变时，更新投资金额
+  useEffect(() => {
+    if (initialAmount) {
+      setAmount(initialAmount);
+    }
+  }, [initialAmount]);
 
   const handleApprove = async () => {
     // 如果未绑定邀请人，先显示绑定dialog

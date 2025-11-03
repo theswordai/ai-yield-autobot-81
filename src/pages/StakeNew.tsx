@@ -18,6 +18,7 @@ export default function StakeNew() {
   const { data, refreshData, formatAmount } = useStakingData();
   const [activeTab, setActiveTab] = useState("stake");
   const [showLandingPage, setShowLandingPage] = useState(false);
+  const [reinvestAmount, setReinvestAmount] = useState<string>("");
 
   const isCorrectNetwork = chainId === 56; // BSC Mainnet
 
@@ -46,6 +47,11 @@ export default function StakeNew() {
   const handleProceed = () => {
     localStorage.setItem('hasSeenStakeLandingPage', 'true');
     setShowLandingPage(false);
+  };
+
+  const handleReinvest = (amount: string) => {
+    setReinvestAmount(amount);
+    setActiveTab("stake");
   };
 
   // Show landing page on first visit
@@ -155,7 +161,10 @@ export default function StakeNew() {
             <TabsContent value="stake" className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                  <StakingInterface onSuccess={refreshData} />
+                  <StakingInterface 
+                    onSuccess={refreshData} 
+                    initialAmount={reinvestAmount}
+                  />
                 </div>
                 <div className="space-y-6">
                   {/* 质押说明 */}
@@ -196,7 +205,10 @@ export default function StakeNew() {
             </TabsContent>
 
             <TabsContent value="positions" className="space-y-6">
-              <PositionsManager onRefresh={refreshData} />
+              <PositionsManager 
+                onRefresh={refreshData} 
+                onReinvest={handleReinvest}
+              />
             </TabsContent>
 
             <TabsContent value="referral" className="space-y-6">

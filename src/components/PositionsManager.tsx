@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -5,19 +6,46 @@ import { Separator } from "@/components/ui/separator";
 import { Lock, Unlock, TrendingUp, Clock, DollarSign } from "lucide-react";
 import { useStakingData } from "@/hooks/useStakingData";
 import { useStakingActions } from "@/hooks/useStakingActions";
+import { ClaimYieldDialog } from "./ClaimYieldDialog";
 
 interface PositionsManagerProps {
   onRefresh?: () => void;
+  onReinvest?: (amount: string) => void;
 }
 
-export function PositionsManager({ onRefresh }: PositionsManagerProps) {
+export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProps) {
   const { data, formatAmount, loading: dataLoading } = useStakingData();
   const { loading, claimYield, withdraw } = useStakingActions();
+  const [showClaimDialog, setShowClaimDialog] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState<{
+    posId: bigint;
+    yieldAmount: string;
+  } | null>(null);
 
-  const handleClaim = async (posId: bigint) => {
-    const success = await claimYield(posId);
-    if (success && onRefresh) {
-      onRefresh();
+  const handleClaimClick = (posId: bigint, pendingYield: bigint) => {
+    setSelectedPosition({
+      posId,
+      yieldAmount: formatAmount(pendingYield),
+    });
+    setShowClaimDialog(true);
+  };
+
+  const handleReinvest = () => {
+    if (selectedPosition && onReinvest) {
+      onReinvest(selectedPosition.yieldAmount);
+      setShowClaimDialog(false);
+      setSelectedPosition(null);
+    }
+  };
+
+  const handleDirectClaim = async () => {
+    if (selectedPosition) {
+      const success = await claimYield(selectedPosition.posId);
+      setShowClaimDialog(false);
+      setSelectedPosition(null);
+      if (success && onRefresh) {
+        onRefresh();
+      }
     }
   };
 
@@ -147,7 +175,7 @@ export function PositionsManager({ onRefresh }: PositionsManagerProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleClaim(position.posId)}
+                  onClick={() => handleClaimClick(position.posId, position.pendingYield)}
                   disabled={position.pendingYield === 0n || loading.claim}
                   className="flex-1"
                 >
@@ -187,6 +215,15 @@ export function PositionsManager({ onRefresh }: PositionsManagerProps) {
           ))}
         </div>
       </CardContent>
+
+      <ClaimYieldDialog
+        open={showClaimDialog}
+        onOpenChange={setShowClaimDialog}
+        yieldAmount={selectedPosition?.yieldAmount || "0"}
+        onReinvest={handleReinvest}
+        onClaim={handleDirectClaim}
+        loading={loading.claim}
+      />
     </Card>
   );
 }
