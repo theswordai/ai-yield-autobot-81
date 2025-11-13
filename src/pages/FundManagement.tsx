@@ -19,14 +19,37 @@ const START_DATE = new Date('2025-08-13');
 // 生成历史数据函数
 function generateHistoricalData(startDate: Date, totalDays: number): YieldPoint[] {
   const data: YieldPoint[] = [];
+  let lastAPY = 0;
   
   for (let i = 0; i <= totalDays; i++) {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + i);
     
-    // S型增长曲线 + 随机波动
+    // S型增长曲线作为基础趋势
     const baseGrowth = 300 / (1 + Math.exp(-0.08 * (i - 45)));
-    const volatility = (Math.random() - 0.5) * 10;
+    
+    // 根据阶段增加不同幅度的波动
+    let volatility: number;
+    if (i <= 30) {
+      // 启动期：较大波动 ±15%
+      volatility = (Math.random() - 0.5) * 30;
+    } else if (i <= 60) {
+      // 稳定期：中等波动 ±12%
+      volatility = (Math.random() - 0.5) * 24;
+    } else {
+      // 优化期：基于上一天的值进行随机游走
+      const change = (Math.random() - 0.5) * 20;
+      const apy = Math.max(280, Math.min(320, lastAPY + change));
+      data.push({
+        date: currentDate.toISOString().split('T')[0],
+        apy: Number(apy.toFixed(2)),
+        dayIndex: i,
+        timestamp: currentDate.getTime()
+      });
+      lastAPY = apy;
+      continue;
+    }
+    
     const apy = Math.max(0, Math.min(320, baseGrowth + volatility));
     
     data.push({
@@ -35,6 +58,8 @@ function generateHistoricalData(startDate: Date, totalDays: number): YieldPoint[
       dayIndex: i,
       timestamp: currentDate.getTime()
     });
+    
+    lastAPY = apy;
   }
   
   return data;
@@ -125,7 +150,7 @@ const FundManagement = () => {
       lastDate.setHours(0, 0, 0, 0);
       
       // 如果最后一条数据不是今天，生成新数据
-      if (lastDate < today) {
+      if (lastDate.getTime() < today.getTime()) {
         const daysDiff = Math.floor((today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
         const newData = generateNewDays(lastDate, daysDiff, lastPoint.apy, lastPoint.dayIndex);
         
@@ -135,14 +160,14 @@ const FundManagement = () => {
       }
     };
     
-    // 立即检查一次
+    // 只在组件挂载时检查一次
     checkAndAddDailyData();
     
-    // 每小时检查一次是否需要添加新数据
+    // 每天凌晨检查（每小时检查一次，但只有日期变化时才会真正添加数据）
     const interval = setInterval(checkAndAddDailyData, 60 * 60 * 1000);
     
     return () => clearInterval(interval);
-  }, [yieldData]);
+  }, []); // 空依赖数组，避免重复触发
 
   // 计算统计数据
   const stats = useMemo(() => {
