@@ -17,7 +17,6 @@ import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 
 import USDV from "./pages/USDV";
-import FundManagement from "./pages/FundManagement";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +31,6 @@ const App = () => (
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
           <Route path="/zh/invest" element={<Invest />} />
-          <Route path="/zh/fund-management" element={<FundManagement />} />
           
           <Route path="/zh/stake-new" element={<StakeNew />} />
           <Route path="/zh/usdv" element={<USDV />} />
@@ -44,7 +42,6 @@ const App = () => (
           
           <Route path="/en" element={<Index />} />
           <Route path="/en/invest" element={<Invest />} />
-          <Route path="/en/fund-management" element={<FundManagement />} />
           
           <Route path="/en/stake-new" element={<StakeNew />} />
           <Route path="/en/usdv" element={<USDV />} />
@@ -57,7 +54,6 @@ const App = () => (
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
           <Route path="/invest" element={<Navigate to="/zh/invest" replace />} />
-          <Route path="/fund-management" element={<Navigate to="/zh/fund-management" replace />} />
           
           <Route path="/stake-new" element={<Navigate to="/zh/stake-new" replace />} />
           <Route path="/usdv" element={<Navigate to="/zh/usdv" replace />} />
