@@ -76,12 +76,6 @@ export function FeaturedPrices() {
             };
             setUsdvData(newData);
             
-            // Update price history for chart
-            setUsdvPriceHistory(prev => {
-              const newHistory = [...prev, { value: price }];
-              return newHistory.slice(-30); // Keep last 30 data points
-            });
-            
             try {
               localStorage.setItem(USDV_CACHE_KEY, JSON.stringify({
                 data: newData,
@@ -121,12 +115,6 @@ export function FeaturedPrices() {
               isPositive: btcInfo.usd_24h_change >= 0,
             };
             setBtcData(newData);
-            
-            // Update price history for chart
-            setBtcPriceHistory(prev => {
-              const newHistory = [...prev, { value: btcInfo.usd }];
-              return newHistory.slice(-30); // Keep last 30 data points
-            });
             
             try {
               localStorage.setItem(BTC_CACHE_KEY, JSON.stringify({
@@ -173,10 +161,61 @@ export function FeaturedPrices() {
     return () => clearInterval(interval);
   }, [account, contracts]);
 
+  // Fetch historical data for USDV
+  const fetchUSDVHistory = async () => {
+    try {
+      const res = await fetch(
+        "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0x9a88bdcf549c0ae0ddb675abb22680673010bdb0/ohlcv/day?limit=30"
+      );
+      if (res.ok) {
+        const json = await res.json();
+        if (json.data?.attributes?.ohlcv_list) {
+          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({
+            value: item[4] // close price
+          }));
+          setUsdvPriceHistory(history.reverse());
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to fetch USDV history:", e);
+    }
+  };
+
+  // Fetch historical data for BTC
+  const fetchBTCHistory = async () => {
+    try {
+      const res = await fetch(
+        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
+      );
+      if (res.ok) {
+        const json = await res.json();
+        if (json.prices) {
+          const history = json.prices.map((item: number[]) => ({
+            value: item[1]
+          }));
+          setBtcPriceHistory(history);
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to fetch BTC history:", e);
+    }
+  };
+
   useEffect(() => {
     fetchPrices();
-    const interval = setInterval(fetchPrices, 30000);
-    return () => clearInterval(interval);
+    fetchUSDVHistory();
+    fetchBTCHistory();
+    
+    const priceInterval = setInterval(fetchPrices, 30000);
+    const historyInterval = setInterval(() => {
+      fetchUSDVHistory();
+      fetchBTCHistory();
+    }, 300000); // Update history every 5 minutes
+    
+    return () => {
+      clearInterval(priceInterval);
+      clearInterval(historyInterval);
+    };
   }, []);
 
   const formatBalance = (balance: bigint) => {
