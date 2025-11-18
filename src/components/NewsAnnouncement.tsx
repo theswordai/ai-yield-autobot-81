@@ -27,10 +27,10 @@ export function NewsAnnouncement() {
     urgent: false
   }, {
     id: 3,
-    title: "USD.ONLINE主网将于2026年Q1正式上线",
-    titleEn: "USD.ONLINE Mainnet to Launch in Q1 2026",
-    content: "USD.ONLINE主网将于2026年第一季度正式上线，敬请期待",
-    contentEn: "USD.ONLINE mainnet will officially launch in Q1 2026, stay tuned",
+    title: "USD.ONLINE主网将于2026年Q2正式上线",
+    titleEn: "USD.ONLINE Mainnet to Launch in Q2 2026",
+    content: "USD.ONLINE主网将于2026年第二季度正式上线，敬请期待",
+    contentEn: "USD.ONLINE mainnet will officially launch in Q2 2026, stay tuned",
     date: "2025-11-17",
     type: "event",
     urgent: false
