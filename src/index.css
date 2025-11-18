@@ -343,7 +343,7 @@ All colors MUST be HSL.
 }
 
 .animate-marquee-vertical {
-  animation: marquee-vertical 15s linear infinite;
+  animation: marquee-vertical 30s linear infinite;
 }
 
 .electric-button {
