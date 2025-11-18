@@ -44,6 +44,8 @@ export function FeaturedPrices() {
   });
   
   const [usdvBalance, setUsdvBalance] = useState<bigint>(BigInt(0));
+  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ value: number }[]>([]);
+  const [btcPriceHistory, setBtcPriceHistory] = useState<{ value: number }[]>([]);
   
   const { account } = useWeb3();
   const { contracts } = useUSDVContracts();
@@ -73,6 +75,12 @@ export function FeaturedPrices() {
               isPositive: change >= 0,
             };
             setUsdvData(newData);
+            
+            // Update price history for chart
+            setUsdvPriceHistory(prev => {
+              const newHistory = [...prev, { value: price }];
+              return newHistory.slice(-30); // Keep last 30 data points
+            });
             
             try {
               localStorage.setItem(USDV_CACHE_KEY, JSON.stringify({
@@ -113,6 +121,12 @@ export function FeaturedPrices() {
               isPositive: btcInfo.usd_24h_change >= 0,
             };
             setBtcData(newData);
+            
+            // Update price history for chart
+            setBtcPriceHistory(prev => {
+              const newHistory = [...prev, { value: btcInfo.usd }];
+              return newHistory.slice(-30); // Keep last 30 data points
+            });
             
             try {
               localStorage.setItem(BTC_CACHE_KEY, JSON.stringify({
@@ -217,7 +231,7 @@ export function FeaturedPrices() {
           </div>
         </div>
         <div className="h-24">
-          <MiniKChart color="hsl(var(--primary))" />
+          <MiniKChart color="hsl(var(--primary))" data={usdvPriceHistory} />
         </div>
       </Card>
 
@@ -246,7 +260,7 @@ export function FeaturedPrices() {
           </div>
         </div>
         <div className="h-24">
-          <MiniKChart color="hsl(var(--accent))" />
+          <MiniKChart color="hsl(var(--accent))" data={btcPriceHistory} />
         </div>
       </Card>
     </div>
