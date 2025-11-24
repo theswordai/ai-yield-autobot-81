@@ -319,7 +319,8 @@
     "bluePoints": "USDV",
     "rewards": "Rewards",
     "user": "Premium",
-    "whitepaper": "Harmony Wealth Engine"
+    "whitepaper": "Harmony Wealth Engine",
+    "team": "Team"
   },
   "meta": {
     "title": "USD.online | Next-Gen AI-Driven Smart Asset Platform",
@@ -1165,5 +1166,54 @@
     "no": "No",
     "next": "Next",
     "previous": "Previous"
+  },
+  "team": {
+    "title": "About Us",
+    "description": "Learn about the USD.online team and vision",
+    "company": {
+      "title": "USD.online Financial Limited Introduction",
+      "description": "USD.online is committed to building next-generation financial infrastructure, deeply integrating AI-driven strategies, DeFi protocols, and stablecoin clearing mechanisms to create transparent, auditable, and sustainable financial networks. We are advancing regulatory compliance in both the UK and Hong Kong, partnering with global collaborators to build a future-oriented clearing system and philanthropic financial ecosystem."
+    },
+    "ourTeam": {
+      "title": "Our Team",
+      "description": "USD.online brings together a cross-disciplinary, highly collaborative core team with backgrounds spanning quantitative investment, software engineering, regulatory compliance, and asset management. Core members have worked at international investment banks, top hedge funds, technology companies, and regulatory institutions, with hands-on experience in AI quantitative strategies, on-chain system development, clearing and risk control, stablecoin issuance, UK/Hong Kong dual compliance, and philanthropic finance coordination. Since 2026, we have adhered to the operating philosophy of 'iterate quickly, maintain full transparency,' continuously publishing real operating data, third-party audit summaries, and Proof of Reserves (PoR), building a credible and sustainable collaborative ecosystem based on data."
+    },
+    "members": {
+      "chris": {
+        "name": "Chris Chew",
+        "title": "Founder of USD.ONLINE",
+        "intro": "Leading company strategy, capital partnerships, compliance, and governance. 8+ years of experience in cross-exchange/cross-chain liquidity and quantitative fund management, with historical AUM of 400M+ USD. Long-term focus on cross-border capital flows and compliance implementation in the UK, Hong Kong, and Dubai. Graduate of London School of Economics (LSE).",
+        "point1": "Current Founder & CEO of USD.online, responsible for strategic planning, capital partnerships, compliance pathways, and corporate governance mechanisms.",
+        "point2": "8+ years in digital assets, covering cross-exchange/cross-chain liquidity, market making, and quantitative fund management; cumulative AUM 450M+ USD.",
+        "point3": "Deep expertise in cross-border capital flows and compliance implementation in the UK, Hong Kong, and Dubai, familiar with stablecoin/clearing, custody integration, auditing, and disclosure processes.",
+        "point4": "Advocates 'data transparency + risk control priority' product methodology, driving PoR proof of reserves, buyback and burn mechanisms.",
+        "point5": "Education: London School of Economics (LSE) graduate."
+      },
+      "grant": {
+        "name": "Grant Lee",
+        "title": "Head of Institutional & Capital Markets at USD.ONLINE",
+        "intro": "Exchange listing/market making alliances + institutional partnership implementation",
+        "point1": "Responsible for top-tier and regional CEX listings and deposit/withdrawal integration, market making alliances and support mechanisms.",
+        "point2": "Expanding partnerships with custody, audit, oracle, payment, and risk control vendors.",
+        "point3": "Co-building investor communication, secondary liquidity, and buyback execution coordination mechanisms."
+      },
+      "frank": {
+        "name": "Frank Gabriele",
+        "title": "Co-Founder & CTO (AI/Quantitative)",
+        "point1": "Previously worked at Renaissance Technologies hedge fund on Wall Street, covering statistical arbitrage, market making, capital efficiency allocation, leading real-time risk control system implementation.",
+        "point2": "On the Web3 side, led on-chain data collection, anomaly detection, and MEV risk protection solutions.",
+        "point3": "Responsible for USD.online Alpha engine and clearing engine technical roadmap, code review, and security audit coordination.",
+        "point4": "Graduate of Yale University Computer Science."
+      },
+      "ying": {
+        "name": "Ying Huang",
+        "title": "Chief Compliance Officer at USD.ONLINE (Singapore/UK)",
+        "point1": "Graduate of National University of Singapore Faculty of Law, with a Master of Laws degree from the UK, possessing solid compliance theoretical foundations in both common and civil law systems.",
+        "point2": "Previously worked at top international law firms and multinational financial institutions, responsible for compliance license applications, regulatory communication, and policy assessment in Singapore, UK, and EU regions.",
+        "point3": "Leading the company's dual-track compliance strategy with Singapore's MAS and UK's FCA, building cross-border compliance frameworks that meet multi-country regulatory requirements.",
+        "point4": "Expert in coordinating cross-border data compliance, AML, and transaction monitoring system construction, managing external legal and audit partnership networks.",
+        "point5": "Deeply involved in the company's stablecoin issuance, asset custody, and clearing business compliance implementation in global markets, ensuring business expansion meets local regulatory requirements."
+      }
+    }
   }
 }
