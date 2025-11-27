@@ -20,7 +20,6 @@ export function Navbar() {
     { name: "USDV", href: `${langPrefix}/usdv` },
     { name: t("nav.user"), href: `${langPrefix}/user` },
     { name: t("nav.whitepaper"), href: `${langPrefix}/whitepaper` },
-    { name: t("nav.team"), href: `${langPrefix}/team` },
   ];
 
   const isActive = (path: string) => location.pathname === path;
