@@ -11,7 +11,6 @@ import Referral from "./pages/Referral";
 import Stake from "./pages/Stake";
 import StakeNew from "./pages/StakeNew";
 import Whitepaper from "./pages/Whitepaper";
-import Team from "./pages/Team";
 import NotFound from "./pages/NotFound";
 import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
@@ -40,7 +39,6 @@ const App = () => (
           <Route path="/zh/invite/:inviter" element={<Invite />} />
           <Route path="/zh/i/:code" element={<Invite />} />
           <Route path="/zh/whitepaper" element={<Whitepaper />} />
-          <Route path="/zh/team" element={<Team />} />
           
           <Route path="/en" element={<Index />} />
           <Route path="/en/invest" element={<Invest />} />
@@ -52,7 +50,6 @@ const App = () => (
           <Route path="/en/invite/:inviter" element={<Invite />} />
           <Route path="/en/i/:code" element={<Invite />} />
           <Route path="/en/whitepaper" element={<Whitepaper />} />
-          <Route path="/en/team" element={<Team />} />
 
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
@@ -64,7 +61,6 @@ const App = () => (
           <Route path="/invite/:inviter" element={<Navigate to="/zh/invite/:inviter" replace />} />
           <Route path="/i/:code" element={<Navigate to="/zh/i/:code" replace />} />
           <Route path="/whitepaper" element={<Navigate to="/zh/whitepaper" replace />} />
-          <Route path="/team" element={<Navigate to="/zh/team" replace />} />
 
           {/* Legacy routes -> redirects */}
           <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />
