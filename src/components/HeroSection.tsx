@@ -398,35 +398,115 @@ export function HeroSection() {
                   </div>
                 </Card>
 
-                {/* DeFi质押策略 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6">
-                  <div className="flex items-center gap-3 mb-4">
+                {/* DeFi质押策略 - 完整版 */}
+                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-3">
+                  <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold">{t("hero.defiVault.title")}</h3>
+                      <h3 className="text-2xl font-semibold">{t("hero.defiVault.title")}</h3>
                     </div>
                   </div>
+
+                  <p className="text-sm text-muted-foreground mb-6">{t("hero.defiVault.description")}</p>
                   
-                  <div className="space-y-3 text-sm mb-4">
-                    <div>
-                      <p className="font-semibold text-primary mb-1">{t("hero.defiVault.strategyA")}</p>
-                      <p className="text-xs text-muted-foreground mb-2">{t("hero.defiVault.strategyALogic")}</p>
-                      <div className="space-y-1">
-                        <p className="text-xs text-muted-foreground"><span className="font-medium">{t("hero.defiVault.strategyAAssets")}</span></p>
-                        <p className="text-xs text-muted-foreground"><span className="font-medium">{t("hero.defiVault.strategyAProtocols")}</span></p>
+                  {/* 两个子策略并排 */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    {/* A. 利率与点数挖矿 */}
+                    <div className="space-y-3 p-4 rounded-lg bg-background/50 border border-border/50">
+                      <h4 className="font-bold text-lg text-primary">{t("hero.defiVault.strategyA.title")}</h4>
+                      <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyA.logic")}</p>
+                      <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyA.assets")}</p>
+                      <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyA.protocols")}</p>
+                      
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyA.execution")}</p>
+                        <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                          <li>{t("hero.defiVault.strategyA.executionPoints.point1")}</li>
+                          <li>{t("hero.defiVault.strategyA.executionPoints.point2")}</li>
+                          <li>{t("hero.defiVault.strategyA.executionPoints.point3")}</li>
+                          <li>{t("hero.defiVault.strategyA.executionPoints.point4")}</li>
+                        </ul>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyA.kpi")}</p>
+                        <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                          <li>{t("hero.defiVault.strategyA.kpiPoints.point1")}</li>
+                          <li>{t("hero.defiVault.strategyA.kpiPoints.point2")}</li>
+                        </ul>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyA.riskControl")}</p>
+                        <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                          <li>{t("hero.defiVault.strategyA.riskPoints.point1")}</li>
+                          <li>{t("hero.defiVault.strategyA.riskPoints.point2")}</li>
+                          <li>{t("hero.defiVault.strategyA.riskPoints.point3")}</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* B. 稳定币 AMM 做市 */}
+                    <div className="space-y-3 p-4 rounded-lg bg-background/50 border border-border/50">
+                      <h4 className="font-bold text-lg text-primary">{t("hero.defiVault.strategyB.title")}</h4>
+                      <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyB.logic")}</p>
+                      <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyB.protocols")}</p>
+                      
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyB.execution")}</p>
+                        <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                          <li>{t("hero.defiVault.strategyB.executionPoints.point1")}</li>
+                          <li>{t("hero.defiVault.strategyB.executionPoints.point2")}</li>
+                          <li>{t("hero.defiVault.strategyB.executionPoints.point3")}</li>
+                          <li>{t("hero.defiVault.strategyB.executionPoints.point4")}</li>
+                        </ul>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyB.kpi")}</p>
+                        <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                          <li>{t("hero.defiVault.strategyB.kpiPoints.point1")}</li>
+                          <li>{t("hero.defiVault.strategyB.kpiPoints.point2")}</li>
+                        </ul>
+                      </div>
+
+                      <div className="space-y-2">
+                        <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyB.riskControl")}</p>
+                        <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                          <li>{t("hero.defiVault.strategyB.riskPoints.point1")}</li>
+                          <li>{t("hero.defiVault.strategyB.riskPoints.point2")}</li>
+                          <li>{t("hero.defiVault.strategyB.riskPoints.point3")}</li>
+                        </ul>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="space-y-3 text-sm border-t border-border/50 pt-4">
-                    <div>
-                      <p className="font-semibold text-primary mb-1">{t("hero.defiVault.strategyB")}</p>
-                      <p className="text-xs text-muted-foreground mb-2">{t("hero.defiVault.strategyBLogic")}</p>
-                      <p className="text-xs text-muted-foreground">{t("hero.defiVault.strategyBProtocols")}</p>
-                    </div>
+
+                  {/* 资金配比 */}
+                  <div className="space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 mb-4">
+                    <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.allocation.title")}</p>
+                    <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                      <li>{t("hero.defiVault.allocation.point1")}</li>
+                      <li>{t("hero.defiVault.allocation.point2")}</li>
+                      <li>{t("hero.defiVault.allocation.point3")}</li>
+                    </ul>
                   </div>
+
+                  {/* 透明度 */}
+                  <div className="space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 mb-4">
+                    <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.transparency.title")}</p>
+                    <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
+                      <li>{t("hero.defiVault.transparency.daily")}</li>
+                      <li>{t("hero.defiVault.transparency.weekly")}</li>
+                      <li>{t("hero.defiVault.transparency.monthly")}</li>
+                    </ul>
+                  </div>
+
+                  {/* 免责声明 */}
+                  <p className="text-xs text-muted-foreground/70 italic">
+                    {t("hero.defiVault.disclaimer")}
+                  </p>
                 </Card>
               </div>
 

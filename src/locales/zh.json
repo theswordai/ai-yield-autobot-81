@@ -693,31 +693,67 @@
     },
     "defiVault": {
       "title": "去中心化质押金库",
-      "description": "结构化资本律动，循环质押与杠杆的完美融合",
+      "description": "原生 DeFi 收益策略：利率挖矿（Aave/Compound）+ LP 做市（Curve/Uniswap V3）+ 激励捕捉。稳定币主线，链上可追踪，合约权限可审计。",
       "fee": "基础收益",
-      "strategyA": "A｜利率与点数挖矿（Lending / Points）",
-      "strategyALogic": "逻辑：把稳定币分散存入头部借贷/稳币协议，获取基础利率（利息）+ 原生激励/积分（points/空投），在净收益为正的前提下做动态迁移与复投。",
-      "strategyAAssets": "覆盖资产：USDC / USDT / DAI / FRAX / crvUSD / USDe（sUSDe）等",
-      "strategyAProtocols": "候选协议（示例）：Aave、Morpho、Spark（sDAI/DSR）、FraxLend、Ethena（sUSDe）",
-      "strategyAExecution": "执行要点",
-      "strategyADistribution": "分散投放：单协议/单对手方设置上限，避免集中暴露",
-      "strategyAAPYScreening": "净 APY 筛选：以（利率 + 激励） − （Gas+滑点）为准，不以名义 APY 冲量",
-      "strategyAMigration": "移仓节奏：达到 收益衰减阈值 或 更优目的地出现 时再迁移，控制来回摩擦成本",
-      "strategyAIncentive": "激励兑现：对 points/空投做分期兑现与复投，避免一次性抛压",
-      "strategyAKPI": "可见指标（KPI）：组合净 APY（已扣摩擦成本）、激励兑现率、资金周转效率、协议分散度（赫芬达尔指数/单协占比）、资金在途时间",
-      "strategyARiskControl": "风控：协议限额：单协议 ≤ 组合的 X%（自定义）；监控项：审计/预言机/治理变更、TVL 异常、利用率过高；预案：一键迁移脚本、7–10% 现金垫，48–72 小时短融窗口",
-      "strategyB": "B｜稳定币 AMM 做市（Stable AMM LP）",
-      "strategyBLogic": "逻辑：为稳定币对（如 USDC/USDT、DAI/USDC、FRAX/DAI、crvUSD/USDC 等）提供流动性，赚取交易费 + 协议激励，通过集中流动性/档位移动提高资金利用率并降低无常损。",
-      "strategyBProtocols": "候选协议（示例）：Curve + Convex、Velodrome/Aerodrome、Uniswap V3（稳定池）",
-      "strategyBExecution": "执行要点",
-      "strategyBLowDeviation": "只做低偏离池：同类稳定币/锚定资产，历史偏离低、体量大",
-      "strategyBConcentrated": "集中流动性：把头寸摆在真实成交密集区，AI 依据波动与流量移动档位",
-      "strategyBIncentiveStack": "激励叠加：对接聚合器（如 Convex）获取二次激励，但不牺牲退出流动性",
-      "strategyBBalance": "费率—滑点平衡：在费率提升与成交概率之间做动态权重",
-      "strategyBKPI": "可见指标（KPI）：年化费率（含激励）、无常损估算 vs 实现、资金利用率、池子深度/成交占比、滑点分布、单池敞口占比",
-      "strategyBRiskControl": "风控：退出通道：设最小深度与最大滑点阈值，不满足即撤档；黑名单：税费合约/拉黑路由/异常 Factory 直接禁用；极端波动：触发阈值（如偏离>设定 bp）→ 自动收敛区间或暂退",
-      "fundingRatio": "资金配比（示例）：利率与点数挖矿 60%｜稳定币 AMM 做市 40%。当激励季/points 活跃时提升利率与点数权重；当成交量走高且波动回落时提升AMM做市权重。组合回撤阈值（如 -3% / -5%）触发降档或临时只保守线。",
-      "transparency": "透明度（对外披露）：日更：各协议/各池头寸占比、组合净 APY、在途资金；周更：净值与回撤曲线、迁移与复投日志（Tx 哈希）；月更：风险事件复盘、限额与权重调整说明",
+      "strategyA": {
+        "title": "A｜利率与点数挖矿（Lending / Points）",
+        "logic": "逻辑：把稳定币分散存入头部借贷/稳币协议，获取基础利率（利息）+ 原生激励/积分（points/空投），在净收益为正的前提下做动态迁移与复投。",
+        "assets": "覆盖资产：USDC / USDT / DAI / FRAX / crvUSD / USDe（sUSDe）等",
+        "protocols": "候选协议（示例）：Aave、Morpho、Spark（sDAI/DSR）、FraxLend、Ethena（sUSDe）",
+        "execution": "执行要点",
+        "executionPoints": {
+          "point1": "分散投放：单协议/单对手方设置上限，避免集中暴露",
+          "point2": "净 APY 筛选：以（利率 + 激励）−（Gas+滑点）为准，不以名义 APY 冲量",
+          "point3": "移仓节奏：达到 收益衰减阈值 或 更优目的地出现 时再迁移，控制来回摩擦成本",
+          "point4": "激励兑现：对 points/空投做分期兑现与复投，避免一次性抛压"
+        },
+        "kpi": "可见指标（KPI）",
+        "kpiPoints": {
+          "point1": "组合净 APY（已扣摩擦成本）、激励兑现率、资金周转效率",
+          "point2": "协议分散度（赫芬达尔指数/单协占比）、资金在途时间"
+        },
+        "riskControl": "风控",
+        "riskPoints": {
+          "point1": "协议限额：单协议 ≤ 组合的 X%（自定义）",
+          "point2": "监控项：审计/预言机/治理变更、TVL 异常、利用率过高",
+          "point3": "预案：一键迁移脚本、7–10% 现金垫，48–72 小时短融窗口"
+        }
+      },
+      "strategyB": {
+        "title": "B｜稳定币 AMM 做市（Stable AMM LP）",
+        "logic": "逻辑：为稳定币对（如 USDC/USDT、DAI/USDC、FRAX/DAI、crvUSD/USDC 等）提供流动性，赚取交易费 + 协议激励，通过集中流动性/档位移动提高资金利用率并降低无常损。",
+        "protocols": "候选协议（示例）：Curve + Convex、Velodrome/Aerodrome、Uniswap V3（稳定池）",
+        "execution": "执行要点",
+        "executionPoints": {
+          "point1": "只做低偏离池：同类稳定币/锚定资产，历史偏离低、体量大",
+          "point2": "集中流动性：把头寸摆在真实成交密集区，AI 依据波动与流量移动档位",
+          "point3": "激励叠加：对接聚合器（如 Convex）获取二次激励，但不牺牲退出流动性",
+          "point4": "费率—滑点平衡：在费率提升与成交概率之间做动态权重"
+        },
+        "kpi": "可见指标（KPI）",
+        "kpiPoints": {
+          "point1": "年化费率（含激励）、无常损估算 vs 实现、资金利用率",
+          "point2": "池子深度/成交占比、滑点分布、单池敞口占比"
+        },
+        "riskControl": "风控",
+        "riskPoints": {
+          "point1": "退出通道：设最小深度与最大滑点阈值，不满足即撤档",
+          "point2": "黑名单：税费合约/拉黑路由/异常 Factory 直接禁用",
+          "point3": "极端波动：触发阈值（如偏离>设定 bp）→ 自动收敛区间或暂退"
+        }
+      },
+      "allocation": {
+        "title": "资金配比（示例）",
+        "point1": "利率与点数挖矿 60%｜稳定币 AMM 做市 40%",
+        "point2": "当激励季/points 活跃 → 提升利率与点数权重；当成交量走高且波动回落 → 提升AMM 做市权重。",
+        "point3": "组合回撤阈值（如 -3% / -5%）触发降档或临时只保守线。"
+      },
+      "transparency": {
+        "title": "透明度（对外披露）",
+        "daily": "日更：各协议/各池头寸占比、组合净 APY、在途资金",
+        "weekly": "周更：净值与回撤曲线、迁移与复投日志（Tx 哈希）",
+        "monthly": "月更：风险事件复盘、限额与权重调整说明"
+      },
       "disclaimer": "以上协议与资产为示例清单，并非背书；实际投放将基于风控白名单、审计状态与实时指标动态筛选。"
     },
     "transparentProtocol": {
