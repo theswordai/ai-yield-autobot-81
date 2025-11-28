@@ -174,54 +174,25 @@ export function HeroSection() {
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold">{t("hero.crossChainEngine.title")}</h3>
-                      
                     </div>
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-foreground font-medium">{t("hero.crossChainEngine.eyeTitle")}</p>
                     <p className="text-muted-foreground">
-                      {t("hero.crossChainEngine.eyeDesc")}
+                      {t("hero.crossChainEngine.positioning")}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {t("hero.crossChainEngine.execution")}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {t("hero.crossChainEngine.risk")}
                     </p>
                   </div>
                   
-                  <div className="space-y-2 text-sm mb-4">
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.crossChainEngine.strategyType")}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.crossChainEngine.executionFreq")}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.crossChainEngine.riskLevel")}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 text-sm mb-4">
-                    <p className="font-semibold text-accent">{t("hero.crossChainEngine.advantages")}</p>
-                    <div className="space-y-1 pl-4">
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.crossChainEngine.advantage1")}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.crossChainEngine.advantage2")}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.crossChainEngine.advantage3")}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 p-3 bg-primary/10 rounded-lg">
-                    <p className="text-sm text-primary font-medium">
-                      {t("hero.crossChainEngine.summary")}
-                    </p>
+                  <div className="space-y-2 text-sm">
+                    <p className="font-semibold text-primary">{t("hero.crossChainEngine.strategyA")}</p>
+                    <p className="font-semibold text-primary">{t("hero.crossChainEngine.strategyB")}</p>
+                    <p className="font-semibold text-primary">{t("hero.crossChainEngine.strategyC")}</p>
                   </div>
                 </Card>
 
@@ -233,54 +204,24 @@ export function HeroSection() {
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold">{t("hero.aiRotation.title")}</h3>
-                      
                     </div>
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-foreground font-medium">{t("hero.aiRotation.brainTitle")}</p>
-                    <p className="text-muted-foreground mt-2 leading-relaxed">
-                      {t("hero.aiRotation.brainDesc")}
+                    <p className="text-muted-foreground">
+                      {t("hero.aiRotation.positioning")}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {t("hero.aiRotation.assetRange")}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {t("hero.aiRotation.risk")}
                     </p>
                   </div>
                   
-                  <div className="space-y-2 text-sm mb-4">
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.aiRotation.assetRange")}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.aiRotation.rebalanceFreq")}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.aiRotation.riskLevel")}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 text-sm mb-4">
-                    <p className="font-semibold text-primary">{t("hero.aiRotation.advantages")}</p>
-                    <div className="space-y-1 pl-4">
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.aiRotation.advantage1")}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.aiRotation.advantage2")}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.aiRotation.advantage3")}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 p-3 bg-accent/10 rounded-lg">
-                    <p className="text-sm text-accent font-medium">
-                      {t("hero.aiRotation.summary")}
-                    </p>
+                  <div className="space-y-2 text-sm">
+                    <p className="font-semibold text-accent">{t("hero.aiRotation.strategyA")}</p>
+                    <p className="font-semibold text-accent">{t("hero.aiRotation.strategyB")}</p>
                   </div>
                 </Card>
 
@@ -292,54 +233,18 @@ export function HeroSection() {
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold">{t("hero.defiVault.title")}</h3>
-                      
                     </div>
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-foreground font-medium">{t("hero.defiVault.heartTitle")}</p>
-                    <p className="text-muted-foreground mt-2 leading-relaxed">
-                      {t("hero.defiVault.heartDesc")}
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      {t("hero.defiVault.strategyALogic")}
                     </p>
                   </div>
                   
-                  <div className="space-y-2 text-sm mb-4">
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.defiVault.strategyType")}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.defiVault.revenueSource")}</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span>{t("hero.defiVault.riskLevel")}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 text-sm mb-4">
-                    <p className="font-semibold text-accent">{t("hero.defiVault.advantages")}</p>
-                    <div className="space-y-1 pl-4">
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.defiVault.advantage1")}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.defiVault.advantage2")}</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-muted-foreground">{t("hero.defiVault.advantage3")}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 p-3 bg-primary/10 rounded-lg">
-                    <p className="text-sm text-primary font-medium">
-                      {t("hero.defiVault.summary")}
-                    </p>
+                  <div className="space-y-2 text-sm">
+                    <p className="font-semibold text-primary">{t("hero.defiVault.strategyA")}</p>
+                    <p className="font-semibold text-primary">{t("hero.defiVault.strategyB")}</p>
                   </div>
                 </Card>
               </div>
@@ -353,62 +258,92 @@ export function HeroSection() {
                     </div>
                     <div>
                       <h3 className="text-2xl font-semibold">{t("hero.transparentProtocol.title")}</h3>
-                      
                     </div>
                   </div>
                   
                   <div className="space-y-4 text-sm mb-6">
-                    <p className="text-foreground font-medium">{t("hero.transparentProtocol.soulTitle")}</p>
-                    <p className="text-muted-foreground mt-2 leading-relaxed">
-                      {t("hero.transparentProtocol.soulDesc")}
+                    <p className="text-muted-foreground leading-relaxed">
+                      {t("hero.transparentProtocol.direction")}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* 技术内核 */}
+                    {/* 准入标准 */}
                     <div>
-                      <h4 className="font-semibold text-primary mb-4 flex items-center gap-2">
-                        {t("hero.transparentProtocol.techCore")}
+                      <h4 className="font-semibold text-primary mb-4">
+                        {t("hero.transparentProtocol.admissionStandards")}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                           <span className="text-muted-foreground">{t("hero.transparentProtocol.verifiableLedger")}</span>
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.admissionContract")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                           <span className="text-muted-foreground">{t("hero.transparentProtocol.smartContract")}</span>
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.admissionRules")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                           <span className="text-muted-foreground">{t("hero.transparentProtocol.realTimeAudit")}</span>
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.admissionLP")}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* 叙事高度 */}
+                    {/* 资金与仓位 */}
                     <div>
-                      <h4 className="font-semibold text-accent mb-4 flex items-center gap-2">
-                        {t("hero.transparentProtocol.narrativeHeight")}
+                      <h4 className="font-semibold text-accent mb-4">
+                        {t("hero.transparentProtocol.fundingPosition")}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                           <span className="text-muted-foreground">{t("hero.transparentProtocol.trustRedefinition")}</span>
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.fundingSingle")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                           <span className="text-muted-foreground">{t("hero.transparentProtocol.transparencyStandard")}</span>
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.fundingDaily")}</span>
                         </div>
                         <div className="flex items-start gap-2">
                           <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
-                           <span className="text-muted-foreground">{t("hero.transparentProtocol.participatoryAudit")}</span>
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.fundingSector")}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 透明度与披露 */}
+                    <div>
+                      <h4 className="font-semibold text-primary mb-4">
+                        {t("hero.transparentProtocol.transparencyDisclosure")}
+                      </h4>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex items-start gap-2">
+                          <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.transparencyAddressBook")}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.transparencyDashboard")}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 风控与边界 */}
+                    <div>
+                      <h4 className="font-semibold text-accent mb-4">
+                        {t("hero.transparentProtocol.riskControlBoundary")}
+                      </h4>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex items-start gap-2">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.riskTrap")}</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
+                          <span className="text-muted-foreground">{t("hero.transparentProtocol.riskNoPromise")}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
-                  
                 </Card>
               </div>
 
