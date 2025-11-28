@@ -177,22 +177,34 @@ export function HeroSection() {
                     </div>
                   </div>
                   
-                  <div className="space-y-3 text-sm mb-4">
-                    <p className="text-muted-foreground">
-                      {t("hero.crossChainEngine.positioning")}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {t("hero.crossChainEngine.execution")}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {t("hero.crossChainEngine.risk")}
-                    </p>
+                  <div className="space-y-2 text-sm mb-4">
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{t("hero.crossChainEngine.positioning")}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{t("hero.crossChainEngine.execution")}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{t("hero.crossChainEngine.risk")}</span>
+                    </div>
                   </div>
                   
-                  <div className="space-y-2 text-sm">
-                    <p className="font-semibold text-primary">{t("hero.crossChainEngine.strategyA")}</p>
-                    <p className="font-semibold text-primary">{t("hero.crossChainEngine.strategyB")}</p>
-                    <p className="font-semibold text-primary">{t("hero.crossChainEngine.strategyC")}</p>
+                  <div className="space-y-3 text-sm border-t border-border/50 pt-4">
+                    <div>
+                      <p className="font-semibold text-primary mb-1">{t("hero.crossChainEngine.strategyA")}</p>
+                      <p className="text-xs text-muted-foreground">{t("hero.crossChainEngine.strategyALogic")}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-primary mb-1">{t("hero.crossChainEngine.strategyB")}</p>
+                      <p className="text-xs text-muted-foreground">{t("hero.crossChainEngine.strategyBLogic")}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-primary mb-1">{t("hero.crossChainEngine.strategyC")}</p>
+                      <p className="text-xs text-muted-foreground">{t("hero.crossChainEngine.strategyCTarget")}</p>
+                    </div>
                   </div>
                 </Card>
 
@@ -207,21 +219,34 @@ export function HeroSection() {
                     </div>
                   </div>
                   
-                  <div className="space-y-3 text-sm mb-4">
-                    <p className="text-muted-foreground">
-                      {t("hero.aiRotation.positioning")}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {t("hero.aiRotation.assetRange")}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {t("hero.aiRotation.risk")}
-                    </p>
+                  <div className="space-y-2 text-sm mb-4">
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{t("hero.aiRotation.positioning")}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{t("hero.aiRotation.assetRange")}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{t("hero.aiRotation.risk")}</span>
+                    </div>
                   </div>
                   
-                  <div className="space-y-2 text-sm">
-                    <p className="font-semibold text-accent">{t("hero.aiRotation.strategyA")}</p>
-                    <p className="font-semibold text-accent">{t("hero.aiRotation.strategyB")}</p>
+                  <div className="space-y-3 text-sm border-t border-border/50 pt-4">
+                    <div>
+                      <p className="font-semibold text-accent mb-1">{t("hero.aiRotation.strategyA")}</p>
+                      <p className="text-xs text-muted-foreground">{t("hero.aiRotation.strategyALogic")}</p>
+                      <div className="mt-2 space-y-1">
+                        <p className="text-xs font-medium text-accent">{t("hero.aiRotation.strategyAExecution")}</p>
+                        <p className="text-xs text-muted-foreground pl-2">{t("hero.aiRotation.strategyAAdaptive")}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-accent mb-1">{t("hero.aiRotation.strategyB")}</p>
+                      <p className="text-xs text-muted-foreground">{t("hero.aiRotation.strategyBLogic")}</p>
+                    </div>
                   </div>
                 </Card>
 
@@ -237,14 +262,22 @@ export function HeroSection() {
                   </div>
                   
                   <div className="space-y-3 text-sm mb-4">
-                    <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t("hero.defiVault.strategyALogic")}
-                    </p>
+                    <div>
+                      <p className="font-semibold text-primary mb-1">{t("hero.defiVault.strategyA")}</p>
+                      <p className="text-xs text-muted-foreground mb-2">{t("hero.defiVault.strategyALogic")}</p>
+                      <div className="space-y-1">
+                        <p className="text-xs text-muted-foreground"><span className="font-medium">{t("hero.defiVault.strategyAAssets")}</span></p>
+                        <p className="text-xs text-muted-foreground"><span className="font-medium">{t("hero.defiVault.strategyAProtocols")}</span></p>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="space-y-2 text-sm">
-                    <p className="font-semibold text-primary">{t("hero.defiVault.strategyA")}</p>
-                    <p className="font-semibold text-primary">{t("hero.defiVault.strategyB")}</p>
+                  <div className="space-y-3 text-sm border-t border-border/50 pt-4">
+                    <div>
+                      <p className="font-semibold text-primary mb-1">{t("hero.defiVault.strategyB")}</p>
+                      <p className="text-xs text-muted-foreground mb-2">{t("hero.defiVault.strategyBLogic")}</p>
+                      <p className="text-xs text-muted-foreground">{t("hero.defiVault.strategyBProtocols")}</p>
+                    </div>
                   </div>
                 </Card>
               </div>
