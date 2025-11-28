@@ -13,6 +13,7 @@ import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 import metamaskLogo from "@/assets/metamask-logo.png";
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
+  const [showTeam, setShowTeam] = useState(false);
   const { t } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
@@ -685,9 +686,29 @@ export function HeroSection() {
 
           {/* Team Introduction Section */}
           <div className="mt-16 mb-12">
-            <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">{t("hero.teamIntro.title")}</h3>
+            <div className="flex flex-col items-center mb-8">
+              <h3 className="text-2xl font-bold text-center mb-4 text-muted-foreground">{t("hero.teamIntro.title")}</h3>
+              <Button
+                variant="outline"
+                onClick={() => setShowTeam(!showTeam)}
+                className="flex items-center gap-2"
+              >
+                {showTeam ? (
+                  <>
+                    <ChevronUp className="w-4 h-4" />
+                    <span>收起</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4" />
+                    <span>展开查看</span>
+                  </>
+                )}
+              </Button>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {showTeam && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
               {/* CC - Founder */}
               <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 lg:col-span-3">
                 <CardContent className="p-6">
@@ -781,6 +802,7 @@ export function HeroSection() {
                 </CardContent>
               </Card>
             </div>
+            )}
           </div>
 
           {/* Social Media & Customer Service */}
