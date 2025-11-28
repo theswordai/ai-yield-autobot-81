@@ -286,7 +286,7 @@ export function HeroSection() {
                 </Card>
 
                 {/* AI轮动策略 - 完整版 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-2">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-3">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-gradient-secondary rounded-lg flex items-center justify-center">
                       <Bot className="w-6 h-6 text-accent-foreground" />
@@ -303,8 +303,8 @@ export function HeroSection() {
                     <p className="text-foreground">{t("hero.aiRotation.risk")}</p>
                   </div>
                   
-                  {/* 两个子策略 */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* 三个子策略 */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* A｜主流币网格交易 */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-accent text-base">{t("hero.aiRotation.strategyA")}</p>
@@ -362,6 +362,36 @@ export function HeroSection() {
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyBIndicatorsTitle")}</p>
                         <div className="pl-2">
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyBIndicators")}</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* C｜低杠杆合约 */}
+                    <div className="space-y-3 text-sm">
+                      <p className="font-bold text-accent text-base">{t("hero.aiRotation.strategyC")}</p>
+                      <p className="text-muted-foreground">{t("hero.aiRotation.strategyCLogic")}</p>
+                      
+                      <div className="space-y-2">
+                        <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyCExecutionTitle")}</p>
+                        <div className="pl-2 space-y-1">
+                          <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCExecution1")}</p>
+                          <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCExecution2")}</p>
+                          <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCExecution3")}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyCRiskTitle")}</p>
+                        <div className="pl-2 space-y-1">
+                          <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCRisk1")}</p>
+                          <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCRisk2")}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyCIndicatorsTitle")}</p>
+                        <div className="pl-2">
+                          <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCIndicators")}</p>
                         </div>
                       </div>
                     </div>

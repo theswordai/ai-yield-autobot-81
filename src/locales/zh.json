@@ -678,7 +678,18 @@
       "strategyBRisk1": "极端行情保护：资金费突变或价差失衡时，快速减对冲仓/调杠杆。",
       "strategyBRisk2": "对手方与通道：若平台风险上升（提现拥堵、异常波动），触发迁徙或清仓。",
       "strategyBIndicatorsTitle": "看板指标",
-      "strategyBIndicators": "当期平均资金费、APR（净）、名义敞口、保证金利用率、强平距离、净值曲线。"
+      "strategyBIndicators": "当期平均资金费、APR（净）、名义敞口、保证金利用率、强平距离、净值曲线。",
+      "strategyC": "C｜低杠杆合约（趋势跟随 / 回撤约束）",
+      "strategyCLogic": "逻辑：AI 生成趋势/反转信号，仅做 1–2× 低杠杆，以小回撤换取更平滑收益。",
+      "strategyCExecutionTitle": "执行要点",
+      "strategyCExecution1": "信号融合：价格动量 + 资金流向 + 期现基差 + 宏观/链上情绪，判定多/空/观望。",
+      "strategyCExecution2": "仓位节流阀：胜率回落或波动加大时，自动降杠杆或轻仓。",
+      "strategyCExecution3": "止损/止盈：固定硬止损 + 波动自适应止损；分批止盈。",
+      "strategyCRiskTitle": "风控",
+      "strategyCRisk1": "单侧持仓上限：单币合约净多/净空不超过策略资金的 x%。",
+      "strategyCRisk2": "事件熔断：大事件窗口（FOMC、ETF 大额赎回等）降档或只做对冲。",
+      "strategyCIndicatorsTitle": "看板指标",
+      "strategyCIndicators": "胜率、盈亏比、最大回撤、连续亏损笔数、持仓时长分布、净值曲线。"
     },
     "defiVault": {
       "title": "去中心化质押金库",
