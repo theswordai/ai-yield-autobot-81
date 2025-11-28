@@ -166,44 +166,121 @@ export function HeroSection() {
               <h2 className="text-3xl font-bold text-center mb-8">{t("hero.strategyDetails")}</h2>
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* 跨链阿尔法引擎策略 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6">
-                  <div className="flex items-center gap-3 mb-4">
+                {/* 跨链阿尔法引擎策略 - 完整版 */}
+                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-3">
+                  <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
                       <Zap className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold">{t("hero.crossChainEngine.title")}</h3>
+                      <h3 className="text-2xl font-semibold">{t("hero.crossChainEngine.title")}</h3>
                     </div>
                   </div>
                   
-                  <div className="space-y-2 text-sm mb-4">
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">{t("hero.crossChainEngine.positioning")}</span>
+                  {/* 定位、执行、风险 */}
+                  <div className="space-y-2 text-sm mb-6 bg-primary/5 p-4 rounded-lg">
+                    <p className="text-foreground">{t("hero.crossChainEngine.positioning")}</p>
+                    <p className="text-foreground">{t("hero.crossChainEngine.execution")}</p>
+                    <p className="text-foreground">{t("hero.crossChainEngine.risk")}</p>
+                  </div>
+                  
+                  {/* 三个子策略 */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* A. DEX 搬砖 */}
+                    <div className="space-y-3 text-sm">
+                      <p className="font-bold text-primary text-base">{t("hero.crossChainEngine.strategyA")}</p>
+                      <div className="space-y-2 pl-2">
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyALogic")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyAMeans")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyAKPI")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyARisk")}</p>
+                      </div>
                     </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">{t("hero.crossChainEngine.execution")}</span>
+                    
+                    {/* B. 低风险 MEV */}
+                    <div className="space-y-3 text-sm">
+                      <p className="font-bold text-primary text-base">{t("hero.crossChainEngine.strategyB")}</p>
+                      <div className="space-y-2 pl-2">
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyBLogic")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyBMeans")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyBKPI")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyBRisk")}</p>
+                      </div>
                     </div>
-                    <div className="flex items-start gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-1.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">{t("hero.crossChainEngine.risk")}</span>
+                    
+                    {/* C. 新币狙击 */}
+                    <div className="space-y-3 text-sm">
+                      <p className="font-bold text-primary text-base">{t("hero.crossChainEngine.strategyC")}</p>
+                      <div className="space-y-2 pl-2">
+                        <p className="text-muted-foreground">{t("hero.crossChainEngine.strategyCTarget")}</p>
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="space-y-3 text-sm border-t border-border/50 pt-4">
+                  {/* C策略详细内容 */}
+                  <div className="mt-6 p-4 bg-accent/5 rounded-lg space-y-4 text-sm">
+                    {/* 1) 发现 */}
                     <div>
-                      <p className="font-semibold text-primary mb-1">{t("hero.crossChainEngine.strategyA")}</p>
-                      <p className="text-xs text-muted-foreground">{t("hero.crossChainEngine.strategyALogic")}</p>
+                      <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCDiscovery")}</p>
+                      <div className="pl-4 space-y-2">
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCSignal")}</p>
+                        <div>
+                          <p className="text-foreground mb-1">• {t("hero.crossChainEngine.strategyCFilterTitle")}</p>
+                          <div className="pl-6 space-y-1">
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCFilter1")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCFilter2")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCFilter3")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCFilter4")}</p>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.streamegyCFilterSoft")}</p>
+                      </div>
                     </div>
+                    
+                    {/* 2) 首次建仓 */}
                     <div>
-                      <p className="font-semibold text-primary mb-1">{t("hero.crossChainEngine.strategyB")}</p>
-                      <p className="text-xs text-muted-foreground">{t("hero.crossChainEngine.strategyBLogic")}</p>
+                      <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCSniping")}</p>
+                      <div className="pl-4 space-y-2">
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCFunding")}</p>
+                        <div>
+                          <p className="text-foreground mb-1">• {t("hero.crossChainEngine.strategyCMatchTitle")}</p>
+                          <div className="pl-6 space-y-1">
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCMatch1")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCMatch2")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCMatch3")}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-foreground mb-1">• {t("hero.crossChainEngine.strategyCExitTitle")}</p>
+                          <div className="pl-6 space-y-1">
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCExit1")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCExit2")}</p>
+                            <p className="text-muted-foreground">• {t("hero.crossChainEngine.strategyCExit3")}</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    
+                    {/* 3) 指标与看板 */}
                     <div>
-                      <p className="font-semibold text-primary mb-1">{t("hero.crossChainEngine.strategyC")}</p>
-                      <p className="text-xs text-muted-foreground">{t("hero.crossChainEngine.strategyCTarget")}</p>
+                      <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCIndicatorsTitle")}</p>
+                      <div className="pl-4 space-y-1">
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCIndicators1")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCIndicators2")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCIndicators3")}</p>
+                      </div>
+                    </div>
+                    
+                    {/* 4) 风控护栏 */}
+                    <div>
+                      <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCRiskTitle")}</p>
+                      <div className="pl-4 space-y-1">
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCRisk1")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCRisk2")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCRisk3")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCRisk4")}</p>
+                        <p className="text-muted-foreground"><span className="text-foreground">• </span>{t("hero.crossChainEngine.strategyCRisk5")}</p>
+                      </div>
                     </div>
                   </div>
                 </Card>
