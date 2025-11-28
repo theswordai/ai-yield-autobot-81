@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send, MessageCircle } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
@@ -681,6 +681,106 @@ export function HeroSection() {
                   <div className="text-xs text-muted-foreground mt-1">{p.tagline}</div>
                 </div>
               </a>)}
+          </div>
+
+          {/* Team Introduction Section */}
+          <div className="mt-16 mb-12">
+            <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">{t("hero.teamIntro.title")}</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* CC - Founder */}
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 lg:col-span-3">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.cc.name")}</h4>
+                    <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.cc.title")}</p>
+                    <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.cc.subtitle")}</p>
+                  </div>
+                  <div className="space-y-3 text-sm text-muted-foreground">
+                    <p>{t("hero.teamIntro.members.cc.bio")}</p>
+                    <p>{t("hero.teamIntro.members.cc.experience")}</p>
+                    <p>{t("hero.teamIntro.members.cc.education")}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Mr.Lee */}
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 lg:col-span-3">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.lee.name")}</h4>
+                    <p className="text-sm font-semibold text-foreground mb-3">{t("hero.teamIntro.members.lee.title")}</p>
+                  </div>
+                  <div className="space-y-3 text-sm text-muted-foreground">
+                    <p>{t("hero.teamIntro.members.lee.bio")}</p>
+                    <p>{t("hero.teamIntro.members.lee.career")}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Mr.Micheal, Mouad, Omar - In 3 columns */}
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.michael.name")}</h4>
+                    <p className="text-sm font-semibold text-foreground mb-3">{t("hero.teamIntro.members.michael.title")}</p>
+                  </div>
+                  <div className="space-y-2 text-sm text-muted-foreground mb-4">
+                    <p className="flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      <span>{t("hero.teamIntro.members.michael.point1")}</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      <span>{t("hero.teamIntro.members.michael.point2")}</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      <span>{t("hero.teamIntro.members.michael.point3")}</span>
+                    </p>
+                  </div>
+                  <p className="text-sm text-muted-foreground italic">{t("hero.teamIntro.members.michael.education")}</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.mouad.name")}</h4>
+                    <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.mouad.title")}</p>
+                    <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.mouad.subtitle")}</p>
+                  </div>
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <p className="flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      <span>{t("hero.teamIntro.members.mouad.point1")}</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      <span>{t("hero.teamIntro.members.mouad.point2")}</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-primary">•</span>
+                      <span>{t("hero.teamIntro.members.mouad.point3")}</span>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.omar.name")}</h4>
+                    <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.omar.title")}</p>
+                    <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.omar.subtitle")}</p>
+                  </div>
+                  <div className="space-y-3 text-sm text-muted-foreground">
+                    <p>{t("hero.teamIntro.members.omar.bio")}</p>
+                    <p>{t("hero.teamIntro.members.omar.experience")}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Social Media & Customer Service */}
