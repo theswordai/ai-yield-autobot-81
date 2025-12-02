@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { USDV_ADDRESS } from "@/config/contracts";
 
 type Item = { symbol: string; price: string; change: string };
 
@@ -23,6 +24,7 @@ const ORDER: Array<keyof typeof CG_IDS | "USD1" | "USDV"> = [
 ];
 
 const CACHE_KEY = "crypto_prices_cache";
+const USDV_CACHE_KEY = "usdv_price_ticker_cache";
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 export function PriceTicker() {
@@ -41,7 +43,59 @@ export function PriceTicker() {
     }
     return null;
   });
+  const [usdvPrice, setUsdvPrice] = useState<{ price: string; change: string } | null>(() => {
+    try {
+      const cached = localStorage.getItem(USDV_CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          return data;
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to load cached USDV price:", e);
+    }
+    return null;
+  });
   const timerRef = useRef<number | null>(null);
+
+  const fetchUSDVPrice = async () => {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      
+      const res = await fetch(
+        "https://api.geckoterminal.com/api/v2/networks/bsc/pools/0x9a88bdcf549c0ae0ddb675abb22680673010bdb0",
+        { signal: controller.signal }
+      );
+      clearTimeout(timeoutId);
+      
+      if (res.ok) {
+        const json = await res.json();
+        const attributes = json.data?.attributes;
+        if (attributes) {
+          const price = parseFloat(attributes.base_token_price_usd);
+          const change = parseFloat(attributes.price_change_percentage?.h24 || "0");
+          const newData = {
+            price: price.toFixed(4),
+            change: `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`,
+          };
+          setUsdvPrice(newData);
+          
+          try {
+            localStorage.setItem(USDV_CACHE_KEY, JSON.stringify({
+              data: newData,
+              timestamp: Date.now()
+            }));
+          } catch (e) {
+            console.warn("Failed to cache USDV price:", e);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to fetch USDV price:", e);
+    }
+  };
 
   const fetchPrices = async (retryCount = 0) => {
     try {
@@ -74,7 +128,11 @@ export function PriceTicker() {
           return { symbol, price: "1.0000", change: "+0.0%" };
         }
         if (symbol === "USDV") {
-          return { symbol, price: "0.01", change: "+0.0%" };
+          return { 
+            symbol, 
+            price: usdvPrice?.price || "0.0100", 
+            change: usdvPrice?.change || "+0.0%" 
+          };
         }
         const id = CG_IDS[symbol];
         const p = data[id]?.usd ?? 0;
@@ -116,7 +174,11 @@ export function PriceTicker() {
       if (!items) {
         setItems(ORDER.map(symbol => {
           if (symbol === "USD1") return { symbol, price: "1.0000", change: "+0.0%" };
-          if (symbol === "USDV") return { symbol, price: "0.01", change: "+0.0%" };
+          if (symbol === "USDV") return { 
+            symbol, 
+            price: usdvPrice?.price || "0.0100", 
+            change: usdvPrice?.change || "+0.0%" 
+          };
           return { symbol, price: "--", change: "--" };
         }));
       }
@@ -124,13 +186,17 @@ export function PriceTicker() {
   };
 
   useEffect(() => {
+    fetchUSDVPrice();
     fetchPrices();
-    timerRef.current = window.setInterval(fetchPrices, 30000);
+    timerRef.current = window.setInterval(() => {
+      fetchUSDVPrice();
+      fetchPrices();
+    }, 30000);
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [usdvPrice]);
 
   const doubled = useMemo(() => (items ? [...items, ...items] : []), [items]);
 

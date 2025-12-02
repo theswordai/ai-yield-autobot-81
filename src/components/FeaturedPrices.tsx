@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { MiniKChart } from "@/components/MiniKChart";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, Copy } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useUSDVContracts } from "@/hooks/useUSDVContracts";
 import { formatUnits } from "ethers";
+import { USDV_ADDRESS } from "@/config/contracts";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type PriceData = {
   price: string;
@@ -232,74 +235,99 @@ export function FeaturedPrices() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* USDV Card */}
-      <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h3 className="text-sm text-muted-foreground font-medium mb-1">USDV Token</h3>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold">
-                ${usdvData?.price || "0.0100"}
-              </span>
-              {usdvData && (
-                <div className={`flex items-center gap-1 text-sm font-medium ${
-                  usdvData.isPositive ? "text-accent" : "text-primary"
-                }`}>
-                  {usdvData.isPositive ? (
-                    <TrendingUp className="w-4 h-4" />
-                  ) : (
-                    <TrendingDown className="w-4 h-4" />
-                  )}
-                  <span>{usdvData.isPositive ? "+" : ""}{usdvData.change24h}%</span>
-                </div>
-              )}
-            </div>
-            
-            {account && (
-              <div className="mt-4 pt-4 border-t border-border">
-                <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
-                <div className="text-lg font-semibold text-foreground">
-                  {formatBalance(usdvBalance)} USDV
-                </div>
-                <div className="text-xs text-muted-foreground mt-1">
-                  ≈ ${calculateUsdValue()}
-                </div>
+    <div className="max-w-5xl mx-auto mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        {/* USDV Card */}
+        <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1">
+              <h3 className="text-sm text-muted-foreground font-medium mb-1">USDV Token</h3>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">
+                  ${usdvData?.price || "0.0100"}
+                </span>
+                {usdvData && (
+                  <div className={`flex items-center gap-1 text-sm font-medium ${
+                    usdvData.isPositive ? "text-accent" : "text-primary"
+                  }`}>
+                    {usdvData.isPositive ? (
+                      <TrendingUp className="w-4 h-4" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4" />
+                    )}
+                    <span>{usdvData.isPositive ? "+" : ""}{usdvData.change24h}%</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-        <div className="h-24">
-          <MiniKChart color="hsl(var(--primary))" data={usdvPriceHistory} />
-        </div>
-      </Card>
-
-      {/* BTC Card */}
-      <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-sm text-muted-foreground font-medium mb-1">Bitcoin</h3>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold">
-                ${btcData?.price || "--"}
-              </span>
-              {btcData && (
-                <div className={`flex items-center gap-1 text-sm font-medium ${
-                  btcData.isPositive ? "text-accent" : "text-primary"
-                }`}>
-                  {btcData.isPositive ? (
-                    <TrendingUp className="w-4 h-4" />
-                  ) : (
-                    <TrendingDown className="w-4 h-4" />
-                  )}
-                  <span>{btcData.isPositive ? "+" : ""}{btcData.change24h}%</span>
+              
+              {account && (
+                <div className="mt-4 pt-4 border-t border-border">
+                  <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
+                  <div className="text-lg font-semibold text-foreground">
+                    {formatBalance(usdvBalance)} USDV
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    ≈ ${calculateUsdValue()}
+                  </div>
                 </div>
               )}
             </div>
           </div>
-        </div>
-        <div className="h-24">
-          <MiniKChart color="hsl(var(--accent))" data={btcPriceHistory} />
+          <div className="h-24">
+            <MiniKChart color="hsl(var(--primary))" data={usdvPriceHistory} />
+          </div>
+        </Card>
+
+        {/* BTC Card */}
+        <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h3 className="text-sm text-muted-foreground font-medium mb-1">Bitcoin</h3>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">
+                  ${btcData?.price || "--"}
+                </span>
+                {btcData && (
+                  <div className={`flex items-center gap-1 text-sm font-medium ${
+                    btcData.isPositive ? "text-accent" : "text-primary"
+                  }`}>
+                    {btcData.isPositive ? (
+                      <TrendingUp className="w-4 h-4" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4" />
+                    )}
+                    <span>{btcData.isPositive ? "+" : ""}{btcData.change24h}%</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="h-24">
+            <MiniKChart color="hsl(var(--accent))" data={btcPriceHistory} />
+          </div>
+        </Card>
+      </div>
+
+      {/* USDV Contract Address */}
+      <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-1">
+            <div className="text-xs text-muted-foreground mb-1">USDV 合约地址 (BSC)</div>
+            <code className="text-sm font-mono text-foreground break-all">
+              {USDV_ADDRESS}
+            </code>
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0"
+            onClick={() => {
+              navigator.clipboard.writeText(USDV_ADDRESS);
+              toast.success("合约地址已复制");
+            }}
+          >
+            <Copy className="w-4 h-4" />
+          </Button>
         </div>
       </Card>
     </div>
