@@ -271,46 +271,32 @@ export default function Dashboard({
           </Card>
 
           {/* USDONLINE Compliance Staking */}
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader className="pb-3 sm:pb-6">
-              <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
                 <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                {t("dashboard.complianceStaking")}
+                USDONLINE合规质押地址
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-                链上透明的合规质押地址，所有交易可在区块链浏览器中实时查看
-              </p>
-              <Button 
-                className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-secondary"
-                onClick={() => window.open('https://bscscan.com/address/0x3F6e613BE21c733CB6f67D1D024634F8d7F1e4Bb', '_blank')}
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                {t("dashboard.viewOnBscscan")}
-              </Button>
+              <code className="text-xs sm:text-sm font-mono text-foreground break-all">
+                0x3F6e613BE21c733CB6f67D1D024634F8d7F1e4Bb
+              </code>
             </CardContent>
           </Card>
 
           {/* USDONLINE Reserve Staking */}
-          <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-accent/50 transition-all duration-300">
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader className="pb-3 sm:pb-6">
-              <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
                 <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-                {t("dashboard.reserveStaking")}
+                USDONLINE储备质押地址
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-                查看储备资金质押的所有交易记录，保证资金安全透明
-              </p>
-              <Button 
-                className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-primary"
-                onClick={() => window.open('https://bscscan.com/address/0xba99D0A2016F43dA2c8AeB581b6076C8b487401A', '_blank')}
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                {t("dashboard.viewOnBscscan")}
-              </Button>
+              <code className="text-xs sm:text-sm font-mono text-foreground break-all">
+                0xba99D0A2016F43dA2c8AeB581b6076C8b487401A
+              </code>
             </CardContent>
           </Card>
         </div>
