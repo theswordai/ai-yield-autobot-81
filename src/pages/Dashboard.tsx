@@ -306,7 +306,7 @@ export default function Dashboard({
               </p>
               <Button 
                 className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-primary"
-                onClick={() => window.open('https://bscscan.com/txs?a=0xba99D0A2016F43dA2c8AeB581b6076C8b487401A', '_blank')}
+                onClick={() => window.open('https://bscscan.com/address/0xba99D0A2016F43dA2c8AeB581b6076C8b487401A', '_blank')}
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 {t("dashboard.viewOnBscscan")}
