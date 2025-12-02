@@ -21,7 +21,9 @@ export default function Dashboard({
     account,
     provider
   } = useWeb3();
-  const { t } = useI18n();
+  const {
+    t
+  } = useI18n();
   const [stats, setStats] = useState({
     totalBalance: "0.00",
     dailyEarnings: "0.00",
@@ -51,20 +53,18 @@ export default function Dashboard({
           setStakingPositions([]);
           return;
         }
-        
+
         // Add mock data for special addresses
         const specialAddress1 = "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6";
         const specialAddress2 = "0x20E916206A2903A4993F639a9D073aE910B15D7c";
-        
         if (account.toLowerCase() === specialAddress1.toLowerCase()) {
           setStats({
             totalBalance: "3,000.00",
-            dailyEarnings: "84.00", 
+            dailyEarnings: "84.00",
             totalEarnings: "631.00",
             referralCount: 1,
             referralEarnings: "4,050.00"
           });
-          
           setStakingPositions([{
             amount: "3,000",
             period: "1年",
@@ -72,31 +72,27 @@ export default function Dashboard({
             status: 'active',
             remaining: 335
           }]);
-          
           setEarn({
             stakingPending: 84,
             referralPending: 4050
           });
           return;
         }
-        
         if (account.toLowerCase() === specialAddress2.toLowerCase()) {
           setStats({
             totalBalance: "27,000.00",
             dailyEarnings: "480.00",
-            totalEarnings: "4,221.00", 
+            totalEarnings: "4,221.00",
             referralCount: 0,
             referralEarnings: "0.00"
           });
-          
           setStakingPositions([{
             amount: "27,000",
-            period: "1年", 
+            period: "1年",
             apy: "280%",
             status: 'active',
             remaining: 335
           }]);
-          
           setEarn({
             stakingPending: 480,
             referralPending: 0
@@ -273,8 +269,7 @@ export default function Dashboard({
           {/* USDONLINE Compliance Staking */}
           <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader className="pb-3 sm:pb-6">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
-                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              <CardTitle className="text-sm sm:text-base flex items-center gap-2">合规&质押<Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 USDONLINE合规质押地址
               </CardTitle>
             </CardHeader>
@@ -288,8 +283,7 @@ export default function Dashboard({
           {/* USDONLINE Reserve Staking */}
           <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader className="pb-3 sm:pb-6">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
-                <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+              <CardTitle className="text-sm sm:text-base flex items-center gap-2">储备&质押<Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
                 USDONLINE储备质押地址
               </CardTitle>
             </CardHeader>
