@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Wallet, TrendingUp, Users, Gift, Lock, Unlock } from "lucide-react";
+import { Wallet, TrendingUp, Users, Gift, Lock, Unlock, ExternalLink, Shield } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
@@ -241,7 +241,7 @@ export default function Dashboard({
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
           {/* Staking Positions */}
           <Card>
             <CardHeader className="pb-3 sm:pb-6">
@@ -270,7 +270,49 @@ export default function Dashboard({
             </CardContent>
           </Card>
 
-          {/* Leaderboard removed for on-chain version */}
+          {/* USDONLINE Compliance Staking */}
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                {t("dashboard.complianceStaking")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+                链上透明的合规质押地址，所有交易可在区块链浏览器中实时查看
+              </p>
+              <Button 
+                className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-secondary"
+                onClick={() => window.open('https://bscscan.com/address/0x3F6e613BE21c733CB6f67D1D024634F8d7F1e4Bb', '_blank')}
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                {t("dashboard.viewOnBscscan")}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* USDONLINE Reserve Staking */}
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-accent/50 transition-all duration-300">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                {t("dashboard.reserveStaking")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+                查看储备资金质押的所有交易记录，保证资金安全透明
+              </p>
+              <Button 
+                className="w-full h-9 sm:h-10 text-sm sm:text-base bg-gradient-primary"
+                onClick={() => window.open('https://bscscan.com/txs?a=0xba99D0A2016F43dA2c8AeB581b6076C8b487401A', '_blank')}
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                {t("dashboard.viewOnBscscan")}
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Actions or Earnings Detail */}
