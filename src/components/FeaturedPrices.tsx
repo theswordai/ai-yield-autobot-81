@@ -308,28 +308,6 @@ export function FeaturedPrices() {
         </Card>
       </div>
 
-      {/* USDV Contract Address */}
-      <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex-1">
-            <div className="text-xs text-muted-foreground mb-1">USDV 合约地址 (BSC)</div>
-            <code className="text-sm font-mono text-foreground break-all">
-              {USDV_ADDRESS}
-            </code>
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            className="shrink-0"
-            onClick={() => {
-              navigator.clipboard.writeText(USDV_ADDRESS);
-              toast.success("合约地址已复制");
-            }}
-          >
-            <Copy className="w-4 h-4" />
-          </Button>
-        </div>
-      </Card>
     </div>
   );
 }
