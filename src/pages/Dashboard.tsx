@@ -284,8 +284,9 @@ export default function Dashboard({
           {/* USDONLINE Reserve Staking */}
           <Card className="bg-card/50 backdrop-blur-sm border-border/50">
             <CardHeader className="pb-3 sm:pb-6">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">储备&质押<Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-                USDONLINE储备质押地址
+              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
+                <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                储备&质押
               </CardTitle>
             </CardHeader>
             <CardContent>
