@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Whitepaper() {
   const { t } = useI18n();
-  const pdfUrl = "/和谐财富引擎.pdf";
+  const pdfUrl = "/harmony-wealth-engine.pdf";
   
   return (
     <div className="min-h-screen bg-background">
@@ -36,7 +36,7 @@ export default function Whitepaper() {
                   </a>
                 </Button>
                 <Button asChild variant="outline" className="gap-2">
-                  <a href={pdfUrl} download="和谐财富引擎.pdf">
+                  <a href={pdfUrl} download="harmony-wealth-engine.pdf">
                     <Download className="w-4 h-4" />
                     下载PDF
                   </a>
@@ -69,7 +69,7 @@ export default function Whitepaper() {
                       </a>
                     </Button>
                     <Button asChild variant="outline" size="lg" className="gap-2">
-                      <a href={pdfUrl} download="和谐财富引擎.pdf">
+                      <a href={pdfUrl} download="harmony-wealth-engine.pdf">
                         <Download className="w-5 h-5" />
                         下载PDF
                       </a>
