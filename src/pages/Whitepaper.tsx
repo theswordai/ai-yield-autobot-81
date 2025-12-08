@@ -1,9 +1,12 @@
 import { Navbar } from "@/components/Navbar";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
+import { FileText, ExternalLink, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Whitepaper() {
   const { t } = useI18n();
+  const pdfUrl = "/和谐财富引擎.pdf";
   
   return (
     <div className="min-h-screen bg-background">
@@ -23,28 +26,57 @@ export default function Whitepaper() {
                 和谐财富引擎
               </h1>
               <div className="h-1 w-32 mx-auto bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></div>
+              
+              {/* Action buttons */}
+              <div className="flex justify-center gap-4 pt-4">
+                <Button asChild variant="default" className="gap-2">
+                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="w-4 h-4" />
+                    在新窗口打开
+                  </a>
+                </Button>
+                <Button asChild variant="outline" className="gap-2">
+                  <a href={pdfUrl} download="和谐财富引擎.pdf">
+                    <Download className="w-4 h-4" />
+                    下载PDF
+                  </a>
+                </Button>
+              </div>
             </div>
 
-            {/* PDF Viewer */}
+            {/* PDF Viewer using object tag with iframe fallback */}
             <div className="w-full bg-card rounded-lg border border-border overflow-hidden shadow-lg">
-              <embed 
-                src="/和谐财富引擎.pdf" 
+              <object
+                data={pdfUrl}
                 type="application/pdf"
                 className="w-full"
-                style={{ height: 'calc(100vh - 200px)', minHeight: '600px' }}
-              />
-            </div>
-            
-            {/* Fallback for browsers that don't support embed */}
-            <div className="mt-4 text-center">
-              <a 
-                href="/和谐财富引擎.pdf" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 underline"
+                style={{ height: 'calc(100vh - 280px)', minHeight: '600px' }}
               >
-                如果PDF无法显示，点击此处在新窗口打开
-              </a>
+                {/* Fallback for browsers that don't support object/embed */}
+                <div className="flex flex-col items-center justify-center py-16 px-8 text-center space-y-6">
+                  <FileText className="w-20 h-20 text-primary" />
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-semibold">和谐财富引擎白皮书</h2>
+                    <p className="text-muted-foreground max-w-md">
+                      您的浏览器不支持内嵌PDF预览，请点击下方按钮查看或下载白皮书。
+                    </p>
+                  </div>
+                  <div className="flex gap-4">
+                    <Button asChild size="lg" className="gap-2">
+                      <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="w-5 h-5" />
+                        打开PDF
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="gap-2">
+                      <a href={pdfUrl} download="和谐财富引擎.pdf">
+                        <Download className="w-5 h-5" />
+                        下载PDF
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </object>
             </div>
           </div>
         </div>
