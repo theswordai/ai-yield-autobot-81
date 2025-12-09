@@ -45,6 +45,7 @@ export function StakingTicker() {
     }
     return [];
   });
+  const [isLoading, setIsLoading] = useState(true);
   const timerRef = useRef<number | null>(null);
   const providerRef = useRef<JsonRpcProvider | null>(null);
   const contractRef = useRef<Contract | null>(null);
@@ -127,8 +128,10 @@ export function StakingTicker() {
           console.warn("Failed to cache staking events:", e);
         }
       }
+      setIsLoading(false);
     } catch (e) {
       console.warn("Failed to fetch historical events:", e);
+      setIsLoading(false);
     }
   }, []);
 
@@ -215,7 +218,19 @@ export function StakingTicker() {
   // Duplicate for seamless loop
   const doubled = useMemo(() => (events.length > 0 ? [...events, ...events] : []), [events]);
 
+  // Show loading state with placeholder
   if (events.length === 0) {
+    if (isLoading) {
+      return (
+        <div className="relative overflow-hidden rounded-xl border border-border bg-card/50 backdrop-blur animate-fade-in mt-2">
+          <div className="flex items-center gap-2 py-3 px-4">
+            <span className="w-2 h-2 rounded-full bg-accent pulse" aria-hidden />
+            <span className="text-xs text-accent font-medium">{t("stakingTicker.live")}</span>
+            <span className="text-sm text-muted-foreground ml-2">加载链上数据中...</span>
+          </div>
+        </div>
+      );
+    }
     return null;
   }
 
