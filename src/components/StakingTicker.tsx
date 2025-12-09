@@ -5,11 +5,12 @@ import { LockStaking_ABI } from "@/abis/LockStaking";
 import { useI18n } from "@/hooks/useI18n";
 
 interface StakingEvent {
+  type: 'deposit' | 'claim';
   address: string;
   amount: string;
-  lockDays: number;
-  expectedYield: string;
+  lockDays?: number;
   timestamp: number;
+  blockNumber: number;
 }
 
 const RPC_URLS = [
@@ -19,17 +20,8 @@ const RPC_URLS = [
 ];
 
 const LOCK_DAYS_MAP: Record<number, number> = { 0: 90, 1: 180, 2: 365 };
-const APR_MAP: Record<number, number> = { 0: 50, 1: 120, 2: 280 };
 
-const CACHE_KEY = "staking_events_cache";
-
-// Calculate expected yield using daily compound interest
-function calculateExpectedYield(principal: number, lockChoice: number): number {
-  const lockDays = LOCK_DAYS_MAP[lockChoice] || 90;
-  const apr = APR_MAP[lockChoice] || 50;
-  const dailyRate = apr / 365 / 100;
-  return principal * (Math.pow(1 + dailyRate, lockDays) - 1);
-}
+const CACHE_KEY = "staking_events_cache_v2";
 
 // Shorten address for display: 0x...123
 function shortenAddress(address: string): string {
@@ -73,7 +65,7 @@ export function StakingTicker() {
     return false;
   }, []);
 
-  // Fetch historical Deposited events - expanded to 100000 blocks (~3-4 days)
+  // Fetch historical Deposited and Claimed events
   const fetchHistoricalEvents = useCallback(async () => {
     if (!contractRef.current || !providerRef.current) return;
 
@@ -82,30 +74,55 @@ export function StakingTicker() {
       // BSC ~1 block/3s, 2 months ≈ 60 days × 28800 blocks/day = 1,728,000 blocks
       const fromBlock = Math.max(0, currentBlock - 1728000);
 
-      const filter = contractRef.current.filters.Deposited();
-      const rawEvents = await contractRef.current.queryFilter(filter, fromBlock, currentBlock);
+      // Fetch both Deposited and Claimed events
+      const depositFilter = contractRef.current.filters.Deposited();
+      const claimFilter = contractRef.current.filters.Claimed();
+      
+      const [depositEvents, claimEvents] = await Promise.all([
+        contractRef.current.queryFilter(depositFilter, fromBlock, currentBlock),
+        contractRef.current.queryFilter(claimFilter, fromBlock, currentBlock),
+      ]);
 
-      const newEvents: StakingEvent[] = rawEvents.map((event: any) => {
+      // Process deposit events
+      const processedDeposits: StakingEvent[] = depositEvents.map((event: any) => {
         const { user, amount, lockChoice } = event.args;
         const amountNum = parseFloat(formatUnits(amount, USDT_DECIMALS));
         const lockDays = LOCK_DAYS_MAP[Number(lockChoice)] || 90;
-        const expectedYield = calculateExpectedYield(amountNum, Number(lockChoice));
 
         return {
+          type: 'deposit' as const,
           address: shortenAddress(user),
           amount: amountNum.toLocaleString(undefined, { maximumFractionDigits: 2 }),
           lockDays,
-          expectedYield: expectedYield.toLocaleString(undefined, { maximumFractionDigits: 2 }),
           timestamp: Date.now(),
+          blockNumber: event.blockNumber,
         };
       });
 
-      if (newEvents.length > 0) {
-        const limited = newEvents.reverse().slice(0, 100);
-        setEvents(limited);
+      // Process claim events
+      const processedClaims: StakingEvent[] = claimEvents.map((event: any) => {
+        const { user, amount } = event.args;
+        const amountNum = parseFloat(formatUnits(amount, USDT_DECIMALS));
+
+        return {
+          type: 'claim' as const,
+          address: shortenAddress(user),
+          amount: amountNum.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+          timestamp: Date.now(),
+          blockNumber: event.blockNumber,
+        };
+      });
+
+      // Combine and sort by block number (newest first)
+      const allEvents = [...processedDeposits, ...processedClaims]
+        .sort((a, b) => b.blockNumber - a.blockNumber)
+        .slice(0, 100);
+
+      if (allEvents.length > 0) {
+        setEvents(allEvents);
         
         try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({ data: limited }));
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ data: allEvents }));
         } catch (e) {
           console.warn("Failed to cache staking events:", e);
         }
@@ -115,22 +132,46 @@ export function StakingTicker() {
     }
   }, []);
 
-  // Listen for new Deposited events
+  // Listen for new Deposited and Claimed events
   const subscribeToEvents = useCallback(() => {
     if (!contractRef.current) return;
 
     try {
+      // Subscribe to Deposited events
       contractRef.current.on("Deposited", (user, posId, amount, fee, lockChoice, aprBps) => {
         const amountNum = parseFloat(formatUnits(amount, USDT_DECIMALS));
         const lockDays = LOCK_DAYS_MAP[Number(lockChoice)] || 90;
-        const expectedYield = calculateExpectedYield(amountNum, Number(lockChoice));
 
         const newEvent: StakingEvent = {
+          type: 'deposit',
           address: shortenAddress(user),
           amount: amountNum.toLocaleString(undefined, { maximumFractionDigits: 2 }),
           lockDays,
-          expectedYield: expectedYield.toLocaleString(undefined, { maximumFractionDigits: 2 }),
           timestamp: Date.now(),
+          blockNumber: Date.now(), // Use timestamp as pseudo block number for real-time
+        };
+
+        setEvents(prev => {
+          const updated = [newEvent, ...prev].slice(0, 100);
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updated }));
+          } catch (e) {
+            console.warn("Failed to cache new event:", e);
+          }
+          return updated;
+        });
+      });
+
+      // Subscribe to Claimed events
+      contractRef.current.on("Claimed", (user, posId, amount) => {
+        const amountNum = parseFloat(formatUnits(amount, USDT_DECIMALS));
+
+        const newEvent: StakingEvent = {
+          type: 'claim',
+          address: shortenAddress(user),
+          amount: amountNum.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+          timestamp: Date.now(),
+          blockNumber: Date.now(),
         };
 
         setEvents(prev => {
@@ -166,6 +207,7 @@ export function StakingTicker() {
       if (timerRef.current) window.clearInterval(timerRef.current);
       if (contractRef.current) {
         contractRef.current.removeAllListeners("Deposited");
+        contractRef.current.removeAllListeners("Claimed");
       }
     };
   }, [initProvider, fetchHistoricalEvents, subscribeToEvents]);
@@ -197,12 +239,21 @@ export function StakingTicker() {
       >
         {doubled.map((event, idx) => (
           <div key={idx} className="flex items-center gap-2 px-3 text-sm" role="listitem">
-            <span className="text-accent">🔒</span>
-            <span className="text-foreground font-mono">{event.address}</span>
-            <span className="text-muted-foreground">{t("stakingTicker.invested")}</span>
-            <span className="text-primary font-semibold">{event.amount} USDT</span>
-            <span className="text-muted-foreground">{t("stakingTicker.lockedFor")}</span>
-            <span className="text-accent font-semibold">{event.lockDays}{t("stakingTicker.days")}</span>
+            {event.type === 'deposit' ? (
+              <>
+                <span className="text-accent">🔒</span>
+                <span className="text-foreground font-mono">{event.address}地址</span>
+                <span className="text-muted-foreground">投资</span>
+                <span className="text-primary font-semibold">{event.amount} USDT</span>
+              </>
+            ) : (
+              <>
+                <span className="text-green-400">💰</span>
+                <span className="text-foreground font-mono">{event.address}地址</span>
+                <span className="text-muted-foreground">提取收益</span>
+                <span className="text-green-400 font-semibold">{event.amount} USDT</span>
+              </>
+            )}
           </div>
         ))}
       </div>

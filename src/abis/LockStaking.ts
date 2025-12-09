@@ -8,6 +8,7 @@ export const LockStaking_ABI = [
   "function getUserPositions(address user) view returns (uint256[])",
   "function positions(uint256) view returns (address user, uint256 principal, uint256 startTime, uint256 lastClaimTime, uint256 lockDuration, uint256 aprBps, bool principalWithdrawn)",
   "event Deposited(address indexed user, uint256 indexed posId, uint256 amount, uint256 fee, uint8 lockChoice, uint256 aprBps)",
+  "event Claimed(address indexed user, uint256 indexed posId, uint256 amount)",
   "event ReferralAccrued(address indexed to1, address indexed to2, uint256 r1, uint256 r2)"
 ] as const;
 
