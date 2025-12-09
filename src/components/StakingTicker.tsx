@@ -10,7 +10,6 @@ interface StakingEvent {
   lockDays: number;
   expectedYield: string;
   timestamp: number;
-  isFake?: boolean;
 }
 
 const RPC_URLS = [
@@ -20,11 +19,9 @@ const RPC_URLS = [
 ];
 
 const LOCK_DAYS_MAP: Record<number, number> = { 0: 90, 1: 180, 2: 365 };
-const APR_MAP: Record<number, number> = { 0: 50, 1: 120, 2: 280 }; // percentage
+const APR_MAP: Record<number, number> = { 0: 50, 1: 120, 2: 280 };
 
 const CACHE_KEY = "staking_events_cache";
-const FAKE_CHECK_KEY = "staking_last_real_event";
-const ONE_HOUR = 60 * 60 * 1000;
 
 // Calculate expected yield using daily compound interest
 function calculateExpectedYield(principal: number, lockChoice: number): number {
@@ -38,46 +35,6 @@ function calculateExpectedYield(principal: number, lockChoice: number): number {
 function shortenAddress(address: string): string {
   if (!address || address.length < 10) return address;
   return `0x...${address.slice(-3)}`;
-}
-
-// Generate random fake address: 0x...abc
-function generateFakeAddress(): string {
-  const chars = "0123456789abcdef";
-  let suffix = "";
-  for (let i = 0; i < 3; i++) suffix += chars[Math.floor(Math.random() * 16)];
-  return `0x...${suffix}`;
-}
-
-// Generate random amount between 5000 and 30000
-function generateRandomAmount(): number {
-  const min = 5000;
-  const max = 30000;
-  // Random amount with some common values weighted
-  const random = Math.random();
-  if (random < 0.3) {
-    // 30% chance of round numbers
-    const roundAmounts = [5000, 8000, 10000, 12000, 15000, 18000, 20000, 25000, 30000];
-    return roundAmounts[Math.floor(Math.random() * roundAmounts.length)];
-  }
-  // 70% chance of random amount
-  return Math.floor(min + Math.random() * (max - min));
-}
-
-// Generate fake staking event with unique data
-function generateFakeEvent(): StakingEvent {
-  const amount = generateRandomAmount();
-  const lockChoice = Math.floor(Math.random() * 3);
-  const lockDays = LOCK_DAYS_MAP[lockChoice];
-  const expectedYield = calculateExpectedYield(amount, lockChoice);
-
-  return {
-    address: generateFakeAddress(),
-    amount: amount.toLocaleString(),
-    lockDays,
-    expectedYield: expectedYield.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-    timestamp: Date.now(),
-    isFake: true,
-  };
 }
 
 export function StakingTicker() {
@@ -97,7 +54,6 @@ export function StakingTicker() {
     return [];
   });
   const timerRef = useRef<number | null>(null);
-  const fakeTimerRef = useRef<number | null>(null);
   const providerRef = useRef<JsonRpcProvider | null>(null);
   const contractRef = useRef<Contract | null>(null);
 
@@ -117,13 +73,13 @@ export function StakingTicker() {
     return false;
   }, []);
 
-  // Fetch historical Deposited events
+  // Fetch historical Deposited events - expanded to 100000 blocks (~3-4 days)
   const fetchHistoricalEvents = useCallback(async () => {
     if (!contractRef.current || !providerRef.current) return;
 
     try {
       const currentBlock = await providerRef.current.getBlockNumber();
-      const fromBlock = Math.max(0, currentBlock - 10000); // ~8 hours of blocks
+      const fromBlock = Math.max(0, currentBlock - 100000); // ~3-4 days of blocks
 
       const filter = contractRef.current.filters.Deposited();
       const rawEvents = await contractRef.current.queryFilter(filter, fromBlock, currentBlock);
@@ -140,54 +96,21 @@ export function StakingTicker() {
           lockDays,
           expectedYield: expectedYield.toLocaleString(undefined, { maximumFractionDigits: 2 }),
           timestamp: Date.now(),
-          isFake: false,
         };
       });
 
       if (newEvents.length > 0) {
-        setEvents(prev => {
-          const combined = [...newEvents.reverse(), ...prev.filter(e => e.isFake)];
-          const limited = combined.slice(0, 100);
-          
-          // Cache and update last real event time
-          try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: limited }));
-            localStorage.setItem(FAKE_CHECK_KEY, Date.now().toString());
-          } catch (e) {
-            console.warn("Failed to cache staking events:", e);
-          }
-          
-          return limited;
-        });
+        const limited = newEvents.reverse().slice(0, 100);
+        setEvents(limited);
+        
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ data: limited }));
+        } catch (e) {
+          console.warn("Failed to cache staking events:", e);
+        }
       }
     } catch (e) {
       console.warn("Failed to fetch historical events:", e);
-    }
-  }, []);
-
-  // Check if we need to generate fake data
-  const checkAndGenerateFake = useCallback(() => {
-    try {
-      const lastRealStr = localStorage.getItem(FAKE_CHECK_KEY);
-      const lastReal = lastRealStr ? parseInt(lastRealStr) : 0;
-      const now = Date.now();
-
-      if (now - lastReal > ONE_HOUR) {
-        const fakeEvent = generateFakeEvent();
-        setEvents(prev => {
-          const updated = [fakeEvent, ...prev].slice(0, 100);
-          try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updated }));
-          } catch (e) {
-            console.warn("Failed to cache fake event:", e);
-          }
-          return updated;
-        });
-        // Update the fake check time so we don't spam
-        localStorage.setItem(FAKE_CHECK_KEY, now.toString());
-      }
-    } catch (e) {
-      console.warn("Failed to check/generate fake event:", e);
     }
   }, []);
 
@@ -207,14 +130,12 @@ export function StakingTicker() {
           lockDays,
           expectedYield: expectedYield.toLocaleString(undefined, { maximumFractionDigits: 2 }),
           timestamp: Date.now(),
-          isFake: false,
         };
 
         setEvents(prev => {
           const updated = [newEvent, ...prev].slice(0, 100);
           try {
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updated }));
-            localStorage.setItem(FAKE_CHECK_KEY, Date.now().toString());
           } catch (e) {
             console.warn("Failed to cache new event:", e);
           }
@@ -237,42 +158,26 @@ export function StakingTicker() {
 
     init();
 
-    // Check for fake data every 10 minutes
-    fakeTimerRef.current = window.setInterval(checkAndGenerateFake, 10 * 60 * 1000);
-    // Initial check
-    checkAndGenerateFake();
-
     // Refresh events every 60 seconds
     timerRef.current = window.setInterval(fetchHistoricalEvents, 60000);
 
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
-      if (fakeTimerRef.current) window.clearInterval(fakeTimerRef.current);
       if (contractRef.current) {
         contractRef.current.removeAllListeners("Deposited");
       }
     };
-  }, [initProvider, fetchHistoricalEvents, subscribeToEvents, checkAndGenerateFake]);
+  }, [initProvider, fetchHistoricalEvents, subscribeToEvents]);
 
-  // If no events, generate 100 initial fake ones
-  useEffect(() => {
-    if (events.length === 0) {
-      const initialFakes = Array.from({ length: 100 }, () => generateFakeEvent());
-      setEvents(initialFakes);
-      try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ data: initialFakes }));
-        localStorage.setItem(FAKE_CHECK_KEY, Date.now().toString());
-      } catch (e) {
-        console.warn("Failed to cache initial fake events:", e);
-      }
-    }
-  }, [events.length]);
-
+  // Duplicate for seamless loop
   const doubled = useMemo(() => (events.length > 0 ? [...events, ...events] : []), [events]);
 
   if (events.length === 0) {
     return null;
   }
+
+  // Adjust animation duration based on event count
+  const animationDuration = Math.max(40, events.length * 0.8);
 
   return (
     <div className="relative overflow-hidden rounded-xl border border-border bg-card/50 backdrop-blur animate-fade-in mt-2">
@@ -285,7 +190,7 @@ export function StakingTicker() {
       </div>
       <div
         className="flex gap-6 whitespace-nowrap py-3 pl-20"
-        style={{ width: "200%", animation: "staking-marquee 40s linear infinite" }}
+        style={{ width: "200%", animation: `staking-marquee ${animationDuration}s linear infinite` }}
         role="list"
         aria-label={t("stakingTicker.ariaLabel")}
       >
