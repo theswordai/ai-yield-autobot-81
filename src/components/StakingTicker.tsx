@@ -251,10 +251,10 @@ export function StakingTicker() {
     };
   }, [initProvider, fetchHistoricalEvents, subscribeToEvents, checkAndGenerateFake]);
 
-  // If no events, generate some initial fake ones
+  // If no events, generate 100 initial fake ones
   useEffect(() => {
     if (events.length === 0) {
-      const initialFakes = Array.from({ length: 5 }, () => generateFakeEvent());
+      const initialFakes = Array.from({ length: 100 }, () => generateFakeEvent());
       setEvents(initialFakes);
       try {
         localStorage.setItem(CACHE_KEY, JSON.stringify({ data: initialFakes }));
