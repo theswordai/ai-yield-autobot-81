@@ -82,15 +82,14 @@ function generateFakeEvent(): StakingEvent {
 
 export function StakingTicker() {
   const { t } = useI18n();
+  // Clear old cache and start fresh with new random data
   const [events, setEvents] = useState<StakingEvent[]>(() => {
+    // Clear old cache to force regeneration with new parameters
     try {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        const { data } = JSON.parse(cached);
-        return data || [];
-      }
+      localStorage.removeItem(CACHE_KEY);
+      localStorage.removeItem(FAKE_CHECK_KEY);
     } catch (e) {
-      console.warn("Failed to load cached staking events:", e);
+      console.warn("Failed to clear staking cache:", e);
     }
     return [];
   });
