@@ -34,26 +34,38 @@ function calculateExpectedYield(principal: number, lockChoice: number): number {
   return principal * (Math.pow(1 + dailyRate, lockDays) - 1);
 }
 
-// Shorten address for display
+// Shorten address for display: 0x...123
 function shortenAddress(address: string): string {
   if (!address || address.length < 10) return address;
-  return `${address.slice(0, 4)}...${address.slice(-3)}`;
+  return `0x...${address.slice(-3)}`;
 }
 
-// Generate random fake address
+// Generate random fake address: 0x...abc
 function generateFakeAddress(): string {
   const chars = "0123456789abcdef";
-  let addr = "0x";
-  for (let i = 0; i < 4; i++) addr += chars[Math.floor(Math.random() * 16)];
-  addr += "...";
-  for (let i = 0; i < 3; i++) addr += chars[Math.floor(Math.random() * 16)];
-  return addr;
+  let suffix = "";
+  for (let i = 0; i < 3; i++) suffix += chars[Math.floor(Math.random() * 16)];
+  return `0x...${suffix}`;
 }
 
-// Generate fake staking event
+// Generate random amount between 5000 and 30000
+function generateRandomAmount(): number {
+  const min = 5000;
+  const max = 30000;
+  // Random amount with some common values weighted
+  const random = Math.random();
+  if (random < 0.3) {
+    // 30% chance of round numbers
+    const roundAmounts = [5000, 8000, 10000, 12000, 15000, 18000, 20000, 25000, 30000];
+    return roundAmounts[Math.floor(Math.random() * roundAmounts.length)];
+  }
+  // 70% chance of random amount
+  return Math.floor(min + Math.random() * (max - min));
+}
+
+// Generate fake staking event with unique data
 function generateFakeEvent(): StakingEvent {
-  const amounts = [500, 800, 1000, 1500, 2000, 3000, 5000, 8000, 10000];
-  const amount = amounts[Math.floor(Math.random() * amounts.length)];
+  const amount = generateRandomAmount();
   const lockChoice = Math.floor(Math.random() * 3);
   const lockDays = LOCK_DAYS_MAP[lockChoice];
   const expectedYield = calculateExpectedYield(amount, lockChoice);
