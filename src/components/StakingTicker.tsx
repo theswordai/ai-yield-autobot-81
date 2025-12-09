@@ -66,26 +66,62 @@ export function StakingTicker() {
     return false;
   }, []);
 
-  // Fetch historical Deposited and Claimed events
+  // Fetch historical Deposited and Claimed events with batched queries
   const fetchHistoricalEvents = useCallback(async () => {
     if (!contractRef.current || !providerRef.current) return;
 
+    const BATCH_SIZE = 5000; // BSC RPC limit per query
+    const MAX_EVENTS = 100;  // Stop once we have enough events
+    const MAX_BLOCKS = 1728000; // 2 months max
+
     try {
       const currentBlock = await providerRef.current.getBlockNumber();
-      // BSC ~1 block/3s, 2 months ≈ 60 days × 28800 blocks/day = 1,728,000 blocks
-      const fromBlock = Math.max(0, currentBlock - 1728000);
-
-      // Fetch both Deposited and Claimed events
+      console.log("StakingTicker: Current block:", currentBlock);
+      
+      const minBlock = Math.max(0, currentBlock - MAX_BLOCKS);
       const depositFilter = contractRef.current.filters.Deposited();
       const claimFilter = contractRef.current.filters.Claimed();
       
-      const [depositEvents, claimEvents] = await Promise.all([
-        contractRef.current.queryFilter(depositFilter, fromBlock, currentBlock),
-        contractRef.current.queryFilter(claimFilter, fromBlock, currentBlock),
-      ]);
+      let allDepositEvents: any[] = [];
+      let allClaimEvents: any[] = [];
+      let endBlock = currentBlock;
+      
+      // Batch query from newest to oldest
+      while (endBlock > minBlock && (allDepositEvents.length + allClaimEvents.length) < MAX_EVENTS) {
+        const startBlock = Math.max(minBlock, endBlock - BATCH_SIZE);
+        
+        console.log(`StakingTicker: Querying blocks ${startBlock} to ${endBlock}...`);
+        
+        try {
+          const [deposits, claims] = await Promise.all([
+            contractRef.current!.queryFilter(depositFilter, startBlock, endBlock),
+            contractRef.current!.queryFilter(claimFilter, startBlock, endBlock),
+          ]);
+          
+          allDepositEvents.push(...deposits);
+          allClaimEvents.push(...claims);
+          
+          console.log(`StakingTicker: Batch found ${deposits.length} deposits, ${claims.length} claims`);
+          
+          // If we found enough events, stop early
+          if (allDepositEvents.length + allClaimEvents.length >= MAX_EVENTS) {
+            console.log("StakingTicker: Collected enough events, stopping early");
+            break;
+          }
+        } catch (batchError) {
+          console.warn(`StakingTicker: Batch ${startBlock}-${endBlock} failed:`, batchError);
+        }
+        
+        endBlock = startBlock - 1;
+        
+        // Small delay to avoid rate limiting
+        await new Promise(r => setTimeout(r, 200));
+      }
+      
+      console.log(`StakingTicker: Total - ${allDepositEvents.length} deposits, ${allClaimEvents.length} claims`);
 
       // Process deposit events
-      const processedDeposits: StakingEvent[] = depositEvents.map((event: any) => {
+      const processedDeposits: StakingEvent[] = allDepositEvents.map((event: any) => {
         const { user, amount, lockChoice } = event.args;
         const amountNum = parseFloat(formatUnits(amount, USDT_DECIMALS));
         const lockDays = LOCK_DAYS_MAP[Number(lockChoice)] || 90;
@@ -101,7 +137,7 @@ export function StakingTicker() {
       });
 
       // Process claim events
-      const processedClaims: StakingEvent[] = claimEvents.map((event: any) => {
+      const processedClaims: StakingEvent[] = allClaimEvents.map((event: any) => {
         const { user, amount } = event.args;
         const amountNum = parseFloat(formatUnits(amount, USDT_DECIMALS));
 
@@ -127,6 +163,8 @@ export function StakingTicker() {
         } catch (e) {
           console.warn("Failed to cache staking events:", e);
         }
+      } else {
+        console.warn("StakingTicker: No events found in range");
       }
       setIsLoading(false);
     } catch (e) {
