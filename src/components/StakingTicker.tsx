@@ -147,7 +147,7 @@ export function StakingTicker() {
       if (newEvents.length > 0) {
         setEvents(prev => {
           const combined = [...newEvents.reverse(), ...prev.filter(e => e.isFake)];
-          const limited = combined.slice(0, 20);
+          const limited = combined.slice(0, 100);
           
           // Cache and update last real event time
           try {
@@ -175,7 +175,7 @@ export function StakingTicker() {
       if (now - lastReal > ONE_HOUR) {
         const fakeEvent = generateFakeEvent();
         setEvents(prev => {
-          const updated = [fakeEvent, ...prev].slice(0, 20);
+          const updated = [fakeEvent, ...prev].slice(0, 100);
           try {
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updated }));
           } catch (e) {
@@ -211,7 +211,7 @@ export function StakingTicker() {
         };
 
         setEvents(prev => {
-          const updated = [newEvent, ...prev].slice(0, 20);
+          const updated = [newEvent, ...prev].slice(0, 100);
           try {
             localStorage.setItem(CACHE_KEY, JSON.stringify({ data: updated }));
             localStorage.setItem(FAKE_CHECK_KEY, Date.now().toString());
