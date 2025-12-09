@@ -79,7 +79,8 @@ export function StakingTicker() {
 
     try {
       const currentBlock = await providerRef.current.getBlockNumber();
-      const fromBlock = Math.max(0, currentBlock - 100000); // ~3-4 days of blocks
+      // BSC ~1 block/3s, 2 months ≈ 60 days × 28800 blocks/day = 1,728,000 blocks
+      const fromBlock = Math.max(0, currentBlock - 1728000);
 
       const filter = contractRef.current.filters.Deposited();
       const rawEvents = await contractRef.current.queryFilter(filter, fromBlock, currentBlock);
