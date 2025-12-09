@@ -294,8 +294,6 @@ export function StakingTicker() {
             <span className="text-primary font-semibold">{event.amount} USDT</span>
             <span className="text-muted-foreground">{t("stakingTicker.lockedFor")}</span>
             <span className="text-accent font-semibold">{event.lockDays}{t("stakingTicker.days")}</span>
-            <span className="text-muted-foreground">{t("stakingTicker.expectedYield")}</span>
-            <span className="text-primary font-semibold">{event.expectedYield} USDT</span>
           </div>
         ))}
       </div>
