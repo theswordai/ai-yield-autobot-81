@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send, MessageCircle } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
+import { StakingTicker } from "@/components/StakingTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
 import { MiniKChart } from "@/components/MiniKChart";
 import { FeaturedPrices } from "@/components/FeaturedPrices";
@@ -147,6 +148,7 @@ export function HeroSection() {
           </p>
           <div className="max-w-5xl mx-auto mb-10">
             <PriceTicker />
+            <StakingTicker />
           </div>
           
           <FeaturedPrices />
