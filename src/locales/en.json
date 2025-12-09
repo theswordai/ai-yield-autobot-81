@@ -1261,5 +1261,13 @@
         "point5": "Deeply involved in the company's stablecoin issuance, asset custody, and clearing business compliance implementation in global markets, ensuring business expansion meets local regulatory requirements."
       }
     }
+  },
+  "stakingTicker": {
+    "live": "Live Staking",
+    "ariaLabel": "Live staking activity",
+    "invested": "invested",
+    "lockedFor": "locked for",
+    "days": " days",
+    "expectedYield": "expected yield"
   }
 }

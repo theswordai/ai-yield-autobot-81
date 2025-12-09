@@ -1375,5 +1375,13 @@
         "point5": "深度参与公司稳定币发行、资产托管及清算业务在全球市场的合规落地，确保业务拓展符合当地监管要求。"
       }
     }
+  },
+  "stakingTicker": {
+    "live": "实时锁仓",
+    "ariaLabel": "实时锁仓动态",
+    "invested": "投资",
+    "lockedFor": "锁仓",
+    "days": "天",
+    "expectedYield": "预期收益"
   }
 }
