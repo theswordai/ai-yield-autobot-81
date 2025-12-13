@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   ReferenceLine,
   Label,
@@ -15,119 +14,30 @@ import { useI18n } from "@/hooks/useI18n";
 
 interface ChartDataPoint {
   date: string;
-  week: number;
+  day: number;
   usdOnline: number;
-  btc: number;
 }
 
-// Generate USD.online yield data: mean > 500%, min >= 200%, high volatility
-const generateUSDOnlineYield = (weeks: number): number[] => {
+// Generate USD.online daily yield data: mean > 500%, min >= 200%, high volatility
+const generateUSDOnlineDailyYield = (days: number): number[] => {
   const data: number[] = [];
   let baseValue = 520;
   
-  for (let i = 0; i < weeks; i++) {
-    // Create spiky, volatile behavior
-    const spike = Math.random() > 0.7 ? Math.random() * 300 + 100 : 0;
-    const dip = Math.random() > 0.8 ? -Math.random() * 150 : 0;
-    const noise = (Math.random() - 0.35) * 180;
-    const cyclical = Math.sin(i * 0.5) * 80;
+  for (let i = 0; i < days; i++) {
+    // Create spiky, volatile behavior on daily basis
+    const spike = Math.random() > 0.85 ? Math.random() * 350 + 80 : 0;
+    const dip = Math.random() > 0.88 ? -Math.random() * 180 : 0;
+    const noise = (Math.random() - 0.4) * 120;
+    const cyclical = Math.sin(i * 0.15) * 60;
     
     let value = baseValue + noise + spike + dip + cyclical;
     
     // Ensure minimum of 200%
     value = Math.max(200, value);
     
-    // Gradually trend upward
-    baseValue = baseValue * 0.92 + value * 0.08 + 2;
+    // Gradually trend upward with daily smoothing
+    baseValue = baseValue * 0.95 + value * 0.05 + 0.5;
     
-    data.push(Math.round(value));
-  }
-  
-  return data;
-};
-
-// BTC baseline: July 31, 2025 = $113,304 = 0%
-const BTC_BASE_PRICE = 113304;
-
-// Fetch real BTC data from CoinGecko with fixed baseline price
-const useBTCData = (startDate: Date, endDate: Date) => {
-  const [btcReturns, setBtcReturns] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBTCData = async () => {
-      try {
-        const fromTimestamp = Math.floor(startDate.getTime() / 1000);
-        const toTimestamp = Math.floor(endDate.getTime() / 1000);
-        
-        const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=${fromTimestamp}&to=${toTimestamp}`
-        );
-        
-        if (!response.ok) throw new Error("API request failed");
-        
-        const data = await response.json();
-        
-        if (!data.prices || data.prices.length === 0) {
-          throw new Error("No price data");
-        }
-        
-        const weeklyData: number[] = [];
-        const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-        let currentWeekStart = startDate.getTime();
-        
-        while (currentWeekStart < endDate.getTime()) {
-          // Find closest price to this week
-          const closest = data.prices.reduce((prev: number[], curr: number[]) => {
-            return Math.abs(curr[0] - currentWeekStart) < Math.abs(prev[0] - currentWeekStart) ? curr : prev;
-          });
-          
-          const price = closest[1];
-          const daysPassed = (closest[0] - startDate.getTime()) / (1000 * 60 * 60 * 24);
-          
-          // Calculate return relative to fixed baseline price $113,304
-          const returnPct = (price - BTC_BASE_PRICE) / BTC_BASE_PRICE;
-          
-          // Annualized return (first week is 0% baseline)
-          let annualizedReturn = 0;
-          if (daysPassed > 7) {
-            annualizedReturn = (Math.pow(1 + returnPct, 365 / daysPassed) - 1) * 100;
-          } else if (daysPassed > 0) {
-            annualizedReturn = returnPct * 365 / daysPassed * 100;
-          }
-          
-          weeklyData.push(Math.round(annualizedReturn));
-          currentWeekStart += msPerWeek;
-        }
-        
-        setBtcReturns(weeklyData);
-      } catch (error) {
-        console.warn("Failed to fetch BTC data, using simulated data:", error);
-        const weeks = Math.ceil((endDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
-        const simulated = generateSimulatedBTC(weeks);
-        setBtcReturns(simulated);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchBTCData();
-  }, [startDate, endDate]);
-
-  return { btcReturns, isLoading };
-};
-
-// Simulated BTC data as fallback
-const generateSimulatedBTC = (weeks: number): number[] => {
-  const data: number[] = [];
-  let baseValue = 50;
-  
-  for (let i = 0; i < weeks; i++) {
-    const noise = (Math.random() - 0.5) * 80;
-    const trend = Math.sin(i * 0.3) * 40;
-    let value = baseValue + noise + trend;
-    
-    baseValue = baseValue * 0.9 + value * 0.1;
     data.push(Math.round(value));
   }
   
@@ -136,8 +46,6 @@ const generateSimulatedBTC = (weeks: number): number[] => {
 
 // Custom tooltip component
 const CustomTooltip = ({ active, payload, label }: any) => {
-  const { t } = useI18n();
-  
   if (active && payload && payload.length) {
     return (
       <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
@@ -156,64 +64,47 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export function PerformanceChart() {
   const { t, language } = useI18n();
   
-  // Date range: July 31, 2025 (baseline 0%) to Dec 12, 2025
+  // Date range: July 31, 2025 to Dec 12, 2025
   const startDate = useMemo(() => new Date("2025-07-31"), []);
   const endDate = useMemo(() => new Date("2025-12-12"), []);
   
-  const weeks = useMemo(() => {
-    return Math.ceil((endDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+  const days = useMemo(() => {
+    return Math.ceil((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
   }, [startDate, endDate]);
   
-  const { btcReturns, isLoading } = useBTCData(startDate, endDate);
+  // Generate USD.online daily data
+  const usdOnlineData = useMemo(() => generateUSDOnlineDailyYield(days), [days]);
   
-  // Generate USD.online data (consistent with seed)
-  const usdOnlineData = useMemo(() => generateUSDOnlineYield(weeks), [weeks]);
-  
-  // Combine data into chart format
+  // Combine data into chart format (daily)
   const chartData: ChartDataPoint[] = useMemo(() => {
-    if (btcReturns.length === 0) return [];
-    
     const data: ChartDataPoint[] = [];
-    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    const msPerDay = 24 * 60 * 60 * 1000;
     
-    for (let i = 0; i < weeks; i++) {
-      const date = new Date(startDate.getTime() + i * msPerWeek);
-      const dateStr = language === 'zh' 
-        ? `${date.getMonth() + 1}/${date.getDate()}`
-        : `${date.getMonth() + 1}/${date.getDate()}`;
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate.getTime() + i * msPerDay);
+      const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
       
       data.push({
         date: dateStr,
-        week: i + 1,
+        day: i + 1,
         usdOnline: usdOnlineData[i] || 500,
-        btc: btcReturns[i] || 0,
       });
     }
     
     return data;
-  }, [usdOnlineData, btcReturns, weeks, startDate, language]);
+  }, [usdOnlineData, days, startDate]);
 
   // Annotation points for key events
   const annotations = [
-    { week: 3, label: "AI allocation shifts" },
-    { week: 9, label: "Strategy rotation" },
-    { week: 15, label: "MEV capture window" },
+    { day: 20, label: "AI allocation shifts" },
+    { day: 60, label: "Strategy rotation" },
+    { day: 100, label: "MEV capture window" },
   ];
-
-  if (isLoading) {
-    return (
-      <div className="h-[400px] md:h-[500px] flex items-center justify-center">
-        <div className="text-muted-foreground animate-pulse">
-          {t("strategy.loading")}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full">
       <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6 text-center">
-        USD.online Yield Rate vs BTC
+        USD.online {t("strategy.dailyYield")}
       </h2>
       
       <div className="h-[400px] md:h-[500px]">
@@ -227,8 +118,9 @@ export function PerformanceChart() {
             <XAxis 
               dataKey="date" 
               stroke="hsl(var(--muted-foreground))"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
               tickLine={{ stroke: "hsl(var(--border))" }}
+              interval={13}
             />
             
             <YAxis 
@@ -240,13 +132,6 @@ export function PerformanceChart() {
             />
             
             <Tooltip content={<CustomTooltip />} />
-            
-            <Legend 
-              wrapperStyle={{ paddingTop: "20px" }}
-              formatter={(value) => (
-                <span className="text-foreground">{value}</span>
-              )}
-            />
             
             {/* Reference line at 200% minimum */}
             <ReferenceLine 
@@ -263,26 +148,15 @@ export function PerformanceChart() {
               />
             </ReferenceLine>
             
-            {/* BTC line - thinner, more subtle */}
+            {/* USD.online line - linear type with dots for daily data */}
             <Line
-              type="monotone"
-              dataKey="btc"
-              name="BTC Annualized Return %"
-              stroke="hsl(210, 15%, 55%)"
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4, fill: "hsl(210, 15%, 55%)" }}
-            />
-            
-            {/* USD.online line - thicker, prominent gold/orange */}
-            <Line
-              type="monotone"
+              type="linear"
               dataKey="usdOnline"
               name="USD.online Annualized Yield %"
               stroke="hsl(38, 92%, 50%)"
-              strokeWidth={3}
-              dot={false}
-              activeDot={{ r: 6, fill: "hsl(38, 92%, 50%)" }}
+              strokeWidth={2}
+              dot={{ r: 2, fill: "hsl(38, 92%, 50%)" }}
+              activeDot={{ r: 5, fill: "hsl(38, 92%, 50%)" }}
             />
           </LineChart>
         </ResponsiveContainer>
