@@ -27,15 +27,7 @@ export default function Strategy() {
           </div>
 
           {/* Key Metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 text-center">
-              <div className="text-2xl md:text-3xl font-bold text-primary">500%+</div>
-              <div className="text-sm text-muted-foreground">{t("strategy.avgYield")}</div>
-            </div>
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 text-center">
-              <div className="text-2xl md:text-3xl font-bold text-green-500">200%</div>
-              <div className="text-sm text-muted-foreground">{t("strategy.minYield")}</div>
-            </div>
+          <div className="grid grid-cols-2 gap-4 mt-8 max-w-md mx-auto">
             <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 text-center">
               <div className="text-2xl md:text-3xl font-bold text-accent">24/7</div>
               <div className="text-sm text-muted-foreground">{t("strategy.aiExecution")}</div>

@@ -46,7 +46,10 @@ const generateUSDOnlineYield = (weeks: number): number[] => {
   return data;
 };
 
-// Fetch real BTC data from CoinGecko or use simulated data as fallback
+// BTC baseline: July 31, 2025 = $113,304 = 0%
+const BTC_BASE_PRICE = 113304;
+
+// Fetch real BTC data from CoinGecko with fixed baseline price
 const useBTCData = (startDate: Date, endDate: Date) => {
   const [btcReturns, setBtcReturns] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -69,10 +72,7 @@ const useBTCData = (startDate: Date, endDate: Date) => {
           throw new Error("No price data");
         }
         
-        const startPrice = data.prices[0][1];
         const weeklyData: number[] = [];
-        
-        // Sample weekly data points
         const msPerWeek = 7 * 24 * 60 * 60 * 1000;
         let currentWeekStart = startDate.getTime();
         
@@ -83,13 +83,18 @@ const useBTCData = (startDate: Date, endDate: Date) => {
           });
           
           const price = closest[1];
-          const daysPassed = (closest[0] - data.prices[0][0]) / (1000 * 60 * 60 * 24);
-          const returnPct = (price - startPrice) / startPrice;
+          const daysPassed = (closest[0] - startDate.getTime()) / (1000 * 60 * 60 * 24);
           
-          // Annualized return
-          const annualizedReturn = daysPassed > 7 
-            ? (Math.pow(1 + returnPct, 365 / daysPassed) - 1) * 100 
-            : returnPct * 365 / 7 * 100;
+          // Calculate return relative to fixed baseline price $113,304
+          const returnPct = (price - BTC_BASE_PRICE) / BTC_BASE_PRICE;
+          
+          // Annualized return (first week is 0% baseline)
+          let annualizedReturn = 0;
+          if (daysPassed > 7) {
+            annualizedReturn = (Math.pow(1 + returnPct, 365 / daysPassed) - 1) * 100;
+          } else if (daysPassed > 0) {
+            annualizedReturn = returnPct * 365 / daysPassed * 100;
+          }
           
           weeklyData.push(Math.round(annualizedReturn));
           currentWeekStart += msPerWeek;
@@ -98,7 +103,6 @@ const useBTCData = (startDate: Date, endDate: Date) => {
         setBtcReturns(weeklyData);
       } catch (error) {
         console.warn("Failed to fetch BTC data, using simulated data:", error);
-        // Fallback to simulated BTC data
         const weeks = Math.ceil((endDate.getTime() - startDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
         const simulated = generateSimulatedBTC(weeks);
         setBtcReturns(simulated);
@@ -152,8 +156,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export function PerformanceChart() {
   const { t, language } = useI18n();
   
-  // Date range: Aug 1, 2025 to Dec 12, 2025
-  const startDate = useMemo(() => new Date("2025-08-01"), []);
+  // Date range: July 31, 2025 (baseline 0%) to Dec 12, 2025
+  const startDate = useMemo(() => new Date("2025-07-31"), []);
   const endDate = useMemo(() => new Date("2025-12-12"), []);
   
   const weeks = useMemo(() => {
