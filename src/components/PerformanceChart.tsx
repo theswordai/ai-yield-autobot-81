@@ -18,16 +18,27 @@ interface ChartDataPoint {
   usdOnline: number;
 }
 
+// Seeded random number generator for consistent results
+const seededRandom = (seed: number): number => {
+  const x = Math.sin(seed * 9999) * 10000;
+  return x - Math.floor(x);
+};
+
 // Generate USD.online daily yield data: mean > 500%, min >= 200%, high volatility
 const generateUSDOnlineDailyYield = (days: number): number[] => {
   const data: number[] = [];
   let baseValue = 520;
+  const baseSeed = 12345; // Fixed seed for consistent curve
   
   for (let i = 0; i < days; i++) {
+    const rand1 = seededRandom(baseSeed + i * 3);
+    const rand2 = seededRandom(baseSeed + i * 3 + 1);
+    const rand3 = seededRandom(baseSeed + i * 3 + 2);
+    
     // Create spiky, volatile behavior on daily basis
-    const spike = Math.random() > 0.85 ? Math.random() * 350 + 80 : 0;
-    const dip = Math.random() > 0.88 ? -Math.random() * 180 : 0;
-    const noise = (Math.random() - 0.4) * 120;
+    const spike = rand1 > 0.85 ? rand2 * 350 + 80 : 0;
+    const dip = rand1 > 0.88 ? -rand3 * 180 : 0;
+    const noise = (rand2 - 0.4) * 120;
     const cyclical = Math.sin(i * 0.15) * 60;
     
     let value = baseValue + noise + spike + dip + cyclical;
@@ -128,7 +139,7 @@ export function PerformanceChart() {
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
               tickLine={{ stroke: "hsl(var(--border))" }}
               tickFormatter={(value) => `${value}%`}
-              domain={['auto', 'auto']}
+              domain={[0, 'auto']}
             />
             
             <Tooltip content={<CustomTooltip />} />
