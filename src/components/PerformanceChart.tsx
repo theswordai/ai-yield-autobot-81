@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
   Label,
+  ReferenceDot,
 } from "recharts";
 import { useI18n } from "@/hooks/useI18n";
 
@@ -19,15 +20,26 @@ interface ChartDataPoint {
 }
 
 // Generate USD.online daily yield data: mean > 500%, min >= 200%, high volatility
-const generateUSDOnlineDailyYield = (days: number): number[] => {
+// Uses a seed based on start date to ensure consistency
+const generateUSDOnlineDailyYield = (days: number, seed: number): number[] => {
   const data: number[] = [];
   let baseValue = 520;
   
+  // Simple seeded random for consistency
+  const seededRandom = (i: number) => {
+    const x = Math.sin(seed + i * 9999) * 10000;
+    return x - Math.floor(x);
+  };
+  
   for (let i = 0; i < days; i++) {
+    const rand1 = seededRandom(i);
+    const rand2 = seededRandom(i + 1000);
+    const rand3 = seededRandom(i + 2000);
+    
     // Create spiky, volatile behavior on daily basis
-    const spike = Math.random() > 0.85 ? Math.random() * 350 + 80 : 0;
-    const dip = Math.random() > 0.88 ? -Math.random() * 180 : 0;
-    const noise = (Math.random() - 0.4) * 120;
+    const spike = rand1 > 0.85 ? rand2 * 350 + 80 : 0;
+    const dip = rand1 > 0.88 ? -rand3 * 180 : 0;
+    const noise = (rand2 - 0.4) * 120;
     const cyclical = Math.sin(i * 0.15) * 60;
     
     let value = baseValue + noise + spike + dip + cyclical;
@@ -61,19 +73,40 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+// Blinking dot component for current date
+const BlinkingDot = () => (
+  <circle r={6} fill="hsl(38, 92%, 50%)" className="animate-pulse">
+    <animate
+      attributeName="r"
+      values="4;8;4"
+      dur="1.5s"
+      repeatCount="indefinite"
+    />
+    <animate
+      attributeName="opacity"
+      values="1;0.5;1"
+      dur="1.5s"
+      repeatCount="indefinite"
+    />
+  </circle>
+);
+
 export function PerformanceChart() {
-  const { t, language } = useI18n();
+  const { t } = useI18n();
   
-  // Date range: July 31, 2025 to Dec 12, 2025
+  // Date range: July 31, 2025 to current date (dynamic)
   const startDate = useMemo(() => new Date("2025-07-31"), []);
-  const endDate = useMemo(() => new Date("2025-12-12"), []);
+  const endDate = useMemo(() => new Date(), []); // Current date - updates automatically
   
   const days = useMemo(() => {
     return Math.ceil((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
   }, [startDate, endDate]);
   
+  // Seed based on start date for consistent data
+  const seed = useMemo(() => startDate.getTime(), [startDate]);
+  
   // Generate USD.online daily data
-  const usdOnlineData = useMemo(() => generateUSDOnlineDailyYield(days), [days]);
+  const usdOnlineData = useMemo(() => generateUSDOnlineDailyYield(days, seed), [days, seed]);
   
   // Combine data into chart format (daily)
   const chartData: ChartDataPoint[] = useMemo(() => {
@@ -94,17 +127,13 @@ export function PerformanceChart() {
     return data;
   }, [usdOnlineData, days, startDate]);
 
-  // Annotation points for key events
-  const annotations = [
-    { day: 20, label: "AI allocation shifts" },
-    { day: 60, label: "Strategy rotation" },
-    { day: 100, label: "MEV capture window" },
-  ];
+  // Get the last data point for the blinking dot
+  const lastDataPoint = chartData[chartData.length - 1];
 
   return (
     <div className="w-full">
       <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6 text-center">
-        USD.online {t("strategy.dailyYield")}
+        {t("strategy.title")} USD.online{t("strategy.annualizedYield")}
       </h2>
       
       <div className="h-[400px] md:h-[500px]">
@@ -158,21 +187,21 @@ export function PerformanceChart() {
               dot={false}
               activeDot={{ r: 5, fill: "hsl(38, 92%, 50%)" }}
             />
+            
+            {/* Blinking dot at current date */}
+            {lastDataPoint && (
+              <ReferenceDot
+                x={lastDataPoint.date}
+                y={lastDataPoint.usdOnline}
+                r={6}
+                fill="hsl(38, 92%, 50%)"
+                stroke="hsl(38, 92%, 60%)"
+                strokeWidth={2}
+                shape={<BlinkingDot />}
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* Annotation Labels */}
-      <div className="flex flex-wrap justify-center gap-4 mt-6">
-        {annotations.map((annotation, index) => (
-          <div 
-            key={index}
-            className="flex items-center gap-2 text-sm text-muted-foreground bg-card/50 px-3 py-1.5 rounded-full border border-border"
-          >
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            {annotation.label}
-          </div>
-        ))}
       </div>
     </div>
   );
