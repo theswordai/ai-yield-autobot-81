@@ -1,4 +1,14 @@
 {
+  "strategy": {
+    "title": "Live Performance",
+    "subtitle": "AI Quantitative Engine Real-time Results",
+    "avgYield": "Average APY",
+    "minYield": "Minimum Guaranteed",
+    "aiExecution": "AI Execution",
+    "weeksLive": "Weeks Live",
+    "loading": "Loading...",
+    "dailyYield": "Daily Annualized Yield"
+  },
   "newWhitepaper": {
     "usdOnline": {
       "title": "🚀 USD.online Whitepaper",
