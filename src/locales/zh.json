@@ -583,12 +583,22 @@
   "nav": {
     "home": "启航",
     "invest": "善举",
+    "strategy": "策略实盘",
     "fundManagement": "资金管理",
     "bluePoints": "USDV",
     "rewards": "奖励系统",
     "user": "尊享",
     "whitepaper": "和谐财富引擎",
     "team": "团队介绍"
+  },
+  "strategy": {
+    "title": "策略实盘",
+    "subtitle": "USD.online AI驱动年化收益 vs BTC 市场表现",
+    "loading": "加载数据中...",
+    "avgYield": "平均年化收益",
+    "minYield": "最低年化保障",
+    "aiExecution": "AI自动执行",
+    "weeksLive": "周运行时间"
   },
   "meta": {
     "title": "USD.online | 下一代AI驱动智能资产平台",
