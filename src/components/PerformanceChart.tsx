@@ -148,14 +148,14 @@ export function PerformanceChart() {
               />
             </ReferenceLine>
             
-            {/* USD.online line - linear type with dots for daily data */}
+            {/* USD.online line - linear type for daily data */}
             <Line
               type="linear"
               dataKey="usdOnline"
               name="USD.online Annualized Yield %"
               stroke="hsl(38, 92%, 50%)"
               strokeWidth={2}
-              dot={{ r: 2, fill: "hsl(38, 92%, 50%)" }}
+              dot={false}
               activeDot={{ r: 5, fill: "hsl(38, 92%, 50%)" }}
             />
           </LineChart>
