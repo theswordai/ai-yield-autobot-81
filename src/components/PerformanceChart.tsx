@@ -7,8 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine,
-  Label,
 } from "recharts";
 import { useI18n } from "@/hooks/useI18n";
 
@@ -105,17 +103,10 @@ export function PerformanceChart() {
     return data;
   }, [usdOnlineData, days, startDate]);
 
-  // Annotation points for key events
-  const annotations = [
-    { day: 20, label: "AI allocation shifts" },
-    { day: 60, label: "Strategy rotation" },
-    { day: 100, label: "MEV capture window" },
-  ];
-
   return (
     <div className="w-full">
       <h2 className="text-xl md:text-2xl font-bold text-foreground mb-6 text-center">
-        USD.online {t("strategy.dailyYield")}
+        USD.online {language === 'zh' ? '年化收益' : 'Annualized Yield'}
       </h2>
       
       <div className="h-[400px] md:h-[500px]">
@@ -144,21 +135,6 @@ export function PerformanceChart() {
             
             <Tooltip content={<CustomTooltip />} />
             
-            {/* Reference line at 200% minimum */}
-            <ReferenceLine 
-              y={200} 
-              stroke="hsl(var(--destructive))" 
-              strokeDasharray="5 5"
-              opacity={0.5}
-            >
-              <Label 
-                value="Min 200%" 
-                position="right" 
-                fill="hsl(var(--muted-foreground))"
-                fontSize={10}
-              />
-            </ReferenceLine>
-            
             {/* USD.online line - linear type for daily data */}
             <Line
               type="linear"
@@ -173,18 +149,6 @@ export function PerformanceChart() {
         </ResponsiveContainer>
       </div>
 
-      {/* Annotation Labels */}
-      <div className="flex flex-wrap justify-center gap-4 mt-6">
-        {annotations.map((annotation, index) => (
-          <div 
-            key={index}
-            className="flex items-center gap-2 text-sm text-muted-foreground bg-card/50 px-3 py-1.5 rounded-full border border-border"
-          >
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            {annotation.label}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
