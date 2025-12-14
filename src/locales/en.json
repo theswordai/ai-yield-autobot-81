@@ -1,14 +1,4 @@
 {
-  "strategy": {
-    "title": "Live Performance",
-    "subtitle": "AI Quantitative Engine Real-time Results",
-    "avgYield": "Average APY",
-    "minYield": "Minimum Guaranteed",
-    "aiExecution": "AI Execution",
-    "weeksLive": "Weeks Live",
-    "loading": "Loading...",
-    "dailyYield": "Daily Annualized Yield"
-  },
   "newWhitepaper": {
     "usdOnline": {
       "title": "🚀 USD.online Whitepaper",
@@ -325,22 +315,12 @@
   "nav": {
     "home": "Launch",
     "invest": "Invest",
-    "strategy": "Live Performance",
     "fundManagement": "Fund Management",
     "bluePoints": "USDV",
     "rewards": "Rewards",
     "user": "Premium",
     "whitepaper": "Harmony Wealth Engine",
     "team": "Team"
-  },
-  "strategy": {
-    "title": "Live Performance",
-    "subtitle": "USD.online AI-Driven Annualized Yield vs BTC Market Performance",
-    "loading": "Loading data...",
-    "avgYield": "Average Annual Yield",
-    "minYield": "Minimum Yield Floor",
-    "aiExecution": "AI Auto Execution",
-    "weeksLive": "Weeks Running"
   },
   "meta": {
     "title": "USD.online | Next-Gen AI-Driven Smart Asset Platform",
@@ -1281,13 +1261,5 @@
         "point5": "Deeply involved in the company's stablecoin issuance, asset custody, and clearing business compliance implementation in global markets, ensuring business expansion meets local regulatory requirements."
       }
     }
-  },
-  "stakingTicker": {
-    "live": "Live Staking",
-    "ariaLabel": "Live staking activity",
-    "invested": "invested",
-    "lockedFor": "locked for",
-    "days": " days",
-    "expectedYield": "expected yield"
   }
 }
