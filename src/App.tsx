@@ -15,8 +15,8 @@ import NotFound from "./pages/NotFound";
 import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
-
 import USDV from "./pages/USDV";
+import FAQCustomerService from "./components/FAQCustomerService";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +27,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+        <FAQCustomerService />
         <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
