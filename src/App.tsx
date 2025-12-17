@@ -17,7 +17,6 @@ import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 
 import USDV from "./pages/USDV";
-import AICustomerService from "./components/AICustomerService";
 
 const queryClient = new QueryClient();
 
@@ -28,7 +27,6 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-        <AICustomerService />
         <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
