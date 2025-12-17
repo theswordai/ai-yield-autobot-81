@@ -27,8 +27,8 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <AICustomerService />
         <BrowserRouter>
+        <AICustomerService />
         <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
