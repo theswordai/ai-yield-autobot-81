@@ -20,7 +20,7 @@ const MobileBottomNav = () => {
       label: "善举", 
       labelEn: "Charity",
       icon: Heart, 
-      path: `/${language}/referral` 
+      path: `/${language}/invest` 
     },
     { 
       id: "usdv", 
@@ -34,7 +34,7 @@ const MobileBottomNav = () => {
       label: "尊享", 
       labelEn: "VIP",
       icon: Crown, 
-      path: `/${language}/invest` 
+      path: `/${language}/referral`
     },
     { 
       id: "whitepaper", 
