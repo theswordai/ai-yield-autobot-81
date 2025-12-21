@@ -56,37 +56,37 @@ export function NewsAnnouncement() {
         return t("news.general");
     }
   };
-  return <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 max-w-5xl mx-auto mb-8">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-          <Megaphone className="w-4 h-4 text-white" />
+  return <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-3 md:p-6 max-w-5xl mx-auto mb-4 md:mb-8">
+      <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
+        <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+          <Megaphone className="w-3 h-3 md:w-4 md:h-4 text-white" />
         </div>
-        <h3 className="text-xl font-semibold">NEWS</h3>
+        <h3 className="text-base md:text-xl font-semibold">NEWS</h3>
       </div>
       
-      <div className="space-y-3">
+      <div className="space-y-2 md:space-y-3">
         {announcements.map((announcement) => (
-          <div key={announcement.id} className="border border-border/20 rounded-lg p-4 bg-background/30 hover:bg-background/50 transition-colors">
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <div className="flex items-center gap-2">
-                <Badge variant={getTypeColor(announcement.type, announcement.urgent)}>
+          <div key={announcement.id} className="border border-border/20 rounded-lg p-2 md:p-4 bg-background/30 hover:bg-background/50 transition-colors">
+            <div className="flex items-start justify-between gap-2 md:gap-3 mb-1 md:mb-2">
+              <div className="flex items-center gap-1 md:gap-2 flex-wrap">
+                <Badge variant={getTypeColor(announcement.type, announcement.urgent)} className="text-xs">
                   {getTypeText(announcement.type)}
                 </Badge>
                 {announcement.urgent && (
-                  <Badge variant="destructive" className="animate-pulse">
+                  <Badge variant="destructive" className="animate-pulse text-xs">
                     {t("news.urgent")}
                   </Badge>
                 )}
               </div>
-              <div className="flex items-center gap-1 text-sm text-muted-foreground whitespace-nowrap">
+              <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
                 <Clock className="w-3 h-3" />
                 {announcement.date}
               </div>
             </div>
-            <h4 className="font-medium mb-2 text-foreground">
+            <h4 className="font-medium mb-1 md:mb-2 text-foreground text-sm md:text-base">
               {language === 'en' ? announcement.titleEn : announcement.title}
             </h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs md:text-sm text-muted-foreground">
               {language === 'en' ? announcement.contentEn : announcement.content}
             </p>
           </div>
