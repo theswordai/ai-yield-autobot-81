@@ -201,16 +201,16 @@ export function PriceTicker() {
   const doubled = useMemo(() => (items ? [...items, ...items] : []), [items]);
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-border bg-card/50 backdrop-blur animate-fade-in">
+    <div className="relative overflow-hidden rounded-lg md:rounded-xl border border-border bg-card/50 backdrop-blur animate-fade-in">
       <style>{`
         @keyframes ticker-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
       `}</style>
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-accent pulse" aria-hidden />
-        <span className="text-xs text-muted-foreground">Live</span>
+      <div className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 flex items-center gap-1 md:gap-2">
+        <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-accent pulse" aria-hidden />
+        <span className="text-[10px] md:text-xs text-muted-foreground">Live</span>
       </div>
       <div
-        className="flex gap-8 whitespace-nowrap py-3 pl-16"
+        className="flex gap-4 md:gap-8 whitespace-nowrap py-2 md:py-3 pl-12 md:pl-16"
         style={{ width: "200%", animation: "ticker-marquee 28s linear infinite" }}
         role="list"
         aria-label="实时行情"
@@ -218,17 +218,17 @@ export function PriceTicker() {
         {doubled.map((item, idx) => {
           const positive = item.change.startsWith("+");
           return (
-            <div key={idx} className="flex items-center gap-3 px-3 hover-scale" role="listitem">
-              <span className="text-xs text-muted-foreground font-mono">{item.symbol}</span>
-              <span className="text-sm font-semibold">${item.price}</span>
-              <span className={`text-xs font-medium ${positive ? "text-accent" : "text-primary"}`}>
+            <div key={idx} className="flex items-center gap-1.5 md:gap-3 px-1.5 md:px-3 hover-scale" role="listitem">
+              <span className="text-[10px] md:text-xs text-muted-foreground font-mono">{item.symbol}</span>
+              <span className="text-xs md:text-sm font-semibold">${item.price}</span>
+              <span className={`text-[10px] md:text-xs font-medium ${positive ? "text-accent" : "text-primary"}`}>
                 {item.change}
               </span>
             </div>
           );
         })}
         {!items && (
-          <div className="text-xs text-muted-foreground px-3">加载实时行情…</div>
+          <div className="text-[10px] md:text-xs text-muted-foreground px-2 md:px-3">加载实时行情…</div>
         )}
       </div>
     </div>
