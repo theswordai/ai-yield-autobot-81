@@ -17,6 +17,7 @@ import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
 import FAQCustomerService from "./components/FAQCustomerService";
+import MobileBottomNav from "./components/MobileBottomNav";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
         <FAQCustomerService />
+        <MobileBottomNav />
         <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
