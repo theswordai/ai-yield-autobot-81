@@ -235,25 +235,25 @@ export function FeaturedPrices() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mb-4 md:mb-8">
-      <div className="grid grid-cols-2 gap-2 md:gap-6 mb-2 md:mb-4">
+    <div className="max-w-5xl mx-auto mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
         {/* USDV Card */}
-        <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-3 md:p-6 hover:shadow-lg transition-shadow">
-          <div className="flex items-start justify-between mb-2 md:mb-4">
+        <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
-              <h3 className="text-xs md:text-sm text-muted-foreground font-medium mb-1">USDV Token</h3>
-              <div className="flex items-baseline gap-1 md:gap-2 flex-wrap">
-                <span className="text-xl md:text-3xl font-bold">
+              <h3 className="text-sm text-muted-foreground font-medium mb-1">USDV Token</h3>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">
                   ${usdvData?.price || "0.0100"}
                 </span>
                 {usdvData && (
-                  <div className={`flex items-center gap-1 text-xs md:text-sm font-medium ${
+                  <div className={`flex items-center gap-1 text-sm font-medium ${
                     usdvData.isPositive ? "text-accent" : "text-primary"
                   }`}>
                     {usdvData.isPositive ? (
-                      <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
+                      <TrendingUp className="w-4 h-4" />
                     ) : (
-                      <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />
+                      <TrendingDown className="w-4 h-4" />
                     )}
                     <span>{usdvData.isPositive ? "+" : ""}{usdvData.change24h}%</span>
                   </div>
@@ -261,9 +261,9 @@ export function FeaturedPrices() {
               </div>
               
               {account && (
-                <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-border">
+                <div className="mt-4 pt-4 border-t border-border">
                   <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
-                  <div className="text-sm md:text-lg font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-foreground">
                     {formatBalance(usdvBalance)} USDV
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
@@ -273,28 +273,28 @@ export function FeaturedPrices() {
               )}
             </div>
           </div>
-          <div className="h-16 md:h-24">
+          <div className="h-24">
             <MiniKChart color="hsl(var(--primary))" data={usdvPriceHistory} />
           </div>
         </Card>
 
         {/* BTC Card */}
-        <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-3 md:p-6 hover:shadow-lg transition-shadow">
-          <div className="flex items-start justify-between mb-2 md:mb-4">
+        <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-xs md:text-sm text-muted-foreground font-medium mb-1">Bitcoin</h3>
-              <div className="flex items-baseline gap-1 md:gap-2 flex-wrap">
-                <span className="text-xl md:text-3xl font-bold">
+              <h3 className="text-sm text-muted-foreground font-medium mb-1">Bitcoin</h3>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold">
                   ${btcData?.price || "--"}
                 </span>
                 {btcData && (
-                  <div className={`flex items-center gap-1 text-xs md:text-sm font-medium ${
+                  <div className={`flex items-center gap-1 text-sm font-medium ${
                     btcData.isPositive ? "text-accent" : "text-primary"
                   }`}>
                     {btcData.isPositive ? (
-                      <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
+                      <TrendingUp className="w-4 h-4" />
                     ) : (
-                      <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />
+                      <TrendingDown className="w-4 h-4" />
                     )}
                     <span>{btcData.isPositive ? "+" : ""}{btcData.change24h}%</span>
                   </div>
@@ -302,7 +302,7 @@ export function FeaturedPrices() {
               </div>
             </div>
           </div>
-          <div className="h-16 md:h-24">
+          <div className="h-24">
             <MiniKChart color="hsl(var(--accent))" data={btcPriceHistory} />
           </div>
         </Card>

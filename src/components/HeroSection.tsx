@@ -132,20 +132,20 @@ export function HeroSection() {
       
       
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-2 md:px-4 py-8 md:py-20">
-        <div className="text-center mb-6 md:mb-16">
+      <div className="relative z-10 container mx-auto px-4 py-20">
+        <div className="text-center mb-16">
 
-          <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent leading-tight">
             {t("hero.title")}
           </h1>
           
-          <p className="text-base md:text-2xl text-muted-foreground mb-2 md:mb-4 max-w-4xl mx-auto animate-fade-in">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-4xl mx-auto animate-fade-in">
             {t("hero.subtitle")}
           </p>
-          <p className="text-sm md:text-lg text-muted-foreground mb-3 md:mb-6 max-w-4xl mx-auto animate-fade-in">
+          <p className="text-lg text-muted-foreground mb-6 max-w-4xl mx-auto animate-fade-in">
             {t("hero.description")}
           </p>
-          <div className="max-w-5xl mx-auto mb-4 md:mb-10">
+          <div className="max-w-5xl mx-auto mb-10">
             <PriceTicker />
           </div>
           
@@ -154,7 +154,7 @@ export function HeroSection() {
           <NewsAnnouncement />
 
           {/* Strategy Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-12 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
             {strategies.map((strategy, index) => <div key={index} className="group">
                 
               </div>)}
@@ -806,28 +806,28 @@ export function HeroSection() {
           </div>
 
           {/* Social Media & Customer Service */}
-          <div className="flex justify-center gap-6 md:gap-12 mb-16 md:mb-0">
+          <div className="flex justify-center gap-12">
             <div className="text-center">
-              <span className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3 block">{t("hero.followUs")}</span>
+              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.followUs")}</span>
               <div className="flex gap-4">
-                <a href="https://t.me/OfficialUSDONLINE" target="_blank" rel="noopener noreferrer" className="w-10 h-10 md:w-12 md:h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
-                  <Send className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground group-hover:text-accent transition-colors" />
+                <a href="https://t.me/OfficialUSDONLINE" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
+                  <Send className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
                 </a>
               </div>
             </div>
             
             <div className="text-center">
-              <span className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3 block">{t("hero.customerService")}</span>
+              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.customerService")}</span>
               <div className="flex justify-center gap-4">
                 <button 
-                  className="group flex flex-col items-center gap-2 p-1 md:p-2 hover:bg-card/50 rounded-lg transition-all duration-300" 
+                  className="group flex flex-col items-center gap-2 p-2 hover:bg-card/50 rounded-lg transition-all duration-300" 
                   title={t("hero.contactSupport")}
                   onClick={() => window.open('https://t.me/usdvservice', '_blank')}
                 >
-                  <Avatar className="w-7 h-7 md:w-8 md:h-8 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
+                  <Avatar className="w-8 h-8 border-2 border-border/50 group-hover:border-primary/50 transition-all duration-300">
                     <AvatarImage src="/lovable-uploads/bf7773a4-a71f-4db0-b011-a29216ca2485.png" alt="Telegram Customer Service" />
                     <AvatarFallback className="bg-gradient-primary">
-                      <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-primary-foreground" />
+                      <MessageCircle className="w-5 h-5 text-primary-foreground" />
                     </AvatarFallback>
                   </Avatar>
                 </button>
