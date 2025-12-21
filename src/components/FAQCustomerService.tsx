@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { MessageCircleQuestion, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -20,6 +21,14 @@ import { faqCategories, faqData, getQuestionsByCategory, FAQItem } from '@/data/
 const FAQCustomerService: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const location = useLocation();
+
+  // Only show on home page (启航)
+  const isHomePage = location.pathname === '/' || 
+    location.pathname === '/zh' || 
+    location.pathname === '/en' ||
+    location.pathname === '/zh/' ||
+    location.pathname === '/en/';
 
   const displayedQuestions: FAQItem[] = 
     selectedCategory === 'all' 
@@ -31,20 +40,24 @@ const FAQCustomerService: React.FC = () => {
     return category ? `${category.icon} ${category.name}` : '';
   };
 
+  if (!isHomePage) {
+    return null;
+  }
+
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - adjusted for mobile bottom nav */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 ${isOpen ? 'hidden' : ''}`}
+        className={`fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 ${isOpen ? 'hidden' : ''}`}
         aria-label="打开常见问题"
       >
-        <MessageCircleQuestion className="w-6 h-6" />
+        <MessageCircleQuestion className="w-5 h-5 md:w-6 md:h-6" />
       </button>
 
-      {/* FAQ Panel */}
+      {/* FAQ Panel - adjusted for mobile */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-48px)] h-[600px] max-h-[calc(100vh-100px)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
+        <div className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 w-[calc(100vw-32px)] md:w-[400px] max-w-[400px] h-[calc(100vh-180px)] md:h-[600px] max-h-[600px] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-scale-in">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/50">
             <div className="flex items-center gap-2">
