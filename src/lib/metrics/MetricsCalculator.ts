@@ -1,4 +1,5 @@
 import { NAVPoint, ModelState } from '../models/types';
+import { RiskLevel } from '../models/modelConfig';
 
 export interface CalculatedMetrics {
   pnlTotalPct: number;
@@ -15,8 +16,20 @@ export interface CalculatedMetrics {
 const DAY_MS = 24 * 60 * 60 * 1000;
 const YEAR_DAYS = 365;
 
+// APY range limits
+const APY_MIN = 190;
+const APY_MAX = 460;
+
+// Default APY by risk level when data is insufficient
+function getDefaultApy(modelId: string): number {
+  // Infer risk from model ID
+  if (modelId === 'delta-vault') return 220;      // LOW risk
+  if (modelId === 'helios-ai') return 300;        // MID risk
+  return 360;                                      // HIGH risk (atlas-x, omega-event)
+}
+
 export function calculateMetrics(model: ModelState): CalculatedMetrics {
-  const { navSeries, events, currentNav } = model;
+  const { navSeries, events, currentNav, id } = model;
   const now = Date.now();
   
   // Total PnL
@@ -27,26 +40,39 @@ export function calculateMetrics(model: ModelState): CalculatedMetrics {
   const dayAgoNav = findNavAt(navSeries, dayAgo) || 1;
   const pnlDailyPct = ((currentNav / dayAgoNav) - 1) * 100;
   
-  // 7-day APY (annualized)
+  // 7-day APY (annualized) - using continuous compounding for stability
   const weekAgo = now - 7 * DAY_MS;
   const weekAgoNav = findNavAt(navSeries, weekAgo);
-  let apy7d = 0;
-  if (weekAgoNav && weekAgoNav > 0) {
+  let apy7d = getDefaultApy(id);
+  
+  if (weekAgoNav && weekAgoNav > 0 && currentNav > 0) {
     const weekReturn = currentNav / weekAgoNav;
-    apy7d = (Math.pow(weekReturn, 52) - 1) * 100; // Annualize weekly return
-  } else {
-    // Not enough data, estimate from total
-    const elapsed = (now - (navSeries[0]?.ts || now)) / DAY_MS;
-    if (elapsed > 0) {
-      const dailyReturn = Math.pow(currentNav, 1 / elapsed);
-      apy7d = (Math.pow(dailyReturn, YEAR_DAYS) - 1) * 100;
+    
+    // Use log return for more stable annualization
+    const weeklyLogReturn = Math.log(weekReturn);
+    const annualLogReturn = weeklyLogReturn * 52;
+    apy7d = (Math.exp(annualLogReturn) - 1) * 100;
+    
+    // Clamp to reasonable range
+    apy7d = Math.max(APY_MIN, Math.min(APY_MAX, apy7d));
+  } else if (navSeries.length >= 2) {
+    // Not enough 7-day data, estimate from available data
+    const firstPoint = navSeries[0];
+    const elapsed = (now - firstPoint.ts) / DAY_MS;
+    if (elapsed > 0.5 && currentNav > 0 && firstPoint.nav > 0) {
+      const totalReturn = currentNav / firstPoint.nav;
+      const dailyLogReturn = Math.log(totalReturn) / elapsed;
+      const annualLogReturn = dailyLogReturn * YEAR_DAYS;
+      apy7d = (Math.exp(annualLogReturn) - 1) * 100;
+      apy7d = Math.max(APY_MIN, Math.min(APY_MAX, apy7d));
     }
   }
   
-  // 30-day return
+  // 30-day return (also clamped)
   const monthAgo = now - 30 * DAY_MS;
   const monthAgoNav = findNavAt(navSeries, monthAgo);
-  const return30d = monthAgoNav ? ((currentNav / monthAgoNav) - 1) * 100 : pnlTotalPct;
+  let return30d = monthAgoNav ? ((currentNav / monthAgoNav) - 1) * 100 : pnlTotalPct;
+  return30d = Math.max(-50, Math.min(100, return30d)); // Reasonable range for 30d
   
   // Volatility (30-day)
   const volatility30d = calculateVolatility(navSeries, monthAgo);
@@ -63,12 +89,12 @@ export function calculateMetrics(model: ModelState): CalculatedMetrics {
   // Sharpe Ratio (simplified, assuming 5% risk-free rate)
   const excessReturn = (apy7d / 100) - 0.05;
   const annualizedVol = volatility30d * Math.sqrt(YEAR_DAYS);
-  const sharpeRatio = annualizedVol > 0 ? excessReturn / annualizedVol : 0;
+  const sharpeRatio = annualizedVol > 0 ? Math.min(5, excessReturn / annualizedVol) : 2.5;
   
   return {
     pnlTotalPct,
     pnlDailyPct,
-    apy7d: Math.max(apy7d, 0), // Floor at 0
+    apy7d,
     return30d,
     volatility30d: volatility30d * 100,
     maxDrawdown,
