@@ -123,6 +123,23 @@ export class ModelSimulator {
         // Validate data is recent (within 7 days)
         const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
         if (parsed.lastGlobalUpdate > weekAgo) {
+          // Validate each model's NAV is reasonable
+          let hasAbnormalData = false;
+          for (const modelId of Object.keys(parsed.models)) {
+            const model = parsed.models[modelId];
+            // Check if NAV is in reasonable range (0.5 to 3.0)
+            if (model.currentNav < 0.5 || model.currentNav > 3.0) {
+              hasAbnormalData = true;
+              break;
+            }
+          }
+          
+          if (hasAbnormalData) {
+            console.log('[ModelSimulator] Abnormal data detected, resetting...');
+            localStorage.removeItem(STORAGE_KEY);
+            return null;
+          }
+          
           return parsed;
         }
       }
@@ -182,7 +199,6 @@ export class ModelSimulator {
   private tick(): void {
     const now = Date.now();
     const marketReturn = this.getMarketReturn();
-    const marketVol = this.getMarketVolatility();
 
     MODEL_CONFIGS.forEach(config => {
       const model = this.state.models[config.id];
@@ -193,23 +209,27 @@ export class ModelSimulator {
       
       // Calculate return components
       const drift = config.baseDrift * dt;
-      const marketComponent = config.beta * marketReturn * 0.5; // Dampen market influence
+      const marketComponent = config.beta * marketReturn * 0.3; // Dampen market influence more
       const noise = gaussianRandom() * config.volatility * Math.sqrt(dt);
       const meanRevComponent = config.meanReversion * (1.0 - model.currentNav) * dt;
       
-      // Jump component
+      // Jump component (reduced frequency and magnitude)
       let jump = 0;
-      if (Math.random() < config.jumpProb * dt * 100) {
-        jump = (Math.random() > 0.4 ? 1 : -1) * config.jumpSize * (0.5 + Math.random());
+      if (Math.random() < config.jumpProb * dt * 50) {
+        jump = (Math.random() > 0.35 ? 1 : -1) * config.jumpSize * (0.3 + Math.random() * 0.4);
       }
       
-      // Total return (biased positive for >280% APY)
-      const totalReturn = drift + marketComponent + noise + meanRevComponent + jump;
+      // Total return with smoothing
+      let totalReturn = drift + marketComponent + noise + meanRevComponent + jump;
       
-      // Update NAV
+      // Limit maximum change per tick to ±1.5%
+      const maxTickChange = 0.015;
+      totalReturn = Math.max(-maxTickChange, Math.min(maxTickChange, totalReturn));
+      
+      // Update NAV with tighter bounds
       let newNav = model.currentNav * (1 + totalReturn);
-      newNav = Math.max(newNav, 0.3); // Floor
-      newNav = Math.min(newNav, 10); // Ceiling
+      newNav = Math.max(newNav, 0.7); // Tighter floor
+      newNav = Math.min(newNav, 2.5); // Tighter ceiling
       
       model.navSeries.push({ ts: now, nav: newNav });
       model.currentNav = newNav;
