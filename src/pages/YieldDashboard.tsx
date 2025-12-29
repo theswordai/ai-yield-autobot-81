@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navbar } from '@/components/Navbar';
 import { usePriceStream } from '@/hooks/usePriceStream';
 import { useModelSimulator } from '@/hooks/useModelSimulator';
@@ -6,6 +7,7 @@ import { MODEL_CONFIGS, getModelConfig } from '@/lib/models';
 import { DataSourceBadge, MarketTicker, ModelLeaderboard, ModelDetail } from '@/components/dashboard';
 
 export default function YieldDashboard() {
+  const { t } = useTranslation();
   const priceState = usePriceStream();
   const { models, resetModel } = useModelSimulator(priceState.ticks);
   const [selectedModelId, setSelectedModelId] = useState<string>(MODEL_CONFIGS[0].id);
@@ -21,8 +23,8 @@ export default function YieldDashboard() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Yield Dashboard</h1>
-            <p className="text-sm text-muted-foreground mt-1">AI-powered yield optimization models</p>
+            <h1 className="text-3xl font-bold text-foreground">{t('dashboard.title')}</h1>
+            <p className="text-sm text-muted-foreground mt-1">{t('dashboard.subtitle')}</p>
           </div>
           <DataSourceBadge 
             connectionStatus={priceState.connectionStatus} 
@@ -39,7 +41,7 @@ export default function YieldDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Model Leaderboard */}
           <div className="lg:col-span-1">
-            <h2 className="text-lg font-semibold text-foreground mb-4">Model Leaderboard</h2>
+            <h2 className="text-lg font-semibold text-foreground mb-4">{t('dashboard.modelLeaderboard')}</h2>
             <ModelLeaderboard
               modelsState={{ models, lastGlobalUpdate: Date.now() }}
               selectedModelId={selectedModelId}

@@ -1261,5 +1261,41 @@
         "point5": "Deeply involved in the company's stablecoin issuance, asset custody, and clearing business compliance implementation in global markets, ensuring business expansion meets local regulatory requirements."
       }
     }
+  },
+  "dashboard": {
+    "title": "Yield Dashboard",
+    "subtitle": "AI-powered yield optimization models",
+    "modelLeaderboard": "Model Leaderboard",
+    "liveViaBinance": "Live via Binance WS",
+    "liveViaREST": "Live via REST",
+    "connecting": "Connecting...",
+    "disconnected": "Disconnected",
+    "reset": "Reset",
+    "navPerformance": "NAV Performance",
+    "recentEvents": "Recent Events",
+    "noEvents": "No recent events",
+    "sortBy": "Sort by",
+    "apy": "APY",
+    "nav": "NAV",
+    "risk": "Risk",
+    "metrics": {
+      "apy7d": "APY (7D)",
+      "return30d": "Return 30D",
+      "maxDrawdown": "Max Drawdown",
+      "volatility30d": "Volatility 30D",
+      "winRate": "Win Rate",
+      "trades": "Trades",
+      "sharpeRatio": "Sharpe Ratio"
+    },
+    "status": {
+      "ACTIVE": "ACTIVE",
+      "SCALING": "SCALING",
+      "COOLING": "COOLING"
+    },
+    "riskLevel": {
+      "LOW": "LOW",
+      "MID": "MID",
+      "HIGH": "HIGH"
+    }
   }
 }
