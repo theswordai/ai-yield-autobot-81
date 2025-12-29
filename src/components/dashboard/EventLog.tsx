@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ModelEvent } from '@/lib/models/types';
 import { Activity, ArrowRightLeft, LogIn, LogOut, Settings } from 'lucide-react';
 
@@ -20,13 +21,14 @@ const EVENT_COLORS = {
 };
 
 export function EventLog({ events }: EventLogProps) {
+  const { t, i18n } = useTranslation();
   const sortedEvents = [...events].sort((a, b) => b.ts - a.ts).slice(0, 10);
 
   if (sortedEvents.length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
         <Activity className="w-4 h-4 mr-2" />
-        No recent events
+        {t('dashboard.noEvents')}
       </div>
     );
   }
@@ -47,7 +49,7 @@ export function EventLog({ events }: EventLogProps) {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-foreground truncate">{event.message}</p>
               <p className="text-xs text-muted-foreground">
-                {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {time.toLocaleTimeString(i18n.language === 'zh' ? 'zh-CN' : 'en-US', { hour: '2-digit', minute: '2-digit' })}
               </p>
             </div>
           </div>

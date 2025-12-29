@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ModelState } from '@/lib/models/types';
 import { ModelConfig } from '@/lib/models';
 import { calculateMetrics } from '@/lib/metrics';
@@ -17,6 +18,7 @@ interface ModelDetailProps {
 type TimeRange = '1D' | '7D' | '30D' | 'ALL';
 
 export function ModelDetail({ config, model, onReset }: ModelDetailProps) {
+  const { t } = useTranslation();
   const [timeRange, setTimeRange] = useState<TimeRange>('7D');
   const metrics = calculateMetrics(model);
 
@@ -35,35 +37,35 @@ export function ModelDetail({ config, model, onReset }: ModelDetailProps) {
           className="text-xs"
         >
           <RefreshCw className="w-3 h-3 mr-1" />
-          Reset
+          {t('dashboard.reset')}
         </Button>
       </div>
 
       {/* Main Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <MetricCard
-          label="APY (7D)"
+          label={t('dashboard.metrics.apy7d')}
           value={`${metrics.apy7d.toFixed(0)}%`}
           icon={Percent}
           trend={metrics.apy7d > 0 ? 'up' : 'neutral'}
           size="md"
         />
         <MetricCard
-          label="Return 30D"
+          label={t('dashboard.metrics.return30d')}
           value={`${metrics.return30d >= 0 ? '+' : ''}${metrics.return30d.toFixed(1)}%`}
           icon={TrendingUp}
           trend={metrics.return30d >= 0 ? 'up' : 'down'}
           size="md"
         />
         <MetricCard
-          label="Max Drawdown"
+          label={t('dashboard.metrics.maxDrawdown')}
           value={`-${metrics.maxDrawdown.toFixed(1)}%`}
           icon={TrendingDown}
           trend="down"
           size="md"
         />
         <MetricCard
-          label="Volatility 30D"
+          label={t('dashboard.metrics.volatility30d')}
           value={`${metrics.volatility30d.toFixed(1)}%`}
           icon={BarChart3}
           trend="neutral"
@@ -74,17 +76,17 @@ export function ModelDetail({ config, model, onReset }: ModelDetailProps) {
       {/* Secondary Metrics */}
       <div className="grid grid-cols-3 gap-3">
         <MetricCard
-          label="Win Rate"
+          label={t('dashboard.metrics.winRate')}
           value={`${metrics.winRate.toFixed(0)}%`}
           size="sm"
         />
         <MetricCard
-          label="Trades"
+          label={t('dashboard.metrics.trades')}
           value={metrics.tradeCount.toString()}
           size="sm"
         />
         <MetricCard
-          label="Sharpe Ratio"
+          label={t('dashboard.metrics.sharpeRatio')}
           value={metrics.sharpeRatio.toFixed(2)}
           size="sm"
         />
@@ -95,7 +97,7 @@ export function ModelDetail({ config, model, onReset }: ModelDetailProps) {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-foreground flex items-center gap-2">
             <Activity className="w-4 h-4" />
-            NAV Performance
+            {t('dashboard.navPerformance')}
           </h3>
           <div className="flex gap-1">
             {(['1D', '7D', '30D', 'ALL'] as TimeRange[]).map(range => (
@@ -122,7 +124,7 @@ export function ModelDetail({ config, model, onReset }: ModelDetailProps) {
       <div className="bg-card/50 border border-border/50 rounded-xl p-4 backdrop-blur-sm">
         <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
           <Activity className="w-4 h-4" />
-          Recent Events
+          {t('dashboard.recentEvents')}
         </h3>
         <EventLog events={model.events} />
       </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ModelConfig, ModelStatus, RiskLevel } from '@/lib/models';
 import { CalculatedMetrics } from '@/lib/metrics';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,7 @@ const RISK_STYLES: Record<RiskLevel, { color: string; width: string }> = {
 };
 
 export function ModelCard({ config, nav, status, metrics, isSelected, onClick }: ModelCardProps) {
+  const { t } = useTranslation();
   const riskStyle = RISK_STYLES[config.risk];
 
   return (
@@ -45,20 +47,20 @@ export function ModelCard({ config, nav, status, metrics, isSelected, onClick }:
           <p className="text-xs text-muted-foreground">{config.tagline}</p>
         </div>
         <span className={cn('px-2 py-0.5 rounded text-xs font-medium border', STATUS_STYLES[status])}>
-          {status}
+          {t(`dashboard.status.${status}`)}
         </span>
       </div>
 
       {/* Main Stats */}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <p className="text-xs text-muted-foreground mb-1">APY (7D)</p>
+          <p className="text-xs text-muted-foreground mb-1">{t('dashboard.metrics.apy7d')}</p>
           <p className="text-2xl font-bold text-accent">
             {metrics.apy7d > 0 ? `${metrics.apy7d.toFixed(0)}%` : '---'}
           </p>
         </div>
         <div>
-          <p className="text-xs text-muted-foreground mb-1">NAV</p>
+          <p className="text-xs text-muted-foreground mb-1">{t('dashboard.nav')}</p>
           <p className="text-2xl font-bold text-foreground">{nav.toFixed(4)}</p>
         </div>
       </div>
@@ -84,8 +86,8 @@ export function ModelCard({ config, nav, status, metrics, isSelected, onClick }:
       {/* Risk Bar */}
       <div className="mb-3">
         <div className="flex items-center justify-between text-xs mb-1">
-          <span className="text-muted-foreground">Risk</span>
-          <span className="text-muted-foreground">{config.risk}</span>
+          <span className="text-muted-foreground">{t('dashboard.risk')}</span>
+          <span className="text-muted-foreground">{t(`dashboard.riskLevel.${config.risk}`)}</span>
         </div>
         <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
           <div className={cn('h-full rounded-full', riskStyle.color, riskStyle.width)} />

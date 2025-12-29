@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MODEL_CONFIGS } from '@/lib/models';
 import { AllModelsState } from '@/lib/models/types';
 import { calculateMetrics, CalculatedMetrics } from '@/lib/metrics';
@@ -14,6 +15,7 @@ interface ModelLeaderboardProps {
 }
 
 export function ModelLeaderboard({ modelsState, selectedModelId, onSelectModel }: ModelLeaderboardProps) {
+  const { t } = useTranslation();
   const [sortField, setSortField] = useState<SortField>('apy7d');
   const [sortAsc, setSortAsc] = useState(false);
 
@@ -62,7 +64,7 @@ export function ModelLeaderboard({ modelsState, selectedModelId, onSelectModel }
   };
 
   const sortButtons: { field: SortField; label: string }[] = [
-    { field: 'apy7d', label: 'APY' },
+    { field: 'apy7d', label: t('dashboard.apy') },
     { field: 'return30d', label: '30D' },
     { field: 'maxDrawdown', label: 'DD' },
     { field: 'volatility30d', label: 'Vol' },
@@ -72,7 +74,7 @@ export function ModelLeaderboard({ modelsState, selectedModelId, onSelectModel }
     <div className="space-y-4">
       {/* Sort Controls */}
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs text-muted-foreground">Sort by:</span>
+        <span className="text-xs text-muted-foreground">{t('dashboard.sortBy')}:</span>
         {sortButtons.map(({ field, label }) => (
           <button
             key={field}

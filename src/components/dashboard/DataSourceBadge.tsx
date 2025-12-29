@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { PriceState } from '@/lib/prices';
 
 interface DataSourceBadgeProps {
@@ -6,6 +7,8 @@ interface DataSourceBadgeProps {
 }
 
 export function DataSourceBadge({ connectionStatus, dataSource }: DataSourceBadgeProps) {
+  const { t } = useTranslation();
+
   const getStatusColor = () => {
     switch (connectionStatus) {
       case 'connected':
@@ -21,12 +24,12 @@ export function DataSourceBadge({ connectionStatus, dataSource }: DataSourceBadg
 
   const getLabel = () => {
     if (dataSource === 'binance-ws') {
-      return connectionStatus === 'connected' ? 'Live via Binance WS' : 'Connecting...';
+      return connectionStatus === 'connected' ? t('dashboard.liveViaBinance') : t('dashboard.connecting');
     }
     if (dataSource === 'coingecko-rest') {
-      return 'Live via REST';
+      return t('dashboard.liveViaREST');
     }
-    return 'Disconnected';
+    return t('dashboard.disconnected');
   };
 
   const getPulse = () => {
