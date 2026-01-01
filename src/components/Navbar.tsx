@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { WalletConnector } from "@/components/WalletConnector";
-import { LanguageSelector } from "@/components/LanguageSelector";
 import { useI18n } from "@/hooks/useI18n";
 
 export function Navbar() {
@@ -59,9 +58,8 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Language Selector and Wallet Connector */}
-          <div className="hidden md:flex items-center space-x-4">
-            <LanguageSelector />
+          {/* Wallet Connector */}
+          <div className="hidden md:flex items-center">
             <WalletConnector />
           </div>
 
@@ -95,11 +93,9 @@ export function Navbar() {
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-2 space-y-2">
-                <LanguageSelector />
+              <div className="pt-2">
                 <WalletConnector />
               </div>
-
             </div>
           </div>
         )}

@@ -1427,5 +1427,17 @@
       "cooldown": "24 小时冷却中",
       "dailyCapReached": "今日奖池已达上限"
     }
+  },
+  "wallet": {
+    "connect": "连接钱包",
+    "connected": "钱包已连接",
+    "connectFailed": "连接失败",
+    "selectWallet": "选择钱包",
+    "noWallet": "未发现钱包插件，请先安装如 MetaMask、OKX、Bitget 等扩展。",
+    "copyAddress": "复制地址",
+    "addressCopied": "地址已复制",
+    "changeWallet": "更换钱包",
+    "disconnect": "断开连接",
+    "language": "语言"
   }
 }
