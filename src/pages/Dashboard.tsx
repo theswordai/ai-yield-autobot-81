@@ -271,7 +271,7 @@ export default function Dashboard({
             <CardHeader className="pb-3 sm:pb-6">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2">
                 <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                合规&质押
+                {t("dashboard.complianceStakingShort")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -286,7 +286,7 @@ export default function Dashboard({
             <CardHeader className="pb-3 sm:pb-6">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2">
                 <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-                储备&质押
+                {t("dashboard.reserveStakingShort")}
               </CardTitle>
             </CardHeader>
             <CardContent>
