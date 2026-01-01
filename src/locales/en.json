@@ -671,7 +671,9 @@
     "lockPeriodComparison": "Lock Period Comparison",
     "returnsGrowthTrend": "Returns Growth Trend (Estimated)",
     "cumulativeReturns": "Cumulative Returns",
-    "day": "Day"
+    "day": "Day",
+    "approveFirst": "First click the yellow button to approve, then click the blue invest button.",
+    "compound": "Compound"
   },
   "inviterBinding": {
     "title": "Bind Inviter",
@@ -1258,8 +1260,47 @@
         "point2": "Previously worked at top international law firms and multinational financial institutions, responsible for compliance license applications, regulatory communication, and policy assessment in Singapore, UK, and EU regions.",
         "point3": "Leading the company's dual-track compliance strategy with Singapore's MAS and UK's FCA, building cross-border compliance frameworks that meet multi-country regulatory requirements.",
         "point4": "Expert in coordinating cross-border data compliance, AML, and transaction monitoring system construction, managing external legal and audit partnership networks.",
-        "point5": "Deeply involved in the company's stablecoin issuance, asset custody, and clearing business compliance implementation in global markets, ensuring business expansion meets local regulatory requirements."
+      "point5": "Deeply involved in the company's stablecoin issuance, asset custody, and clearing business compliance implementation in global markets, ensuring business expansion meets local regulatory requirements."
       }
+    }
+  },
+  "usdv": {
+    "pageTitle": "USDV Rewards - Goodwill as Wealth",
+    "pageDescription": "Claim USDV rewards, participate in draws, earn more returns",
+    "header": "USDV Rewards System",
+    "subheader": "Claim your USDV rewards, participate in draws for more returns",
+    "contractAddress": "$USDV Contract",
+    "contractCopied": "Contract address copied",
+    "assetOverview": "Asset Overview",
+    "myAddress": "My Address",
+    "usdvBalance": "USDV Balance",
+    "bnbBalance": "BNB Balance",
+    "dailySpin": "Daily Spin",
+    "dailySpinDesc": "Once every 24 hours; win 1-100 USDV; unavailable if daily cap reached",
+    "dailyInterest": "Daily Interest",
+    "dailyInterestDesc": "Settled by full days; returns 'nothing to claim' if less than 24 hours",
+    "newcomerReward": "Newcomer Reward",
+    "newcomerRewardDesc": "Available on first valid deposit; 60% to you, 40% auto-distributed to levels 1-10 above",
+    "profitFollow": "Profit Follow",
+    "profitFollowDesc": "First claim USDT from LockStakingV2.claim(posId), then claim 10×USDV",
+    "claimReward": "Claim Reward",
+    "claimed": "Claimed",
+    "myStakingPositions": "My Staking Positions",
+    "selectPositionsDesc": "Select positions to claim profit follow rewards (must claim USDT on earnings page first)",
+    "position": "Position",
+    "withdrawn": "Withdrawn",
+    "locked": "Locked",
+    "principal": "Principal",
+    "lockPeriod": "Lock Period",
+    "startTime": "Start Time",
+    "lastClaim": "Last Claim",
+    "neverClaimed": "Never",
+    "noPositions": "No staking positions, go to",
+    "goToInvest": "Investment Page",
+    "spinStatus": {
+      "noInvestment": "Investment required to spin",
+      "cooldown": "24-hour cooldown active",
+      "dailyCapReached": "Daily pool cap reached"
     }
   }
 }

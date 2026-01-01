@@ -605,7 +605,7 @@ export default function Stake({
                         <div>
                           <div className="font-semibold">{t("staking.threeSixtyFiveDaysLock")}</div>
                           <div className="text-sm text-muted-foreground">
-                            APR: 280% | APY: 1526.99% <span className="text-accent font-semibold">(复利 🚀)</span>
+                            APR: 280% | APY: 1526.99% <span className="text-accent font-semibold">({t("staking.compound")} 🚀)</span>
                           </div>
                         </div>
                       </div>
@@ -689,7 +689,7 @@ export default function Stake({
                   </Button>
                 </div>
                 {needApprove && <p className="text-xs text-muted-foreground text-center">
-                    首先点击黄色按钮，通过后，再点击蓝色投资。
+                    {t("staking.approveFirst")}
                   </p>}
 
                 {/* 财富与善意的分配机制 */}

@@ -1010,7 +1010,9 @@
     "lockPeriodComparison": "锁仓期对比",
     "returnsGrowthTrend": "收益增长趋势（预估）",
     "cumulativeReturns": "累积善意收益",
-    "day": "天"
+    "day": "天",
+    "approveFirst": "首先点击黄色按钮，通过后，再点击蓝色投资。",
+    "compound": "复利"
   },
   "inviterBinding": {
     "title": "绑定邀请人",
@@ -1374,6 +1376,45 @@
         "point4": "擅长统筹跨境数据合规、反洗钱（AML）与交易监控体系构建，并管理外部法律及审计合作网络。",
         "point5": "深度参与公司稳定币发行、资产托管及清算业务在全球市场的合规落地，确保业务拓展符合当地监管要求。"
       }
+    }
+  },
+  "usdv": {
+    "pageTitle": "USDV 奖励系统 - 善举即财富",
+    "pageDescription": "领取 USDV 奖励，参与抽奖，获得更多收益",
+    "header": "USDV 奖励系统",
+    "subheader": "领取你的 USDV 奖励，参与抽奖获得更多收益",
+    "contractAddress": "$USDV 合约",
+    "contractCopied": "合约地址已复制",
+    "assetOverview": "资产概览",
+    "myAddress": "我的地址",
+    "usdvBalance": "USDV 余额",
+    "bnbBalance": "BNB 余额",
+    "dailySpin": "每日抽奖",
+    "dailySpinDesc": "每 24 小时一次；开奖为 1–100 USDV；今日上限用尽则不可抽",
+    "dailyInterest": "按天生息",
+    "dailyInterestDesc": "按\"整天\"结算，不足 24 小时会返回 nothing to claim",
+    "newcomerReward": "新人奖励",
+    "newcomerRewardDesc": "首次有效入金可领；60% 给你，40% 自动发给 1–10 级上级",
+    "profitFollow": "利润跟随",
+    "profitFollowDesc": "先去 LockStakingV2.claim(posId) 领取 USDT，再来领 10×USDV",
+    "claimReward": "领取奖励",
+    "claimed": "已领取",
+    "myStakingPositions": "我的质押仓位",
+    "selectPositionsDesc": "选择仓位进行利润跟随奖励领取（需先在收益页领取 USDT）",
+    "position": "仓位",
+    "withdrawn": "已提取",
+    "locked": "锁定中",
+    "principal": "本金",
+    "lockPeriod": "锁定期",
+    "startTime": "开始时间",
+    "lastClaim": "上次领取",
+    "neverClaimed": "未领取",
+    "noPositions": "暂无质押仓位，去",
+    "goToInvest": "投资页面",
+    "spinStatus": {
+      "noInvestment": "需有投资才可抽奖",
+      "cooldown": "24 小时冷却中",
+      "dailyCapReached": "今日奖池已达上限"
     }
   }
 }
