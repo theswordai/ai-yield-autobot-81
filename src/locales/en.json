@@ -1430,5 +1430,17 @@
       "cooldown": "24-hour cooldown active",
       "dailyCapReached": "Daily pool cap reached"
     }
+  },
+  "wallet": {
+    "connect": "Connect Wallet",
+    "connected": "Wallet connected",
+    "connectFailed": "Connection failed",
+    "selectWallet": "Select Wallet",
+    "noWallet": "No wallet extension found. Please install MetaMask, OKX, Bitget, etc.",
+    "copyAddress": "Copy Address",
+    "addressCopied": "Address copied",
+    "changeWallet": "Change Wallet",
+    "disconnect": "Disconnect",
+    "language": "Language"
   }
 }
