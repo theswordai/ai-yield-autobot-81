@@ -696,12 +696,12 @@ export function HeroSection() {
                 {showTeam ? (
                   <>
                     <ChevronUp className="w-4 h-4" />
-                    <span>收起</span>
+                    <span>{t("hero.teamIntro.collapse")}</span>
                   </>
                 ) : (
                   <>
                     <ChevronDown className="w-4 h-4" />
-                    <span>展开查看</span>
+                    <span>{t("hero.teamIntro.expand")}</span>
                   </>
                 )}
               </Button>

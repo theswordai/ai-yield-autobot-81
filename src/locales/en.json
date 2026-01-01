@@ -514,6 +514,8 @@
     },
     "teamIntro": {
       "title": "Team Introduction",
+      "expand": "View Details",
+      "collapse": "Collapse",
       "members": {
         "cc": {
           "name": "CC",
@@ -633,6 +635,8 @@
     "newStaking": "New Staking",
     "complianceStaking": "USDONLINE Compliance Staking",
     "reserveStaking": "USDONLINE Reserve Staking",
+    "complianceStakingShort": "Compliance & Staking",
+    "reserveStakingShort": "Reserve & Staking",
     "viewOnBscscan": "View on BSCScan",
     "earningsDetail": "Earnings Detail",
     "stakingRewards": "Staking Rewards",
@@ -788,7 +792,10 @@
     "cumulativeReturns": "Cumulative Returns",
     "day": "Day",
     "approveFirst": "First click the yellow button to approve, then click the blue invest button.",
-    "compound": "Compound"
+    "compound": "Compound",
+    "compoundAPY": "Compound Annual Yield",
+    "aprExplain": "APR = Annual Percentage Rate (Nominal Rate)",
+    "apyExplain": "APY = Annual Percentage Yield (Actual Compound Rate)"
   },
   "inviterBinding": {
     "title": "Bind Inviter",
@@ -874,7 +881,9 @@
       "spinning": "Spinning...",
       "tomorrowCome": "Come Tomorrow",
       "freeDrawing": "Free Draw",
-      "pointsLabel": "USDV"
+      "pointsLabel": "USDV",
+      "startDraw": "Start Draw",
+      "unavailable": "Unavailable"
     },
     "exchange": {
       "title": "Points Exchange Center", 

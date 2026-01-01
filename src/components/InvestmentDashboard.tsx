@@ -144,7 +144,7 @@ export function InvestmentDashboard({
                           <p className="text-sm text-primary">APR: {data.apr}%</p>
                           <p className="text-sm text-accent font-semibold">APY: {data.apy}%</p>
                           <p className="text-xs text-muted-foreground mt-1">
-                            (复利年化收益率)
+                            ({t("staking.compoundAPY")})
                           </p>
                         </div>;
                 }
@@ -154,8 +154,8 @@ export function InvestmentDashboard({
             </ResponsiveContainer>
           </div>
           <div className="mt-3 pt-3 border-t text-xs text-muted-foreground space-y-1">
-            <p>💡 APR = 年化利率（名义利率）</p>
-            <p>🚀 APY = 复利年化收益率（实际收益率）</p>
+            <p>💡 {t("staking.aprExplain")}</p>
+            <p>🚀 {t("staking.apyExplain")}</p>
           </div>
         </CardContent>
       </Card>

@@ -581,7 +581,7 @@ export default function Stake({
                         <div>
                           <div className="font-semibold">{t("staking.ninetyDaysLock")}</div>
                           <div className="text-sm text-muted-foreground">
-                            APR: 50% | APY: 64.82% <span className="text-accent">(复利)</span>
+                            APR: 50% | APY: 64.82% <span className="text-accent">({t("staking.compound")})</span>
                           </div>
                         </div>
                       </div>
@@ -593,7 +593,7 @@ export default function Stake({
                         <div>
                           <div className="font-semibold">{t("staking.oneEightyDaysLock")}</div>
                           <div className="text-sm text-muted-foreground">
-                            APR: 120% | APY: 231.36% <span className="text-accent">(复利)</span>
+                            APR: 120% | APY: 231.36% <span className="text-accent">({t("staking.compound")})</span>
                           </div>
                         </div>
                       </div>

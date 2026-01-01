@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useI18n } from "@/hooks/useI18n";
 
 interface SpinWheelProps {
   onSpin: () => Promise<void>;
@@ -22,6 +23,7 @@ const WHEEL_SEGMENTS = [
 ];
 
 export function SpinWheel({ onSpin, disabled, loading, canSpin, statusText }: SpinWheelProps) {
+  const { t } = useI18n();
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState<number | null>(null);
@@ -127,7 +129,7 @@ export function SpinWheel({ onSpin, disabled, loading, canSpin, statusText }: Sp
         size="lg"
       >
         {(loading || isSpinning) && <Loader2 className="h-5 w-5 animate-spin mr-2" />}
-        {isSpinning ? "抽奖中..." : canSpin ? "开始抽奖" : "暂不可用"}
+        {isSpinning ? t("bluePoints.spin.spinning") : canSpin ? t("bluePoints.spin.startDraw") : t("bluePoints.spin.unavailable")}
       </Button>
     </div>
   );

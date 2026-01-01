@@ -782,6 +782,8 @@
     },
     "teamIntro": {
       "title": "团队介绍",
+      "expand": "展开查看",
+      "collapse": "收起",
       "members": {
         "cc": {
           "name": "CC",
@@ -857,6 +859,8 @@
     "newStaking": "新增锁仓",
     "complianceStaking": "USDONLINE合规质押",
     "reserveStaking": "USDONLINE储备质押",
+    "complianceStakingShort": "合规&质押",
+    "reserveStakingShort": "储备&质押",
     "viewOnBscscan": "在 BSCScan 查看",
     "earningsDetail": "收益明细",
     "stakingRewards": "质押收益",
@@ -1012,7 +1016,10 @@
     "cumulativeReturns": "累积善意收益",
     "day": "天",
     "approveFirst": "首先点击黄色按钮，通过后，再点击蓝色投资。",
-    "compound": "复利"
+    "compound": "复利",
+    "compoundAPY": "复利年化收益率",
+    "aprExplain": "APR = 年化利率（名义利率）",
+    "apyExplain": "APY = 复利年化收益率（实际收益率）"
   },
   "inviterBinding": {
     "title": "绑定邀请人",
@@ -1095,10 +1102,12 @@
     },
     "spin": {
       "luckyWheel": "幸运转盘",
-      "spinning": "转盘抽奖中...",
+      "spinning": "抽奖中...",
       "tomorrowCome": "明日再来",
       "freeDrawing": "免费抽奖",
-      "pointsLabel": "USDV"
+      "pointsLabel": "USDV",
+      "startDraw": "开始抽奖",
+      "unavailable": "暂不可用"
     },
     "exchange": {
       "title": "积分换币中心",
