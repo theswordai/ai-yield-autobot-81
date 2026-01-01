@@ -354,13 +354,32 @@
       "strategyCTarget": "Target: In the very early launch/pool opening stage, conduct small-scale multi-point trial and follow around real projects and real liquidity.",
       "strategyCDiscovery": "1) Discovery",
       "strategyCSignal": "Signal sources: Factory PairCreated events, Router initial pool, Launchpad calendar, KOL lists, on-chain social/multi-sig activities.",
-      "strategyCHardFilter": "Filters (hard conditions, auto-reject): Contract not upgradeable/or locked (or multi-sig threshold ≥N), initial LP ≥ threshold and LP lock/burn verifiable, tax/blacklist/transaction restrictions ≤ threshold, top holder ratio and Top10 concentration ≤ threshold",
-      "strategyCSubmit": "2) First Position (Sniping)",
+      "strategyCFilterTitle": "Filters (hard conditions, auto-reject):",
+      "strategyCFilter1": "Contract not upgradeable/or locked (or multi-sig threshold ≥N)",
+      "strategyCFilter2": "Initial LP ≥ threshold and LP lock/burn verifiable",
+      "strategyCFilter3": "Tax/blacklist/transaction restrictions ≤ threshold",
+      "strategyCFilter4": "Top holder ratio and Top10 concentration ≤ threshold",
+      "streamegyCFilterSoft": "Soft conditions (scoring): Contract quality, audit status, external buzz, historical wallet profiles, fund source cleanliness.",
+      "strategyCSniping": "2) First Position (Sniping)",
       "strategyCFunding": "Funding model: Micro position + grid (e.g., 0.1–0.5 base units/time, multiple distributed entries)",
-      "strategyCMatch": "Matching strategy: Enter after pool unlock delay δ seconds (avoid black box opening), limit price/slippage cap; immediately set stop-loss/take-profit (on-chain or offline monitoring trigger), observe buy/sell walls and actual contract tax rate, retreat immediately on anomalies",
-      "strategyCExit": "Exit path: Preset multi-tier take-profit (e.g., +30%, +80%, +150% in batches), hard stop-loss (e.g., -15%/-20%), liquidity withdrawal real-time alert → immediate liquidation",
-      "strategyCIndicators": "3) Indicators and dashboard: Hit rate (sample size/win rate), profit-loss ratio, average holding duration, Rug/tax anomaly event count and loss cap, net performance: per-unit capital return after deducting Gas/tax/failure costs",
-      "strategyCRiskControl": "4) Risk control guardrails: Daily/weekly strategy funding cap (X% of total pool), single project maximum exposure (≤ y% of strategy funds), circuit breaker: consecutive N anomalies/losses trigger strategy pause, blacklist: suspicious Factory/Router/tax contracts one-click network-wide ban, disclosure: new token strategy independent curve and anomaly event logs publicly disclosed"
+      "strategyCMatchTitle": "Matching strategy:",
+      "strategyCMatch1": "Enter after pool unlock delay δ seconds (avoid black box opening)",
+      "strategyCMatch2": "Limit price/slippage cap; immediately set stop-loss/take-profit (on-chain or offline monitoring trigger)",
+      "strategyCMatch3": "Observe buy/sell walls and actual contract tax rate, retreat immediately on anomalies",
+      "strategyCExitTitle": "Exit path:",
+      "strategyCExit1": "Preset multi-tier take-profit (e.g., +30%, +80%, +150% in batches)",
+      "strategyCExit2": "Hard stop-loss (e.g., -15%/-20%)",
+      "strategyCExit3": "Liquidity withdrawal real-time alert → immediate liquidation",
+      "strategyCIndicatorsTitle": "3) Indicators and Dashboard",
+      "strategyCIndicators1": "Hit rate (sample size/win rate), profit-loss ratio, average holding duration",
+      "strategyCIndicators2": "Rug/tax anomaly event count and loss cap",
+      "strategyCIndicators3": "Net performance: per-unit capital return after deducting Gas/tax/failure costs",
+      "strategyCRiskTitle": "4) Risk Control Guardrails",
+      "strategyCRisk1": "Daily/weekly strategy funding cap (X% of total pool)",
+      "strategyCRisk2": "Single project maximum exposure (≤ y% of strategy funds)",
+      "strategyCRisk3": "Circuit breaker: consecutive N anomalies/losses trigger strategy pause",
+      "strategyCRisk4": "Blacklist: suspicious Factory/Router/tax contracts one-click network-wide ban",
+      "strategyCRisk5": "Disclosure: new token strategy independent curve and anomaly event logs publicly disclosed"
     },
     "aiRotation": {
       "title": "AI Adaptive Yield Rotation",
@@ -371,48 +390,102 @@
       "risk": "Risk: Medium-low (not pursuing extreme leverage, emphasizing drawdown control).",
       "strategyA": "A | Mainstream Crypto Grid Trading (Range Volatility Capture)",
       "strategyALogic": "Logic: In sideways or oscillating markets, buy and sell at preset price differences level by level, earning from back-and-forth volatility.",
-      "strategyAExecution": "Execution Points",
-      "strategyAAdaptive": "Range adaptation: Use AI (volatility/trading density/capital flow) to dynamically select effective range and grid density.",
-      "strategyAFunding": "Capital layering: Base position (β) + grid position (α), preventing passive single-direction up/down.",
-      "strategyADedup": "Deduplication and take-profit: Avoid same-price overlap when multiple grids stack; auto-clear grids when cumulative profit reaches threshold.",
-      "strategyARiskControl": "Risk control: Unidirectional trend recognition: Auto-collect grids when breaking through channel upper/lower rails, reduce order density or pause. Slippage & fee threshold: Auto-shrink if transaction friction > gross profit.",
-      "strategyAIndicators": "Dashboard indicators: Grid transaction count, win rate, per-unit capital return, maximum floating loss, net profit curve.",
+      "strategyAExecutionTitle": "Execution Points",
+      "strategyAExecution1": "Range adaptation: Use AI (volatility/trading density/capital flow) to dynamically select effective range and grid density.",
+      "strategyAExecution2": "Capital layering: Base position (β) + grid position (α), preventing passive single-direction up/down.",
+      "strategyAExecution3": "Deduplication and take-profit: Avoid same-price overlap when multiple grids stack; auto-clear grids when cumulative profit reaches threshold.",
+      "strategyARiskTitle": "Risk Control",
+      "strategyARisk1": "Unidirectional trend recognition: Auto-collect grids when breaking through channel upper/lower rails, reduce order density or pause.",
+      "strategyARisk2": "Slippage & fee threshold: Auto-shrink if transaction friction > gross profit.",
+      "strategyAIndicatorsTitle": "Dashboard Indicators",
+      "strategyAIndicators": "Grid transaction count, win rate, per-unit capital return, maximum floating loss, net profit curve.",
       "strategyB": "B | Funding Rate Arbitrage (Spot/Perpetual Hedging)",
-      "strategyBLogic": "Logic: On CEX/DEX, go spot long + perpetual short (or reverse), earning positive/negative funding rates; applicable scenario: optimal when futures premium high/funding rate positive reward.",
-      "strategyBExecution": "Execution Points",
-      "strategyBSampling": "Multi-exchange sampling: Select platforms with stable funding rates; AI evaluates funding rate sustainability and counterparty depth.",
-      "strategyBHedge": "Position hedging: Nominal exposure ≈ 0, net exposure < threshold; rolling rollover before expiry.",
-      "strategyBOptimization": "Fee and margin optimization: Reduce capital occupation, control liquidation risk.",
-      "strategyBRiskControl": "Risk control: Extreme market protection: Quickly reduce hedge positions/adjust leverage when funding rates mutate or price differences imbalance. Counterparty and channels: Trigger migration or liquidation if platform risk rises (withdrawal congestion, abnormal volatility).",
-      "strategyBIndicators": "Dashboard indicators: Current average funding rate, APR (net), nominal exposure, margin utilization, liquidation distance, net value curve."
+      "strategyBLogic": "Logic: On CEX/DEX, go spot long + perpetual short (or reverse), earning positive/negative funding rates.",
+      "strategyBScenario": "Applicable scenario: optimal when futures premium high/funding rate positive reward.",
+      "strategyBExecutionTitle": "Execution Points",
+      "strategyBExecution1": "Multi-exchange sampling: Select platforms with stable funding rates; AI evaluates funding rate sustainability and counterparty depth.",
+      "strategyBExecution2": "Position hedging: Nominal exposure ≈ 0, net exposure < threshold; rolling rollover before expiry.",
+      "strategyBExecution3": "Fee and margin optimization: Reduce capital occupation, control liquidation risk.",
+      "strategyBRiskTitle": "Risk Control",
+      "strategyBRisk1": "Extreme market protection: Quickly reduce hedge positions/adjust leverage when funding rates mutate or price differences imbalance.",
+      "strategyBRisk2": "Counterparty and channels: Trigger migration or liquidation if platform risk rises (withdrawal congestion, abnormal volatility).",
+      "strategyBIndicatorsTitle": "Dashboard Indicators",
+      "strategyBIndicators": "Current average funding rate, APR (net), nominal exposure, margin utilization, liquidation distance, net value curve.",
+      "strategyC": "C | Low Leverage Contracts (Trend Following / Drawdown Constraint)",
+      "strategyCLogic": "Logic: AI generates trend/reversal signals, only 1–2× low leverage, trading small drawdown for smoother returns.",
+      "strategyCExecutionTitle": "Execution Points",
+      "strategyCExecution1": "Signal fusion: Price momentum + capital flow + futures basis + macro/on-chain sentiment, determine long/short/wait.",
+      "strategyCExecution2": "Position throttle: When win rate drops or volatility increases, auto-reduce leverage or lighten position.",
+      "strategyCExecution3": "Stop-loss/take-profit: Fixed hard stop-loss + volatility adaptive stop-loss; batch take-profit.",
+      "strategyCRiskTitle": "Risk Control",
+      "strategyCRisk1": "Single-side position cap: Single coin contract net long/short not exceeding x% of strategy funds.",
+      "strategyCRisk2": "Event circuit breaker: Major event windows (FOMC, ETF large redemptions, etc.) downgrade or hedge only.",
+      "strategyCIndicatorsTitle": "Dashboard Indicators",
+      "strategyCIndicators": "Win rate, profit-loss ratio, maximum drawdown, consecutive loss count, position duration distribution, net value curve."
     },
     "defiVault": {
       "title": "Decentralized Staking Vault",
-      "description": "Structured capital rhythm, perfect fusion of circular staking and leverage",
+      "description": "Native DeFi yield strategies: Interest mining (Aave/Compound) + LP market making (Curve/Uniswap V3) + incentive capture. Stablecoin-focused, on-chain traceable, contract permissions auditable.",
       "fee": "Base yield",
-      "strategyA": "A | Interest and Points Mining (Lending / Points)",
-      "strategyALogic": "Logic: Distribute stablecoins across top lending/stablecoin protocols, obtain base interest rate (interest) + native incentives/points (points/airdrops), conduct dynamic migration and reinvestment under premise of positive net returns.",
-      "strategyAAssets": "Covered assets: USDC / USDT / DAI / FRAX / crvUSD / USDe (sUSDe), etc.",
-      "strategyAProtocols": "Candidate protocols (examples): Aave, Morpho, Spark (sDAI/DSR), FraxLend, Ethena (sUSDe)",
-      "strategyAExecution": "Execution Points",
-      "strategyADistribution": "Distributed deployment: Set caps for single protocol/single counterparty, avoid concentrated exposure",
-      "strategyAAPYScreening": "Net APY screening: Based on (interest + incentive) − (Gas+slippage), not on nominal APY rush",
-      "strategyAMigration": "Migration rhythm: Migrate only when reaching yield decay threshold or better destination appears, control round-trip friction costs",
-      "strategyAIncentive": "Incentive realization: Stage realization and reinvestment for points/airdrops, avoid one-time selling pressure",
-      "strategyAKPI": "Visible indicators (KPI): Portfolio net APY (friction costs deducted), incentive realization rate, capital turnover efficiency, protocol diversification (Herfindahl index/single protocol ratio), capital in-transit time",
-      "strategyARiskControl": "Risk control: Protocol cap: Single protocol ≤ X% of portfolio (customizable); Monitoring: Audit/oracle/governance changes, TVL anomalies, utilization too high; Contingency: One-click migration script, 7–10% cash cushion, 48–72 hour short-term financing window",
-      "strategyB": "B | Stablecoin AMM Market Making (Stable AMM LP)",
-      "strategyBLogic": "Logic: Provide liquidity for stablecoin pairs (e.g., USDC/USDT, DAI/USDC, FRAX/DAI, crvUSD/USDC, etc.), earn trading fees + protocol incentives, improve capital utilization through concentrated liquidity/tier movement and reduce impermanent loss.",
-      "strategyBProtocols": "Candidate protocols (examples): Curve + Convex, Velodrome/Aerodrome, Uniswap V3 (stable pools)",
-      "strategyBExecution": "Execution Points",
-      "strategyBLowDeviation": "Only low-deviation pools: Same-type stablecoins/pegged assets, low historical deviation, large volume",
-      "strategyBConcentrated": "Concentrated liquidity: Place positions in actual trading dense areas, AI moves tiers based on volatility and volume",
-      "strategyBIncentiveStack": "Incentive stacking: Connect to aggregators (e.g., Convex) for secondary incentives, but don't sacrifice exit liquidity",
-      "strategyBBalance": "Fee-slippage balance: Dynamic weighting between fee improvement and transaction probability",
-      "strategyBKPI": "Visible indicators (KPI): Annualized fee rate (including incentives), impermanent loss estimate vs. realized, capital utilization, pool depth/transaction ratio, slippage distribution, single pool exposure ratio",
-      "strategyBRiskControl": "Risk control: Exit channel: Set minimum depth and maximum slippage thresholds, withdraw if not met; Blacklist: Tax contracts/banned routing/abnormal Factory directly prohibited; Extreme volatility: Trigger threshold (e.g., deviation > set bp) → auto-converge range or temporarily withdraw",
-      "fundingRatio": "Funding ratio (example): Interest and points mining 60% | Stablecoin AMM market making 40%. When incentive season/points active, increase interest and points weight; when trading volume rises and volatility falls, increase AMM market making weight. Portfolio drawdown threshold (e.g., -3% / -5%) triggers downgrade or temporary conservative mode only.",
-      "transparency": "Transparency (public disclosure): Daily: Each protocol/pool position ratio, portfolio net APY, in-transit funds; Weekly: Net value and drawdown curve, migration and reinvestment log (Tx hash); Monthly: Risk event review, cap and weight adjustment explanation",
+      "strategyA": {
+        "title": "A | Interest and Points Mining (Lending / Points)",
+        "logic": "Logic: Distribute stablecoins across top lending/stablecoin protocols, obtain base interest rate (interest) + native incentives/points (points/airdrops), conduct dynamic migration and reinvestment under premise of positive net returns.",
+        "assets": "Covered assets: USDC / USDT / DAI / FRAX / crvUSD / USDe (sUSDe), etc.",
+        "protocols": "Candidate protocols (examples): Aave, Morpho, Spark (sDAI/DSR), FraxLend, Ethena (sUSDe)",
+        "execution": "Execution Points",
+        "executionPoints": {
+          "point1": "Distributed deployment: Set caps for single protocol/single counterparty, avoid concentrated exposure",
+          "point2": "Net APY screening: Based on (interest + incentive) − (Gas+slippage), not on nominal APY rush",
+          "point3": "Migration rhythm: Migrate only when reaching yield decay threshold or better destination appears, control round-trip friction costs",
+          "point4": "Incentive realization: Stage realization and reinvestment for points/airdrops, avoid one-time selling pressure"
+        },
+        "kpi": "Visible Indicators (KPI)",
+        "kpiPoints": {
+          "point1": "Portfolio net APY (friction costs deducted), incentive realization rate, capital turnover efficiency",
+          "point2": "Protocol diversification (Herfindahl index/single protocol ratio), capital in-transit time"
+        },
+        "riskControl": "Risk Control",
+        "riskPoints": {
+          "point1": "Protocol cap: Single protocol ≤ X% of portfolio (customizable)",
+          "point2": "Monitoring: Audit/oracle/governance changes, TVL anomalies, utilization too high",
+          "point3": "Contingency: One-click migration script, 7–10% cash cushion, 48–72 hour short-term financing window"
+        }
+      },
+      "strategyB": {
+        "title": "B | Stablecoin AMM Market Making (Stable AMM LP)",
+        "logic": "Logic: Provide liquidity for stablecoin pairs (e.g., USDC/USDT, DAI/USDC, FRAX/DAI, crvUSD/USDC, etc.), earn trading fees + protocol incentives, improve capital utilization through concentrated liquidity/tier movement and reduce impermanent loss.",
+        "protocols": "Candidate protocols (examples): Curve + Convex, Velodrome/Aerodrome, Uniswap V3 (stable pools)",
+        "execution": "Execution Points",
+        "executionPoints": {
+          "point1": "Only low-deviation pools: Same-type stablecoins/pegged assets, low historical deviation, large volume",
+          "point2": "Concentrated liquidity: Place positions in actual trading dense areas, AI moves tiers based on volatility and volume",
+          "point3": "Incentive stacking: Connect to aggregators (e.g., Convex) for secondary incentives, but don't sacrifice exit liquidity",
+          "point4": "Fee-slippage balance: Dynamic weighting between fee improvement and transaction probability"
+        },
+        "kpi": "Visible Indicators (KPI)",
+        "kpiPoints": {
+          "point1": "Annualized fee rate (including incentives), impermanent loss estimate vs. realized, capital utilization",
+          "point2": "Pool depth/transaction ratio, slippage distribution, single pool exposure ratio"
+        },
+        "riskControl": "Risk Control",
+        "riskPoints": {
+          "point1": "Exit channel: Set minimum depth and maximum slippage thresholds, withdraw if not met",
+          "point2": "Blacklist: Tax contracts/banned routing/abnormal Factory directly prohibited",
+          "point3": "Extreme volatility: Trigger threshold (e.g., deviation > set bp) → auto-converge range or temporarily withdraw"
+        }
+      },
+      "allocation": {
+        "title": "Funding Allocation (Example)",
+        "point1": "Interest and points mining 60% | Stablecoin AMM market making 40%",
+        "point2": "When incentive season/points active → increase interest and points weight; when trading volume rises and volatility falls → increase AMM market making weight.",
+        "point3": "Portfolio drawdown threshold (e.g., -3% / -5%) triggers downgrade or temporary conservative mode only."
+      },
+      "transparency": {
+        "title": "Transparency (Public Disclosure)",
+        "daily": "Daily: Each protocol/pool position ratio, portfolio net APY, in-transit funds",
+        "weekly": "Weekly: Net value and drawdown curve, migration and reinvestment log (Tx hash)",
+        "monthly": "Monthly: Risk event review, cap and weight adjustment explanation"
+      },
       "disclaimer": "The above protocols and assets are example lists, not endorsements; actual deployment will be based on risk control whitelist, audit status, and real-time indicators for dynamic screening."
     },
     "transparentProtocol": {
@@ -439,10 +512,52 @@
       "riskCashReserve": "Reserve 7–10% cash cushion for delays/buybacks",
       "riskNoPromise": "No return promise, only execute rule-based verifiable participation and disciplined realization"
     },
-     "followUs": "Community",
-     "customerService": "Customer Service",
-      "contactSupport": "Contact Support"
-   },
+    "teamIntro": {
+      "title": "Team Introduction",
+      "members": {
+        "cc": {
+          "name": "CC",
+          "title": "Founder of USD.ONLINE",
+          "subtitle": "Global Stablecoin Architect | Presidential Family Digital Asset Advisor | Cross-border Capital & AI Risk Control Expert",
+          "bio": "CC is one of the few experts in Asian and Middle Eastern capital circles who simultaneously possesses capabilities in cross-border capital structure design, institutional-grade liquidity management, AI risk control system construction, and sovereign-level stablecoin research. Over the past 8 years, he has deeply participated in institutional market making, cross-chain liquidity, quantitative fund management, and compliant clearing system construction globally, with historical AUM exceeding $15 billion.",
+          "experience": "He was invited to join the Presidential Family's Crypto Asset Office (Presidential Family Office) as one of the core digital asset advisors, providing strategic advice on crypto asset allocation, stablecoin reserve mechanisms, AI risk control systems, and global crypto policy research. This is an extremely rare experience globally, meaning he holds high trust and information access within the top American political and family capital systems.",
+          "education": "CC graduated from the London School of Economics (LSE), and has long promoted cross-border financial transparency, stablecoin governance improvement, and institutionalized application of AI for fund flow monitoring."
+        },
+        "lee": {
+          "name": "Mr.Lee",
+          "title": "Partner at USD.ONLINE",
+          "bio": "A senior manager with over fifteen years of deep experience in the Swiss financial system, with extensive experience in strategic management, wealth management business development, cross-regional organizational transformation, and fintech implementation in major banking centers including Zurich, London, and Singapore. He has held multiple key leadership positions at UBS Group, one of the world's largest wealth management institutions, from Asia Pacific to the Americas to Swiss headquarters, fully participating in group strategy formulation, global business development, digital wealth management model reshaping, and multinational business coordination.",
+          "career": "His career began at traditional Swiss bank Credit Suisse, then joined Boston Consulting Group (BCG) for global financial institution strategic consulting, serving as a core member of BCG's Financial Institutions (FI) and Insurance dual practice groups. During this period, he drove digitalization, compliance restructuring, and transformation projects at multiple large banks and insurance groups, known for rapid promotion to Project Leader."
+        },
+        "michael": {
+          "name": "Mr.Michael",
+          "title": "Co-founder & CTO (AI/Quantitative)",
+          "point1": "Previously worked at Wall Street's Renaissance Technologies hedge fund, covering statistical arbitrage, market making, and capital efficiency scheduling, leading the implementation of real-time risk control systems.",
+          "point2": "On the Web3 side, led on-chain data collection, anomaly detection, and MEV risk protection solutions.",
+          "point3": "Responsible for USD.online Alpha Engine and Clearing Engine technical roadmap, code review, and security audit coordination.",
+          "education": "Graduated from Yale University Computer Science Department"
+        },
+        "mouad": {
+          "name": "Mouad",
+          "title": "Head of Institutional & Capital Markets & CMO at USD.ONLINE",
+          "subtitle": "Exchange Listing/Market Making Alliance + Institutional Partnership Implementation",
+          "point1": "Responsible for top and regional CEX listing, deposit/withdrawal integration, market making alliance and escort mechanisms.",
+          "point2": "Expanding custody, audit, oracle, payment, and risk control vendor partnership footprint.",
+          "point3": "Co-building investor communication, secondary market liquidity, and buyback execution coordination mechanisms."
+        },
+        "omar": {
+          "name": "Omar",
+          "title": "Chief Financial Officer (CFO) at USD.online",
+          "subtitle": "Dubai Sovereign Capital Background | Cross-border Clearing & Reserve Management Expert | AI-Driven Financial Architecture Designer",
+          "bio": "Omar is a Dubai-based senior financial executive with over 17 years of comprehensive experience in Sovereign Wealth Funds, Middle Eastern family offices, cross-border clearing institutions, and digital financial regulatory frameworks (VARA/ADGM). He has long focused on cross-regional capital flow design, USD clearing networks, reserve asset management, and compliant financial structure construction.",
+          "experience": "Before joining USD.online, Omar managed multi-currency fund pools and USD reserves at Abu Dhabi Sovereign Wealth Fund (SWF), was responsible for cross-border asset allocation, clearing structures, and custody coordination at large Dubai family offices, and served as financial and risk advisor for multiple fintech companies. He is one of the few experts in the Middle East who can simultaneously understand traditional finance (TradFi) + digital assets (Web3) + cross-border compliance (RegTech) intersections."
+        }
+      }
+    },
+    "followUs": "Community",
+    "customerService": "Customer Service",
+    "contactSupport": "Contact Support"
+  },
   "moralAlpha": {
     "title": "What is Moral Alpha 3.0",
     "conceptOrigin": {
