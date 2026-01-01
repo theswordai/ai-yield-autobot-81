@@ -16,7 +16,6 @@ import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
-import YieldDashboard from "./pages/YieldDashboard";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
 
@@ -35,7 +34,7 @@ const App = () => (
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
           <Route path="/zh/invest" element={<Invest />} />
-          <Route path="/zh/yield-dashboard" element={<YieldDashboard />} />
+          
           <Route path="/zh/stake-new" element={<StakeNew />} />
           <Route path="/zh/usdv" element={<USDV />} />
           <Route path="/zh/user" element={<UserCenter />} />
@@ -46,7 +45,7 @@ const App = () => (
           
           <Route path="/en" element={<Index />} />
           <Route path="/en/invest" element={<Invest />} />
-          <Route path="/en/yield-dashboard" element={<YieldDashboard />} />
+          
           <Route path="/en/stake-new" element={<StakeNew />} />
           <Route path="/en/usdv" element={<USDV />} />
           <Route path="/en/user" element={<UserCenter />} />
