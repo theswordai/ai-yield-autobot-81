@@ -22,11 +22,11 @@ export default function Whitepaper() {
             {/* Header */}
             <div className="text-center space-y-4 mb-8">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                和谐财富引擎
+                {t('whitepaper.title')}
               </h1>
               <div className="h-1 w-32 mx-auto bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"></div>
               <p className="text-muted-foreground">
-                构建财富与慈善的和谐统一，通过区块链技术实现透明、高效的价值创造
+                {t('whitepaper.description')}
               </p>
             </div>
 
