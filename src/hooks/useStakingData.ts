@@ -66,8 +66,7 @@ export function useStakingData() {
     setError(null);
 
     try {
-      // 获取基础数据，为每个调用添加 .catch() 回退值
-      // 避免单个合约调用失败导致整个数据获取失败
+      // 获取基础数据
       const [
         usdtBalance,
         usdtAllowance,
@@ -83,19 +82,19 @@ export function useStakingData() {
         pIndirect1,
         pSelf
       ] = await Promise.all([
-        contracts.usdt.balanceOf(account).catch(() => BigInt(0)),
-        contracts.usdt.allowance(account, LOCK_ADDRESS).catch(() => BigInt(0)),
-        contracts.lockStaking.getUserPositions(account).catch(() => []),
-        contracts.rewardsVault.pendingRewards(account).catch(() => BigInt(0)),
-        contracts.referralRegistry.inviterOf(account).catch(() => "0x0000000000000000000000000000000000000000"),
-        contracts.referralRegistry.getDirects(account).catch(() => []),
-        contracts.referralRegistry.getIndirectsL1(account).catch(() => []),
-        contracts.referralRegistry.getTeamP(account).catch(() => BigInt(0)),
-        contracts.referralRegistry.getLevel(account).catch(() => BigInt(0)),
-        contracts.referralRegistry.getDirectBps(account).catch(() => BigInt(0)),
-        contracts.referralRegistry.pDirect(account).catch(() => BigInt(0)),
-        contracts.referralRegistry.pIndirect1(account).catch(() => BigInt(0)),
-        contracts.referralRegistry.pSelf(account).catch(() => BigInt(0)),
+        contracts.usdt.balanceOf(account),
+        contracts.usdt.allowance(account, LOCK_ADDRESS),
+        contracts.lockStaking.getUserPositions(account),
+        contracts.rewardsVault.pendingRewards(account),
+        contracts.referralRegistry.inviterOf(account),
+        contracts.referralRegistry.getDirects(account),
+        contracts.referralRegistry.getIndirectsL1(account),
+        contracts.referralRegistry.getTeamP(account),
+        contracts.referralRegistry.getLevel(account),
+        contracts.referralRegistry.getDirectBps(account),
+        contracts.referralRegistry.pDirect(account),
+        contracts.referralRegistry.pIndirect1(account),
+        contracts.referralRegistry.pSelf(account),
       ]);
 
       // 获取仓位详情
@@ -243,13 +242,7 @@ export function useStakingData() {
 
     } catch (err: any) {
       console.error('Failed to fetch staking data:', err);
-      // 检查是否是技术性错误（如网络错误、合约解码错误），避免向用户显示
-      const isTechnicalError = err?.code === 'BAD_DATA' || 
-        err?.message?.includes('could not decode') ||
-        err?.message?.includes('0x');
-      if (!isTechnicalError) {
-        setError(err.message || 'Failed to fetch data');
-      }
+      setError(err.message || 'Failed to fetch data');
     } finally {
       setLoading(false);
     }

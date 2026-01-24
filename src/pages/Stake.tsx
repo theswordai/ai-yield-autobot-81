@@ -201,24 +201,11 @@ export default function Stake({
   const refresh = async () => {
     try {
       if (!account || !usdt) return;
-      
-      // 检查网络是否正确，避免在错误网络上调用合约
-      if (chainId && chainId !== TARGET_CHAIN) {
-        console.warn("用户不在 BSC 主网，跳过合约调用");
-        return;
-      }
-      
       console.log(t("staking.refreshUserData"));
       console.log("- " + t("staking.account") + ":", account);
       console.log("- " + t("staking.usdtContract") + ":", USDT_ADDRESS);
       console.log("- " + t("staking.lockContract") + ":", LOCK_ADDRESS);
-      
-      // 使用 .catch() 回退值，避免单个调用失败导致整个刷新失败
-      const [bal, alw] = await Promise.all([
-        (usdt as any).balanceOf(account).catch(() => BigInt(0)) as Promise<bigint>, 
-        (usdt as any).allowance(account, LOCK_ADDRESS).catch(() => BigInt(0)) as Promise<bigint>
-      ]);
-      
+      const [bal, alw] = await Promise.all([(usdt as any).balanceOf(account) as Promise<bigint>, (usdt as any).allowance(account, LOCK_ADDRESS) as Promise<bigint>]);
       console.log(t("staking.userData"));
       console.log("- " + t("staking.usdtBalance") + ":", bal.toString());
       console.log("- " + t("staking.authAmount") + ":", alw.toString());
@@ -228,22 +215,15 @@ export default function Stake({
       // 获取用户仓位数据
       if (lock) {
         try {
-          const ids: bigint[] = await (lock as any).getUserPositions(account).catch(() => []);
+          const ids: bigint[] = await (lock as any).getUserPositions(account);
           setUserPositions(ids || []);
         } catch (e) {
           setUserPositions([]);
         }
       }
     } catch (e: any) {
-      // 只在控制台记录错误，不向用户显示技术性错误
       console.error(t("staking.refreshFailed"), e);
-      // 检查是否是网络相关错误，避免显示 BAD_DATA 等技术错误
-      const isTechnicalError = e?.code === 'BAD_DATA' || 
-        e?.message?.includes('could not decode') ||
-        e?.message?.includes('0x');
-      if (!isTechnicalError) {
-        toast.error(`${t("staking.dataRefreshFailed")}: ${e.message}`);
-      }
+      toast.error(`${t("staking.dataRefreshFailed")}: ${e.message}`);
     }
   };
   useEffect(() => {
