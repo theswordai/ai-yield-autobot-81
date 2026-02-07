@@ -10,12 +10,14 @@ const CG_IDS: Record<string, string> = {
   USDT: "tether",
   BNB: "binancecoin",
   DOGE: "dogecoin",
+  TRUMP: "official-trump",
 };
 
 const ORDER: Array<keyof typeof CG_IDS | "USD1" | "USDV"> = [
   "BTC",
   "ETH", 
   "SOL",
+  "TRUMP",
   "USDT",
   "USD1",
   "USDV",
@@ -211,7 +213,7 @@ export function PriceTicker() {
       </div>
       <div
         className="flex gap-8 whitespace-nowrap py-3 pl-16"
-        style={{ width: "200%", animation: "ticker-marquee 28s linear infinite" }}
+        style={{ width: "200%", animation: "ticker-marquee 32s linear infinite" }}
         role="list"
         aria-label="实时行情"
       >
