@@ -65,7 +65,7 @@ export function NewsAnnouncement() {
         return t("news.general");
     }
   };
-  return <Card className="relative overflow-hidden border-red-500/60 p-6 max-w-5xl mx-auto mb-8" style={{ background: 'linear-gradient(135deg, hsl(0 70% 25%), hsl(0 60% 18%), hsl(0 70% 22%))' }}>
+  return <Card className="relative overflow-hidden border-red-500/60 p-6 max-w-5xl mx-auto mb-8" style={{ background: 'linear-gradient(135deg, hsl(0 85% 45%), hsl(355 80% 40%), hsl(0 85% 42%))' }}>
       {/* 鞭炮装饰 */}
       <div className="absolute top-2 left-3 text-2xl opacity-70 animate-bounce" style={{ animationDuration: '2s' }}>🧨</div>
       <div className="absolute top-4 right-4 text-2xl opacity-70 animate-bounce" style={{ animationDuration: '2.5s' }}>🎆</div>
