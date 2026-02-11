@@ -27,15 +27,6 @@ export function NewsAnnouncement() {
     urgent: false
   }, {
     id: 3,
-    title: "USD.ONLINE祝全球华人新年快乐🧧",
-    titleEn: "USD.ONLINE Wishes All Chinese Around the World a Happy New Year🧧",
-    content: "USD.ONLINE祝全球华人新年快乐，万事如意，蛇年大吉！",
-    contentEn: "USD.ONLINE wishes all Chinese around the world a Happy New Year! Wishing you all the best in the Year of the Snake!",
-    date: "2026-02-11",
-    type: "event",
-    urgent: false
-  }, {
-    id: 4,
     title: "USD.ONLINE主网将于2026年Q2正式上线",
     titleEn: "USD.ONLINE Mainnet to Launch in Q2 2026",
     content: "USD.ONLINE主网将于2026年第二季度正式上线，敬请期待",
