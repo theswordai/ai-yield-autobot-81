@@ -8,6 +8,15 @@ export function NewsAnnouncement() {
 
   // 这里可以后续连接到API或者数据库来获取公告
   const [announcements] = useState([{
+    id: 4,
+    title: "🧧 USD.ONLINE祝全球华人新年快乐，马到成功！！🎆",
+    titleEn: "🧧 USD.ONLINE Wishes All Chinese Around the World a Happy New Year! Great Success! 🎆",
+    content: "恭喜发财，万事如意！USD.ONLINE与您共迎新春佳节！",
+    contentEn: "Wishing you prosperity and good fortune! USD.ONLINE celebrates the Lunar New Year with you!",
+    date: "2026-02-11",
+    type: "event",
+    urgent: true
+  }, {
     id: 1,
     title: "USD.ONLINE即将上线🚀",
     titleEn: "USD.ONLINE LAUNCH SOON🚀",
@@ -56,15 +65,23 @@ export function NewsAnnouncement() {
         return t("news.general");
     }
   };
-  return <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 max-w-5xl mx-auto mb-8">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-          <Megaphone className="w-4 h-4 text-white" />
+  return <Card className="relative overflow-hidden border-red-500/60 p-6 max-w-5xl mx-auto mb-8" style={{ background: 'linear-gradient(135deg, hsl(0 70% 25%), hsl(0 60% 18%), hsl(0 70% 22%))' }}>
+      {/* 鞭炮装饰 */}
+      <div className="absolute top-2 left-3 text-2xl opacity-70 animate-bounce" style={{ animationDuration: '2s' }}>🧨</div>
+      <div className="absolute top-4 right-4 text-2xl opacity-70 animate-bounce" style={{ animationDuration: '2.5s' }}>🎆</div>
+      <div className="absolute bottom-3 left-6 text-xl opacity-50">🎇</div>
+      <div className="absolute bottom-2 right-8 text-xl opacity-50 animate-bounce" style={{ animationDuration: '3s' }}>🧨</div>
+      <div className="absolute top-1/2 right-2 text-lg opacity-30">🏮</div>
+      <div className="absolute top-1/2 left-1 text-lg opacity-30">🏮</div>
+
+      <div className="flex items-center gap-3 mb-4 relative z-10">
+        <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
+          <Megaphone className="w-4 h-4 text-red-900" />
         </div>
-        <h3 className="text-xl font-semibold">NEWS</h3>
+        <h3 className="text-xl font-semibold text-yellow-300">NEWS 🎊</h3>
       </div>
       
-      <div className="space-y-3">
+      <div className="space-y-3 relative z-10">
         {announcements.map((announcement) => (
           <div key={announcement.id} className="border border-border/20 rounded-lg p-4 bg-background/30 hover:bg-background/50 transition-colors">
             <div className="flex items-start justify-between gap-3 mb-2">
