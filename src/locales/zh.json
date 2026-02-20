@@ -986,6 +986,9 @@
   "staking": {
     "title": "USDT 智能质押",
     "heroTitle": "这是你的专属 算法驱动舱，AI 自动分配资产，汇聚 DeFi、CEX、跨链策略于一体，让资本流动即刻转化为全球善意回响。",
+    "heroTitleLine1": "这是你的专属算法驱动舱",
+    "heroTitleLine2": "AI 自动分配资产，汇聚 DeFi、CEX、跨链策略于一体",
+    "heroTitleLine3": "让资本流动即刻转化为全球善意回响",
     "contractSafeguard": "合约保障",
     "transparentOnChain": "链上透明",
     "communityDriven": "社区驱动",

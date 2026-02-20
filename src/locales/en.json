@@ -764,6 +764,9 @@
   "staking": {
     "title": "USDT Smart Staking",
     "heroTitle": "This is your exclusive algorithmic driving cabin, AI automatically allocates assets, combining DeFi, CEX, and cross-chain strategies to instantly transform capital flows into global goodwill resonance.",
+    "heroTitleLine1": "Your Exclusive Algorithmic Engine",
+    "heroTitleLine2": "AI allocates assets across DeFi, CEX & cross-chain strategies",
+    "heroTitleLine3": "Turning every capital flow into global goodwill",
     "contractSafeguard": "Contract Protection",
     "transparentOnChain": "On-chain Transparent",
     "communityDriven": "Community Driven",

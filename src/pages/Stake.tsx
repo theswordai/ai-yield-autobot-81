@@ -492,8 +492,12 @@ export default function Stake({
       {!embedded && <Navbar />}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl relative z-10`}>
-        <div className="mb-8 text-center">
-          <Title className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{t("staking.heroTitle")}</Title>
+        <div className="mb-8 text-center px-2">
+          <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">
+            <span className="block mb-1">{t("staking.heroTitleLine1")}</span>
+            <span className="block text-xl sm:text-3xl font-medium text-muted-foreground mb-1">{t("staking.heroTitleLine2")}</span>
+            <span className="block text-base sm:text-xl font-normal text-foreground/70">{t("staking.heroTitleLine3")}</span>
+          </Title>
           
           <div className="flex items-center justify-center gap-2 mt-4">
             <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
