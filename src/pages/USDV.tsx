@@ -62,7 +62,7 @@ export default function USDV() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Helmet>
         <title>{t("usdv.pageTitle")}</title>
         <meta name="description" content={t("usdv.pageDescription")} />
