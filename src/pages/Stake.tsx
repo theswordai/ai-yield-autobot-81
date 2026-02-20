@@ -520,39 +520,40 @@ export default function Stake({
           </div>
         </div>
 
-        {/* 钱包状态卡片 */}
-        <Card className="mb-8 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
-          <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Wallet className="w-5 h-5" />
-                {t("staking.walletStatus")}
-              </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">{t("staking.walletAddress")}</p>
-                <p className="font-mono text-sm">{short(account) || t("staking.notConnected")}</p>
+        <Card className="mb-6 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
+          <CardContent className="py-3 px-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Wallet className="w-4 h-4 text-primary" />
+                <span className="text-xs text-muted-foreground">{t("staking.walletStatus")}</span>
               </div>
-              <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">{t("staking.network")}</p>
-                <p className="font-semibold">{chainId ?? "-"}</p>
+              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-muted-foreground">{t("staking.walletAddress")}:</span>
+                <span className="font-mono text-xs">{short(account) || t("staking.notConnected")}</span>
               </div>
-              <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">{t("staking.usdtBalance")}</p>
-                <p className="font-semibold">{formatUnits(balance, USDT_DECIMALS)}</p>
+              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-muted-foreground">{t("staking.network")}:</span>
+                <span className="text-xs font-semibold">{chainId ?? "-"}</span>
               </div>
-              <div className="text-center p-4 bg-muted/20 rounded-lg">
-                <p className="text-sm text-muted-foreground mb-1">{t("staking.allowance")}</p>
-                <p className="font-semibold">{formatUnits(allowance, USDT_DECIMALS)}</p>
+              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-muted-foreground">{t("staking.usdtBalance")}:</span>
+                <span className="text-xs font-semibold">{formatUnits(balance, USDT_DECIMALS)}</span>
               </div>
+              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-muted-foreground">{t("staking.allowance")}:</span>
+                <span className="text-xs font-semibold">{formatUnits(allowance, USDT_DECIMALS)}</span>
+              </div>
+              {!account && (
+                <Button size="sm" className="ml-auto bg-gradient-primary hover:bg-gradient-primary/90 h-7 text-xs px-3" onClick={connect}>
+                  <Wallet className="w-3 h-3 mr-1" />
+                  {t("staking.connectWallet")}
+                </Button>
+              )}
             </div>
-            {!account && <div className="mt-4 text-center">
-              <Button className="bg-gradient-primary hover:bg-gradient-primary/90" onClick={connect}>
-                <Wallet className="w-4 h-4 mr-2" />
-                {t("staking.connectWallet")}
-              </Button>
-              </div>}
           </CardContent>
         </Card>
 
