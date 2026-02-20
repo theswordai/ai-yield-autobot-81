@@ -205,7 +205,7 @@ export function PriceTicker() {
   return (
     <div className="relative overflow-hidden rounded-xl border border-border bg-card/50 backdrop-blur animate-fade-in">
       <style>{`
-        @keyframes ticker-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes ticker-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
       `}</style>
       <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-accent pulse" aria-hidden />
@@ -213,7 +213,7 @@ export function PriceTicker() {
       </div>
       <div
         className="flex gap-3 whitespace-nowrap py-2 pl-16"
-        style={{ width: "200%", animation: "ticker-marquee 32s linear infinite" }}
+        style={{ width: "max-content", animation: "ticker-marquee 32s linear infinite" }}
         role="list"
         aria-label="实时行情"
       >
