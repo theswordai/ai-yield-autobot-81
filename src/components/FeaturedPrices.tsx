@@ -94,44 +94,39 @@ export function FeaturedPrices() {
         console.warn("Failed to fetch USDV price:", e);
       }
 
-      // Fetch BTC from CoinGecko with timeout
-      const btcController = new AbortController();
-      const btcTimeout = setTimeout(() => btcController.abort(), 10000);
-      
+      // Fetch BTC from Binance public API (no key needed, no CORS issues)
       try {
-        const btcRes = await fetch(
-          "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true",
-          { signal: btcController.signal }
-        );
-        clearTimeout(btcTimeout);
+        const [tickerRes, statsRes] = await Promise.all([
+          fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"),
+          fetch("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT"),
+        ]);
         
-        if (btcRes.ok) {
-          const btcJson = await btcRes.json();
-          const btcInfo = btcJson.bitcoin;
-          if (btcInfo) {
-            const newData = {
-              price: new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(btcInfo.usd),
-              change24h: btcInfo.usd_24h_change.toFixed(2),
-              isPositive: btcInfo.usd_24h_change >= 0,
-            };
-            setBtcData(newData);
-            
-            try {
-              localStorage.setItem(BTC_CACHE_KEY, JSON.stringify({
-                data: newData,
-                timestamp: Date.now()
-              }));
-            } catch (e) {
-              console.warn("Failed to cache BTC price:", e);
-            }
+        if (tickerRes.ok && statsRes.ok) {
+          const tickerJson = await tickerRes.json();
+          const statsJson = await statsRes.json();
+          const price = parseFloat(tickerJson.price);
+          const change = parseFloat(statsJson.priceChangePercent);
+          const newData = {
+            price: new Intl.NumberFormat("en-US", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(price),
+            change24h: change.toFixed(2),
+            isPositive: change >= 0,
+          };
+          setBtcData(newData);
+          
+          try {
+            localStorage.setItem(BTC_CACHE_KEY, JSON.stringify({
+              data: newData,
+              timestamp: Date.now()
+            }));
+          } catch (e) {
+            console.warn("Failed to cache BTC price:", e);
           }
         }
       } catch (e) {
-        clearTimeout(btcTimeout);
-        console.warn("Failed to fetch BTC price:", e);
+        console.warn("Failed to fetch BTC price from Binance:", e);
       }
     } catch (error) {
       console.warn(`Failed to fetch prices (attempt ${retryCount + 1}):`, error);
@@ -184,20 +179,19 @@ export function FeaturedPrices() {
     }
   };
 
-  // Fetch historical data for BTC
+  // Fetch historical data for BTC via Binance public API (no key, no CORS issue)
   const fetchBTCHistory = async () => {
     try {
       const res = await fetch(
-        "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30&interval=daily"
+        "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=30"
       );
       if (res.ok) {
         const json = await res.json();
-        if (json.prices) {
-          const history = json.prices.map((item: number[]) => ({
-            value: item[1]
-          }));
-          setBtcPriceHistory(history);
-        }
+        // Binance kline: [openTime, open, high, low, close, ...]
+        const history = json.map((item: (string | number)[]) => ({
+          value: parseFloat(item[4] as string) // close price
+        }));
+        setBtcPriceHistory(history);
       }
     } catch (e) {
       console.warn("Failed to fetch BTC history:", e);
