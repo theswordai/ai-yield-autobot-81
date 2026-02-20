@@ -153,6 +153,20 @@ export function HeroSection() {
           
           <NewsAnnouncement />
 
+          {/* About usd.online Video */}
+          <div className="max-w-3xl mx-auto mb-10">
+            <h2 className="text-lg font-semibold text-foreground mb-3 text-left">About usd.online</h2>
+            <div className="relative w-full rounded-xl overflow-hidden border border-border/50 shadow-lg" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/hYFWCQ-rtcw"
+                title="About usd.online"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+
           {/* Strategy Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
             {strategies.map((strategy, index) => <div key={index} className="group">
