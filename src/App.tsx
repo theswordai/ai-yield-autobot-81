@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { I18nProvider } from "@/components/I18nProvider";
+import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Trade from "./pages/Trade";
@@ -22,6 +23,7 @@ import MobileBottomNav from "./components/MobileBottomNav";
 const queryClient = new QueryClient();
 
 const App = () => (
+  <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
   <QueryClientProvider client={queryClient}>
     <I18nProvider>
       <TooltipProvider>
@@ -78,6 +80,7 @@ const App = () => (
       </TooltipProvider>
     </I18nProvider>
   </QueryClientProvider>
+  </ThemeProvider>
 );
 
 export default App;
