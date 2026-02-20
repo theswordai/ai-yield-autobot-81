@@ -8,69 +8,69 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Jupiter-inspired Dark Theme */
-    --background: 215 28% 9%;           /* Deep dark blue-gray */
-    --foreground: 210 40% 98%;          /* Nearly white */
+    /* Light Theme - Clean & Professional */
+    --background: 210 20% 97%;          /* Very light gray-white */
+    --foreground: 215 30% 12%;          /* Deep dark text */
     
-    --card: 215 32% 11%;                /* Slightly lighter dark */
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;                  /* Pure white cards */
+    --card-foreground: 215 30% 12%;
     
-    --popover: 215 32% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 30% 12%;
     
-    --primary: 47 96% 53%;              /* Jupiter yellow/gold */
-    --primary-foreground: 215 28% 9%;
+    --primary: 38 92% 48%;              /* Rich amber/gold */
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: 215 25% 18%;           /* Medium dark gray */
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 16% 92%;           /* Light gray */
+    --secondary-foreground: 215 30% 20%;
     
-    --muted: 215 25% 15%;
-    --muted-foreground: 215 13% 65%;    /* Medium gray text */
+    --muted: 210 16% 93%;
+    --muted-foreground: 215 14% 45%;    /* Medium gray text */
     
-    --accent: 142 71% 45%;              /* Green accent */
-    --accent-foreground: 210 40% 98%;
+    --accent: 142 60% 38%;              /* Deep green accent */
+    --accent-foreground: 0 0% 100%;
     
-    --destructive: 0 84% 60%;           /* Red */
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 78% 52%;           /* Red */
+    --destructive-foreground: 0 0% 100%;
     
-    --border: 215 25% 18%;              /* Border color */
-    --input: 215 25% 18%;               /* Input background */
-    --ring: 47 96% 53%;                 /* Focus ring color */
+    --border: 214 20% 86%;              /* Light border */
+    --input: 214 20% 94%;               /* Light input background */
+    --ring: 38 92% 48%;                 /* Focus ring color */
     
-    --radius: 0.75rem;                  /* Rounded corners */
+    --radius: 0.75rem;
 
     /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(47 96% 53%), hsl(45 90% 60%));
-    --gradient-secondary: linear-gradient(135deg, hsl(142 71% 45%), hsl(140 65% 50%));
-    --gradient-dark: linear-gradient(180deg, hsl(215 32% 11%), hsl(215 28% 9%));
+    --gradient-primary: linear-gradient(135deg, hsl(38 92% 48%), hsl(42 88% 58%));
+    --gradient-secondary: linear-gradient(135deg, hsl(142 60% 38%), hsl(140 55% 46%));
+    --gradient-dark: linear-gradient(180deg, hsl(210 20% 97%), hsl(210 16% 92%));
     
     /* Shadows */
-    --shadow-glow: 0 0 20px hsl(47 96% 53% / 0.3);
-    --shadow-card: 0 4px 6px -1px hsl(215 28% 9% / 0.5);
+    --shadow-glow: 0 0 20px hsl(38 92% 48% / 0.25);
+    --shadow-card: 0 4px 16px -2px hsl(215 30% 12% / 0.10);
     
     /* Shimmer effect */
     --shimmer-gradient: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.1) 20%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 255, 255, 0.1) 80%,
+      rgba(255, 255, 255, 0.6) 20%,
+      rgba(255, 255, 255, 0.9) 50%,
+      rgba(255, 255, 255, 0.6) 80%,
       transparent 100%
     );
 
     /* Sidebar tokens */
-    --sidebar-background: 215 32% 11%;
-    --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 47 96% 53%;
-    --sidebar-primary-foreground: 215 28% 9%;
-    --sidebar-accent: 215 25% 18%;
-    --sidebar-accent-foreground: 210 40% 90%;
-    --sidebar-border: 215 25% 18%;
-    --sidebar-ring: 47 96% 53%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 215 30% 20%;
+    --sidebar-primary: 38 92% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 16% 92%;
+    --sidebar-accent-foreground: 215 30% 20%;
+    --sidebar-border: 214 20% 86%;
+    --sidebar-ring: 38 92% 48%;
   }
 
   .dark {
-    /* Keep same values for dark mode */
+    /* Keep dark mode values intact */
     --background: 215 28% 9%;
     --foreground: 210 40% 98%;
   }
