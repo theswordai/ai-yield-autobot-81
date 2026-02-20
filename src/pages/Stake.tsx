@@ -540,12 +540,12 @@ export default function Stake({
               <div className="h-4 w-px bg-border hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.usdtBalance")}:</span>
-                <span className="text-xs font-semibold">{Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
+                <span className="text-xs font-semibold">${Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
               <div className="h-4 w-px bg-border hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.allowance")}:</span>
-                <span className="text-xs font-semibold">{formatUnits(allowance, USDT_DECIMALS)}</span>
+                <span className="text-xs font-semibold">${Number(formatUnits(allowance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
               {!account && (
                 <Button size="sm" className="ml-auto bg-gradient-primary hover:bg-gradient-primary/90 h-7 text-xs px-3" onClick={connect}>
