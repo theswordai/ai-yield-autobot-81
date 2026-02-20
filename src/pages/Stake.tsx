@@ -540,7 +540,7 @@ export default function Stake({
               <div className="h-4 w-px bg-border hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.usdtBalance")}:</span>
-                <span className="text-xs font-semibold">{formatUnits(balance, USDT_DECIMALS)}</span>
+                <span className="text-xs font-semibold">{Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
               <div className="h-4 w-px bg-border hidden sm:block" />
               <div className="flex items-center gap-1.5">
