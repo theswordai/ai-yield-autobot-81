@@ -212,7 +212,7 @@ export function PriceTicker() {
         <span className="text-xs text-muted-foreground">Live</span>
       </div>
       <div
-        className="flex gap-8 whitespace-nowrap py-3 pl-16"
+        className="flex gap-3 whitespace-nowrap py-2 pl-16"
         style={{ width: "200%", animation: "ticker-marquee 32s linear infinite" }}
         role="list"
         aria-label="实时行情"
@@ -220,7 +220,7 @@ export function PriceTicker() {
         {doubled.map((item, idx) => {
           const positive = item.change.startsWith("+");
           return (
-            <div key={idx} className="flex items-center gap-3 px-3 hover-scale" role="listitem">
+            <div key={idx} className="flex items-center gap-1.5 px-1.5 hover-scale" role="listitem">
               <span className="text-xs text-muted-foreground font-mono">{item.symbol}</span>
               <span className="text-sm font-semibold">${item.price}</span>
               <span className={`text-xs font-medium ${positive ? "text-accent" : "text-primary"}`}>
