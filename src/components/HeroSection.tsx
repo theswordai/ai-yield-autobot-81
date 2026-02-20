@@ -132,20 +132,20 @@ export function HeroSection() {
       
       
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-3 md:px-4 py-12 md:py-20">
-        <div className="text-center mb-8 md:mb-16">
+      <div className="relative z-10 container mx-auto px-4 py-20">
+        <div className="text-center mb-16">
 
-          <h1 className="text-3xl md:text-7xl font-bold mb-3 md:mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent leading-tight">
             {t("hero.title")}
           </h1>
           
-          <p className="text-base md:text-2xl text-muted-foreground mb-2 md:mb-4 max-w-4xl mx-auto animate-fade-in">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-4xl mx-auto animate-fade-in">
             {t("hero.subtitle")}
           </p>
-          <p className="text-sm md:text-lg text-muted-foreground mb-4 md:mb-6 max-w-4xl mx-auto animate-fade-in">
+          <p className="text-lg text-muted-foreground mb-6 max-w-4xl mx-auto animate-fade-in">
             {t("hero.description")}
           </p>
-          <div className="max-w-5xl mx-auto mb-6 md:mb-10">
+          <div className="max-w-5xl mx-auto mb-10">
             <PriceTicker />
           </div>
           
@@ -615,36 +615,36 @@ export function HeroSection() {
           </div>}
 
         {/* Features */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto">
-          <div className="text-center p-3 md:p-6">
-            <div className="w-10 h-10 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-              <Zap className="w-5 h-5 md:w-8 md:h-8 text-primary-foreground" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="text-center p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
+              <Zap className="w-8 h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-sm md:text-lg font-semibold mb-1 md:mb-2">{t("hero.crossChainEngine.title")}</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.crossChainEngine.title")}</h3>
             
           </div>
           
-          <div className="text-center p-3 md:p-6">
-            <div className="w-10 h-10 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
-              <Bot className="w-5 h-5 md:w-8 md:h-8 text-accent-foreground" />
+          <div className="text-center p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
+              <Bot className="w-8 h-8 text-accent-foreground" />
             </div>
-            <h3 className="text-sm md:text-lg font-semibold mb-1 md:mb-2">{t("hero.aiRotation.title")}</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.aiRotation.title")}</h3>
             
           </div>
           
-          <div className="text-center p-3 md:p-6">
-            <div className="w-10 h-10 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 md:w-8 md:h-8 text-primary-foreground" />
+          <div className="text-center p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
+              <TrendingUp className="w-8 h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-sm md:text-lg font-semibold mb-1 md:mb-2">{t("hero.defiVault.title")}</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.defiVault.title")}</h3>
             
           </div>
           
-          <div className="text-center p-3 md:p-6">
-            <div className="w-10 h-10 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
-              <Shield className="w-5 h-5 md:w-8 md:h-8 text-accent-foreground" />
+          <div className="text-center p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
+              <Shield className="w-8 h-8 text-accent-foreground" />
             </div>
-            <h3 className="text-sm md:text-lg font-semibold mb-1 md:mb-2">{t("hero.transparentProtocol.title")}</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("hero.transparentProtocol.title")}</h3>
             
           </div>
         </div>
