@@ -73,7 +73,7 @@ export function NewsAnnouncement() {
   const rest = announcements.slice(1);
 
   const AnnouncementItem = ({ announcement }: { announcement: typeof announcements[0] }) => (
-    <div className="border border-border/20 rounded-lg p-4 bg-background/30 hover:bg-background/50 transition-colors">
+    <div className="border border-white/20 rounded-lg p-4 bg-white/10 hover:bg-white/20 transition-colors">
       <div className="flex items-start justify-between gap-3 mb-2">
         <div className="flex items-center gap-2">
           <Badge variant={getTypeColor(announcement.type, announcement.urgent)}>
@@ -85,15 +85,15 @@ export function NewsAnnouncement() {
             </Badge>
           )}
         </div>
-        <div className="flex items-center gap-1 text-sm text-muted-foreground whitespace-nowrap">
+        <div className="flex items-center gap-1 text-sm text-yellow-200/80 whitespace-nowrap">
           <Clock className="w-3 h-3" />
           {announcement.date}
         </div>
       </div>
-      <h4 className="font-medium mb-2 text-foreground">
+      <h4 className="font-medium mb-2 text-white">
         {language === 'en' ? announcement.titleEn : announcement.title}
       </h4>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-yellow-100/80">
         {language === 'en' ? announcement.contentEn : announcement.content}
       </p>
     </div>
