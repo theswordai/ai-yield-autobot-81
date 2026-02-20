@@ -682,7 +682,7 @@ export function HeroSection() {
           <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">{t("hero.strategicPartners")}</h3>
           
           {/* Partner Logos */}
-          <div className="grid grid-cols-4 md:grid-cols-4 gap-3 md:gap-8 mb-12">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-8 mb-12">
             {partners.map(p => <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" className="group">
                 <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-2 md:p-6 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 flex flex-col items-center justify-center h-20 md:h-28">
                   <img src={p.logo} alt={`${p.name} logo`} className="h-6 md:h-10 w-auto object-contain mb-1 md:mb-2 group-hover:scale-105 transition-transform" loading="lazy" width={128} height={40} onError={e => {
