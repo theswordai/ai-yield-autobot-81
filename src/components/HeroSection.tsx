@@ -153,9 +153,9 @@ export function HeroSection() {
           
           <NewsAnnouncement />
 
-          {/* About usd.online Video */}
+          {/* About us Video */}
           <div className="max-w-3xl mx-auto mb-10">
-            <h2 className="text-lg font-semibold text-foreground mb-3 text-left">About usd.online</h2>
+            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase letter-spacing-widest">About us</h2>
             <div className="relative w-full rounded-xl overflow-hidden border border-border/50 shadow-lg" style={{ paddingBottom: "56.25%" }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
