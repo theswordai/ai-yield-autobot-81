@@ -496,7 +496,12 @@ export default function Stake({
           <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">
             <span className="block mb-1">{t("staking.heroTitleLine1")}</span>
             <span className="block text-xl sm:text-3xl font-medium text-muted-foreground mb-1">{t("staking.heroTitleLine2")}</span>
-            <span className="block text-base sm:text-xl font-normal text-foreground/70">{t("staking.heroTitleLine3")}</span>
+            <span className="block text-base sm:text-xl font-normal relative">
+              <span className="inline-block bg-gradient-to-r from-accent via-primary to-accent bg-[length:200%_auto] animate-[shimmer_2.5s_linear_infinite] bg-clip-text text-transparent">
+                {t("staking.heroTitleLine3")}
+              </span>
+              <span className="inline-block w-0.5 h-4 sm:h-5 bg-primary ml-0.5 align-middle animate-[blink_1s_step-end_infinite]" />
+            </span>
           </Title>
           
           <div className="flex items-center justify-center gap-2 mt-4">
