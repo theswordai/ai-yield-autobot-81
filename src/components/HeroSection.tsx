@@ -615,37 +615,33 @@ export function HeroSection() {
           </div>}
 
         {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          <div className="text-center p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-              <Zap className="w-8 h-8 text-primary-foreground" />
+        <div className="grid grid-cols-4 gap-2 max-w-6xl mx-auto">
+          <div className="text-center p-2 md:p-6">
+            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
+              <Zap className="w-4 h-4 md:w-8 md:h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">{t("hero.crossChainEngine.title")}</h3>
-            
+            <h3 className="text-xs md:text-lg font-semibold">{t("hero.crossChainEngine.title")}</h3>
           </div>
           
-          <div className="text-center p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
-              <Bot className="w-8 h-8 text-accent-foreground" />
+          <div className="text-center p-2 md:p-6">
+            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
+              <Bot className="w-4 h-4 md:w-8 md:h-8 text-accent-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">{t("hero.aiRotation.title")}</h3>
-            
+            <h3 className="text-xs md:text-lg font-semibold">{t("hero.aiRotation.title")}</h3>
           </div>
           
-          <div className="text-center p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-              <TrendingUp className="w-8 h-8 text-primary-foreground" />
+          <div className="text-center p-2 md:p-6">
+            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 md:w-8 md:h-8 text-primary-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">{t("hero.defiVault.title")}</h3>
-            
+            <h3 className="text-xs md:text-lg font-semibold">{t("hero.defiVault.title")}</h3>
           </div>
           
-          <div className="text-center p-6">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
-              <Shield className="w-8 h-8 text-accent-foreground" />
+          <div className="text-center p-2 md:p-6">
+            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
+              <Shield className="w-4 h-4 md:w-8 md:h-8 text-accent-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">{t("hero.transparentProtocol.title")}</h3>
-            
+            <h3 className="text-xs md:text-lg font-semibold">{t("hero.transparentProtocol.title")}</h3>
           </div>
         </div>
 
