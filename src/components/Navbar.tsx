@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { WalletConnector } from "@/components/WalletConnector";
 import { useI18n } from "@/hooks/useI18n";
+import { useTheme } from "next-themes";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { t, language } = useI18n();
+  const { theme, setTheme } = useTheme();
 
   // 获取当前语言前缀
   const langPrefix = language === 'zh' ? '/zh' : '/en';
