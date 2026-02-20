@@ -154,9 +154,9 @@ export function HeroSection() {
           <NewsAnnouncement />
 
           {/* About us Video */}
-          <div className="max-w-3xl mx-auto mb-4">
-            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase letter-spacing-widest">About us</h2>
-            <div className="relative w-full rounded-xl overflow-hidden border border-border/50 shadow-lg" style={{ paddingBottom: "56.25%" }}>
+          <div className="max-w-3xl mx-auto mb-4 bg-card border border-border/50 rounded-2xl p-5 shadow-card">
+            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase">About us</h2>
+            <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
                 src="https://www.youtube.com/embed/hYFWCQ-rtcw"
