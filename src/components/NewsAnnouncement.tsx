@@ -73,7 +73,7 @@ export function NewsAnnouncement() {
   const rest = announcements.slice(1);
 
   const AnnouncementItem = ({ announcement }: { announcement: typeof announcements[0] }) => (
-    <div className="border border-white/20 rounded-lg p-4 bg-white/10 hover:bg-white/20 transition-colors">
+    <div className="border border-border/40 rounded-lg p-4 bg-muted/30 hover:bg-muted/50 transition-colors">
       <div className="flex items-start justify-between gap-3 mb-2">
         <div className="flex items-center gap-2">
           <Badge variant={getTypeColor(announcement.type, announcement.urgent)}>
@@ -85,39 +85,28 @@ export function NewsAnnouncement() {
             </Badge>
           )}
         </div>
-        <div className="flex items-center gap-1 text-sm text-yellow-200/80 whitespace-nowrap">
+        <div className="flex items-center gap-1 text-sm text-muted-foreground whitespace-nowrap">
           <Clock className="w-3 h-3" />
           {announcement.date}
         </div>
       </div>
-      <h4 className="font-medium mb-2 text-white">
+      <h4 className="font-medium mb-2 text-foreground">
         {language === 'en' ? announcement.titleEn : announcement.title}
       </h4>
-      <p className="text-sm text-yellow-100/80">
+      <p className="text-sm text-muted-foreground">
         {language === 'en' ? announcement.contentEn : announcement.content}
       </p>
     </div>
   );
 
   return (
-    <Card
-      className="relative overflow-hidden border-red-500/60 p-6 max-w-5xl mx-auto mb-8"
-      style={{ background: 'linear-gradient(135deg, hsl(0 85% 45%), hsl(355 80% 40%), hsl(0 85% 42%))' }}
-    >
-      {/* 鞭炮装饰 */}
-      <div className="absolute top-2 left-3 text-2xl opacity-70 animate-bounce" style={{ animationDuration: '2s' }}>🧨</div>
-      <div className="absolute top-4 right-4 text-2xl opacity-70 animate-bounce" style={{ animationDuration: '2.5s' }}>🎆</div>
-      <div className="absolute bottom-3 left-6 text-xl opacity-50">🎇</div>
-      <div className="absolute bottom-2 right-8 text-xl opacity-50 animate-bounce" style={{ animationDuration: '3s' }}>🧨</div>
-      <div className="absolute top-1/2 right-2 text-lg opacity-30">🏮</div>
-      <div className="absolute top-1/2 left-1 text-lg opacity-30">🏮</div>
-
+    <Card className="relative overflow-hidden border-border/50 p-6 max-w-5xl mx-auto mb-8 bg-card">
       {/* Header */}
       <div className="flex items-center gap-3 mb-4 relative z-10">
-        <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
-          <Megaphone className="w-4 h-4 text-red-900" />
+        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+          <Megaphone className="w-4 h-4 text-primary-foreground" />
         </div>
-        <h3 className="text-xl font-semibold text-yellow-300">NEWS 🎊</h3>
+        <h3 className="text-xl font-semibold text-primary">NEWS</h3>
       </div>
 
       {/* 最新一条 - 默认显示 */}
@@ -127,7 +116,7 @@ export function NewsAnnouncement() {
         {/* 展开/收起按钮 */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-background/20 hover:bg-background/40 transition-colors text-yellow-200 text-sm font-medium"
+          className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-muted hover:bg-muted/70 transition-colors text-muted-foreground text-sm font-medium"
         >
           {expanded ? (
             <>
