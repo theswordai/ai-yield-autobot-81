@@ -58,9 +58,12 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Wallet Connector */}
-          <div className="hidden md:flex items-center">
+          {/* Wallet Connector + X Link */}
+          <div className="hidden md:flex items-center space-x-3">
             <WalletConnector />
+            <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <img src="/lovable-uploads/x-logo.png" alt="X" className="w-8 h-8 rounded" />
+            </a>
           </div>
 
           {/* Mobile menu button */}
