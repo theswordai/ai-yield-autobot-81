@@ -845,7 +845,7 @@ export function HeroSection() {
             </div>
 
             <div className="text-center">
-              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.officialX") || "官方 X"}</span>
+              <span className="text-sm text-muted-foreground mb-3 block">X</span>
               <div className="flex justify-center gap-4">
                 <a 
                   href="https://x.com/ONLINE_USD" 
