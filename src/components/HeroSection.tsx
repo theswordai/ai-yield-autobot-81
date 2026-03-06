@@ -843,6 +843,21 @@ export function HeroSection() {
                 </button>
               </div>
             </div>
+
+            <div className="text-center">
+              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.officialX") || "官方 X"}</span>
+              <div className="flex justify-center gap-4">
+                <a 
+                  href="https://x.com/ONLINE_USD" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group"
+                  title="X (Twitter)"
+                >
+                  <img src="/lovable-uploads/x-logo.png" alt="X" className="w-6 h-6 rounded" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
