@@ -66,8 +66,11 @@ export function Navbar() {
             </a>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile: X logo + menu button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <img src="/lovable-uploads/x-logo.png" alt="X" className="w-7 h-7 rounded" />
+            </a>
             <Button
               variant="ghost"
               size="sm"
