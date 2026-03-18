@@ -57,6 +57,8 @@ const App = () => (
           <Route path="/en/invite/:inviter" element={<Invite />} />
           <Route path="/en/i/:code" element={<Invite />} />
           <Route path="/en/whitepaper" element={<Whitepaper />} />
+          <Route path="/en/predict" element={<Predict />} />
+          <Route path="/en/predict/:id" element={<PredictDetail />} />
 
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
