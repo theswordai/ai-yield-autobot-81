@@ -1,60 +1,21 @@
 
 
-## Plan: Redesign Prediction Market Page to Match Polymarket Style
+# 修复钱包浏览器中显示默认 Lovable Logo 的问题
 
-### Overview
-Redesign the Predict page and detail page to closely resemble Polymarket's layout, and ensure all available data fields (including images, icons, event info, liquidity, 24hr volume) are pulled from the API.
+## 问题原因
 
-### Changes
+项目中存在一个 `public/favicon.ico` 文件，这是 Lovable 的默认图标。许多钱包内置浏览器会优先读取 `/favicon.ico`，而忽略 HTML 中通过 `<link>` 标签指定的 PNG 图标。因此即使 `index.html` 中已经配置了自定义图标，钱包浏览器仍然显示默认的 Lovable logo。
 
-#### 1. Update Edge Function — more data fields
-- Add `tag` parameter support and increase `limit` to 50
-- Pass through more fields: `image`, `icon`, `slug`, `liquidity`, `volume24hr`, `events`, `bestBid`, `bestAsk`, `outcomes`, `groupItemTitle`
+## 解决方案
 
-#### 2. Update `usePolymarkets.ts` — richer data model
-- Expand `PolyMarket` interface to include:
-  - `icon` (market icon/logo from API)
-  - `image` (market banner image)
-  - `slug` (for potential external links)
-  - `liquidity` (liquidityNum)
-  - `volume24hr` (24h trading volume)
-  - `endDate`, `outcomes` (parsed outcome labels)
-  - `events` (event title, series info)
-  - `groupItemTitle` (e.g. team name)
-- Map these from the raw API response
-- Improve `categorize()` with more keywords from Polymarket's actual categories (Iran, Cuba, NCAA, UCL, etc.)
+1. **将自定义 logo 复制为 `public/favicon.ico`**：用项目已有的自定义 logo（`/lovable-uploads/437537a7-4787-428f-b733-75aba9b434c0.png`）替换默认的 `public/favicon.ico`，确保钱包浏览器能正确加载。
 
-#### 3. Redesign `Predict.tsx` — Polymarket-style layout
-- **Top section**: Featured/trending market carousel or hero card (like Polymarket's top banner showing the hottest market with outcomes listed)
-- **Category tabs**: Horizontal scrollable tab bar matching Polymarket style (Trending, Politics, Sports, Crypto, Tech, etc.) — more like text tabs than pill buttons
-- **Market cards redesign**:
-  - Show market `icon`/`image` as a small avatar on the left (like Polymarket)
-  - Title on the right of icon
-  - Show YES percentage prominently with green/red Yes/No buttons
-  - Volume at bottom
-  - Cleaner, list-like layout option alongside grid view
-- **Search bar** moved to top-right area (like Polymarket)
+2. **在 `index.html` 中补充更多 favicon 声明**：添加多种尺寸和格式的图标声明，提高各类浏览器和钱包的兼容性：
+   - 添加 `sizes="192x192"` 和 `sizes="512x512"` 的图标
+   - 添加 `manifest` 相关的图标配置（如有必要）
 
-#### 4. Redesign `PredictDetail.tsx` — richer detail view
-- Show market image/banner at top
-- Display icon next to title
-- Show event context (from `events` array — event title, series)
-- Add liquidity info alongside volume
-- Keep the paper trading panel but style it more cleanly
+## 修改文件
 
-### Technical Details
-
-**Files to modify:**
-- `supabase/functions/polymarket-proxy/index.ts` — no changes needed, already returns full API response
-- `src/hooks/usePolymarkets.ts` — expand interface, map more fields
-- `src/pages/Predict.tsx` — full redesign with image support, Polymarket-style cards
-- `src/pages/PredictDetail.tsx` — add image/icon display, more stats
-
-**Key design elements from Polymarket to replicate:**
-- Small round icon/avatar next to market title
-- Clean white-on-dark card style
-- YES/NO price buttons with green/red colors
-- Volume displayed as "$10M Vol."
-- End date shown
-- Horizontal category filter tabs
+- **`public/favicon.ico`** -- 用自定义 logo 替换
+- **`index.html`** -- 更新 favicon 相关的 `<link>` 标签，增加兼容性声明
 
