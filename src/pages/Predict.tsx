@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from '@/hooks/useI18n';
@@ -6,70 +6,107 @@ import { usePolymarkets, PolyMarket } from '@/hooks/usePolymarkets';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, TrendingUp, Loader2 } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Search, TrendingUp, Loader2, Flame, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
-const CATEGORIES = ['All', 'Politics', 'Crypto', 'Sports', 'Tech', 'Entertainment', 'Other'];
+const CATEGORIES = ['🔥 Trending', 'Politics', 'Crypto', 'Sports', 'Tech', 'Entertainment', 'Other'];
+
+function formatVolume(v: number): string {
+  if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(1)}M`;
+  if (v >= 1_000) return `$${(v / 1_000).toFixed(1)}K`;
+  return `$${v.toFixed(0)}`;
+}
 
 export default function Predict() {
-  const { t, language } = useI18n();
+  const { language } = useI18n();
   const langPrefix = language === 'zh' ? '/zh' : '/en';
   const { data: markets = [], isLoading, error } = usePolymarkets();
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState('🔥 Trending');
   const [search, setSearch] = useState('');
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  const featured = useMemo(() => {
+    return markets.filter((m) => m.featured).slice(0, 3);
+  }, [markets]);
 
   const filtered = useMemo(() => {
     return markets.filter((m) => {
-      if (category !== 'All' && m.category !== category) return false;
+      if (category !== '🔥 Trending' && m.category !== category) return false;
       if (search && !m.title.toLowerCase().includes(search.toLowerCase())) return false;
       return true;
-    });
+    }).sort((a, b) => b.volume - a.volume);
   }, [markets, category, search]);
 
+  const scrollTabs = (dir: 'left' | 'right') => {
+    if (tabsRef.current) {
+      tabsRef.current.scrollBy({ left: dir === 'left' ? -150 : 150, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+    <div className="relative min-h-screen overflow-hidden bg-background">
       <Helmet>
         <title>{language === 'zh' ? '预测市场 | USD.ONLINE' : 'Prediction Market | USD.ONLINE'}</title>
-        <meta name="description" content="Explore prediction markets with real-time data" />
+        <meta name="description" content="Explore prediction markets with real-time data from Polymarket" />
       </Helmet>
       <Navbar />
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       <main className="container mx-auto px-3 sm:px-4 pt-16 sm:pt-20 pb-24 relative z-10">
-        <header className="mb-6 text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">
-            {language === 'zh' ? '🔮 预测市场' : '🔮 Prediction Market'}
-          </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            {language === 'zh' ? '基于 Polymarket 实时数据，探索全球热门预测事件' : 'Explore trending prediction events powered by Polymarket'}
-          </p>
-        </header>
 
-        {/* Search */}
-        <div className="relative max-w-md mx-auto mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder={language === 'zh' ? '搜索市场...' : 'Search markets...'}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 bg-card/50 border-border"
-          />
+        {/* Header with search */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+              {language === 'zh' ? '预测市场' : 'Prediction Markets'}
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+              {language === 'zh' ? '实时数据来自 Polymarket' : 'Real-time data from Polymarket'}
+            </p>
+          </div>
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder={language === 'zh' ? '搜索市场...' : 'Search markets...'}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 h-9 bg-card border-border text-sm"
+            />
+          </div>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                category === cat
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-card/60 text-muted-foreground hover:bg-card hover:text-foreground border border-border'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Featured Hero Cards */}
+        {!search && category === '🔥 Trending' && featured.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+            {featured.map((m) => (
+              <FeaturedCard key={m.id} market={m} langPrefix={langPrefix} language={language} />
+            ))}
+          </div>
+        )}
+
+        {/* Category Tabs */}
+        <div className="relative mb-6">
+          <button onClick={() => scrollTabs('left')} className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-1 bg-background/80 rounded-full border border-border hidden sm:block">
+            <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+          </button>
+          <div ref={tabsRef} className="flex gap-1 overflow-x-auto scrollbar-hide px-0 sm:px-6 pb-1">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg transition-colors shrink-0 ${
+                  category === cat
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => scrollTabs('right')} className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-1 bg-background/80 rounded-full border border-border hidden sm:block">
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </button>
         </div>
 
         {/* Content */}
@@ -86,9 +123,9 @@ export default function Predict() {
             {language === 'zh' ? '没有找到匹配的市场' : 'No markets found'}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-2">
             {filtered.map((market) => (
-              <MarketCard key={market.id} market={market} langPrefix={langPrefix} />
+              <MarketRow key={market.id} market={market} langPrefix={langPrefix} />
             ))}
           </div>
         )}
@@ -97,39 +134,89 @@ export default function Predict() {
   );
 }
 
-function MarketCard({ market, langPrefix }: { market: PolyMarket; langPrefix: string }) {
+/* ── Featured Hero Card ── */
+function FeaturedCard({ market, langPrefix, language }: { market: PolyMarket; langPrefix: string; language: string }) {
+  const yesPercent = Math.round(market.yesPrice * 100);
+  return (
+    <Link to={`${langPrefix}/predict/${market.id}`}>
+      <Card className="bg-card border-border hover:border-primary/50 transition-all duration-200 cursor-pointer overflow-hidden group">
+        {market.image && (
+          <div className="h-28 overflow-hidden">
+            <img src={market.image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          </div>
+        )}
+        <CardContent className="p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <Flame className="w-4 h-4 text-destructive shrink-0" />
+            <span className="text-[10px] font-semibold text-destructive uppercase tracking-wide">
+              {language === 'zh' ? '热门' : 'Trending'}
+            </span>
+          </div>
+          <h3 className="text-sm font-semibold leading-tight line-clamp-2 text-foreground mb-3">{market.title}</h3>
+          <div className="flex items-center gap-2">
+            <Button size="sm" className="h-7 px-3 text-xs bg-accent/20 text-accent hover:bg-accent/30 border-0">
+              {market.outcomes[0]} {yesPercent}¢
+            </Button>
+            <Button size="sm" className="h-7 px-3 text-xs bg-destructive/20 text-destructive hover:bg-destructive/30 border-0">
+              {market.outcomes[1]} {100 - yesPercent}¢
+            </Button>
+            <span className="ml-auto text-[10px] text-muted-foreground">{formatVolume(market.volume)} Vol.</span>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  );
+}
+
+/* ── Market Row (list-style card) ── */
+function MarketRow({ market, langPrefix }: { market: PolyMarket; langPrefix: string }) {
   const yesPercent = Math.round(market.yesPrice * 100);
   const noPercent = Math.round(market.noPrice * 100);
 
   return (
     <Link to={`${langPrefix}/predict/${market.id}`}>
-      <Card className="bg-card/60 border-border hover:border-primary/40 transition-all duration-200 cursor-pointer h-full">
-        <CardContent className="p-4 flex flex-col gap-3">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="text-sm font-semibold leading-tight line-clamp-3 flex-1">{market.title}</h3>
-            <Badge variant="secondary" className="text-xs shrink-0">{market.category}</Badge>
-          </div>
+      <div className="flex items-center gap-3 p-3 sm:p-4 rounded-xl bg-card border border-border hover:border-primary/40 transition-all duration-200 cursor-pointer group">
+        {/* Icon */}
+        <Avatar className="w-10 h-10 shrink-0 rounded-lg">
+          <AvatarImage src={market.icon} alt="" className="object-cover" />
+          <AvatarFallback className="rounded-lg bg-muted text-xs font-bold">
+            {market.title.charAt(0)}
+          </AvatarFallback>
+        </Avatar>
 
-          {/* Probability Bar */}
-          <div className="space-y-1.5">
-            <div className="flex justify-between text-xs">
-              <span className="text-accent font-medium">YES {yesPercent}%</span>
-              <span className="text-destructive font-medium">NO {noPercent}%</span>
-            </div>
-            <div className="h-2 rounded-full bg-secondary overflow-hidden flex">
-              <div className="bg-accent h-full transition-all" style={{ width: `${yesPercent}%` }} />
-              <div className="bg-destructive h-full transition-all" style={{ width: `${noPercent}%` }} />
-            </div>
+        {/* Title & meta */}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm font-medium leading-tight line-clamp-1 text-foreground group-hover:text-primary transition-colors">
+            {market.title}
+          </h3>
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-[10px] text-muted-foreground">{formatVolume(market.volume)} Vol.</span>
+            {market.volume24hr > 0 && (
+              <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
+                <TrendingUp className="w-3 h-3" />
+                {formatVolume(market.volume24hr)} 24h
+              </span>
+            )}
+            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">{market.category}</Badge>
           </div>
+        </div>
 
-          {/* Volume */}
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <TrendingUp className="w-3 h-3" />
-            <span>${market.volume >= 1000000 ? `${(market.volume / 1000000).toFixed(1)}M` : market.volume >= 1000 ? `${(market.volume / 1000).toFixed(1)}K` : market.volume.toFixed(0)}</span>
-            {market.featured && <Badge className="ml-auto text-[10px] px-1.5 py-0">🔥 Hot</Badge>}
+        {/* YES / NO buttons */}
+        <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] text-muted-foreground mb-0.5">{market.outcomes[0]}</span>
+            <div className={`px-3 py-1 rounded-md text-xs font-bold ${yesPercent >= 50 ? 'bg-accent/20 text-accent' : 'bg-accent/10 text-accent/70'}`}>
+              {yesPercent}¢
+            </div>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] text-muted-foreground mb-0.5">{market.outcomes[1]}</span>
+            <div className={`px-3 py-1 rounded-md text-xs font-bold ${noPercent >= 50 ? 'bg-destructive/20 text-destructive' : 'bg-destructive/10 text-destructive/70'}`}>
+              {noPercent}¢
+            </div>
+          </div>
+        </div>
+      </div>
     </Link>
   );
 }
