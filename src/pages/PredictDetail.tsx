@@ -98,7 +98,7 @@ export default function PredictDetail() {
               <CardContent className="p-4 sm:p-6">
                 {/* Title row */}
                 <div className="flex items-start gap-3 mb-4">
-                  <Avatar className="w-12 h-12 shrink-0 rounded-xl ring-1" style={{ ringColor: 'hsl(180 100% 70% / 0.5)' }}>
+                  <Avatar className="w-12 h-12 shrink-0 rounded-xl ring-1 ring-[hsl(180_100%_70%/0.5)]">
                     <AvatarImage src={market.icon} alt="" className="object-cover" />
                     <AvatarFallback className="rounded-xl bg-muted text-sm font-bold">
                       {market.title.charAt(0)}

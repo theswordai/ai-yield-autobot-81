@@ -212,7 +212,7 @@ function MarketRow({ market, langPrefix }: { market: PolyMarket; langPrefix: str
         style={{ borderColor: 'hsl(180 100% 70% / 0.15)' }}
       >
         {/* Icon */}
-        <Avatar className="w-10 h-10 shrink-0 rounded-lg ring-1" style={{ ringColor: 'hsl(180 100% 70% / 0.3)' }}>
+        <Avatar className="w-10 h-10 shrink-0 rounded-lg ring-1 ring-[hsl(180_100%_70%/0.3)]">
           <AvatarImage src={market.icon} alt="" className="object-cover" />
           <AvatarFallback className="rounded-lg bg-muted text-xs font-bold">
             {market.title.charAt(0)}
