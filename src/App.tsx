@@ -16,6 +16,8 @@ import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
+import Predict from "./pages/Predict";
+import PredictDetail from "./pages/PredictDetail";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
 
