@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { ArrowLeft, TrendingUp, DollarSign, Loader2, Droplets, Calendar, ExternalLink } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Loader2, Droplets, Calendar, ExternalLink, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const INITIAL_BALANCE = 10000;
@@ -42,9 +42,11 @@ export default function PredictDetail() {
   if (isLoading) {
     return (
       <div className="relative min-h-screen bg-background">
+        <div className="fixed inset-0 cyber-grid opacity-30 pointer-events-none" />
         <Navbar />
-        <div className="flex justify-center items-center pt-32">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="flex flex-col items-center justify-center pt-32 gap-3">
+          <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'hsl(180 100% 70%)' }} />
+          <span className="text-sm text-muted-foreground">{language === 'zh' ? '加载中...' : 'Loading...'}</span>
         </div>
       </div>
     );
@@ -53,10 +55,11 @@ export default function PredictDetail() {
   if (!market) {
     return (
       <div className="relative min-h-screen bg-background">
+        <div className="fixed inset-0 cyber-grid opacity-30 pointer-events-none" />
         <Navbar />
         <div className="container mx-auto px-4 pt-24 text-center">
           <p className="text-muted-foreground">{language === 'zh' ? '未找到市场' : 'Market not found'}</p>
-          <Link to={`${langPrefix}/predict`} className="text-primary underline mt-4 inline-block">
+          <Link to={`${langPrefix}/predict`} className="mt-4 inline-block" style={{ color: 'hsl(180 100% 70%)' }}>
             {language === 'zh' ? '返回列表' : 'Back to list'}
           </Link>
         </div>
@@ -69,6 +72,7 @@ export default function PredictDetail() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
+      <div className="fixed inset-0 cyber-grid opacity-30 pointer-events-none" />
       <Helmet>
         <title>{market.title} | USD.ONLINE</title>
       </Helmet>
@@ -81,19 +85,20 @@ export default function PredictDetail() {
 
         {/* Banner Image */}
         {market.image && (
-          <div className="rounded-xl overflow-hidden mb-6 h-40 sm:h-56">
+          <div className="rounded-xl overflow-hidden mb-6 h-40 sm:h-56 relative cyberpunk-card">
             <img src={market.image} alt="" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
           </div>
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Market Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Card className="bg-card border-border">
+            <Card className="cyberpunk-card rounded-xl">
               <CardContent className="p-4 sm:p-6">
                 {/* Title row */}
                 <div className="flex items-start gap-3 mb-4">
-                  <Avatar className="w-12 h-12 shrink-0 rounded-xl">
+                  <Avatar className="w-12 h-12 shrink-0 rounded-xl ring-1 ring-[hsl(180_100%_70%/0.5)]">
                     <AvatarImage src={market.icon} alt="" className="object-cover" />
                     <AvatarFallback className="rounded-xl bg-muted text-sm font-bold">
                       {market.title.charAt(0)}
@@ -101,13 +106,17 @@ export default function PredictDetail() {
                   </Avatar>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <Badge variant="secondary" className="text-[10px]">{market.category}</Badge>
+                      <Badge variant="secondary" className="text-[10px] border" style={{
+                        borderColor: 'hsl(180 100% 70% / 0.3)',
+                        background: 'hsl(180 100% 70% / 0.1)',
+                        color: 'hsl(180 100% 70%)',
+                      }}>{market.category}</Badge>
                       {market.slug && (
                         <a
                           href={`https://polymarket.com/event/${market.slug}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-primary transition-colors"
+                          className="text-muted-foreground hover:text-foreground transition-colors"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -123,12 +132,20 @@ export default function PredictDetail() {
                 {/* Probability */}
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between text-sm font-semibold">
-                    <span className="text-accent">{market.outcomes[0]} {yesPercent}%</span>
-                    <span className="text-destructive">{market.outcomes[1]} {noPercent}%</span>
+                    <span style={{ color: 'hsl(142 71% 45%)' }}>{market.outcomes[0]} {yesPercent}%</span>
+                    <span style={{ color: 'hsl(0 84% 60%)' }}>{market.outcomes[1]} {noPercent}%</span>
                   </div>
-                  <div className="h-3 rounded-full bg-muted overflow-hidden flex">
-                    <div className="bg-accent h-full rounded-l-full transition-all duration-500" style={{ width: `${yesPercent}%` }} />
-                    <div className="bg-destructive h-full rounded-r-full transition-all duration-500" style={{ width: `${noPercent}%` }} />
+                  <div className="h-3 rounded-full bg-muted overflow-hidden flex relative">
+                    <div className="h-full rounded-l-full transition-all duration-500" style={{
+                      width: `${yesPercent}%`,
+                      background: 'hsl(142 71% 45%)',
+                      boxShadow: '0 0 10px hsl(142 71% 45% / 0.5)',
+                    }} />
+                    <div className="h-full rounded-r-full transition-all duration-500" style={{
+                      width: `${noPercent}%`,
+                      background: 'hsl(0 84% 60%)',
+                      boxShadow: '0 0 10px hsl(0 84% 60% / 0.5)',
+                    }} />
                   </div>
                 </div>
 
@@ -142,7 +159,7 @@ export default function PredictDetail() {
 
                 {/* Description */}
                 {market.description && (
-                  <div className="mt-6 pt-4 border-t border-border">
+                  <div className="mt-6 pt-4 border-t" style={{ borderColor: 'hsl(180 100% 70% / 0.15)' }}>
                     <h2 className="text-sm font-semibold text-foreground mb-2">{language === 'zh' ? '详情' : 'Description'}</h2>
                     <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{market.description.slice(0, 1000)}</p>
                   </div>
@@ -150,11 +167,14 @@ export default function PredictDetail() {
 
                 {/* Events */}
                 {market.events.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-border">
+                  <div className="mt-4 pt-4 border-t" style={{ borderColor: 'hsl(180 100% 70% / 0.15)' }}>
                     <h2 className="text-sm font-semibold text-foreground mb-2">{language === 'zh' ? '相关事件' : 'Related Events'}</h2>
                     <div className="flex flex-wrap gap-2">
                       {market.events.map((e, i) => (
-                        <Badge key={i} variant="outline" className="text-xs">{e.title}</Badge>
+                        <Badge key={i} variant="outline" className="text-xs" style={{
+                          borderColor: 'hsl(180 100% 70% / 0.3)',
+                          color: 'hsl(180 100% 70%)',
+                        }}>{e.title}</Badge>
                       ))}
                     </div>
                   </div>
@@ -165,14 +185,17 @@ export default function PredictDetail() {
 
           {/* Trading Panel */}
           <div className="space-y-4">
-            <Card className="bg-card border-border">
+            <Card className="cyberpunk-card rounded-xl">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base font-semibold">{language === 'zh' ? '模拟交易' : 'Paper Trading'}</CardTitle>
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <Zap className="w-4 h-4" style={{ color: 'hsl(180 100% 70%)' }} />
+                  {language === 'zh' ? '模拟交易' : 'Paper Trading'}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="bg-muted rounded-xl p-4 text-center">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1">{language === 'zh' ? '虚拟余额' : 'Virtual Balance'}</p>
-                  <p className="text-2xl font-bold text-primary">${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+                <div className="hologram rounded-xl p-4 text-center">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">{language === 'zh' ? '虚拟余额' : 'Virtual Balance'}</p>
+                  <p className="text-2xl font-bold" style={{ color: 'hsl(180 100% 70%)' }}>${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
                 </div>
 
                 <Input
@@ -180,20 +203,31 @@ export default function PredictDetail() {
                   placeholder={language === 'zh' ? '输入金额' : 'Enter amount'}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="bg-background border-border h-10"
+                  className="bg-background border-border h-10 cyberpunk-glow"
+                  style={{ borderColor: 'hsl(180 100% 70% / 0.3)' }}
                 />
 
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     onClick={() => handleTrade(market.outcomes[0], market.yesPrice)}
-                    className="bg-accent/20 text-accent hover:bg-accent/30 border-0 font-bold"
+                    className="font-bold border-0"
+                    style={{
+                      background: 'hsl(142 71% 45% / 0.2)',
+                      color: 'hsl(142 71% 45%)',
+                      boxShadow: '0 0 10px hsl(142 71% 45% / 0.2)',
+                    }}
                     disabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > balance}
                   >
                     {market.outcomes[0]} {yesPercent}¢
                   </Button>
                   <Button
                     onClick={() => handleTrade(market.outcomes[1], market.noPrice)}
-                    className="bg-destructive/20 text-destructive hover:bg-destructive/30 border-0 font-bold"
+                    className="font-bold border-0"
+                    style={{
+                      background: 'hsl(0 84% 60% / 0.2)',
+                      color: 'hsl(0 84% 60%)',
+                      boxShadow: '0 0 10px hsl(0 84% 60% / 0.2)',
+                    }}
                     disabled={!amount || parseFloat(amount) <= 0 || parseFloat(amount) > balance}
                   >
                     {market.outcomes[1]} {noPercent}¢
@@ -207,6 +241,7 @@ export default function PredictDetail() {
                       variant="outline"
                       size="sm"
                       className="text-xs h-7"
+                      style={{ borderColor: 'hsl(180 100% 70% / 0.2)' }}
                       onClick={() => setAmount(String(v))}
                     >
                       ${v}
@@ -218,7 +253,7 @@ export default function PredictDetail() {
 
             {/* Positions */}
             {positions.length > 0 && (
-              <Card className="bg-card border-border">
+              <Card className="cyberpunk-card rounded-xl">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base font-semibold">{language === 'zh' ? '持仓记录' : 'Positions'}</CardTitle>
                 </CardHeader>
@@ -227,7 +262,10 @@ export default function PredictDetail() {
                     const isYes = pos.side === market.outcomes[0];
                     return (
                       <div key={i} className="flex justify-between items-center text-sm bg-muted rounded-lg px-3 py-2.5">
-                        <Badge className={`text-xs ${isYes ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'} border-0`}>
+                        <Badge className="text-xs border-0" style={{
+                          background: isYes ? 'hsl(142 71% 45% / 0.2)' : 'hsl(0 84% 60% / 0.2)',
+                          color: isYes ? 'hsl(142 71% 45%)' : 'hsl(0 84% 60%)',
+                        }}>
                           {pos.side}
                         </Badge>
                         <span className="font-medium text-foreground">${pos.amount.toFixed(2)}</span>
@@ -250,8 +288,8 @@ export default function PredictDetail() {
 
 function StatBox({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="bg-muted rounded-xl p-3 text-center">
-      <div className="flex justify-center mb-1 text-primary">{icon}</div>
+    <div className="hologram rounded-xl p-3 text-center">
+      <div className="flex justify-center mb-1" style={{ color: 'hsl(180 100% 70%)' }}>{icon}</div>
       <p className="text-[10px] text-muted-foreground">{label}</p>
       <p className="text-sm font-semibold text-foreground">{value}</p>
     </div>

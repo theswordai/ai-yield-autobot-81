@@ -97,7 +97,7 @@ export function usePolymarkets() {
   return useQuery({
     queryKey: ['polymarkets'],
     queryFn: fetchMarkets,
-    refetchInterval: 60000,
-    staleTime: 30000,
+    refetchInterval: 30000,
+    staleTime: 15000,
   });
 }
