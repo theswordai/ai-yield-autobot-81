@@ -858,6 +858,19 @@ export function HeroSection() {
                 </a>
               </div>
             </div>
+
+            <div className="text-center">
+              <span className="text-sm text-muted-foreground mb-3 block">{t("hero.predictMarket") || "预测市场"}</span>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={() => navigate(`/${currentLang}/predict`)}
+                  className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all duration-300 group"
+                  title="Prediction Market"
+                >
+                  <BarChart3 className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
