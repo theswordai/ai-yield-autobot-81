@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
 
   try {
     const url = new URL('https://gamma-api.polymarket.com/markets');
-    url.searchParams.set('limit', '20');
+    url.searchParams.set('limit', '100');
     url.searchParams.set('active', 'true');
     url.searchParams.set('closed', 'false');
     url.searchParams.set('order', 'volume24hr');
