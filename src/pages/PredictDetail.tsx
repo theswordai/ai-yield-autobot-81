@@ -15,6 +15,7 @@ import type { Market } from "@/data/markets";
 export default function PredictDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { data: liveMarkets } = usePolymarkets();
   const allMarkets = liveMarkets && liveMarkets.length > 0 ? liveMarkets : fallbackMarkets;
 
