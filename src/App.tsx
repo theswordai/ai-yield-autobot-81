@@ -16,8 +16,6 @@ import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
-import Predict from "./pages/Predict";
-import PredictDetail from "./pages/PredictDetail";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
 
@@ -44,8 +42,6 @@ const App = () => (
           <Route path="/zh/invite/:inviter" element={<Invite />} />
           <Route path="/zh/i/:code" element={<Invite />} />
           <Route path="/zh/whitepaper" element={<Whitepaper />} />
-          <Route path="/zh/predict" element={<Predict />} />
-          <Route path="/zh/predict/:id" element={<PredictDetail />} />
           
           <Route path="/en" element={<Index />} />
           <Route path="/en/invest" element={<Invest />} />
@@ -57,8 +53,6 @@ const App = () => (
           <Route path="/en/invite/:inviter" element={<Invite />} />
           <Route path="/en/i/:code" element={<Invite />} />
           <Route path="/en/whitepaper" element={<Whitepaper />} />
-          <Route path="/en/predict" element={<Predict />} />
-          <Route path="/en/predict/:id" element={<PredictDetail />} />
 
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
