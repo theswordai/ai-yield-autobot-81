@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Search, TrendingUp, Loader2, Flame, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, TrendingUp, Loader2, Flame, ChevronLeft, ChevronRight, Zap, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -47,21 +47,28 @@ export default function Predict() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Cyberpunk background grid */}
+      <div className="fixed inset-0 cyber-grid opacity-30 pointer-events-none" />
+      <div className="fixed inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
+
       <Helmet>
-        <title>{language === 'zh' ? '预测市场 | USD.ONLINE' : 'Prediction Market | USD.ONLINE'}</title>
+        <title>{language === 'zh' ? '预测市场 | USD.ONLINE' : 'Prediction Markets | USD.ONLINE'}</title>
         <meta name="description" content="Explore prediction markets with real-time data from Polymarket" />
       </Helmet>
       <Navbar />
       <main className="container mx-auto px-3 sm:px-4 pt-16 sm:pt-20 pb-24 relative z-10">
 
-        {/* Header with search */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground flex items-center gap-2">
+              <Zap className="w-5 h-5" style={{ color: 'hsl(180 100% 70%)' }} />
               {language === 'zh' ? '预测市场' : 'Prediction Markets'}
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-              {language === 'zh' ? '实时数据来自 Polymarket' : 'Real-time data from Polymarket'}
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 flex items-center gap-1.5">
+              <Activity className="w-3 h-3" style={{ color: 'hsl(180 100% 70%)' }} />
+              {language === 'zh' ? '实时数据 · 每30秒刷新' : 'Live data · Refreshes every 30s'}
+              <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'hsl(142 71% 45%)' }} />
             </p>
           </div>
           <div className="relative w-full sm:w-64">
@@ -70,7 +77,8 @@ export default function Predict() {
               placeholder={language === 'zh' ? '搜索市场...' : 'Search markets...'}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 h-9 bg-card border-border text-sm"
+              className="pl-10 h-9 bg-card border-border text-sm cyberpunk-glow"
+              style={{ borderColor: 'hsl(180 100% 70% / 0.3)' }}
             />
           </div>
         </div>
@@ -94,11 +102,16 @@ export default function Predict() {
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg transition-colors shrink-0 ${
+                className={`whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg transition-all shrink-0 ${
                   category === cat
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'text-foreground'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 }`}
+                style={category === cat ? {
+                  background: 'hsl(180 100% 70% / 0.15)',
+                  border: '1px solid hsl(180 100% 70% / 0.5)',
+                  boxShadow: '0 0 10px hsl(180 100% 70% / 0.2)',
+                } : {}}
               >
                 {cat}
               </button>
@@ -109,10 +122,23 @@ export default function Predict() {
           </button>
         </div>
 
+        {/* Stats bar */}
+        {!isLoading && !error && (
+          <div className="flex items-center gap-4 mb-4 px-1 text-[11px] text-muted-foreground">
+            <span>{language === 'zh' ? `共 ${filtered.length} 个市场` : `${filtered.length} markets`}</span>
+            <span className="w-px h-3 bg-border" />
+            <span>{language === 'zh' ? `总计 ${markets.length} 个活跃市场` : `${markets.length} active markets total`}</span>
+          </div>
+        )}
+
         {/* Content */}
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <div className="flex flex-col items-center justify-center py-20 gap-3">
+            <div className="relative">
+              <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'hsl(180 100% 70%)' }} />
+              <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ background: 'hsl(180 100% 70%)' }} />
+            </div>
+            <span className="text-sm text-muted-foreground">{language === 'zh' ? '正在同步数据...' : 'Syncing data...'}</span>
           </div>
         ) : error ? (
           <div className="text-center py-20 text-destructive">
@@ -139,25 +165,32 @@ function FeaturedCard({ market, langPrefix, language }: { market: PolyMarket; la
   const yesPercent = Math.round(market.yesPrice * 100);
   return (
     <Link to={`${langPrefix}/predict/${market.id}`}>
-      <Card className="bg-card border-border hover:border-primary/50 transition-all duration-200 cursor-pointer overflow-hidden group">
+      <Card className="cyberpunk-card hover:scale-[1.02] transition-all duration-300 cursor-pointer overflow-hidden group">
         {market.image && (
-          <div className="h-28 overflow-hidden">
+          <div className="h-28 overflow-hidden relative">
             <img src={market.image} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
           </div>
         )}
-        <CardContent className="p-3">
+        <CardContent className="p-3 relative">
           <div className="flex items-center gap-2 mb-2">
-            <Flame className="w-4 h-4 text-destructive shrink-0" />
-            <span className="text-[10px] font-semibold text-destructive uppercase tracking-wide">
-              {language === 'zh' ? '热门' : 'Trending'}
+            <Flame className="w-4 h-4 shrink-0" style={{ color: 'hsl(180 100% 70%)' }} />
+            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'hsl(180 100% 70%)' }}>
+              {language === 'zh' ? '热门' : 'TRENDING'}
             </span>
           </div>
           <h3 className="text-sm font-semibold leading-tight line-clamp-2 text-foreground mb-3">{market.title}</h3>
           <div className="flex items-center gap-2">
-            <Button size="sm" className="h-7 px-3 text-xs bg-accent/20 text-accent hover:bg-accent/30 border-0">
+            <Button size="sm" className="h-7 px-3 text-xs font-bold border-0" style={{
+              background: 'hsl(142 71% 45% / 0.2)',
+              color: 'hsl(142 71% 45%)',
+            }}>
               {market.outcomes[0]} {yesPercent}¢
             </Button>
-            <Button size="sm" className="h-7 px-3 text-xs bg-destructive/20 text-destructive hover:bg-destructive/30 border-0">
+            <Button size="sm" className="h-7 px-3 text-xs font-bold border-0" style={{
+              background: 'hsl(0 84% 60% / 0.2)',
+              color: 'hsl(0 84% 60%)',
+            }}>
               {market.outcomes[1]} {100 - yesPercent}¢
             </Button>
             <span className="ml-auto text-[10px] text-muted-foreground">{formatVolume(market.volume)} Vol.</span>
@@ -168,16 +201,18 @@ function FeaturedCard({ market, langPrefix, language }: { market: PolyMarket; la
   );
 }
 
-/* ── Market Row (list-style card) ── */
+/* ── Market Row ── */
 function MarketRow({ market, langPrefix }: { market: PolyMarket; langPrefix: string }) {
   const yesPercent = Math.round(market.yesPrice * 100);
   const noPercent = Math.round(market.noPrice * 100);
 
   return (
     <Link to={`${langPrefix}/predict/${market.id}`}>
-      <div className="flex items-center gap-3 p-3 sm:p-4 rounded-xl bg-card border border-border hover:border-primary/40 transition-all duration-200 cursor-pointer group">
+      <div className="cyberpunk-card flex items-center gap-3 p-3 sm:p-4 rounded-xl transition-all duration-200 cursor-pointer group hover:scale-[1.005]"
+        style={{ borderColor: 'hsl(180 100% 70% / 0.15)' }}
+      >
         {/* Icon */}
-        <Avatar className="w-10 h-10 shrink-0 rounded-lg">
+        <Avatar className="w-10 h-10 shrink-0 rounded-lg ring-1" style={{ ringColor: 'hsl(180 100% 70% / 0.3)' }}>
           <AvatarImage src={market.icon} alt="" className="object-cover" />
           <AvatarFallback className="rounded-lg bg-muted text-xs font-bold">
             {market.title.charAt(0)}
@@ -186,32 +221,44 @@ function MarketRow({ market, langPrefix }: { market: PolyMarket; langPrefix: str
 
         {/* Title & meta */}
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-medium leading-tight line-clamp-1 text-foreground group-hover:text-primary transition-colors">
+          <h3 className="text-sm font-medium leading-tight line-clamp-1 text-foreground group-hover:text-foreground transition-colors">
             {market.title}
           </h3>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-[10px] text-muted-foreground">{formatVolume(market.volume)} Vol.</span>
             {market.volume24hr > 0 && (
-              <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
+              <span className="text-[10px] flex items-center gap-0.5" style={{ color: 'hsl(180 100% 70% / 0.8)' }}>
                 <TrendingUp className="w-3 h-3" />
                 {formatVolume(market.volume24hr)} 24h
               </span>
             )}
-            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">{market.category}</Badge>
+            <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 border" style={{
+              borderColor: 'hsl(180 100% 70% / 0.3)',
+              background: 'hsl(180 100% 70% / 0.1)',
+              color: 'hsl(180 100% 70%)',
+            }}>{market.category}</Badge>
           </div>
         </div>
 
-        {/* YES / NO buttons */}
+        {/* YES / NO */}
         <div className="flex items-center gap-1.5 shrink-0">
           <div className="flex flex-col items-center">
             <span className="text-[10px] text-muted-foreground mb-0.5">{market.outcomes[0]}</span>
-            <div className={`px-3 py-1 rounded-md text-xs font-bold ${yesPercent >= 50 ? 'bg-accent/20 text-accent' : 'bg-accent/10 text-accent/70'}`}>
+            <div className="px-3 py-1 rounded-md text-xs font-bold" style={{
+              background: yesPercent >= 50 ? 'hsl(142 71% 45% / 0.2)' : 'hsl(142 71% 45% / 0.1)',
+              color: 'hsl(142 71% 45%)',
+              boxShadow: yesPercent >= 50 ? '0 0 8px hsl(142 71% 45% / 0.2)' : 'none',
+            }}>
               {yesPercent}¢
             </div>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-[10px] text-muted-foreground mb-0.5">{market.outcomes[1]}</span>
-            <div className={`px-3 py-1 rounded-md text-xs font-bold ${noPercent >= 50 ? 'bg-destructive/20 text-destructive' : 'bg-destructive/10 text-destructive/70'}`}>
+            <div className="px-3 py-1 rounded-md text-xs font-bold" style={{
+              background: noPercent >= 50 ? 'hsl(0 84% 60% / 0.2)' : 'hsl(0 84% 60% / 0.1)',
+              color: 'hsl(0 84% 60%)',
+              boxShadow: noPercent >= 50 ? '0 0 8px hsl(0 84% 60% / 0.2)' : 'none',
+            }}>
               {noPercent}¢
             </div>
           </div>
