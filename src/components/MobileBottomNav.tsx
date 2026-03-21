@@ -43,6 +43,13 @@ const MobileBottomNav = () => {
       icon: FileText, 
       path: `/${language}/whitepaper` 
     },
+    { 
+      id: "predict", 
+      label: "预测", 
+      labelEn: "Predict",
+      icon: TrendingUp, 
+      path: `/${language}/predict` 
+    },
   ];
 
   const isActive = (path: string) => {
