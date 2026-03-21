@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Rocket, Heart, Coins, Crown, FileText } from "lucide-react";
+import { Rocket, Heart, Coins, Crown, FileText, TrendingUp } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
 
 const MobileBottomNav = () => {
@@ -42,6 +42,13 @@ const MobileBottomNav = () => {
       labelEn: "Docs",
       icon: FileText, 
       path: `/${language}/whitepaper` 
+    },
+    { 
+      id: "predict", 
+      label: "预测", 
+      labelEn: "Predict",
+      icon: TrendingUp, 
+      path: `/${language}/predict` 
     },
   ];
 
