@@ -216,9 +216,7 @@ export default function Stake({
       setBalance(bal);
       setAllowance(alw);
 
-      // 获取用户仓位数据
-...
-      }
+      // 获取用户仓位数据 - handled elsewhere
     } catch (e: any) {
       console.error(t("staking.refreshFailed"), e);
       const isBadData = e?.code === "BAD_DATA" || e?.message?.includes("could not decode result data");
