@@ -152,7 +152,7 @@ export function useWeb3() {
     };
     (extProvider as any)?.on?.("accountsChanged", handleAccountsChanged as any);
     (extProvider as any)?.on?.("chainChanged", handleChainChanged as any);
-  }, []);
+  }, [ensureBSC]);
 
   const disconnect = useCallback(() => {
     setSigner(null);
