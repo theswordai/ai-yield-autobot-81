@@ -113,11 +113,21 @@ export function useWeb3() {
     const p = new BrowserProvider(extProvider);
     setProvider(p);
     const accs = await p.send("eth_requestAccounts", []);
-    const s = await p.getSigner();
+    let s = await p.getSigner();
     setSigner(s);
     setAccount(accs[0] ?? null);
     const n = await p.getNetwork();
-    setChainId(Number(n.chainId));
+    let cid = Number(n.chainId);
+    setChainId(cid);
+    if (cid !== 56) {
+      await ensureBSC(extProvider);
+      const p2 = new BrowserProvider(extProvider);
+      setProvider(p2);
+      s = await p2.getSigner();
+      setSigner(s);
+      const n2 = await p2.getNetwork();
+      setChainId(Number(n2.chainId));
+    }
 
     // Bind listeners to selected provider
     const handleAccountsChanged = async (accs: string[]) => {
