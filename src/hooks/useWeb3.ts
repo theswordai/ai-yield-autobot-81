@@ -63,6 +63,28 @@ export function useWeb3() {
     };
   }, []);
 
+  const ensureBSC = useCallback(async (eip: any) => {
+    try {
+      await eip.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x38" }],
+      });
+    } catch (err: any) {
+      if (err.code === 4902) {
+        await eip.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+            chainId: "0x38",
+            chainName: "BNB Smart Chain",
+            nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+            rpcUrls: ["https://bsc-dataseed.binance.org/"],
+            blockExplorerUrls: ["https://bscscan.com/"],
+          }],
+        });
+      }
+    }
+  }, []);
+
   const connect = useCallback(async () => {
     const eip = activeEip1193Ref.current || window.ethereum;
     if (!eip) throw new Error("未检测到钱包，请先安装或选择一个钱包");
@@ -73,8 +95,18 @@ export function useWeb3() {
     setSigner(s);
     setAccount(accs[0]);
     const n = await p.getNetwork();
-    setChainId(Number(n.chainId));
-  }, []);
+    const cid = Number(n.chainId);
+    setChainId(cid);
+    if (cid !== 56) {
+      await ensureBSC(eip);
+      const p2 = new BrowserProvider(eip);
+      setProvider(p2);
+      const s2 = await p2.getSigner();
+      setSigner(s2);
+      const n2 = await p2.getNetwork();
+      setChainId(Number(n2.chainId));
+    }
+  }, [ensureBSC]);
 
   const connectWith = useCallback(async (extProvider: Eip1193Provider) => {
     activeEip1193Ref.current = extProvider;
