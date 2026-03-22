@@ -201,6 +201,10 @@ export default function Stake({
   const refresh = async () => {
     try {
       if (!account || !usdt) return;
+      if (chainId && chainId !== 56) {
+        console.warn("当前网络不是 BSC，跳过合约调用");
+        return;
+      }
       console.log(t("staking.refreshUserData"));
       console.log("- " + t("staking.account") + ":", account);
       console.log("- " + t("staking.usdtContract") + ":", USDT_ADDRESS);
@@ -223,7 +227,12 @@ export default function Stake({
       }
     } catch (e: any) {
       console.error(t("staking.refreshFailed"), e);
-      toast.error(`${t("staking.dataRefreshFailed")}: ${e.message}`);
+      const isBadData = e?.code === "BAD_DATA" || e?.message?.includes("could not decode result data");
+      if (isBadData) {
+        toast.error("请切换到 BNB Chain 网络后重试");
+      } else {
+        toast.error(`${t("staking.dataRefreshFailed")}: ${e.message}`);
+      }
     }
   };
   useEffect(() => {
