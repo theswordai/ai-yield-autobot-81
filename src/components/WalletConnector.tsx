@@ -4,7 +4,7 @@ import { useInjectedWallets } from "@/hooks/useInjectedWallets";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Wallet, ChevronDown, LogOut, RefreshCw, Copy, Globe } from "lucide-react";
+import { Wallet, ChevronDown, LogOut, RefreshCw, Copy, Globe, ArrowRightLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useI18n } from "@/hooks/useI18n";
 
@@ -84,6 +84,34 @@ export function WalletConnector() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => disconnect()}>
           <LogOut className="w-4 h-4 mr-2" /> {t('wallet.disconnect')}
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={async () => {
+          try {
+            const eip = (window as any).ethereum;
+            if (!eip) return;
+            try {
+              await eip.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x38" }] });
+            } catch (err: any) {
+              if (err.code === 4902) {
+                await eip.request({
+                  method: "wallet_addEthereumChain",
+                  params: [{
+                    chainId: "0x38",
+                    chainName: "BNB Smart Chain",
+                    nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                    rpcUrls: ["https://bsc-dataseed.binance.org/"],
+                    blockExplorerUrls: ["https://bscscan.com/"],
+                  }],
+                });
+              }
+            }
+            toast.success("已切换到 BNB Chain");
+          } catch (e: any) {
+            toast.error(e?.message || "切换网络失败");
+          }
+        }}>
+          <ArrowRightLeft className="w-4 h-4 mr-2" /> 切换到 BNB Chain
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <div className="px-2 py-1.5">
