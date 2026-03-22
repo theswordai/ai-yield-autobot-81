@@ -216,7 +216,15 @@ export default function Stake({
       setBalance(bal);
       setAllowance(alw);
 
-      // 获取用户仓位数据 - handled elsewhere
+      // 获取用户仓位数据
+      if (lock) {
+        try {
+          const ids: bigint[] = await (lock as any).getUserPositions(account);
+          setUserPositions(ids || []);
+        } catch (e) {
+          setUserPositions([]);
+        }
+      }
     } catch (e: any) {
       console.error(t("staking.refreshFailed"), e);
       const isBadData = e?.code === "BAD_DATA" || e?.message?.includes("could not decode result data");
