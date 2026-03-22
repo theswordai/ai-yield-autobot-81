@@ -4,7 +4,7 @@ import { useInjectedWallets } from "@/hooks/useInjectedWallets";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Wallet, ChevronDown, LogOut, RefreshCw, Copy, Globe } from "lucide-react";
+import { Wallet, ChevronDown, LogOut, RefreshCw, Copy, Globe, ArrowRightLeft } from "lucide-react";
 import { toast } from "sonner";
 import { useI18n } from "@/hooks/useI18n";
 
