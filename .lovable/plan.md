@@ -1,21 +1,20 @@
 
 
-# 修复钱包浏览器中显示默认 Lovable Logo 的问题
+## 计划：钱包连接时自动切换到 BNB Chain
 
-## 问题原因
+### 问题
+连接钱包（如 OKX）时，如果钱包当前在错误的网络（如 chainId 9746），合约调用会报 `BAD_DATA` 错误。
 
-项目中存在一个 `public/favicon.ico` 文件，这是 Lovable 的默认图标。许多钱包内置浏览器会优先读取 `/favicon.ico`，而忽略 HTML 中通过 `<link>` 标签指定的 PNG 图标。因此即使 `index.html` 中已经配置了自定义图标，钱包浏览器仍然显示默认的 Lovable logo。
+### 方案
 
-## 解决方案
+#### 1. 修改 `src/hooks/useWeb3.ts`
+- 在 `connect()` 和 `connectWith()` 连接成功后，检查 chainId 是否为 56（BSC）
+- 如果不是，自动调用 `wallet_switchEthereumChain` 切换到 `0x38`
+- 如果钱包没有添加过 BSC 网络（错误码 4902），自动调用 `wallet_addEthereumChain` 添加 BSC 网络配置
+- 切换成功后刷新 provider/signer/chainId 状态
+- 使用 `activeEip1193Ref.current` 发送请求，兼容 OKX 等钱包
 
-1. **将自定义 logo 复制为 `public/favicon.ico`**：用项目已有的自定义 logo（`/lovable-uploads/437537a7-4787-428f-b733-75aba9b434c0.png`）替换默认的 `public/favicon.ico`，确保钱包浏览器能正确加载。
-
-2. **在 `index.html` 中补充更多 favicon 声明**：添加多种尺寸和格式的图标声明，提高各类浏览器和钱包的兼容性：
-   - 添加 `sizes="192x192"` 和 `sizes="512x512"` 的图标
-   - 添加 `manifest` 相关的图标配置（如有必要）
-
-## 修改文件
-
-- **`public/favicon.ico`** -- 用自定义 logo 替换
-- **`index.html`** -- 更新 favicon 相关的 `<link>` 标签，增加兼容性声明
+#### 2. 修改 `src/pages/Stake.tsx`
+- `refreshData` 中增加 `chainId !== 56` 判断，跳过合约调用
+- 捕获 `BAD_DATA` 错误，显示友好提示："请切换到 BNB Chain 网络"
 
