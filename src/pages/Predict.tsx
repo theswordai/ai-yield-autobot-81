@@ -222,7 +222,7 @@ export default function Predict() {
           </>
         )}
       </main>
-    </div>
+    </PageWrapper>
   );
 }
 
