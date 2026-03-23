@@ -162,7 +162,7 @@ export function FeaturedPrices() {
       const res = await fetch("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=30");
       if (res.ok) {
         const json = await res.json();
-        setBtcPriceHistory(json.map((item: (string | number)[]) => ({ value: parseFloat(item[4] as string) })));
+        setBtcPriceHistory(json.map((item: (string | number)[]) => ({ open: parseFloat(item[1] as string), close: parseFloat(item[4] as string), value: parseFloat(item[4] as string) })));
       }
     } catch (e) { console.warn("Failed to fetch BTC history:", e); }
   };
