@@ -39,8 +39,7 @@ export function MiniKChart({ color = "hsl(var(--primary))", data = [] }: MiniKCh
             {displayData.map((_, index) => (
               <Cell
                 key={index}
-                fill={index === displayData.length - 1 ? color : `${color}33`}
-                style={{ filter: index === displayData.length - 1 ? `drop-shadow(0 0 6px ${color})` : 'none' }}
+                fill={index === displayData.length - 1 ? color : `${color}99`}
               />
             ))}
           </Bar>
