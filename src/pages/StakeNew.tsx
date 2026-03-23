@@ -226,6 +226,6 @@ export default function StakeNew() {
           </p>
         </div>
       </main>
-    </div>
+    </PageWrapper>
   );
 }
