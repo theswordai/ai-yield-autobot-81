@@ -42,12 +42,12 @@ export default function PredictDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <PageWrapper>
         <Navbar />
         <div className="flex items-center justify-center pt-32">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
