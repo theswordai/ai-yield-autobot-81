@@ -220,8 +220,31 @@ export function HeroSection() {
         {/* ===== FEATURED PRICES ===== */}
         <FeaturedPrices />
         
-        {/* ===== NEWS ===== */}
-        <NewsAnnouncement />
+        {/* ===== NEWS + FEATURE CARDS SIDE BY SIDE ===== */}
+        <div className="max-w-6xl mx-auto mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left: NEWS */}
+            <div className="lg:col-span-1">
+              <NewsAnnouncement />
+            </div>
+
+            {/* Right: Feature Cards 2x2 */}
+            <div className="lg:col-span-2 grid grid-cols-2 gap-4">
+              {featureCards.map((card, index) => (
+                <div
+                  key={index}
+                  className="group relative rounded-xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm p-6 md:p-8 hover:border-primary/40 hover:bg-card/50 transition-all duration-300"
+                >
+                  <div className="w-10 h-10 md:w-12 md:h-12 mb-4 md:mb-5 text-primary">
+                    {card.icon}
+                  </div>
+                  <h3 className="text-base md:text-lg font-bold mb-2 text-foreground">{card.title}</h3>
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{card.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* ===== ABOUT US VIDEO ===== */}
         <div className="max-w-3xl mx-auto mb-16">
@@ -236,24 +259,6 @@ export function HeroSection() {
                 allowFullScreen
               />
             </div>
-          </div>
-        </div>
-
-        {/* ===== FEATURE CARDS ===== */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {featureCards.map((card, index) => (
-              <div
-                key={index}
-                className="group relative rounded-xl border border-border/40 bg-card/40 backdrop-blur-sm p-5 md:p-6 hover:border-primary/30 hover:bg-card/60 transition-all duration-300"
-              >
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3 md:mb-4 text-primary group-hover:bg-primary/20 transition-colors">
-                  {card.icon}
-                </div>
-                <h3 className="text-xs md:text-sm font-semibold mb-1 md:mb-2 text-foreground">{card.title}</h3>
-                <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed line-clamp-3">{card.description}</p>
-              </div>
-            ))}
           </div>
         </div>
 
