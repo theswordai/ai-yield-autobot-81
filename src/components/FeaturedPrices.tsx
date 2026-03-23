@@ -150,7 +150,7 @@ export function FeaturedPrices() {
       if (res.ok) {
         const json = await res.json();
         if (json.data?.attributes?.ohlcv_list) {
-          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({ value: item[4] }));
+          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({ open: item[1], close: item[4], value: item[4] }));
           setUsdvPriceHistory(history.reverse());
         }
       }
