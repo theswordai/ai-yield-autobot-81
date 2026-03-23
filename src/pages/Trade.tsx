@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Lock, TrendingUp, Calendar, DollarSign } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 
 export default function Trade({ embedded = false }: { embedded?: boolean }) {
   const [amount, setAmount] = useState([200]);

@@ -867,5 +867,5 @@ export default function Stake({
           </div>
         </div>
       </main>
-    </div>;
+    </PageWrapper>;
 }
