@@ -176,7 +176,7 @@ export function FeaturedPrices() {
       if (res.ok) {
         const json = await res.json();
         if (json.prices) {
-          setTrumpPriceHistory(json.prices.map((p: [number, number]) => ({ value: p[1] })));
+          setTrumpPriceHistory(json.prices.map((p: [number, number], i: number, arr: [number, number][]) => ({ open: i > 0 ? arr[i - 1][1] : p[1], close: p[1], value: p[1] })));
         }
       }
     } catch (e) { console.warn("Failed to fetch TRUMP history:", e); }
