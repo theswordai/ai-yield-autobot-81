@@ -34,7 +34,7 @@ const Index = () => {
       </Helmet>
       <Navbar />
       <HeroSection />
-    </div>
+    </PageWrapper>
   );
 };
 
