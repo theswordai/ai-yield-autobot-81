@@ -34,6 +34,6 @@ export default function Whitepaper() {
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
