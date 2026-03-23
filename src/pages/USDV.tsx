@@ -415,6 +415,6 @@ export default function USDV() {
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
