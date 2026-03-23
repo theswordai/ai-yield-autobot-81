@@ -68,7 +68,7 @@ export default function PredictDetail() {
   const noPercent = Math.round(market.noPrice * 100);
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Helmet>
         <title>{market.title} | USD.ONLINE</title>
       </Helmet>
