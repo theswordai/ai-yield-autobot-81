@@ -50,5 +50,5 @@ export default function UserCenter() {
           </div>
         </Tabs>
       </main>
-    </div>;
+    </PageWrapper>;
 }
