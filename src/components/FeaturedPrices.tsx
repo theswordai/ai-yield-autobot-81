@@ -217,21 +217,23 @@ export function FeaturedPrices() {
   const cards = [
     {
       key: "usdv",
+      tag: "STABLE LP",
       label: "USDV Token",
       data: usdvData,
       fallbackPrice: "0.0100",
       color: "hsl(var(--primary))",
       history: usdvPriceHistory,
       extra: account ? (
-        <div className="mt-4 pt-4 border-t border-border">
+        <div className="mt-3 pt-3 border-t border-border/30">
           <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
-          <div className="text-lg font-semibold text-foreground">{formatBalance(usdvBalance)} USDV</div>
-          <div className="text-xs text-muted-foreground mt-1">≈ ${calculateUsdValue()}</div>
+          <div className="text-base font-semibold text-foreground">{formatBalance(usdvBalance)} USDV</div>
+          <div className="text-xs text-muted-foreground mt-0.5">≈ ${calculateUsdValue()}</div>
         </div>
       ) : null,
     },
     {
       key: "btc",
+      tag: "BENCHMARK",
       label: "Bitcoin",
       data: btcData,
       fallbackPrice: "--",
@@ -241,6 +243,7 @@ export function FeaturedPrices() {
     },
     {
       key: "trump",
+      tag: "CONVICTION",
       label: "TRUMP",
       data: trumpData,
       fallbackPrice: "--",
