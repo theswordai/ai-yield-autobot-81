@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Twitter, Send, MessageCircle } from "lucide-react";
+import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
@@ -11,6 +11,7 @@ import { FeaturedPrices } from "@/components/FeaturedPrices";
 import { useI18n } from "@/hooks/useI18n";
 import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 import metamaskLogo from "@/assets/metamask-logo.png";
+
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
@@ -18,6 +19,7 @@ export function HeroSection() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentLang = location.pathname.startsWith('/en') ? 'en' : 'zh';
+
   const strategies = [{
     icon: "⚡",
     title: t("hero.crossChainEngine.title"),
@@ -40,9 +42,7 @@ export function HeroSection() {
     color: "text-primary",
     change: "+0.9%"
   }];
-  const handleStrategyClick = (strategy: any) => {
-    setShowDetails(true);
-  };
+
   const partners = [{
     name: "FCA",
     href: "https://www.fca.org.uk/",
@@ -124,84 +124,109 @@ export function HeroSection() {
     logo: "/lovable-uploads/a5ac8a2f-2dab-47d3-a9a1-5dd924cf7b1e.png",
     tagline: t('partners.jupiter')
   }] as const;
-  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-dark">
-      
-      {/* Premium gradient backdrop */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10" />
-      
-      
-      
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-20">
-        <div className="text-center mb-16">
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent leading-tight">
+  const ecosystemFeatures = [
+    { icon: <Zap className="w-5 h-5 text-primary" />, title: t("hero.crossChainEngine.title") },
+    { icon: <Bot className="w-5 h-5 text-primary" />, title: t("hero.aiRotation.title") },
+    { icon: <TrendingUp className="w-5 h-5 text-accent" />, title: t("hero.defiVault.title") },
+    { icon: <Shield className="w-5 h-5 text-accent" />, title: t("hero.transparentProtocol.title") },
+  ];
+
+  return (
+    <section className="relative min-h-screen overflow-hidden mesh-bg">
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 pt-20 pb-10">
+        
+        {/* Hero Title */}
+        <div className="mb-6">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground leading-tight">
             {t("hero.title")}
           </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-4xl mx-auto animate-fade-in">
+          <p className="text-xl md:text-2xl font-semibold text-primary mt-2">
             {t("hero.subtitle")}
           </p>
-          <p className="text-lg text-muted-foreground mb-6 max-w-4xl mx-auto animate-fade-in">
+          <p className="text-sm md:text-base text-muted-foreground mt-1">
             {t("hero.description")}
           </p>
-          <div className="max-w-5xl mx-auto mb-10">
-            <PriceTicker />
-          </div>
-          
+        </div>
+
+        {/* Price Ticker */}
+        <div className="mb-8">
+          <PriceTicker />
+        </div>
+
+        {/* USDV Token Value Card */}
+        <div className="mb-6">
           <FeaturedPrices />
-          
-          <NewsAnnouncement />
+        </div>
 
-          {/* About us Video */}
-          <div className="max-w-3xl mx-auto mb-1 bg-card border border-border/50 rounded-2xl p-5 shadow-card">
-            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase">About us</h2>
-            <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/hYFWCQ-rtcw"
-                title="About usd.online"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+        {/* CTA Buttons */}
+        <div className="flex flex-col gap-3 mb-8 max-w-lg">
+          <button
+            onClick={() => navigate(`/${currentLang}/invest`)}
+            className="glass-card flex items-center justify-between px-5 py-4 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <Bot className="w-5 h-5 text-primary" />
+              <span className="font-semibold text-foreground">{t("invest.charityButtonName")}</span>
             </div>
-          </div>
+            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
 
-          {/* Strategy Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
-            {strategies.map((strategy, index) => <div key={index} className="group">
-                
-              </div>)}
+          <button
+            onClick={() => setShowDetails(!showDetails)}
+            className="glass-card flex items-center justify-between px-5 py-4 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
+          >
+            <div className="flex items-center gap-3">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              <span className="font-semibold text-foreground">{t("invest.strategyButtonName")}</span>
+            </div>
+            {showDetails ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
+          </button>
+        </div>
+
+        {/* News & Alerts */}
+        <div className="mb-8">
+          <NewsAnnouncement />
+        </div>
+
+        {/* About us Video */}
+        <div className="glass-card p-5 mb-8 max-w-3xl">
+          <h2 className="text-sm font-bold tracking-widest text-primary mb-4 uppercase">About us</h2>
+          <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/hYFWCQ-rtcw"
+              title="About usd.online"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
 
         {/* Strategy Details Section */}
-        {showDetails && <div className="mb-16 animate-fade-in">
+        {showDetails && (
+          <div className="mb-8 animate-fade-in">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">{t("hero.strategyDetails")}</h2>
+              <h2 className="text-2xl font-bold mb-6">{t("hero.strategyDetails")}</h2>
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* 跨链阿尔法引擎策略 - 完整版 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-3">
+              <div className="space-y-6">
+                {/* 跨链阿尔法引擎策略 */}
+                <div className="glass-card p-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-semibold">{t("hero.crossChainEngine.title")}</h3>
-                    </div>
+                    <h3 className="text-xl font-semibold">{t("hero.crossChainEngine.title")}</h3>
                   </div>
                   
-                  {/* 定位、执行、风险 */}
                   <div className="space-y-2 text-sm mb-6 bg-primary/5 p-4 rounded-lg">
                     <p className="text-foreground">{t("hero.crossChainEngine.positioning")}</p>
                     <p className="text-foreground">{t("hero.crossChainEngine.execution")}</p>
                     <p className="text-foreground">{t("hero.crossChainEngine.risk")}</p>
                   </div>
                   
-                  {/* 三个子策略 */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* A. DEX 搬砖 */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-primary text-base">{t("hero.crossChainEngine.strategyA")}</p>
                       <div className="space-y-2 pl-2">
@@ -212,7 +237,6 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* B. 低风险 MEV */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-primary text-base">{t("hero.crossChainEngine.strategyB")}</p>
                       <div className="space-y-2 pl-2">
@@ -223,7 +247,6 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* C. 新币狙击 */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-primary text-base">{t("hero.crossChainEngine.strategyC")}</p>
                       <div className="space-y-2 pl-2">
@@ -232,9 +255,7 @@ export function HeroSection() {
                     </div>
                   </div>
                   
-                  {/* C策略详细内容 */}
                   <div className="mt-6 p-4 bg-accent/5 rounded-lg space-y-4 text-sm">
-                    {/* 1) 发现 */}
                     <div>
                       <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCDiscovery")}</p>
                       <div className="pl-4 space-y-2">
@@ -252,7 +273,6 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* 2) 首次建仓 */}
                     <div>
                       <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCSniping")}</p>
                       <div className="pl-4 space-y-2">
@@ -276,7 +296,6 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* 3) 指标与看板 */}
                     <div>
                       <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCIndicatorsTitle")}</p>
                       <div className="pl-4 space-y-1">
@@ -286,7 +305,6 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* 4) 风控护栏 */}
                     <div>
                       <p className="font-semibold text-accent mb-2">{t("hero.crossChainEngine.strategyCRiskTitle")}</p>
                       <div className="pl-4 space-y-1">
@@ -298,33 +316,27 @@ export function HeroSection() {
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
 
-                {/* AI轮动策略 - 完整版 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-3">
+                {/* AI轮动策略 */}
+                <div className="glass-card p-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-secondary rounded-lg flex items-center justify-center">
-                      <Bot className="w-6 h-6 text-accent-foreground" />
+                    <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                      <Bot className="w-5 h-5 text-accent" />
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-semibold">{t("hero.aiRotation.title")}</h3>
-                    </div>
+                    <h3 className="text-xl font-semibold">{t("hero.aiRotation.title")}</h3>
                   </div>
                   
-                  {/* 定位、资产范围、风险 */}
                   <div className="space-y-2 text-sm mb-6 bg-accent/5 p-4 rounded-lg">
                     <p className="text-foreground">{t("hero.aiRotation.positioning")}</p>
                     <p className="text-foreground">{t("hero.aiRotation.assetRange")}</p>
                     <p className="text-foreground">{t("hero.aiRotation.risk")}</p>
                   </div>
                   
-                  {/* 三个子策略 */}
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* A｜主流币网格交易 */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-accent text-base">{t("hero.aiRotation.strategyA")}</p>
                       <p className="text-muted-foreground">{t("hero.aiRotation.strategyALogic")}</p>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyAExecutionTitle")}</p>
                         <div className="pl-2 space-y-1">
@@ -333,7 +345,6 @@ export function HeroSection() {
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyAExecution3")}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyARiskTitle")}</p>
                         <div className="pl-2 space-y-1">
@@ -341,7 +352,6 @@ export function HeroSection() {
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyARisk2")}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyAIndicatorsTitle")}</p>
                         <div className="pl-2">
@@ -350,12 +360,10 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* B｜资金费率套利 */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-accent text-base">{t("hero.aiRotation.strategyB")}</p>
                       <p className="text-muted-foreground">{t("hero.aiRotation.strategyBLogic")}</p>
                       <p className="text-muted-foreground">{t("hero.aiRotation.strategyBScenario")}</p>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyBExecutionTitle")}</p>
                         <div className="pl-2 space-y-1">
@@ -364,7 +372,6 @@ export function HeroSection() {
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyBExecution3")}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyBRiskTitle")}</p>
                         <div className="pl-2 space-y-1">
@@ -372,7 +379,6 @@ export function HeroSection() {
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyBRisk2")}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyBIndicatorsTitle")}</p>
                         <div className="pl-2">
@@ -381,11 +387,9 @@ export function HeroSection() {
                       </div>
                     </div>
                     
-                    {/* C｜低杠杆合约 */}
                     <div className="space-y-3 text-sm">
                       <p className="font-bold text-accent text-base">{t("hero.aiRotation.strategyC")}</p>
                       <p className="text-muted-foreground">{t("hero.aiRotation.strategyCLogic")}</p>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyCExecutionTitle")}</p>
                         <div className="pl-2 space-y-1">
@@ -394,7 +398,6 @@ export function HeroSection() {
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCExecution3")}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyCRiskTitle")}</p>
                         <div className="pl-2 space-y-1">
@@ -402,7 +405,6 @@ export function HeroSection() {
                           <p className="text-xs text-muted-foreground"><span className="text-foreground">• </span>{t("hero.aiRotation.strategyCRisk2")}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-2">
                         <p className="font-semibold text-accent text-sm">{t("hero.aiRotation.strategyCIndicatorsTitle")}</p>
                         <div className="pl-2">
@@ -411,30 +413,25 @@ export function HeroSection() {
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
 
-                {/* DeFi质押策略 - 完整版 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 lg:col-span-3">
+                {/* DeFi质押策略 */}
+                <div className="glass-card p-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
-                      <BarChart3 className="w-6 h-6 text-white" />
+                    <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <BarChart3 className="w-5 h-5 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-semibold">{t("hero.defiVault.title")}</h3>
-                    </div>
+                    <h3 className="text-xl font-semibold">{t("hero.defiVault.title")}</h3>
                   </div>
 
                   <p className="text-sm text-muted-foreground mb-6">{t("hero.defiVault.description")}</p>
                   
-                  {/* 两个子策略并排 */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    {/* A. 利率与点数挖矿 */}
-                    <div className="space-y-3 p-4 rounded-lg bg-background/50 border border-border/50">
+                    <div className="space-y-3 p-4 rounded-lg bg-background/50 border border-border/30">
                       <h4 className="font-bold text-lg text-primary">{t("hero.defiVault.strategyA.title")}</h4>
                       <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyA.logic")}</p>
                       <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyA.assets")}</p>
                       <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyA.protocols")}</p>
-                      
                       <div className="space-y-2">
                         <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyA.execution")}</p>
                         <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
@@ -444,7 +441,6 @@ export function HeroSection() {
                           <li>{t("hero.defiVault.strategyA.executionPoints.point4")}</li>
                         </ul>
                       </div>
-
                       <div className="space-y-2">
                         <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyA.kpi")}</p>
                         <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
@@ -452,7 +448,6 @@ export function HeroSection() {
                           <li>{t("hero.defiVault.strategyA.kpiPoints.point2")}</li>
                         </ul>
                       </div>
-
                       <div className="space-y-2">
                         <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyA.riskControl")}</p>
                         <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
@@ -463,12 +458,10 @@ export function HeroSection() {
                       </div>
                     </div>
 
-                    {/* B. 稳定币 AMM 做市 */}
-                    <div className="space-y-3 p-4 rounded-lg bg-background/50 border border-border/50">
+                    <div className="space-y-3 p-4 rounded-lg bg-background/50 border border-border/30">
                       <h4 className="font-bold text-lg text-primary">{t("hero.defiVault.strategyB.title")}</h4>
                       <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyB.logic")}</p>
                       <p className="text-sm text-muted-foreground">{t("hero.defiVault.strategyB.protocols")}</p>
-                      
                       <div className="space-y-2">
                         <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyB.execution")}</p>
                         <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
@@ -478,7 +471,6 @@ export function HeroSection() {
                           <li>{t("hero.defiVault.strategyB.executionPoints.point4")}</li>
                         </ul>
                       </div>
-
                       <div className="space-y-2">
                         <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyB.kpi")}</p>
                         <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
@@ -486,7 +478,6 @@ export function HeroSection() {
                           <li>{t("hero.defiVault.strategyB.kpiPoints.point2")}</li>
                         </ul>
                       </div>
-
                       <div className="space-y-2">
                         <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.strategyB.riskControl")}</p>
                         <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
@@ -498,8 +489,7 @@ export function HeroSection() {
                     </div>
                   </div>
 
-                  {/* 资金配比 */}
-                  <div className="space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 mb-4">
+                  <div className="space-y-2 p-4 rounded-lg bg-background/50 border border-border/30 mb-4">
                     <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.allocation.title")}</p>
                     <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
                       <li>{t("hero.defiVault.allocation.point1")}</li>
@@ -508,8 +498,7 @@ export function HeroSection() {
                     </ul>
                   </div>
 
-                  {/* 透明度 */}
-                  <div className="space-y-2 p-4 rounded-lg bg-background/50 border border-border/50 mb-4">
+                  <div className="space-y-2 p-4 rounded-lg bg-background/50 border border-border/30 mb-4">
                     <p className="text-sm font-semibold text-foreground">{t("hero.defiVault.transparency.title")}</p>
                     <ul className="text-xs space-y-1 text-muted-foreground list-disc list-inside">
                       <li>{t("hero.defiVault.transparency.daily")}</li>
@@ -518,23 +507,18 @@ export function HeroSection() {
                     </ul>
                   </div>
 
-                  {/* 免责声明 */}
                   <p className="text-xs text-muted-foreground/70 italic">
                     {t("hero.defiVault.disclaimer")}
                   </p>
-                </Card>
-              </div>
+                </div>
 
-              {/* 链上清晰透明协议详情 */}
-              <div className="mt-8">
-                <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-8">
+                {/* 链上清晰透明协议 */}
+                <div className="glass-card p-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-secondary rounded-lg flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-accent-foreground" />
+                    <div className="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-accent" />
                     </div>
-                    <div>
-                      <h3 className="text-2xl font-semibold">{t("hero.transparentProtocol.title")}</h3>
-                    </div>
+                    <h3 className="text-xl font-semibold">{t("hero.transparentProtocol.title")}</h3>
                   </div>
                   
                   <div className="space-y-4 text-sm mb-6">
@@ -544,7 +528,6 @@ export function HeroSection() {
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* 准入标准 */}
                     <div>
                       <h4 className="font-semibold text-primary mb-4">
                         {t("hero.transparentProtocol.admissionStandards")}
@@ -565,7 +548,6 @@ export function HeroSection() {
                       </div>
                     </div>
 
-                    {/* 资金与仓位 */}
                     <div>
                       <h4 className="font-semibold text-accent mb-4">
                         {t("hero.transparentProtocol.fundingPosition")}
@@ -586,7 +568,6 @@ export function HeroSection() {
                       </div>
                     </div>
 
-                    {/* 透明度与披露 */}
                     <div>
                       <h4 className="font-semibold text-primary mb-4">
                         {t("hero.transparentProtocol.transparencyDisclosure")}
@@ -603,7 +584,6 @@ export function HeroSection() {
                       </div>
                     </div>
 
-                    {/* 风控与边界 */}
                     <div>
                       <h4 className="font-semibold text-accent mb-4">
                         {t("hero.transparentProtocol.riskControlBoundary")}
@@ -620,198 +600,123 @@ export function HeroSection() {
                       </div>
                     </div>
                   </div>
-                </Card>
+                </div>
               </div>
+            </div>
+          </div>
+        )}
 
-              {/* 风险提示 */}
-              
-            </div>
-          </div>}
-
-        {/* Features */}
-        <div className="grid grid-cols-4 gap-2 max-w-6xl mx-auto">
-          <div className="text-center p-2 md:p-6">
-            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-              <Zap className="w-4 h-4 md:w-8 md:h-8 text-primary-foreground" />
-            </div>
-            <h3 className="text-xs md:text-lg font-semibold">{t("hero.crossChainEngine.title")}</h3>
+        {/* Ecosystem Core */}
+        <div className="mb-10">
+          <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-4">Ecosystem Core</h3>
+          <div className="grid grid-cols-2 gap-3 max-w-md">
+            {ecosystemFeatures.map((feature, index) => (
+              <div key={index} className="glass-card p-4 flex flex-col items-start gap-2">
+                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                  {feature.icon}
+                </div>
+                <span className="text-xs font-medium text-foreground">{feature.title}</span>
+              </div>
+            ))}
           </div>
-          
-          <div className="text-center p-2 md:p-6">
-            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
-              <Bot className="w-4 h-4 md:w-8 md:h-8 text-accent-foreground" />
-            </div>
-            <h3 className="text-xs md:text-lg font-semibold">{t("hero.aiRotation.title")}</h3>
-          </div>
-          
-          <div className="text-center p-2 md:p-6">
-            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 md:w-8 md:h-8 text-primary-foreground" />
-            </div>
-            <h3 className="text-xs md:text-lg font-semibold">{t("hero.defiVault.title")}</h3>
-          </div>
-          
-          <div className="text-center p-2 md:p-6">
-            <div className="w-8 h-8 md:w-16 md:h-16 mx-auto mb-2 md:mb-4 bg-gradient-secondary rounded-full flex items-center justify-center">
-              <Shield className="w-4 h-4 md:w-8 md:h-8 text-accent-foreground" />
-            </div>
-            <h3 className="text-xs md:text-lg font-semibold">{t("hero.transparentProtocol.title")}</h3>
-          </div>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16 mb-12">
-          <Button 
-            size="lg" 
-            className="bg-gradient-primary hover:shadow-glow transition-all duration-300 group"
-            onClick={() => navigate(`/${currentLang}/invest`)}
-          >
-            <Bot className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />
-            {t("invest.charityButtonName")}
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
-          <Button size="lg" variant="outline" className="border-border hover:border-primary/50 hover:bg-primary/5 backdrop-blur-sm" onClick={() => setShowDetails(!showDetails)}>
-            <Shield className="w-5 h-5 mr-2" />
-            {t("invest.strategyButtonName")}
-            {showDetails ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
-          </Button>
         </div>
 
         {/* Partners Section */}
-        <div className="mt-8 max-w-6xl mx-auto">
-          <h3 className="text-2xl font-bold text-center mb-8 text-muted-foreground">{t("hero.strategicPartners")}</h3>
+        <div className="mb-10 max-w-6xl mx-auto">
+          <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-6">{t("hero.strategicPartners")}</h3>
           
-          {/* Partner Logos */}
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-8 mb-12">
-            {partners.map(p => <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" className="group">
-                <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-2 md:p-6 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 flex flex-col items-center justify-center h-20 md:h-28">
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:gap-6 mb-10">
+            {partners.map(p => (
+              <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" className="group">
+                <div className="glass-card p-2 md:p-5 hover:border-primary/30 transition-all duration-300 flex flex-col items-center justify-center h-20 md:h-28">
                   <img src={p.logo} alt={`${p.name} logo`} className="h-6 md:h-10 w-auto object-contain mb-1 md:mb-2 group-hover:scale-105 transition-transform" loading="lazy" width={128} height={40} onError={e => {
-                (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
-              }} />
+                    (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
+                  }} />
                   <div className="text-sm font-semibold">{p.name}</div>
                   <div className="text-[10px] md:text-xs text-muted-foreground mt-1 text-center leading-tight">{p.tagline}</div>
                 </div>
-              </a>)}
+              </a>
+            ))}
           </div>
 
-          {/* Team Introduction Section */}
-          <div className="mt-16 mb-12">
-            <div className="flex flex-col items-center mb-8">
-              <h3 className="text-2xl font-bold text-center mb-4 text-muted-foreground">{t("hero.teamIntro.title")}</h3>
+          {/* Team Section */}
+          <div className="mb-10">
+            <div className="glass-card p-8 text-center">
+              <div className="flex justify-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-accent" />
+                </div>
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-primary" />
+                </div>
+              </div>
+              <h3 className="text-xl font-bold mb-2 text-foreground">{t("hero.teamIntro.title")}</h3>
+              <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
+                Led by industry pioneers in quantitative finance and blockchain security.
+              </p>
               <Button
                 variant="outline"
                 onClick={() => setShowTeam(!showTeam)}
-                className="flex items-center gap-2"
+                className="border-border/50 hover:border-primary/50"
               >
-                {showTeam ? (
-                  <>
-                    <ChevronUp className="w-4 h-4" />
-                    <span>{t("hero.teamIntro.collapse")}</span>
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="w-4 h-4" />
-                    <span>{t("hero.teamIntro.expand")}</span>
-                  </>
-                )}
+                {showTeam ? t("hero.teamIntro.collapse") : t("hero.teamIntro.expand")}
               </Button>
             </div>
             
             {showTeam && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-              {/* CC - Founder */}
-              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 lg:col-span-3">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.cc.name")}</h4>
-                    <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.cc.title")}</p>
-                    <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.cc.subtitle")}</p>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 animate-fade-in">
+                <div className="glass-card p-6 lg:col-span-3">
+                  <h4 className="text-lg font-bold text-primary mb-1">{t("hero.teamIntro.members.cc.name")}</h4>
+                  <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.cc.title")}</p>
+                  <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.cc.subtitle")}</p>
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <p>{t("hero.teamIntro.members.cc.bio")}</p>
                     <p>{t("hero.teamIntro.members.cc.experience")}</p>
                     <p>{t("hero.teamIntro.members.cc.education")}</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Mr.Lee */}
-              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 lg:col-span-3">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.lee.name")}</h4>
-                    <p className="text-sm font-semibold text-foreground mb-3">{t("hero.teamIntro.members.lee.title")}</p>
-                  </div>
+                <div className="glass-card p-6 lg:col-span-3">
+                  <h4 className="text-lg font-bold text-primary mb-1">{t("hero.teamIntro.members.lee.name")}</h4>
+                  <p className="text-sm font-semibold text-foreground mb-3">{t("hero.teamIntro.members.lee.title")}</p>
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <p>{t("hero.teamIntro.members.lee.bio")}</p>
                     <p>{t("hero.teamIntro.members.lee.career")}</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              {/* Mr.Micheal, Mouad, Omar - In 3 columns */}
-              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.michael.name")}</h4>
-                    <p className="text-sm font-semibold text-foreground mb-3">{t("hero.teamIntro.members.michael.title")}</p>
-                  </div>
+                <div className="glass-card p-6">
+                  <h4 className="text-lg font-bold text-primary mb-1">{t("hero.teamIntro.members.michael.name")}</h4>
+                  <p className="text-sm font-semibold text-foreground mb-3">{t("hero.teamIntro.members.michael.title")}</p>
                   <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                    <p className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{t("hero.teamIntro.members.michael.point1")}</span>
-                    </p>
-                    <p className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{t("hero.teamIntro.members.michael.point2")}</span>
-                    </p>
-                    <p className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{t("hero.teamIntro.members.michael.point3")}</span>
-                    </p>
+                    <p className="flex items-start gap-2"><span className="text-primary">•</span><span>{t("hero.teamIntro.members.michael.point1")}</span></p>
+                    <p className="flex items-start gap-2"><span className="text-primary">•</span><span>{t("hero.teamIntro.members.michael.point2")}</span></p>
+                    <p className="flex items-start gap-2"><span className="text-primary">•</span><span>{t("hero.teamIntro.members.michael.point3")}</span></p>
                   </div>
                   <p className="text-sm text-muted-foreground italic">{t("hero.teamIntro.members.michael.education")}</p>
-                </CardContent>
-              </Card>
+                </div>
 
-              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.mouad.name")}</h4>
-                    <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.mouad.title")}</p>
-                    <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.mouad.subtitle")}</p>
-                  </div>
+                <div className="glass-card p-6">
+                  <h4 className="text-lg font-bold text-primary mb-1">{t("hero.teamIntro.members.mouad.name")}</h4>
+                  <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.mouad.title")}</p>
+                  <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.mouad.subtitle")}</p>
                   <div className="space-y-2 text-sm text-muted-foreground">
-                    <p className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{t("hero.teamIntro.members.mouad.point1")}</span>
-                    </p>
-                    <p className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{t("hero.teamIntro.members.mouad.point2")}</span>
-                    </p>
-                    <p className="flex items-start gap-2">
-                      <span className="text-primary">•</span>
-                      <span>{t("hero.teamIntro.members.mouad.point3")}</span>
-                    </p>
+                    <p className="flex items-start gap-2"><span className="text-primary">•</span><span>{t("hero.teamIntro.members.mouad.point1")}</span></p>
+                    <p className="flex items-start gap-2"><span className="text-primary">•</span><span>{t("hero.teamIntro.members.mouad.point2")}</span></p>
+                    <p className="flex items-start gap-2"><span className="text-primary">•</span><span>{t("hero.teamIntro.members.mouad.point3")}</span></p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
 
-              <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <h4 className="text-xl font-bold text-primary mb-1">{t("hero.teamIntro.members.omar.name")}</h4>
-                    <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.omar.title")}</p>
-                    <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.omar.subtitle")}</p>
-                  </div>
+                <div className="glass-card p-6">
+                  <h4 className="text-lg font-bold text-primary mb-1">{t("hero.teamIntro.members.omar.name")}</h4>
+                  <p className="text-sm font-semibold text-foreground mb-2">{t("hero.teamIntro.members.omar.title")}</p>
+                  <p className="text-xs text-muted-foreground italic mb-3">{t("hero.teamIntro.members.omar.subtitle")}</p>
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <p>{t("hero.teamIntro.members.omar.bio")}</p>
                     <p>{t("hero.teamIntro.members.omar.experience")}</p>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </div>
             )}
           </div>
 
@@ -820,7 +725,7 @@ export function HeroSection() {
             <div className="text-center">
               <span className="text-sm text-muted-foreground mb-3 block">{t("hero.followUs")}</span>
               <div className="flex gap-4">
-                <a href="https://t.me/OfficialUSDONLINE" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
+                <a href="https://t.me/OfficialUSDONLINE" target="_blank" rel="noopener noreferrer" className="w-12 h-12 glass-card flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group" title="Telegram">
                   <Send className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
                 </a>
               </div>
@@ -851,7 +756,7 @@ export function HeroSection() {
                   href="https://x.com/ONLINE_USD" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group"
+                  className="w-12 h-12 glass-card flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group"
                   title="X (Twitter)"
                 >
                   <img src="/lovable-uploads/x-logo.png" alt="X" className="w-6 h-6 rounded" />
@@ -861,5 +766,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 }
