@@ -529,35 +529,35 @@ export default function Stake({
           </div>
         </div>
 
-        <Card className="mb-6 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
+        <Card className="mb-6 cyberpunk-card backdrop-blur-sm border-[hsl(180_100%_70%/0.2)]">
           <CardContent className="py-3 px-4">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <div className="flex items-center gap-1.5 shrink-0">
-                <Wallet className="w-4 h-4 text-primary" />
-                <span className="text-xs text-muted-foreground">{t("staking.walletStatus")}</span>
+                <Wallet className="w-4 h-4 text-[hsl(180_100%_70%)]" />
+                <span className="text-xs text-[hsl(180_100%_70%/0.8)] font-mono uppercase tracking-wider">{t("staking.walletStatus")}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.walletAddress")}:</span>
-                <span className="font-mono text-xs">{short(account) || t("staking.notConnected")}</span>
+                <span className="font-mono text-xs text-[hsl(180_100%_70%)]">{short(account) || t("staking.notConnected")}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.network")}:</span>
-                <span className="text-xs font-semibold">{chainId ?? "-"}</span>
+                <span className="text-xs font-semibold text-accent">{chainId ?? "-"}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.usdtBalance")}:</span>
-                <span className="text-xs font-semibold">${Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
+                <span className="text-xs font-semibold font-mono">${Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.allowance")}:</span>
-                <span className="text-xs font-semibold">${Number(formatUnits(allowance, USDT_DECIMALS)).toFixed(2)}</span>
+                <span className="text-xs font-semibold font-mono">${Number(formatUnits(allowance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
               {!account && (
-                <Button size="sm" className="ml-auto bg-gradient-primary hover:bg-gradient-primary/90 h-7 text-xs px-3" onClick={connect}>
+                <Button size="sm" className="ml-auto electric-button h-7 text-xs px-3 text-[hsl(180_100%_70%)]" onClick={connect}>
                   <Wallet className="w-3 h-3 mr-1" />
                   {t("staking.connectWallet")}
                 </Button>
@@ -569,8 +569,8 @@ export default function Stake({
         {/* 投资数据可视化 */}
         {amountNum > 0 && <div className="mb-8">
           <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-primary" />
-            {t("staking.investmentAnalysis")}
+            <DollarSign className="w-5 h-5 text-[hsl(180_100%_70%)]" />
+            <span className="font-mono tracking-wide">{t("staking.investmentAnalysis")}</span>
           </h3>
             <InvestmentDashboard principalAfterFee={principalAfterFee} aprPercent={aprPercent} expectedEarnings={expectedEarnings} lockDays={lockDays} lockChoice={lockChoice} />
           </div>}
@@ -578,10 +578,10 @@ export default function Stake({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 投资设置 */}
           <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-primary/20">
+            <Card className="cyberpunk-card backdrop-blur border-[hsl(180_100%_70%/0.2)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-primary" />
+                  <Lock className="w-5 h-5 text-[hsl(180_100%_70%)]" />
                   {t("staking.charityInvestmentConfig")}
                 </CardTitle>
               </CardHeader>
@@ -594,7 +594,7 @@ export default function Stake({
                 <div className="space-y-3">
                   <Label className="text-base font-medium">{t("staking.lockPeriodLabel")}</Label>
                   <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-3">
-                    <label htmlFor="l0" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                     <label htmlFor="l0" className="flex items-center justify-between p-4 border border-[hsl(180_100%_70%/0.15)] rounded-lg cursor-pointer hover:border-[hsl(180_100%_70%/0.5)] hover:bg-[hsl(180_100%_70%/0.03)] transition-all duration-300">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l0" value="0" />
                         <div>
@@ -604,9 +604,9 @@ export default function Stake({
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline">{t("staking.shortTerm")}</Badge>
+                      <Badge variant="outline" className="border-[hsl(180_100%_70%/0.3)] text-[hsl(180_100%_70%/0.8)]">{t("staking.shortTerm")}</Badge>
                     </label>
-                    <label htmlFor="l1" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                    <label htmlFor="l1" className="flex items-center justify-between p-4 border border-[hsl(180_100%_70%/0.15)] rounded-lg cursor-pointer hover:border-[hsl(180_100%_70%/0.5)] hover:bg-[hsl(180_100%_70%/0.03)] transition-all duration-300">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l1" value="1" />
                         <div>
@@ -616,9 +616,9 @@ export default function Stake({
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline">{t("staking.mediumTerm")}</Badge>
+                      <Badge variant="outline" className="border-primary/30 text-primary">{t("staking.mediumTerm")}</Badge>
                     </label>
-                    <label htmlFor="l2" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                    <label htmlFor="l2" className="flex items-center justify-between p-4 border border-[hsl(180_100%_70%/0.15)] rounded-lg cursor-pointer hover:border-[hsl(180_100%_70%/0.5)] hover:bg-[hsl(180_100%_70%/0.03)] transition-all duration-300 relative overflow-hidden">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l2" value="2" />
                         <div>
@@ -628,7 +628,7 @@ export default function Stake({
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-primary/10 text-primary">{t("staking.longTerm")}</Badge>
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">{t("staking.longTerm")}</Badge>
                     </label>
                   </RadioGroup>
                 </div>
@@ -699,10 +699,10 @@ export default function Stake({
                 </div>
 
                 <div className="flex gap-4 pt-4">
-                  <Button className="flex-1 bg-gradient-primary hover:bg-gradient-primary/90 h-12" disabled={!account || loading.approve} onClick={onApprove}>
+                  <Button className="flex-1 bg-gradient-primary hover:bg-gradient-primary/90 h-12 transition-all duration-300 hover:shadow-[0_0_20px_hsl(47_96%_53%/0.3)]" disabled={!account || loading.approve} onClick={onApprove}>
                     {loading.approve ? t("staking.approvingButton") : t("staking.approveButton")}
                   </Button>
-                  <Button className="flex-1 h-12 text-white animate-breathing-blue animate-marquee-bg bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-[length:200%_100%] hover:from-blue-700 hover:via-blue-600 hover:to-blue-700" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
+                  <Button className="flex-1 h-12 electric-button text-[hsl(180_100%_70%)] transition-all duration-300" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
                     <DollarSign className="w-4 h-4 mr-2" />
                     {loading.deposit ? t("staking.investingButton") : t("staking.startInvestButton")}
                   </Button>
@@ -796,10 +796,10 @@ export default function Stake({
             </Card>
 
             {/* 我的仓位 */}
-            <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-accent/20">
+            <Card className="cyberpunk-card backdrop-blur border-[hsl(180_100%_70%/0.2)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-accent" />
+                  <Coins className="w-5 h-5 text-[hsl(180_100%_70%)]" />
                   {t("staking.myPositions")}
                 </CardTitle>
               </CardHeader>
@@ -812,7 +812,7 @@ export default function Stake({
           {/* 侧边栏 */}
           <div className="space-y-6">
             {/* 奖励金库 */}
-            <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
+            <Card className="hologram data-stream">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Gift className="w-5 h-5 text-accent" />
@@ -832,7 +832,7 @@ export default function Stake({
                      </span>
                    </div>
                 </div>
-                <Button className="w-full bg-accent hover:bg-accent/90" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
+                <Button className="w-full bg-accent hover:bg-accent/90 transition-all duration-300 hover:shadow-[0_0_15px_hsl(142_71%_45%/0.4)]" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
                   <Gift className="w-4 h-4 mr-2" />
                   {loading.vaultClaim ? t("staking.claimingButton") : t("staking.claimRewardsButton")}
                 </Button>
@@ -840,7 +840,7 @@ export default function Stake({
             </Card>
 
             {/* 我的邀请地址 */}
-            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <Card className="cyberpunk-card border-[hsl(180_100%_70%/0.2)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Share2 className="w-5 h-5 text-primary" />
