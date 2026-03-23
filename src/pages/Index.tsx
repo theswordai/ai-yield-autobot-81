@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { HeroSection } from "@/components/HeroSection";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
