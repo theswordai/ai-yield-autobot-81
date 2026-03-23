@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { MiniKChart } from "@/components/MiniKChart";
-import { TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useUSDVContracts } from "@/hooks/useUSDVContracts";
 import { formatUnits } from "ethers";
@@ -217,21 +217,23 @@ export function FeaturedPrices() {
   const cards = [
     {
       key: "usdv",
+      tag: "STABLE LP",
       label: "USDV Token",
       data: usdvData,
       fallbackPrice: "0.0100",
       color: "hsl(var(--primary))",
       history: usdvPriceHistory,
       extra: account ? (
-        <div className="mt-4 pt-4 border-t border-border">
+        <div className="mt-3 pt-3 border-t border-border/30">
           <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
-          <div className="text-lg font-semibold text-foreground">{formatBalance(usdvBalance)} USDV</div>
-          <div className="text-xs text-muted-foreground mt-1">≈ ${calculateUsdValue()}</div>
+          <div className="text-base font-semibold text-foreground">{formatBalance(usdvBalance)} USDV</div>
+          <div className="text-xs text-muted-foreground mt-0.5">≈ ${calculateUsdValue()}</div>
         </div>
       ) : null,
     },
     {
       key: "btc",
+      tag: "BENCHMARK",
       label: "Bitcoin",
       data: btcData,
       fallbackPrice: "--",
@@ -241,6 +243,7 @@ export function FeaturedPrices() {
     },
     {
       key: "trump",
+      tag: "CONVICTION",
       label: "TRUMP",
       data: trumpData,
       fallbackPrice: "--",
@@ -327,6 +330,7 @@ export function FeaturedPrices() {
 }
 
 function PriceCard({
+  tag,
   label,
   data,
   fallbackPrice,
@@ -334,6 +338,7 @@ function PriceCard({
   history,
   extra,
 }: {
+  tag?: string;
   label: string;
   data: PriceData | null;
   fallbackPrice: string;
@@ -342,25 +347,37 @@ function PriceCard({
   extra?: React.ReactNode;
 }) {
   return (
-    <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <h3 className="text-sm text-muted-foreground font-medium mb-1">{label}</h3>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold">${data?.price || fallbackPrice}</span>
-            {data && (
-              <div className={`flex items-center gap-1 text-sm font-medium ${data.isPositive ? "text-accent" : "text-destructive"}`}>
-                {data.isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                <span>{data.isPositive ? "+" : ""}{data.change24h}%</span>
-              </div>
-            )}
-          </div>
-          {extra}
-        </div>
+    <Card className="bg-card/60 backdrop-blur-sm border-border/40 p-6 hover:shadow-lg transition-shadow flex flex-col justify-between">
+      {/* Tag */}
+      {tag && (
+        <p className="text-[10px] tracking-[0.15em] uppercase text-primary font-semibold mb-1">{tag}</p>
+      )}
+      {/* Title */}
+      <h3 className="text-lg font-bold text-foreground mb-4">{label}</h3>
+      {/* Price */}
+      <div className="mb-6">
+        <span className="text-4xl font-extrabold tracking-tight text-foreground font-mono">
+          ${data?.price || fallbackPrice}
+        </span>
       </div>
-      <div className="h-24">
+      {/* Chart */}
+      <div className="h-20 mb-4">
         <MiniKChart color={color} data={history} />
       </div>
+      {/* Footer: change + volume */}
+      <div className="flex items-center justify-between text-xs font-mono">
+        {data ? (
+          <span className={data.isPositive ? "text-accent" : "text-destructive"}>
+            {data.isPositive ? "+" : ""}{data.change24h}% (24H)
+          </span>
+        ) : (
+          <span className="text-muted-foreground">--</span>
+        )}
+        <span className="text-muted-foreground">
+          VOL: --
+        </span>
+      </div>
+      {extra}
     </Card>
   );
 }
