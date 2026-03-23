@@ -8,7 +8,7 @@ const Index = () => {
   const { t } = useI18n();
   
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Helmet>
         <title>{t("meta.title")}</title>
         <meta name="description" content={t("meta.description")} />
