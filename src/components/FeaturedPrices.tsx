@@ -52,9 +52,9 @@ export function FeaturedPrices() {
   });
 
   const [usdvBalance, setUsdvBalance] = useState<bigint>(BigInt(0));
-  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ value: number }[]>([]);
-  const [btcPriceHistory, setBtcPriceHistory] = useState<{ value: number }[]>([]);
-  const [trumpPriceHistory, setTrumpPriceHistory] = useState<{ value: number }[]>([]);
+  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
+  const [btcPriceHistory, setBtcPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
+  const [trumpPriceHistory, setTrumpPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
