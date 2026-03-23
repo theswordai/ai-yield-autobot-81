@@ -52,9 +52,9 @@ export function FeaturedPrices() {
   });
 
   const [usdvBalance, setUsdvBalance] = useState<bigint>(BigInt(0));
-  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ value: number }[]>([]);
-  const [btcPriceHistory, setBtcPriceHistory] = useState<{ value: number }[]>([]);
-  const [trumpPriceHistory, setTrumpPriceHistory] = useState<{ value: number }[]>([]);
+  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
+  const [btcPriceHistory, setBtcPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
+  const [trumpPriceHistory, setTrumpPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -150,7 +150,7 @@ export function FeaturedPrices() {
       if (res.ok) {
         const json = await res.json();
         if (json.data?.attributes?.ohlcv_list) {
-          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({ value: item[4] }));
+          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({ open: item[1], close: item[4], value: item[4] }));
           setUsdvPriceHistory(history.reverse());
         }
       }
@@ -162,7 +162,7 @@ export function FeaturedPrices() {
       const res = await fetch("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=30");
       if (res.ok) {
         const json = await res.json();
-        setBtcPriceHistory(json.map((item: (string | number)[]) => ({ value: parseFloat(item[4] as string) })));
+        setBtcPriceHistory(json.map((item: (string | number)[]) => ({ open: parseFloat(item[1] as string), close: parseFloat(item[4] as string), value: parseFloat(item[4] as string) })));
       }
     } catch (e) { console.warn("Failed to fetch BTC history:", e); }
   };
@@ -176,7 +176,7 @@ export function FeaturedPrices() {
       if (res.ok) {
         const json = await res.json();
         if (json.prices) {
-          setTrumpPriceHistory(json.prices.map((p: [number, number]) => ({ value: p[1] })));
+          setTrumpPriceHistory(json.prices.map((p: [number, number], i: number, arr: [number, number][]) => ({ open: i > 0 ? arr[i - 1][1] : p[1], close: p[1], value: p[1] })));
         }
       }
     } catch (e) { console.warn("Failed to fetch TRUMP history:", e); }
@@ -338,7 +338,7 @@ function PriceCard({
   data: PriceData | null;
   fallbackPrice: string;
   color: string;
-  history: { value: number }[];
+  history: { open: number; close: number; value: number }[];
   extra?: React.ReactNode;
 }) {
   return (
