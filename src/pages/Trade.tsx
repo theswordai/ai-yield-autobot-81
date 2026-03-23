@@ -191,6 +191,6 @@ export default function Trade({ embedded = false }: { embedded?: boolean }) {
         </div>
       </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
