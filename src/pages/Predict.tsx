@@ -67,7 +67,7 @@ export default function Predict() {
   const featuredMarket = featured[featuredIdx];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Helmet>
         <title>{language === 'zh' ? '预测市场 | USD.ONLINE' : 'Prediction Markets | USD.ONLINE'}</title>
       </Helmet>
