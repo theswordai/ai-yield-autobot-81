@@ -161,7 +161,7 @@ export function InvestmentDashboard({
       </Card>
 
       {/* 收益趋势图 */}
-      <Card className="lg:col-span-2 xl:col-span-1">
+      <Card className="lg:col-span-2 xl:col-span-1 hologram data-stream">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-accent" />
