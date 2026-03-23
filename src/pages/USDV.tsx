@@ -4,6 +4,7 @@ import { useI18n } from "@/hooks/useI18n";
 import { useUSDVData } from "@/hooks/useUSDVData";
 import { useUSDVActions } from "@/hooks/useUSDVActions";
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { SpinWheel } from "@/components/SpinWheel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
