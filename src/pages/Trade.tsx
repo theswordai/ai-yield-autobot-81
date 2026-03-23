@@ -27,10 +27,9 @@ export default function Trade({ embedded = false }: { embedded?: boolean }) {
   const topPad = embedded ? "pt-6" : "pt-20";
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+    <PageWrapper>
       {!embedded && <Navbar />}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
-      <div className={`${topPad} pb-10 relative z-10`}>
+      <div className={`${topPad} pb-10`}>
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-8 text-center">
           <Title className="text-3xl font-bold mb-2">AI资产管理策略</Title>
