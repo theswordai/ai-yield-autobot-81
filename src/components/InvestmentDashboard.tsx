@@ -131,7 +131,7 @@ export function InvestmentDashboard({
               <div
                 key={index}
                 className={`rounded-xl p-4 transition-all ${
-                  item.active
+                  index === 2
                     ? 'border-2 border-primary/60 bg-primary/5 shadow-[0_0_15px_hsl(var(--primary)/0.15)]'
                     : 'border border-border/40 bg-background/50'
                 }`}
