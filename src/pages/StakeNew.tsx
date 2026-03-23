@@ -65,11 +65,10 @@ export default function StakeNew() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+    <PageWrapper>
       <Navbar />
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
       
-      <main className="container mx-auto px-4 pt-24 pb-12 max-w-7xl relative z-10">
+      <main className="container mx-auto px-4 pt-24 pb-12 max-w-7xl">
         {/* 页面标题 */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
