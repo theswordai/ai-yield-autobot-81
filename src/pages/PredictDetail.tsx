@@ -233,7 +233,7 @@ export default function PredictDetail() {
           </div>
         </div>
       </main>
-    </div>
+    </PageWrapper>
   );
 }
 
