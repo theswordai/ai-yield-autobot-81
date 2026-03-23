@@ -1,5 +1,4 @@
-import { useMemo, useId } from "react";
-import { BarChart, Bar, Cell, Line, ComposedChart, ResponsiveContainer, YAxis } from "recharts";
+import { useMemo } from "react";
 
 type Point = { open: number; close: number; value: number };
 
@@ -9,58 +8,70 @@ interface MiniKChartProps {
 }
 
 export function MiniKChart({ color = "hsl(var(--primary))", data = [] }: MiniKChartProps) {
-  const id = useId();
-  const lineId = useMemo(() => `line-${id.replace(/[:]/g, "-")}`, [id]);
-
   const displayData = useMemo(() => {
     if (data.length === 0) {
       return Array.from({ length: 30 }, (_, i) => {
         const open = 50 + Math.sin(i / 3) * 10;
         const close = open + (Math.random() - 0.5) * 8;
-        return { open, close, value: close, barHeight: Math.abs(close - open) || 0.5, base: Math.min(open, close) };
+        return { open, close, value: close };
       });
     }
-    return data.map(d => ({
-      ...d,
-      barHeight: Math.abs(d.close - d.open) || (d.value * 0.005),
-      base: Math.min(d.open, d.close),
-    }));
+    return data;
   }, [data]);
 
-  const yDomain = useMemo(() => {
-    const values = displayData.flatMap(d => [d.open, d.close]);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const padding = (max - min) * 0.1 || 1;
-    return [min - padding, max + padding];
+  const { min, max } = useMemo(() => {
+    const allVals = displayData.flatMap(d => [d.open, d.close]);
+    const mn = Math.min(...allVals);
+    const mx = Math.max(...allVals);
+    const pad = (mx - mn) * 0.15 || 1;
+    return { min: mn - pad, max: mx + pad };
   }, [displayData]);
+
+  const range = max - min;
+  const toY = (v: number) => (1 - (v - min) / range) * 100;
+
+  // Build MA line points
+  const maPoints = useMemo(() => {
+    return displayData.map((d, i) => {
+      const x = ((i + 0.5) / displayData.length) * 100;
+      const y = toY(d.value);
+      return `${x},${y}`;
+    }).join(" ");
+  }, [displayData, min, max]);
+
+  const barWidth = 100 / displayData.length;
+  const gap = barWidth * 0.15;
 
   return (
     <div className="w-full h-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={displayData} margin={{ top: 4, right: 2, left: 2, bottom: 0 }} barGap={1}>
-          <YAxis domain={yDomain} hide />
-          <Bar dataKey="barHeight" stackId="bar" isAnimationActive={false}>
-            {displayData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={entry.close >= entry.open ? "hsl(142 71% 45%)" : "hsl(0 84% 60%)"}
-                fillOpacity={0.85}
-              />
-            ))}
-          </Bar>
-          {/* invisible base stack to position bars correctly */}
-          <Bar dataKey="base" stackId="bar" fill="transparent" isAnimationActive={false} />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={color}
-            strokeWidth={1.5}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
+      <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {displayData.map((d, i) => {
+          const isUp = d.close >= d.open;
+          const top = toY(Math.max(d.open, d.close));
+          const bottom = toY(Math.min(d.open, d.close));
+          const barH = Math.max(bottom - top, 0.8);
+          const x = i * barWidth + gap / 2;
+          const w = barWidth - gap;
+          return (
+            <rect
+              key={i}
+              x={x}
+              y={top}
+              width={w}
+              height={barH}
+              fill={isUp ? "hsl(142 71% 45%)" : "hsl(0 84% 60%)"}
+              opacity={0.85}
+            />
+          );
+        })}
+        <polyline
+          points={maPoints}
+          fill="none"
+          stroke={color}
+          strokeWidth="0.8"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
     </div>
   );
 }
