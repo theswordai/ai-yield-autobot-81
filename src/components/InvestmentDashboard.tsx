@@ -113,10 +113,10 @@ export function InvestmentDashboard({
       </Card>
 
       {/* 锁仓期对比 */}
-      <Card>
+      <Card className="cyberpunk-card border-[hsl(180_100%_70%/0.2)]">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-primary" />
+            <Clock className="w-5 h-5 text-[hsl(180_100%_70%)]" />
             {t("staking.lockPeriodComparison")}
           </CardTitle>
         </CardHeader>
