@@ -832,7 +832,7 @@ export default function Stake({
                      </span>
                    </div>
                 </div>
-                <Button className="w-full bg-accent hover:bg-accent/90" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
+                <Button className="w-full bg-accent hover:bg-accent/90 transition-all duration-300 hover:shadow-[0_0_15px_hsl(142_71%_45%/0.4)]" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
                   <Gift className="w-4 h-4 mr-2" />
                   {loading.vaultClaim ? t("staking.claimingButton") : t("staking.claimRewardsButton")}
                 </Button>
