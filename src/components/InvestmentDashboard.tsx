@@ -139,7 +139,7 @@ export function InvestmentDashboard({
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-foreground">{item.period}</span>
-                    {item.active && (
+                    {index === 2 && (
                       <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">
                         Popular
                       </span>
