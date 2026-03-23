@@ -569,8 +569,8 @@ export default function Stake({
         {/* 投资数据可视化 */}
         {amountNum > 0 && <div className="mb-8">
           <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-primary" />
-            {t("staking.investmentAnalysis")}
+            <DollarSign className="w-5 h-5 text-[hsl(180_100%_70%)]" />
+            <span className="font-mono tracking-wide">{t("staking.investmentAnalysis")}</span>
           </h3>
             <InvestmentDashboard principalAfterFee={principalAfterFee} aprPercent={aprPercent} expectedEarnings={expectedEarnings} lockDays={lockDays} lockChoice={lockChoice} />
           </div>}
