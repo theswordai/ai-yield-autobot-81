@@ -796,10 +796,10 @@ export default function Stake({
             </Card>
 
             {/* 我的仓位 */}
-            <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-accent/20">
+            <Card className="cyberpunk-card backdrop-blur border-[hsl(180_100%_70%/0.2)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-accent" />
+                  <Coins className="w-5 h-5 text-[hsl(180_100%_70%)]" />
                   {t("staking.myPositions")}
                 </CardTitle>
               </CardHeader>
