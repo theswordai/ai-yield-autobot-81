@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
+import { PageWrapper } from '@/components/PageWrapper';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from '@/hooks/useI18n';
 import { usePolymarkets } from '@/hooks/usePolymarkets';
@@ -41,18 +42,18 @@ export default function PredictDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <PageWrapper>
         <Navbar />
         <div className="flex items-center justify-center pt-32">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
   if (!market) {
     return (
-      <div className="min-h-screen bg-background">
+      <PageWrapper>
         <Navbar />
         <div className="container mx-auto px-4 pt-24 text-center">
           <p className="text-muted-foreground">{language === 'zh' ? '未找到市场' : 'Market not found'}</p>
@@ -60,7 +61,7 @@ export default function PredictDetail() {
             {language === 'zh' ? '返回列表' : 'Back to list'}
           </Link>
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
@@ -68,7 +69,7 @@ export default function PredictDetail() {
   const noPercent = Math.round(market.noPrice * 100);
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Helmet>
         <title>{market.title} | USD.ONLINE</title>
       </Helmet>
@@ -232,7 +233,7 @@ export default function PredictDetail() {
           </div>
         </div>
       </main>
-    </div>
+    </PageWrapper>
   );
 }
 

@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from 'react';
 import { Navbar } from '@/components/Navbar';
+import { PageWrapper } from '@/components/PageWrapper';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from '@/hooks/useI18n';
 import { usePolymarkets, PolyMarket } from '@/hooks/usePolymarkets';
@@ -67,7 +68,7 @@ export default function Predict() {
   const featuredMarket = featured[featuredIdx];
 
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Helmet>
         <title>{language === 'zh' ? '预测市场 | USD.ONLINE' : 'Prediction Markets | USD.ONLINE'}</title>
       </Helmet>
@@ -222,7 +223,7 @@ export default function Predict() {
           </>
         )}
       </main>
-    </div>
+    </PageWrapper>
   );
 }
 

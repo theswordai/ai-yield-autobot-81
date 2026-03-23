@@ -4,6 +4,7 @@ import { useI18n } from "@/hooks/useI18n";
 import { useUSDVData } from "@/hooks/useUSDVData";
 import { useUSDVActions } from "@/hooks/useUSDVActions";
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { SpinWheel } from "@/components/SpinWheel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,7 +63,7 @@ export default function USDV() {
   };
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <PageWrapper className="overflow-x-hidden">
       <Helmet>
         <title>{t("usdv.pageTitle")}</title>
         <meta name="description" content={t("usdv.pageDescription")} />
@@ -70,7 +71,7 @@ export default function USDV() {
       
       <Navbar />
 
-      <div className="pt-16 min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5 cyber-grid">
+      <div className="pt-16 min-h-screen">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Header */}
@@ -415,6 +416,6 @@ export default function USDV() {
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

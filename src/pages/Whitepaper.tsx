@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
 import { PDFViewer } from "@/components/PDFViewer";
@@ -8,15 +9,14 @@ export default function Whitepaper() {
   const pdfUrl = "/harmony-wealth-engine.pdf";
   
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Navbar />
       <Helmet>
         <title>{t('meta.title')} | 和谐财富引擎</title>
         <meta name="description" content="和谐财富引擎白皮书 - 构建财富与慈善的和谐统一" />
         <link rel="canonical" href="/whitepaper" />
       </Helmet>
-      
-      <div className="pt-16 min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/5">
+      <div className="pt-16 min-h-screen">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
@@ -35,6 +35,6 @@ export default function Whitepaper() {
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

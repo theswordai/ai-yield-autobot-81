@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { HeroSection } from "@/components/HeroSection";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
@@ -7,7 +8,7 @@ const Index = () => {
   const { t } = useI18n();
   
   return (
-    <div className="min-h-screen bg-background">
+    <PageWrapper>
       <Helmet>
         <title>{t("meta.title")}</title>
         <meta name="description" content={t("meta.description")} />
@@ -33,7 +34,7 @@ const Index = () => {
       </Helmet>
       <Navbar />
       <HeroSection />
-    </div>
+    </PageWrapper>
   );
 };
 

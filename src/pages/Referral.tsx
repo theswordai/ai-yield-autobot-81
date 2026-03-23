@@ -7,6 +7,7 @@ import { Copy, Users, Gift, TrendingUp, Share2, Trophy, QrCode, Download } from 
 import QRCode from "qrcode";
 import { useToast } from "@/hooks/use-toast";
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { Helmet } from "react-helmet-async";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
@@ -415,7 +416,7 @@ export default function Referral({
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+    <PageWrapper>
       {!embedded && <Navbar />}
       {!embedded && (
         <Helmet>
@@ -424,8 +425,7 @@ export default function Referral({
           <link rel="canonical" href="/referral" />
         </Helmet>
       )}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
-      <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
+      <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10`}>
         <div className="container mx-auto px-4">
           <div className="mb-8 flex items-center justify-between">
             <div>
@@ -803,6 +803,6 @@ export default function Referral({
           </Card>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

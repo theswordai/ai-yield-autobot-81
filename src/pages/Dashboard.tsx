@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Wallet, TrendingUp, Users, Gift, Lock, Unlock, ExternalLink, Shield } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
+import { PageWrapper } from "@/components/PageWrapper";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { MockUSDT_ABI } from "@/abis/MockUSDT";
@@ -167,10 +168,9 @@ export default function Dashboard({
     load();
   }, [account, usdt, lock, vault, registry]);
   const Title = (embedded ? 'h2' : 'h1') as any;
-  return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+  return <PageWrapper>
       {!embedded && <Navbar />}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
-      <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
+      <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10`}>
       <div className="container mx-auto px-4">
         <div className="mb-4 sm:mb-8">
           <Title className="text-2xl sm:text-3xl font-bold mb-2">{t("dashboard.title")}</Title>
@@ -348,5 +348,5 @@ export default function Dashboard({
           </div>}
       </div>
       </div>
-    </div>;
+    </PageWrapper>;
 }
