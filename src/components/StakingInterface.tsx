@@ -151,36 +151,18 @@ export function StakingInterface({ onSuccess, initialAmount }: StakingInterfaceP
 
         {/* 投资金额 */}
         <div className="space-y-2 sm:space-y-3">
-          <Label className="text-sm sm:text-base font-medium text-muted-foreground">{t("staking.amount")}</Label>
-          <div className="flex items-center gap-2 bg-muted/30 rounded-xl p-3 sm:p-4 border border-border/40">
+          <Label className="text-sm sm:text-base font-medium">{t("staking.amount")}</Label>
+          <div className="relative">
+            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               type="number"
-              placeholder="0.00"
+              placeholder={t("staking.amountPlaceholder")}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="border-0 bg-transparent text-xl sm:text-2xl font-mono font-bold placeholder:text-muted-foreground/40 focus-visible:ring-0 focus-visible:ring-offset-0 p-0 h-auto"
+              className="pl-8 sm:pl-10 text-base sm:text-lg h-10 sm:h-11"
               min="200"
               step="1"
             />
-            <span className="text-sm sm:text-base font-bold text-primary shrink-0">USDT</span>
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              className="shrink-0 text-xs font-bold bg-background/80 border border-border/50 hover:bg-muted/50 px-3"
-              onClick={() => {
-                if (data) {
-                  const bal = Number(formatAmount(data.usdtBalance).replace(/,/g, ''));
-                  setAmount(String(Math.floor(bal)));
-                }
-              }}
-            >
-              MAX
-            </Button>
-          </div>
-          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-muted-foreground px-1">
-            <span>Balance: {data ? formatAmount(data.usdtBalance) : '0.00'} USDT</span>
-            <span>Min: 200 USDT</span>
           </div>
           {insufficientBalance && (
             <p className="text-xs sm:text-sm text-destructive">{t("staking.insufficientBalance")}</p>
