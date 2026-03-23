@@ -497,10 +497,9 @@ export default function Stake({
       }));
     }
   };
-  return <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+  return <PageWrapper>
       {!embedded && <Navbar />}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
-      <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl relative z-10`}>
+      <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl`}>
         <div className="mb-8 text-center px-2">
           <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">
             <span className="block mb-1">{t("staking.heroTitleLine1")}</span>
