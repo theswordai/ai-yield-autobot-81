@@ -76,9 +76,7 @@ export function NewsAnnouncement() {
             key={announcement.id}
             className="relative pl-4 border-l-2 border-primary/60 rounded-r-lg bg-card/60 p-4 hover:bg-card/80 transition-colors"
           >
-            <span className="block text-xs font-mono text-primary/80 mb-1.5">
-              {announcement.time}
-            </span>
+          
             <p className="text-sm font-medium text-foreground leading-relaxed">
               {language === 'en' ? announcement.titleEn : announcement.title}
             </p>
