@@ -1,5 +1,5 @@
-import { useMemo, useId } from "react";
-import { BarChart, Bar, Cell, ResponsiveContainer, YAxis } from "recharts";
+import { useEffect, useMemo, useId } from "react";
+import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
 type Point = { value: number };
 
@@ -11,39 +11,27 @@ interface MiniKChartProps {
 export function MiniKChart({ color = "hsl(var(--primary))", data = [] }: MiniKChartProps) {
   const id = useId();
 
+  const gradientId = useMemo(() => `grad-${id.replace(/[:]/g, "-")}`, [id]);
+  
   const displayData = useMemo(() => {
     if (data.length === 0) {
-      return Array.from({ length: 7 }, (_, i) => ({ value: 50 + i * 8 }));
+      return Array.from({ length: 30 }, (_, i) => ({ value: 50 + Math.sin(i / 3) * 10 }));
     }
-    // Sample down to ~7 bars for clean visual
-    const step = Math.max(1, Math.floor(data.length / 7));
-    const sampled: Point[] = [];
-    for (let i = 0; i < data.length; i += step) {
-      sampled.push(data[i]);
-    }
-    // Always include the last point
-    if (sampled.length > 0 && sampled[sampled.length - 1] !== data[data.length - 1]) {
-      sampled.push(data[data.length - 1]);
-    }
-    return sampled.slice(-7);
+    return data;
   }, [data]);
-
-  const maxVal = useMemo(() => Math.max(...displayData.map(d => d.value), 1), [displayData]);
 
   return (
     <div className="w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={displayData} margin={{ top: 4, right: 2, left: 2, bottom: 0 }} barCategoryGap="20%">
-          <YAxis domain={[0, 'dataMax']} hide />
-          <Bar dataKey="value" radius={[3, 3, 0, 0]} isAnimationActive>
-            {displayData.map((_, index) => (
-              <Cell
-                key={index}
-                fill={index === displayData.length - 1 ? color : `${color}99`}
-              />
-            ))}
-          </Bar>
-        </BarChart>
+        <AreaChart data={displayData} margin={{ top: 6, right: 0, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity={0.25} />
+              <stop offset="100%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <Area type="monotone" dataKey="value" stroke={color} strokeWidth={2} fill={`url(#${gradientId})`} isAnimationActive />
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );
