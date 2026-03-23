@@ -272,7 +272,7 @@ export function HeroSection() {
 
         {/* Strategy Details Section */}
         {showDetails && (
-          <div className="mb-16 animate-fade-in">
+          <div id="strategy-details" className="mb-16 animate-fade-in">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-8">{t("hero.strategyDetails")}</h2>
               
