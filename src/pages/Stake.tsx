@@ -529,35 +529,35 @@ export default function Stake({
           </div>
         </div>
 
-        <Card className="mb-6 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
+        <Card className="mb-6 cyberpunk-card backdrop-blur-sm border-[hsl(180_100%_70%/0.2)]">
           <CardContent className="py-3 px-4">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <div className="flex items-center gap-1.5 shrink-0">
-                <Wallet className="w-4 h-4 text-primary" />
-                <span className="text-xs text-muted-foreground">{t("staking.walletStatus")}</span>
+                <Wallet className="w-4 h-4 text-[hsl(180_100%_70%)]" />
+                <span className="text-xs text-[hsl(180_100%_70%/0.8)] font-mono uppercase tracking-wider">{t("staking.walletStatus")}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.walletAddress")}:</span>
-                <span className="font-mono text-xs">{short(account) || t("staking.notConnected")}</span>
+                <span className="font-mono text-xs text-[hsl(180_100%_70%)]">{short(account) || t("staking.notConnected")}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.network")}:</span>
-                <span className="text-xs font-semibold">{chainId ?? "-"}</span>
+                <span className="text-xs font-semibold text-accent">{chainId ?? "-"}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.usdtBalance")}:</span>
-                <span className="text-xs font-semibold">${Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
+                <span className="text-xs font-semibold font-mono">${Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
+              <div className="h-4 w-px bg-[hsl(180_100%_70%/0.3)] hidden sm:block" />
               <div className="flex items-center gap-1.5">
                 <span className="text-xs text-muted-foreground">{t("staking.allowance")}:</span>
-                <span className="text-xs font-semibold">${Number(formatUnits(allowance, USDT_DECIMALS)).toFixed(2)}</span>
+                <span className="text-xs font-semibold font-mono">${Number(formatUnits(allowance, USDT_DECIMALS)).toFixed(2)}</span>
               </div>
               {!account && (
-                <Button size="sm" className="ml-auto bg-gradient-primary hover:bg-gradient-primary/90 h-7 text-xs px-3" onClick={connect}>
+                <Button size="sm" className="ml-auto electric-button h-7 text-xs px-3 text-[hsl(180_100%_70%)]" onClick={connect}>
                   <Wallet className="w-3 h-3 mr-1" />
                   {t("staking.connectWallet")}
                 </Button>
