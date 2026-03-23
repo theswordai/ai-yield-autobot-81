@@ -113,47 +113,54 @@ export function InvestmentDashboard({
       </Card>
 
       {/* 锁仓期对比 */}
-      <Card>
+      <Card className="bg-card/80 backdrop-blur-sm border-border/50">
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-primary" />
-            {t("staking.lockPeriodComparison")}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-32">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={lockPeriodData}>
-                <XAxis dataKey="period" tick={{
-                fontSize: 12
-              }} />
-                <YAxis tick={{
-                fontSize: 12
-              }} />
-                <Bar dataKey="apr" fill="hsl(var(--muted))" radius={[2, 2, 0, 0]}>
-                  {lockPeriodData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.active ? "hsl(var(--primary))" : "hsl(var(--muted))"} />)}
-                </Bar>
-                <Tooltip content={({
-                active,
-                payload
-              }) => {
-                if (active && payload && payload.length) {
-                  const data = payload[0].payload;
-                  return <div className="bg-card border rounded-lg p-3 shadow-lg space-y-1">
-                          <p className="text-sm font-semibold">{data.period}</p>
-                          <p className="text-sm text-primary">APR: {data.apr}%</p>
-                          <p className="text-sm text-accent font-semibold">APY: {data.apy}%</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            ({t("staking.compoundAPY")})
-                          </p>
-                        </div>;
-                }
-                return null;
-              }} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-primary" />
+              {t("staking.lockPeriodComparison")}
+            </CardTitle>
+            <span className="text-xs font-mono tracking-widest text-muted-foreground uppercase">3 Tier Strategy</span>
           </div>
-          <div className="mt-3 pt-3 border-t text-xs text-muted-foreground space-y-1">
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {lockPeriodData.map((item, index) => {
+            const maxApr = Math.max(...lockPeriodData.map(d => d.apr));
+            const fillPercent = (item.apr / maxApr) * 100;
+            return (
+              <div
+                key={index}
+                className={`rounded-xl p-4 transition-all ${
+                  item.active
+                    ? 'border-2 border-primary/60 bg-primary/5 shadow-[0_0_15px_hsl(var(--primary)/0.15)]'
+                    : 'border border-border/40 bg-background/50'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-foreground">{item.period}</span>
+                    {item.active && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">
+                        Popular
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-sm font-mono font-bold text-primary">{item.apy}% <span className="text-muted-foreground text-xs">APY</span></span>
+                </div>
+                <div className="relative h-2 rounded-full bg-muted/30 overflow-hidden">
+                  <div
+                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary/80 to-primary transition-all duration-700"
+                    style={{ width: `${fillPercent}%` }}
+                  />
+                </div>
+                <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+                  <span>APR: {item.apr}%</span>
+                  <span>{item.days} {t("staking.day")}</span>
+                </div>
+              </div>
+            );
+          })}
+          <div className="mt-3 pt-3 border-t border-border/30 text-xs text-muted-foreground space-y-1">
             <p>💡 {t("staking.aprExplain")}</p>
             <p>🚀 {t("staking.apyExplain")}</p>
           </div>
