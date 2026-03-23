@@ -200,7 +200,12 @@ export function HeroSection() {
               size="lg" 
               variant="outline" 
               className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-8 py-3 text-base"
-              onClick={() => navigate(`/${currentLang}/whitepaper`)}
+              onClick={() => {
+                if (!showDetails) setShowDetails(true);
+                setTimeout(() => {
+                  document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
             >
               {t("invest.strategyButtonName")}
             </Button>
@@ -267,7 +272,7 @@ export function HeroSection() {
 
         {/* Strategy Details Section */}
         {showDetails && (
-          <div className="mb-16 animate-fade-in">
+          <div id="strategy-details" className="mb-16 animate-fade-in">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-8">{t("hero.strategyDetails")}</h2>
               
