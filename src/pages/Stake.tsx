@@ -578,10 +578,10 @@ export default function Stake({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 投资设置 */}
           <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-primary/20">
+            <Card className="cyberpunk-card backdrop-blur border-[hsl(180_100%_70%/0.2)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-primary" />
+                  <Lock className="w-5 h-5 text-[hsl(180_100%_70%)]" />
                   {t("staking.charityInvestmentConfig")}
                 </CardTitle>
               </CardHeader>
