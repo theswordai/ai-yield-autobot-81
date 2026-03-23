@@ -415,7 +415,7 @@ export default function Referral({
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-dark">
+    <PageWrapper>
       {!embedded && <Navbar />}
       {!embedded && (
         <Helmet>
