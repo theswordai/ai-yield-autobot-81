@@ -591,9 +591,35 @@ export default function Stake({
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="amount" className="text-base font-medium">{t("staking.investAmountLabel")}</Label>
-                  <Input id="amount" type="number" min={"0"} value={amount} onChange={e => setAmount(e.target.value)} placeholder={t("staking.enterAmount")} className="text-lg h-12" />
+                  <div className="relative flex items-center bg-muted/40 rounded-xl border border-border/50 p-1">
+                    <Input 
+                      id="amount" 
+                      type="number" 
+                      min={"0"} 
+                      value={amount} 
+                      onChange={e => setAmount(e.target.value)} 
+                      placeholder="0.00" 
+                      className="text-2xl font-mono font-bold h-14 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40" 
+                    />
+                    <div className="flex items-center gap-2 pr-3 shrink-0">
+                      <span className="text-primary font-bold text-base">USDT</span>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        className="h-8 px-3 text-xs font-bold bg-muted/60 border-border/60 hover:bg-muted"
+                        onClick={() => setAmount(formatUnits(balance, USDT_DECIMALS))}
+                      >
+                        MAX
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6 text-sm font-mono text-muted-foreground px-1">
+                    <span>Balance: {Number(formatUnits(balance, USDT_DECIMALS)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT</span>
+                    <span>Min: 200 USDT</span>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
