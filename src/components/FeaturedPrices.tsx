@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { MiniKChart } from "@/components/MiniKChart";
-import { TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useUSDVContracts } from "@/hooks/useUSDVContracts";
 import { formatUnits } from "ethers";
