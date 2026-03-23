@@ -567,13 +567,18 @@ export default function Stake({
         </Card>
 
         {/* 投资数据可视化 */}
-        {amountNum > 0 && <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-primary" />
-            {t("staking.investmentAnalysis")}
-          </h3>
+        {amountNum > 0 && <Collapsible className="mb-8">
+          <CollapsibleTrigger className="w-full flex items-center justify-between group">
+            <h3 className="text-xl font-semibold flex items-center gap-2">
+              <DollarSign className="w-5 h-5 text-primary" />
+              {t("staking.investmentAnalysis")}
+            </h3>
+            <ChevronDown className="w-5 h-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+          </CollapsibleTrigger>
+          <CollapsibleContent className="mt-4">
             <InvestmentDashboard principalAfterFee={principalAfterFee} aprPercent={aprPercent} expectedEarnings={expectedEarnings} lockDays={lockDays} lockChoice={lockChoice} />
-          </div>}
+          </CollapsibleContent>
+        </Collapsible>}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 投资设置 */}
