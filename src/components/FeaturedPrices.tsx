@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { MiniKChart } from "@/components/MiniKChart";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { TrendingUp, TrendingDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useUSDVContracts } from "@/hooks/useUSDVContracts";
 import { formatUnits } from "ethers";
@@ -52,9 +52,9 @@ export function FeaturedPrices() {
   });
 
   const [usdvBalance, setUsdvBalance] = useState<bigint>(BigInt(0));
-  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
-  const [btcPriceHistory, setBtcPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
-  const [trumpPriceHistory, setTrumpPriceHistory] = useState<{ open: number; close: number; value: number }[]>([]);
+  const [usdvPriceHistory, setUsdvPriceHistory] = useState<{ value: number }[]>([]);
+  const [btcPriceHistory, setBtcPriceHistory] = useState<{ value: number }[]>([]);
+  const [trumpPriceHistory, setTrumpPriceHistory] = useState<{ value: number }[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -150,7 +150,7 @@ export function FeaturedPrices() {
       if (res.ok) {
         const json = await res.json();
         if (json.data?.attributes?.ohlcv_list) {
-          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({ open: item[1], close: item[4], value: item[4] }));
+          const history = json.data.attributes.ohlcv_list.map((item: number[]) => ({ value: item[4] }));
           setUsdvPriceHistory(history.reverse());
         }
       }
@@ -162,7 +162,7 @@ export function FeaturedPrices() {
       const res = await fetch("https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&limit=30");
       if (res.ok) {
         const json = await res.json();
-        setBtcPriceHistory(json.map((item: (string | number)[]) => ({ open: parseFloat(item[1] as string), close: parseFloat(item[4] as string), value: parseFloat(item[4] as string) })));
+        setBtcPriceHistory(json.map((item: (string | number)[]) => ({ value: parseFloat(item[4] as string) })));
       }
     } catch (e) { console.warn("Failed to fetch BTC history:", e); }
   };
@@ -176,7 +176,7 @@ export function FeaturedPrices() {
       if (res.ok) {
         const json = await res.json();
         if (json.prices) {
-          setTrumpPriceHistory(json.prices.map((p: [number, number], i: number, arr: [number, number][]) => ({ open: i > 0 ? arr[i - 1][1] : p[1], close: p[1], value: p[1] })));
+          setTrumpPriceHistory(json.prices.map((p: [number, number]) => ({ value: p[1] })));
         }
       }
     } catch (e) { console.warn("Failed to fetch TRUMP history:", e); }
@@ -217,23 +217,21 @@ export function FeaturedPrices() {
   const cards = [
     {
       key: "usdv",
-      tag: "STABLE LP",
       label: "USDV Token",
       data: usdvData,
       fallbackPrice: "0.0100",
       color: "hsl(var(--primary))",
       history: usdvPriceHistory,
       extra: account ? (
-        <div className="mt-3 pt-3 border-t border-border/30">
+        <div className="mt-4 pt-4 border-t border-border">
           <div className="text-xs text-muted-foreground mb-1">Your Balance</div>
-          <div className="text-base font-semibold text-foreground">{formatBalance(usdvBalance)} USDV</div>
-          <div className="text-xs text-muted-foreground mt-0.5">≈ ${calculateUsdValue()}</div>
+          <div className="text-lg font-semibold text-foreground">{formatBalance(usdvBalance)} USDV</div>
+          <div className="text-xs text-muted-foreground mt-1">≈ ${calculateUsdValue()}</div>
         </div>
       ) : null,
     },
     {
       key: "btc",
-      tag: "BENCHMARK",
       label: "Bitcoin",
       data: btcData,
       fallbackPrice: "--",
@@ -243,7 +241,6 @@ export function FeaturedPrices() {
     },
     {
       key: "trump",
-      tag: "CONVICTION",
       label: "TRUMP",
       data: trumpData,
       fallbackPrice: "--",
@@ -330,7 +327,6 @@ export function FeaturedPrices() {
 }
 
 function PriceCard({
-  tag,
   label,
   data,
   fallbackPrice,
@@ -338,46 +334,33 @@ function PriceCard({
   history,
   extra,
 }: {
-  tag?: string;
   label: string;
   data: PriceData | null;
   fallbackPrice: string;
   color: string;
-  history: { open: number; close: number; value: number }[];
+  history: { value: number }[];
   extra?: React.ReactNode;
 }) {
   return (
-    <Card className="bg-card/60 backdrop-blur-sm border-border/40 p-6 hover:shadow-lg transition-shadow flex flex-col justify-between">
-      {/* Tag */}
-      {tag && (
-        <p className="text-[10px] tracking-[0.15em] uppercase text-primary font-semibold mb-1">{tag}</p>
-      )}
-      {/* Title */}
-      <h3 className="text-lg font-bold text-foreground mb-4">{label}</h3>
-      {/* Price */}
-      <div className="mb-6">
-        <span className="text-4xl font-extrabold tracking-tight text-foreground font-mono">
-          ${data?.price || fallbackPrice}
-        </span>
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex-1">
+          <h3 className="text-sm text-muted-foreground font-medium mb-1">{label}</h3>
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold">${data?.price || fallbackPrice}</span>
+            {data && (
+              <div className={`flex items-center gap-1 text-sm font-medium ${data.isPositive ? "text-accent" : "text-destructive"}`}>
+                {data.isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                <span>{data.isPositive ? "+" : ""}{data.change24h}%</span>
+              </div>
+            )}
+          </div>
+          {extra}
+        </div>
       </div>
-      {/* Chart */}
-      <div className="h-20 mb-4">
+      <div className="h-24">
         <MiniKChart color={color} data={history} />
       </div>
-      {/* Footer: change + volume */}
-      <div className="flex items-center justify-between text-xs font-mono">
-        {data ? (
-          <span className={data.isPositive ? "text-accent" : "text-destructive"}>
-            {data.isPositive ? "+" : ""}{data.change24h}% (24H)
-          </span>
-        ) : (
-          <span className="text-muted-foreground">--</span>
-        )}
-        <span className="text-muted-foreground">
-          VOL: --
-        </span>
-      </div>
-      {extra}
     </Card>
   );
 }
