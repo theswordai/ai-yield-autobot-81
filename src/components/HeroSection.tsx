@@ -130,22 +130,22 @@ export function HeroSection() {
 
   const featureCards = [
     {
-      icon: <Zap className="w-6 h-6" />,
+      icon: <Zap className="w-8 h-8 md:w-10 md:h-10" />,
       title: t("hero.crossChainEngine.title"),
       description: t("hero.crossChainEngine.description"),
     },
     {
-      icon: <Shield className="w-6 h-6" />,
+      icon: <Shield className="w-8 h-8 md:w-10 md:h-10" />,
       title: t("hero.transparentProtocol.title"),
       description: t("hero.transparentProtocol.direction"),
     },
     {
-      icon: <BarChart3 className="w-6 h-6" />,
+      icon: <BarChart3 className="w-8 h-8 md:w-10 md:h-10" />,
       title: t("hero.defiVault.title"),
       description: t("hero.defiVault.description"),
     },
     {
-      icon: <Bot className="w-6 h-6" />,
+      icon: <Bot className="w-8 h-8 md:w-10 md:h-10" />,
       title: t("hero.aiRotation.title"),
       description: t("hero.aiRotation.description"),
     },
