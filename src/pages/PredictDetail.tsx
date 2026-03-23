@@ -53,7 +53,7 @@ export default function PredictDetail() {
 
   if (!market) {
     return (
-      <div className="min-h-screen bg-background">
+      <PageWrapper>
         <Navbar />
         <div className="container mx-auto px-4 pt-24 text-center">
           <p className="text-muted-foreground">{language === 'zh' ? '未找到市场' : 'Market not found'}</p>
@@ -61,7 +61,7 @@ export default function PredictDetail() {
             {language === 'zh' ? '返回列表' : 'Back to list'}
           </Link>
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
