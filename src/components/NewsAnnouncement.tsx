@@ -10,17 +10,6 @@ export function NewsAnnouncement() {
 
   const announcements = [
     {
-      id: 4,
-      title: "🧧 USD.ONLINE祝全球华人新年快乐，马到成功！！🎆",
-      titleEn: "🧧 USD.ONLINE Wishes All Chinese Around the World a Happy New Year! Great Success! 🎆",
-      content: "恭喜发财，万事如意！USD.ONLINE与您共迎新春佳节！",
-      contentEn: "Wishing you prosperity and good fortune! USD.ONLINE celebrates the Lunar New Year with you!",
-      date: "2026-02-11",
-      time: "12:45 UTC",
-      type: "event",
-      urgent: true,
-    },
-    {
       id: 3,
       title: "USD.ONLINE主网将于2026年Q2正式上线",
       titleEn: "USD.ONLINE Mainnet to Launch in Q2 2026",
