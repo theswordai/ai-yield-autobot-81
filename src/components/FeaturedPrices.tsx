@@ -338,7 +338,7 @@ function PriceCard({
   data: PriceData | null;
   fallbackPrice: string;
   color: string;
-  history: { value: number }[];
+  history: { open: number; close: number; value: number }[];
   extra?: React.ReactNode;
 }) {
   return (
