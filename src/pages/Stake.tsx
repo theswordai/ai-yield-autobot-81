@@ -840,7 +840,7 @@ export default function Stake({
             </Card>
 
             {/* 我的邀请地址 */}
-            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <Card className="cyberpunk-card border-[hsl(180_100%_70%/0.2)]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Share2 className="w-5 h-5 text-primary" />
