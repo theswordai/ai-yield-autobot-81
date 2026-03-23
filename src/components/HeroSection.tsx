@@ -200,7 +200,12 @@ export function HeroSection() {
               size="lg" 
               variant="outline" 
               className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-8 py-3 text-base"
-              onClick={() => navigate(`/${currentLang}/whitepaper`)}
+              onClick={() => {
+                if (!showDetails) setShowDetails(true);
+                setTimeout(() => {
+                  document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
             >
               {t("invest.strategyButtonName")}
             </Button>
