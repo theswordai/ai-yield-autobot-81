@@ -78,36 +78,40 @@ export function InvestmentDashboard({
   }], [lockChoice, t]);
   return <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* 投资概览 */}
-      <Card className="relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-primary">
+      <Card className="relative overflow-hidden border-0 bg-[hsl(var(--card))]/80 backdrop-blur-xl shadow-2xl">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-primary text-base">
             <DollarSign className="w-5 h-5" />
             {t("staking.investmentOverview")}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">{t("staking.investmentPrincipal")}</p>
-              <p className="text-lg font-bold">${fmt(principalAfterFee)}</p>
-            </div>
+        <CardContent className="space-y-5">
+          {/* 本金 - 大字突出展示 */}
+          <div className="p-5 rounded-xl bg-muted/30 border border-border/30">
+            <p className="text-xs text-muted-foreground mb-1">{t("staking.investmentPrincipal")}</p>
+            <p className="text-4xl font-mono font-bold tracking-tight text-foreground">${fmt(principalAfterFee)}</p>
+          </div>
+
+          {/* 预期收益 & 年化 */}
+          <div className="flex items-end justify-between gap-4 px-1">
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">{t("staking.expectedReturns")}</p>
-              <p className="text-lg font-bold text-accent">+${fmt(expectedEarnings)}</p>
+              <p className="text-2xl font-mono font-bold text-accent">+${fmt(expectedEarnings)}</p>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1 text-right">
               <p className="text-xs text-muted-foreground">{t("staking.annualRate")}</p>
-              <p className="text-lg font-bold text-primary">{aprPercent.toFixed(2)}%</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-xs text-muted-foreground">{t("staking.lockDays")}</p>
-              <p className="text-lg font-bold">{lockDays}{t("staking.day")}</p>
+              <p className="text-2xl font-mono font-bold text-primary flex items-center justify-end gap-1">
+                {aprPercent.toFixed(2)}%
+                <TrendingUp className="w-4 h-4" />
+              </p>
             </div>
           </div>
-          <div className="pt-2">
-            <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
+
+          {/* 总回报按钮样式 */}
+          <div className="pt-1">
+            <div className="w-full py-3 rounded-xl bg-accent/90 text-accent-foreground text-center font-bold text-sm tracking-wider">
               {t("staking.totalReturns")}: ${fmt(principalAfterFee + expectedEarnings)}
-            </Badge>
+            </div>
           </div>
         </CardContent>
       </Card>
