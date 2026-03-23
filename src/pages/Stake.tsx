@@ -812,7 +812,7 @@ export default function Stake({
           {/* 侧边栏 */}
           <div className="space-y-6">
             {/* 奖励金库 */}
-            <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
+            <Card className="hologram data-stream">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Gift className="w-5 h-5 text-accent" />
