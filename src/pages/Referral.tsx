@@ -425,8 +425,7 @@ export default function Referral({
           <link rel="canonical" href="/referral" />
         </Helmet>
       )}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10 pointer-events-none" />
-      <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10 relative z-10`}>
+      <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10`}>
         <div className="container mx-auto px-4">
           <div className="mb-8 flex items-center justify-between">
             <div>
