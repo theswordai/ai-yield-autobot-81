@@ -594,7 +594,7 @@ export default function Stake({
                 <div className="space-y-3">
                   <Label className="text-base font-medium">{t("staking.lockPeriodLabel")}</Label>
                   <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-3">
-                    <label htmlFor="l0" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                     <label htmlFor="l0" className="flex items-center justify-between p-4 border border-[hsl(180_100%_70%/0.15)] rounded-lg cursor-pointer hover:border-[hsl(180_100%_70%/0.5)] hover:bg-[hsl(180_100%_70%/0.03)] transition-all duration-300">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l0" value="0" />
                         <div>
@@ -604,9 +604,9 @@ export default function Stake({
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline">{t("staking.shortTerm")}</Badge>
+                      <Badge variant="outline" className="border-[hsl(180_100%_70%/0.3)] text-[hsl(180_100%_70%/0.8)]">{t("staking.shortTerm")}</Badge>
                     </label>
-                    <label htmlFor="l1" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                    <label htmlFor="l1" className="flex items-center justify-between p-4 border border-[hsl(180_100%_70%/0.15)] rounded-lg cursor-pointer hover:border-[hsl(180_100%_70%/0.5)] hover:bg-[hsl(180_100%_70%/0.03)] transition-all duration-300">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l1" value="1" />
                         <div>
@@ -616,9 +616,9 @@ export default function Stake({
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline">{t("staking.mediumTerm")}</Badge>
+                      <Badge variant="outline" className="border-primary/30 text-primary">{t("staking.mediumTerm")}</Badge>
                     </label>
-                    <label htmlFor="l2" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                    <label htmlFor="l2" className="flex items-center justify-between p-4 border border-[hsl(180_100%_70%/0.15)] rounded-lg cursor-pointer hover:border-[hsl(180_100%_70%/0.5)] hover:bg-[hsl(180_100%_70%/0.03)] transition-all duration-300 relative overflow-hidden">
                       <div className="flex items-center gap-3">
                         <RadioGroupItem id="l2" value="2" />
                         <div>
@@ -628,7 +628,7 @@ export default function Stake({
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-primary/10 text-primary">{t("staking.longTerm")}</Badge>
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">{t("staking.longTerm")}</Badge>
                     </label>
                   </RadioGroup>
                 </div>
