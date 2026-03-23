@@ -803,6 +803,6 @@ export default function Referral({
           </Card>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
