@@ -78,9 +78,9 @@ export function InvestmentDashboard({
   }], [lockChoice, t]);
   return <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* 投资概览 */}
-      <Card className="relative overflow-hidden bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+      <Card className="relative overflow-hidden cyberpunk-card border-[hsl(180_100%_70%/0.2)]">
         <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-primary">
+          <CardTitle className="flex items-center gap-2 text-[hsl(180_100%_70%)]">
             <DollarSign className="w-5 h-5" />
             {t("staking.investmentOverview")}
           </CardTitle>
@@ -89,23 +89,23 @@ export function InvestmentDashboard({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">{t("staking.investmentPrincipal")}</p>
-              <p className="text-lg font-bold">${fmt(principalAfterFee)}</p>
+              <p className="text-lg font-bold font-mono">${fmt(principalAfterFee)}</p>
             </div>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">{t("staking.expectedReturns")}</p>
-              <p className="text-lg font-bold text-accent">+${fmt(expectedEarnings)}</p>
+              <p className="text-lg font-bold text-accent font-mono">+${fmt(expectedEarnings)}</p>
             </div>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">{t("staking.annualRate")}</p>
-              <p className="text-lg font-bold text-primary">{aprPercent.toFixed(2)}%</p>
+              <p className="text-lg font-bold text-primary font-mono">{aprPercent.toFixed(2)}%</p>
             </div>
             <div className="space-y-1">
               <p className="text-xs text-muted-foreground">{t("staking.lockDays")}</p>
-              <p className="text-lg font-bold">{lockDays}{t("staking.day")}</p>
+              <p className="text-lg font-bold font-mono">{lockDays}{t("staking.day")}</p>
             </div>
           </div>
           <div className="pt-2">
-            <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
+            <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20 font-mono">
               {t("staking.totalReturns")}: ${fmt(principalAfterFee + expectedEarnings)}
             </Badge>
           </div>
