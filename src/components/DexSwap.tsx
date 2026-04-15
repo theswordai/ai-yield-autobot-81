@@ -46,6 +46,7 @@ export function DexSwap() {
   const [needsApproval, setNeedsApproval] = useState(false);
   const [priceImpact, setPriceImpact] = useState<string | null>(null);
   const [rate, setRate] = useState<string | null>(null);
+  const [rawToAmountWei, setRawToAmountWei] = useState<bigint>(BigInt(0));
 
   const fromTokenInfo = TOKENS[fromToken];
   const toTokenInfo = TOKENS[toToken];
@@ -123,6 +124,7 @@ export function DexSwap() {
         // Get actual quote
         const amounts = await router.getAmountsOut(amountIn, path);
         const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
+        const rawOut = amounts[amounts.length - 1];
         const actualRate = parseFloat(outAmount) / parseFloat(inputAmount);
 
         // Get base rate with 1 unit for price impact calculation
@@ -137,7 +139,7 @@ export function DexSwap() {
         }
 
         const impact = baseRate > 0 ? ((baseRate - actualRate) / baseRate) * 100 : 0;
-        return { outAmount, actualRate, impact: Math.max(0, impact) };
+        return { outAmount, rawOut, actualRate, impact: Math.max(0, impact) };
       };
 
       // Build path
@@ -151,6 +153,7 @@ export function DexSwap() {
         try {
           const result = await getQuoteForPath([fromTokenInfo.address, toTokenInfo.address]);
           setToAmount(result.outAmount);
+          setRawToAmountWei(result.rawOut);
           setRate(result.actualRate.toFixed(6));
           setPriceImpact(result.impact < 0.01 ? "<0.01" : result.impact.toFixed(2));
           setQuoteLoading(false);
@@ -162,6 +165,7 @@ export function DexSwap() {
 
       const result = await getQuoteForPath(path);
       setToAmount(result.outAmount);
+      setRawToAmountWei(result.rawOut);
       setRate(result.actualRate.toFixed(6));
       setPriceImpact(result.impact < 0.01 ? "<0.01" : result.impact.toFixed(2));
     } catch (err) {
@@ -233,7 +237,7 @@ export function DexSwap() {
       setSwapLoading(true);
       const router = new Contract(PANCAKE_ROUTER_ADDRESS, PANCAKE_ROUTER_ABI, signer);
       const amountIn = parseUnits(fromAmount, fromTokenInfo.decimals);
-      const minOut = parseUnits(toAmount, toTokenInfo.decimals) * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000);
+      const minOut = rawToAmountWei * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
 
       let tx;
@@ -361,7 +365,14 @@ export function DexSwap() {
                 余额: {formatBalance(fromBalance)}
                 <button
                   className="ml-1 text-primary hover:underline"
-                  onClick={() => setFromAmount(fromBalance)}
+                  onClick={() => {
+                    if (fromToken === "BNB") {
+                      const reserved = Math.max(0, parseFloat(fromBalance) - 0.005);
+                      setFromAmount(reserved > 0 ? reserved.toString() : "0");
+                    } else {
+                      setFromAmount(fromBalance);
+                    }
+                  }}
                 >
                   MAX
                 </button>
