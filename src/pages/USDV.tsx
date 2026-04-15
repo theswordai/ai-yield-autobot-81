@@ -26,6 +26,14 @@ export default function USDV() {
   const [selectedPositions, setSelectedPositions] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<"usdv" | "dex">("usdv");
 
+  // 检测URL参数，自动切换到对应标签
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "dex") {
+      setActiveTab("dex");
+    }
+  }, [searchParams]);
+
   const handlePositionSelect = (posId: string, checked: boolean) => {
     const newSelected = new Set(selectedPositions);
     if (checked) {
