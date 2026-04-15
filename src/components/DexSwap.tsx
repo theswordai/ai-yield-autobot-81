@@ -423,52 +423,29 @@ export function DexSwap() {
                 onChange={(e) => setFromAmount(e.target.value)}
                 className="border-0 bg-transparent text-2xl font-bold focus-visible:ring-0 p-0 h-auto text-foreground"
               />
-              <button
-                onClick={() => {
-                  const options = tokenOptions.filter(t => t !== toToken);
-                  const idx = options.indexOf(fromToken);
-                  const next = options[(idx + 1) % options.length];
-                  setFromToken(next);
-                  setFromAmount("");
-                  setToAmount("");
-                }}
-                className="flex items-center gap-2 bg-secondary/80 hover:bg-secondary border border-border/50 hover:border-primary/30 rounded-full pl-2 pr-3 py-1.5 transition-all min-w-[120px]"
-              >
-                <img
-                  src={fromTokenInfo.logo}
-                  alt={fromToken}
-                  className="w-6 h-6 rounded-full"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
-                />
-                <span className="text-sm font-bold text-foreground">{fromToken}</span>
-                <ChevronDown className="h-3 w-3 text-muted-foreground ml-auto" />
-              </button>
-            </div>
-            {/* Token quick select */}
-            <div className="flex gap-1.5 flex-wrap pt-1">
-              {tokenOptions.filter(t => t !== toToken).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => {
-                    setFromToken(t);
+              <div className="relative">
+                <select
+                  value={fromToken}
+                  onChange={(e) => {
+                    const newFrom = e.target.value;
+                    if (newFrom === toToken) setToToken(fromToken);
+                    setFromToken(newFrom);
                     setFromAmount("");
                     setToAmount("");
                   }}
-                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs transition-all ${
-                    fromToken === t
-                      ? "bg-primary/20 text-primary border border-primary/30"
-                      : "bg-secondary/30 text-muted-foreground hover:bg-secondary/60 border border-transparent"
-                  }`}
+                  className="bg-secondary/80 border border-border/50 hover:border-primary/30 rounded-full pl-9 pr-3 py-2 text-sm font-bold min-w-[120px] appearance-none text-foreground transition-all"
                 >
-                  <img
-                    src={TOKENS[t].logo}
-                    alt={t}
-                    className="w-3.5 h-3.5 rounded-full"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                  {t}
-                </button>
-              ))}
+                  {tokenOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <img
+                  src={fromTokenInfo.logo}
+                  alt={fromToken}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
             </div>
           </div>
 
@@ -500,52 +477,29 @@ export function DexSwap() {
                   toAmount ? formatBalance(toAmount) : <span className="text-muted-foreground/50">0.0</span>
                 )}
               </div>
-              <button
-                onClick={() => {
-                  const options = tokenOptions.filter(t => t !== fromToken);
-                  const idx = options.indexOf(toToken);
-                  const next = options[(idx + 1) % options.length];
-                  setToToken(next);
-                  setFromAmount("");
-                  setToAmount("");
-                }}
-                className="flex items-center gap-2 bg-secondary/80 hover:bg-secondary border border-border/50 hover:border-accent/30 rounded-full pl-2 pr-3 py-1.5 transition-all min-w-[120px]"
-              >
-                <img
-                  src={toTokenInfo.logo}
-                  alt={toToken}
-                  className="w-6 h-6 rounded-full"
-                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
-                />
-                <span className="text-sm font-bold text-foreground">{toToken}</span>
-                <ChevronDown className="h-3 w-3 text-muted-foreground ml-auto" />
-              </button>
-            </div>
-            {/* Token quick select */}
-            <div className="flex gap-1.5 flex-wrap pt-1">
-              {tokenOptions.filter(t => t !== fromToken).map((t) => (
-                <button
-                  key={t}
-                  onClick={() => {
-                    setToToken(t);
+              <div className="relative">
+                <select
+                  value={toToken}
+                  onChange={(e) => {
+                    const newTo = e.target.value;
+                    if (newTo === fromToken) setFromToken(toToken);
+                    setToToken(newTo);
                     setFromAmount("");
                     setToAmount("");
                   }}
-                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs transition-all ${
-                    toToken === t
-                      ? "bg-accent/20 text-accent border border-accent/30"
-                      : "bg-secondary/30 text-muted-foreground hover:bg-secondary/60 border border-transparent"
-                  }`}
+                  className="bg-secondary/80 border border-border/50 hover:border-accent/30 rounded-full pl-9 pr-3 py-2 text-sm font-bold min-w-[120px] appearance-none text-foreground transition-all"
                 >
-                  <img
-                    src={TOKENS[t].logo}
-                    alt={t}
-                    className="w-3.5 h-3.5 rounded-full"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                  {t}
-                </button>
-              ))}
+                  {tokenOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <img
+                  src={toTokenInfo.logo}
+                  alt={toToken}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
             </div>
           </div>
 
