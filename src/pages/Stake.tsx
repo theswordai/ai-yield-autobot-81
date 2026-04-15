@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "@/hooks/useI18n";
 import { PageWrapper } from "@/components/PageWrapper";
-
+import { Navbar } from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -499,7 +499,7 @@ export default function Stake({
     }
   };
   return <PageWrapper>
-      
+      {!embedded && <Navbar />}
       <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl`}>
         <div className="mb-8 text-center px-2">
           <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">

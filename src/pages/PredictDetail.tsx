@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { Navbar } from '@/components/Navbar';
 import { PageWrapper } from '@/components/PageWrapper';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from '@/hooks/useI18n';
@@ -43,7 +43,7 @@ export default function PredictDetail() {
   if (isLoading) {
     return (
       <PageWrapper>
-        
+        <Navbar />
         <div className="flex items-center justify-center pt-32">
           <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
@@ -54,7 +54,8 @@ export default function PredictDetail() {
   if (!market) {
     return (
       <PageWrapper>
-        <div className="container mx-auto px-4 pt-8 text-center">
+        <Navbar />
+        <div className="container mx-auto px-4 pt-24 text-center">
           <p className="text-muted-foreground">{language === 'zh' ? '未找到市场' : 'Market not found'}</p>
           <Link to={`${langPrefix}/predict`} className="mt-4 inline-block text-primary hover:underline">
             {language === 'zh' ? '返回列表' : 'Back to list'}
@@ -72,8 +73,9 @@ export default function PredictDetail() {
       <Helmet>
         <title>{market.title} | USD.ONLINE</title>
       </Helmet>
+      <Navbar />
 
-      <main className="container mx-auto px-3 sm:px-4 pt-6 sm:pt-8 pb-24">
+      <main className="container mx-auto px-3 sm:px-4 pt-16 sm:pt-20 pb-24">
         <Link to={`${langPrefix}/predict`} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           {language === 'zh' ? '返回市场' : 'Back to Markets'}

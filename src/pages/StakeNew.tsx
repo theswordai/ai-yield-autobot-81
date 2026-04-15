@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-
+import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { NetworkChecker } from "@/components/NetworkChecker";
@@ -67,8 +67,9 @@ export default function StakeNew() {
 
   return (
     <PageWrapper>
+      <Navbar />
       
-      <main className="container mx-auto px-4 pt-8 pb-12 max-w-7xl">
+      <main className="container mx-auto px-4 pt-24 pb-12 max-w-7xl">
         {/* 页面标题 */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
