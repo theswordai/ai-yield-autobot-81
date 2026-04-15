@@ -124,6 +124,7 @@ export function DexSwap() {
         // Get actual quote
         const amounts = await router.getAmountsOut(amountIn, path);
         const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
+        const rawOut = amounts[amounts.length - 1];
         const actualRate = parseFloat(outAmount) / parseFloat(inputAmount);
 
         // Get base rate with 1 unit for price impact calculation
@@ -138,7 +139,7 @@ export function DexSwap() {
         }
 
         const impact = baseRate > 0 ? ((baseRate - actualRate) / baseRate) * 100 : 0;
-        return { outAmount, actualRate, impact: Math.max(0, impact) };
+        return { outAmount, rawOut, actualRate, impact: Math.max(0, impact) };
       };
 
       // Build path
