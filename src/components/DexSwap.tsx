@@ -125,11 +125,15 @@ export function DexSwap() {
       setNeedsApproval(false);
       return;
     }
+    if (!isValidAmount(fromAmount, fromTokenInfo.decimals)) {
+      setNeedsApproval(false);
+      return;
+    }
 
     try {
       const contract = new Contract(fromTokenInfo.address, ERC20_APPROVE_ABI, provider);
       const allowance = await contract.allowance(account, PANCAKE_ROUTER_ADDRESS);
-      const amountWei = parseUnits(fromAmount || "0", fromTokenInfo.decimals);
+      const amountWei = parseUnits(fromAmount, fromTokenInfo.decimals);
       setNeedsApproval(allowance < amountWei);
     } catch {
       setNeedsApproval(true);
