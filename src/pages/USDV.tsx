@@ -22,6 +22,7 @@ export default function USDV() {
   const { data, loading, formatAmount, formatPercent, refreshData } = useUSDVData();
   const { loading: actionLoading, claimStakeUSDV, claimProfitFollow, claimNewcomer, spin } = useUSDVActions();
   const [selectedPositions, setSelectedPositions] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<"swap" | "rewards">("swap");
 
   const handlePositionSelect = (posId: string, checked: boolean) => {
     const newSelected = new Set(selectedPositions);
