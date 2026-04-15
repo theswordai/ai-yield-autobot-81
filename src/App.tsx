@@ -32,8 +32,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
         <FAQCustomerService />
-        <MobileBottomNav />
         <AppLayout>
+        <Routes>
         <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
