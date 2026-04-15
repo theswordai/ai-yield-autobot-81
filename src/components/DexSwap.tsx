@@ -394,20 +394,7 @@ export function DexSwap() {
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">支付</span>
               <span className="text-xs text-muted-foreground">
-                余额: {formatBalance(fromBalance)}
-                <button
-                  className="ml-1 text-primary hover:underline"
-                  onClick={() => {
-                    if (fromToken === "BNB") {
-                      const reserved = Math.max(0, parseFloat(fromBalance) - 0.005);
-                      setFromAmount(reserved > 0 ? reserved.toString() : "0");
-                    } else {
-                      setFromAmount(fromBalance);
-                    }
-                  }}
-                >
-                  MAX
-                </button>
+              余额: {formatBalance(fromBalance)}
               </span>
             </div>
             <div className="flex gap-2 items-center">
