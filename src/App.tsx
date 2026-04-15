@@ -20,6 +20,7 @@ import Predict from "./pages/Predict";
 import PredictDetail from "./pages/PredictDetail";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
+import { AppLayout } from "./components/AppLayout";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
         <BrowserRouter>
         <FAQCustomerService />
         <MobileBottomNav />
+        <AppLayout>
         <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
@@ -80,6 +82,7 @@ const App = () => (
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </AppLayout>
         </BrowserRouter>
       </TooltipProvider>
     </I18nProvider>
