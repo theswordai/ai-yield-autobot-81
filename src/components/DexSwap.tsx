@@ -211,6 +211,7 @@ export function DexSwap() {
     } catch (err) {
       console.error("Quote error:", err);
       setToAmount("");
+      setRawToAmountWei(BigInt(0));
       setRate(null);
       setPriceImpact(null);
     } finally {
