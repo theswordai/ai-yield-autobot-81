@@ -475,6 +475,9 @@ export function DexSwap() {
                     setFromToken(newFrom);
                     setFromAmount("");
                     setToAmount("");
+                    setRawToAmountWei(BigInt(0));
+                    setRate(null);
+                    setPriceImpact(null);
                   }}
                   className="bg-secondary/80 border border-border/50 hover:border-primary/30 rounded-full pl-9 pr-3 py-2 text-sm font-bold min-w-[120px] appearance-none text-foreground transition-all"
                 >
