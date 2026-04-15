@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Wallet, TrendingUp, Users, Gift, Lock, Unlock, ExternalLink, Shield } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
+
 import { PageWrapper } from "@/components/PageWrapper";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";

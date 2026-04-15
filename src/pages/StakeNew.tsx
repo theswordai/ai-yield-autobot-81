@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { Navbar } from "@/components/Navbar";
+
 import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { NetworkChecker } from "@/components/NetworkChecker";

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Navbar } from '@/components/Navbar';
+
 import { PageWrapper } from '@/components/PageWrapper';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from '@/hooks/useI18n';
