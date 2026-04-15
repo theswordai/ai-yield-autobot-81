@@ -10,6 +10,17 @@ export function NewsAnnouncement() {
 
   const announcements = [
     {
+      id: 4,
+      title: "USD.ONLINE兑换功能已上线",
+      titleEn: "USD.ONLINE Swap Feature is Now Live",
+      content: "USD.ONLINE DEX兑换功能已正式上线，支持多币种快速兑换",
+      contentEn: "USD.ONLINE DEX swap feature is now live, supporting fast multi-token swaps",
+      date: "2026-04-15",
+      time: "12:00 UTC",
+      type: "event",
+      urgent: false,
+    },
+    {
       id: 3,
       title: "USD.ONLINE主网将于2026年Q2正式上线",
       titleEn: "USD.ONLINE Mainnet to Launch in Q2 2026",
