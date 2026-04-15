@@ -67,7 +67,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border z-40 top-16">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border z-40 !top-16 !h-[calc(100vh-4rem)]">
       <SidebarContent className="pt-2">
         <SidebarGroup>
           <SidebarGroupContent>
