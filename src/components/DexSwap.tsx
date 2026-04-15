@@ -571,7 +571,7 @@ export function DexSwap() {
               <div className="flex justify-between px-2">
                 <span className="text-muted-foreground">最少获得</span>
                 <span className="text-foreground">
-                  {toAmount ? formatBalance((parseFloat(toAmount) * (1 - slippage / 100)).toString()) : "0"} {toToken}
+                  {rawToAmountWei > BigInt(0) ? formatBalance(formatUnits(rawToAmountWei * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000), toTokenInfo.decimals)) : "0"} {toToken}
                 </span>
               </div>
             </div>
