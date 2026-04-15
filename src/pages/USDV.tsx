@@ -7,12 +7,13 @@ import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { SpinWheel } from "@/components/SpinWheel";
+import { SwapInterface } from "@/components/SwapInterface";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy } from "lucide-react";
+import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy, ArrowLeftRight, Award } from "lucide-react";
 import { USDV_ADDRESS } from "@/config/contracts";
 import { toast } from "sonner";
 
@@ -21,6 +22,7 @@ export default function USDV() {
   const { data, loading, formatAmount, formatPercent, refreshData } = useUSDVData();
   const { loading: actionLoading, claimStakeUSDV, claimProfitFollow, claimNewcomer, spin } = useUSDVActions();
   const [selectedPositions, setSelectedPositions] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<"swap" | "rewards">("swap");
 
   const handlePositionSelect = (posId: string, checked: boolean) => {
     const newSelected = new Set(selectedPositions);
@@ -77,14 +79,55 @@ export default function USDV() {
             {/* Header */}
             <div className="text-center space-y-4">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent neon-text">
-                {t("usdv.header")}
+                Sovereign Swap
               </h1>
               <p className="text-muted-foreground text-lg">
                 {t("usdv.subheader")}
               </p>
             </div>
 
-            {/* USDV介绍 */}
+            {/* Tab Switcher */}
+            <div className="flex justify-center">
+              <div className="inline-flex rounded-xl bg-secondary/50 p-1 border border-border/50">
+                <button
+                  onClick={() => setActiveTab("swap")}
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    activeTab === "swap"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <ArrowLeftRight className="h-4 w-4" />
+                  {t("swap.tab") || "交易"}
+                </button>
+                <button
+                  onClick={() => setActiveTab("rewards")}
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    activeTab === "rewards"
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Award className="h-4 w-4" />
+                  {t("usdv.rewardsTab") || "奖励系统"}
+                </button>
+              </div>
+            </div>
+
+            {/* Swap Tab */}
+            {activeTab === "swap" && (
+              <div className="py-4">
+                <WalletConnector />
+                <div className="mt-6">
+                  <SwapInterface />
+                </div>
+              </div>
+            )}
+
+            {/* Rewards Tab */}
+            {activeTab === "rewards" && (
+            <>
+
             <Card className="max-w-4xl mx-auto hologram">
               <CardContent className="p-8 space-y-6">
                 <div className="text-center space-y-4">
@@ -412,6 +455,8 @@ export default function USDV() {
                   </p>
                 </CardContent>
               </Card>
+            )}
+            </>
             )}
           </div>
         </div>
