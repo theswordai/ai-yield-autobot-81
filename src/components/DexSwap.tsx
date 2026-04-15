@@ -118,6 +118,28 @@ export function DexSwap() {
       const router = new Contract(PANCAKE_ROUTER_ADDRESS, PANCAKE_ROUTER_ABI, provider);
       const amountIn = parseUnits(inputAmount, fromTokenInfo.decimals);
 
+      // Helper to get quote and compute impact for a given path
+      const getQuoteForPath = async (path: string[]) => {
+        // Get actual quote
+        const amounts = await router.getAmountsOut(amountIn, path);
+        const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
+        const actualRate = parseFloat(outAmount) / parseFloat(inputAmount);
+
+        // Get base rate with 1 unit for price impact calculation
+        const baseAmountIn = parseUnits("1", fromTokenInfo.decimals);
+        let baseRate = actualRate;
+        try {
+          const baseAmounts = await router.getAmountsOut(baseAmountIn, path);
+          const baseOut = formatUnits(baseAmounts[baseAmounts.length - 1], toTokenInfo.decimals);
+          baseRate = parseFloat(baseOut);
+        } catch {
+          // If base query fails, assume no impact
+        }
+
+        const impact = baseRate > 0 ? ((baseRate - actualRate) / baseRate) * 100 : 0;
+        return { outAmount, actualRate, impact: Math.max(0, impact) };
+      };
+
       // Build path
       let path: string[];
       if (fromToken === "BNB") {
@@ -127,29 +149,21 @@ export function DexSwap() {
       } else {
         // Try direct path first, fallback to WBNB-routed
         try {
-          const amounts = await router.getAmountsOut(amountIn, [fromTokenInfo.address, toTokenInfo.address]);
-          const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
-          setToAmount(outAmount);
-          const rateVal = parseFloat(outAmount) / parseFloat(inputAmount);
-          setRate(rateVal.toFixed(6));
-          // Simple price impact estimate
-          const impact = Math.abs(1 - rateVal) * 100;
-          setPriceImpact(impact < 0.01 ? "<0.01" : impact.toFixed(2));
+          const result = await getQuoteForPath([fromTokenInfo.address, toTokenInfo.address]);
+          setToAmount(result.outAmount);
+          setRate(result.actualRate.toFixed(6));
+          setPriceImpact(result.impact < 0.01 ? "<0.01" : result.impact.toFixed(2));
           setQuoteLoading(false);
           return;
         } catch {
-          // Direct path failed, try via WBNB
           path = [fromTokenInfo.address, WBNB_ADDRESS, toTokenInfo.address];
         }
       }
 
-      const amounts = await router.getAmountsOut(amountIn, path);
-      const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
-      setToAmount(outAmount);
-      const rateVal = parseFloat(outAmount) / parseFloat(inputAmount);
-      setRate(rateVal.toFixed(6));
-      const impact = Math.abs(1 - rateVal) * 100;
-      setPriceImpact(impact < 0.01 ? "<0.01" : impact.toFixed(2));
+      const result = await getQuoteForPath(path);
+      setToAmount(result.outAmount);
+      setRate(result.actualRate.toFixed(6));
+      setPriceImpact(result.impact < 0.01 ? "<0.01" : result.impact.toFixed(2));
     } catch (err) {
       console.error("Quote error:", err);
       setToAmount("");
