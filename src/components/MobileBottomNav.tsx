@@ -53,10 +53,12 @@ const MobileBottomNav = () => {
   ];
 
   const isActive = (path: string) => {
-    if (path === `/${language}`) {
-      return location.pathname === path || location.pathname === `/${language}/`;
+    // 移除查询参数进行比较
+    const cleanPath = path.split("?")[0];
+    if (cleanPath === `/${language}`) {
+      return location.pathname === cleanPath || location.pathname === `/${language}/`;
     }
-    return location.pathname.startsWith(path);
+    return location.pathname.startsWith(cleanPath);
   };
 
   return (

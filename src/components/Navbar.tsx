@@ -22,7 +22,11 @@ export function Navbar() {
     { name: t("nav.predict"), href: `${langPrefix}/predict` },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    // 移除查询参数进行比较
+    const cleanPath = path.split("?")[0];
+    return location.pathname === cleanPath;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
