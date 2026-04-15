@@ -264,15 +264,34 @@ export function DexSwap() {
       }
 
       toast.info("兑换交易已提交...");
-      const receipt = await tx.wait();
+      
+      // Add timeout to prevent infinite spinning
+      const waitWithTimeout = (txPromise: Promise<any>, timeoutMs: number) => {
+        return Promise.race([
+          txPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT")), timeoutMs))
+        ]);
+      };
 
-      if (receipt.status === 1) {
-        toast.success(`成功将 ${fromAmount} ${fromToken} 兑换为 ${toToken}！`);
-        setFromAmount("");
-        setToAmount("");
-        fetchBalances();
-      } else {
-        toast.error("交易失败");
+      try {
+        const receipt = await waitWithTimeout(tx.wait(), 120000) as any;
+        if (receipt.status === 1) {
+          toast.success(`成功将 ${fromAmount} ${fromToken} 兑换为 ${toToken}！`);
+          setFromAmount("");
+          setToAmount("");
+          fetchBalances();
+        } else {
+          toast.error("交易失败");
+        }
+      } catch (waitErr: any) {
+        if (waitErr.message === "TIMEOUT") {
+          toast.warning("交易已提交但确认超时，请在钱包或区块链浏览器中查看状态", { duration: 8000 });
+          setFromAmount("");
+          setToAmount("");
+          fetchBalances();
+        } else {
+          throw waitErr;
+        }
       }
     } catch (err: any) {
       console.error("Swap failed:", err);
