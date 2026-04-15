@@ -15,7 +15,7 @@ export default function Whitepaper() {
         <meta name="description" content="和谐财富引擎白皮书 - 构建财富与慈善的和谐统一" />
         <link rel="canonical" href="/whitepaper" />
       </Helmet>
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
