@@ -463,7 +463,7 @@ export function DexSwap() {
                 type="number"
                 placeholder="0.0"
                 value={fromAmount}
-                onChange={(e) => setFromAmount(e.target.value)}
+                onChange={(e) => setFromAmount(sanitizeAmountInput(e.target.value, fromTokenInfo.decimals))}
                 className="border-0 bg-transparent text-2xl font-bold focus-visible:ring-0 p-0 h-auto text-foreground"
               />
               <div className="relative">
