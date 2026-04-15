@@ -23,9 +23,9 @@ const MobileBottomNav = () => {
       path: `/${language}/invest` 
     },
     { 
-      id: "usdv", 
-      label: "USDV", 
-      labelEn: "USDV",
+      id: "swap", 
+      label: "兑换", 
+      labelEn: "Swap",
       icon: Coins, 
       path: `/${language}/usdv` 
     },
