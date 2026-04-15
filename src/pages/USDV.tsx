@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "react-router-dom";
 import { useI18n } from "@/hooks/useI18n";
 import { useUSDVData } from "@/hooks/useUSDVData";
 import { useUSDVActions } from "@/hooks/useUSDVActions";
@@ -19,6 +20,7 @@ import { toast } from "sonner";
 
 export default function USDV() {
   const { t } = useI18n();
+  const [searchParams] = useSearchParams();
   const { data, loading, formatAmount, formatPercent, refreshData } = useUSDVData();
   const { loading: actionLoading, claimStakeUSDV, claimProfitFollow, claimNewcomer, spin } = useUSDVActions();
   const [selectedPositions, setSelectedPositions] = useState<Set<string>>(new Set());
