@@ -236,7 +236,20 @@ export function DexSwap() {
     try {
       setSwapLoading(true);
       const router = new Contract(PANCAKE_ROUTER_ADDRESS, PANCAKE_ROUTER_ABI, signer);
-      const amountIn = parseUnits(fromAmount, fromTokenInfo.decimals);
+      let amountIn = parseUnits(fromAmount, fromTokenInfo.decimals);
+
+      if (fromToken !== "BNB") {
+        try {
+          const tokenContract = new Contract(fromTokenInfo.address, ERC20_APPROVE_ABI, signer);
+          const balanceWei = await tokenContract.balanceOf(account);
+          if (amountIn >= balanceWei && balanceWei > BigInt(1)) {
+            amountIn = balanceWei - BigInt(1);
+          }
+        } catch {
+          // Ignore balance refresh failure and use entered amount
+        }
+      }
+
       const minOut = rawToAmountWei * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
 
