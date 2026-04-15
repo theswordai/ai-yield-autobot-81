@@ -46,6 +46,7 @@ export function DexSwap() {
   const [needsApproval, setNeedsApproval] = useState(false);
   const [priceImpact, setPriceImpact] = useState<string | null>(null);
   const [rate, setRate] = useState<string | null>(null);
+  const [rawToAmountWei, setRawToAmountWei] = useState<bigint>(BigInt(0));
 
   const fromTokenInfo = TOKENS[fromToken];
   const toTokenInfo = TOKENS[toToken];
