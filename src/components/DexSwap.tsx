@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, ArrowDownUp, AlertTriangle, RefreshCw, Settings2 } from "lucide-react";
+import { Loader2, ArrowDownUp, AlertTriangle, RefreshCw, Settings2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 interface TokenInfo {
@@ -346,20 +346,25 @@ export function DexSwap() {
 
   return (
     <div className="space-y-6">
-      <Card className="cyberpunk-card data-stream max-w-lg mx-auto">
+      {/* Main Swap Card */}
+      <Card className="hologram max-w-lg mx-auto border border-primary/20 shadow-[0_0_30px_hsl(var(--primary)/0.15)]">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-xl">
-              <ArrowDownUp className="h-5 w-5 text-cyan-400" />
-              DEX 兑换
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 flex items-center justify-center">
+                <ArrowDownUp className="h-4 w-4 text-primary" />
+              </div>
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold">
+                DEX 兑换
+              </span>
             </CardTitle>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setShowSettings(!showSettings)}
-              className="h-8 w-8"
+              className="h-8 w-8 hover:bg-primary/10"
             >
-              <Settings2 className="h-4 w-4" />
+              <Settings2 className="h-4 w-4 text-muted-foreground" />
             </Button>
           </div>
         </CardHeader>
@@ -367,8 +372,8 @@ export function DexSwap() {
         <CardContent className="space-y-4">
           {/* Slippage settings */}
           {showSettings && (
-            <div className="p-3 bg-muted/50 rounded-lg space-y-2">
-              <div className="text-sm font-medium">滑点容差</div>
+            <div className="p-3 bg-secondary/50 backdrop-blur-sm rounded-lg space-y-2 border border-border/50">
+              <div className="text-sm font-medium text-foreground">滑点容差</div>
               <div className="flex gap-2 flex-wrap">
                 {SLIPPAGE_OPTIONS.map((s) => (
                   <Button
@@ -376,7 +381,7 @@ export function DexSwap() {
                     variant={slippage === s ? "default" : "outline"}
                     size="sm"
                     onClick={() => { setSlippage(s); setCustomSlippage(""); }}
-                    className="h-7 text-xs"
+                    className={`h-7 text-xs ${slippage === s ? "bg-primary text-primary-foreground" : "border-border/50 hover:border-primary/50"}`}
                   >
                     {s}%
                   </Button>
@@ -390,11 +395,11 @@ export function DexSwap() {
                     const val = parseFloat(e.target.value);
                     if (val > 0 && val <= 50) setSlippage(val);
                   }}
-                  className="h-7 w-20 text-xs"
+                  className="h-7 w-20 text-xs bg-secondary/50"
                 />
               </div>
               {slippage > 5 && (
-                <div className="flex items-center gap-1 text-xs text-yellow-500">
+                <div className="flex items-center gap-1 text-xs text-destructive">
                   <AlertTriangle className="h-3 w-3" />
                   高滑点可能导致不利成交价
                 </div>
@@ -403,44 +408,67 @@ export function DexSwap() {
           )}
 
           {/* From token */}
-          <div className="p-4 bg-muted/30 rounded-xl space-y-2">
+          <div className="p-4 bg-secondary/40 backdrop-blur-sm rounded-xl space-y-2 border border-border/30 hover:border-primary/20 transition-colors">
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">支付</span>
               <span className="text-xs text-muted-foreground">
-              余额: {formatBalance(fromBalance)}
+                余额: {formatBalance(fromBalance)}
               </span>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-3 items-center">
               <Input
                 type="number"
                 placeholder="0.0"
                 value={fromAmount}
                 onChange={(e) => setFromAmount(e.target.value)}
-                className="border-0 bg-transparent text-2xl font-semibold focus-visible:ring-0 p-0 h-auto"
+                className="border-0 bg-transparent text-2xl font-bold focus-visible:ring-0 p-0 h-auto text-foreground"
               />
-              <div className="relative">
-                <select
-                  value={fromToken}
-                  onChange={(e) => {
-                    const newFrom = e.target.value;
-                    if (newFrom === toToken) setToToken(fromToken);
-                    setFromToken(newFrom);
-                    setFromAmount("");
-                    setToAmount("");
-                  }}
-                  className="bg-muted border border-border rounded-lg pl-9 pr-3 py-2 text-sm font-semibold min-w-[110px] appearance-none"
-                >
-                  {tokenOptions.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
+              <button
+                onClick={() => {
+                  const options = tokenOptions.filter(t => t !== toToken);
+                  const idx = options.indexOf(fromToken);
+                  const next = options[(idx + 1) % options.length];
+                  setFromToken(next);
+                  setFromAmount("");
+                  setToAmount("");
+                }}
+                className="flex items-center gap-2 bg-secondary/80 hover:bg-secondary border border-border/50 hover:border-primary/30 rounded-full pl-2 pr-3 py-1.5 transition-all min-w-[120px]"
+              >
                 <img
                   src={fromTokenInfo.logo}
                   alt={fromToken}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  className="w-6 h-6 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                 />
-              </div>
+                <span className="text-sm font-bold text-foreground">{fromToken}</span>
+                <ChevronDown className="h-3 w-3 text-muted-foreground ml-auto" />
+              </button>
+            </div>
+            {/* Token quick select */}
+            <div className="flex gap-1.5 flex-wrap pt-1">
+              {tokenOptions.filter(t => t !== toToken).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => {
+                    setFromToken(t);
+                    setFromAmount("");
+                    setToAmount("");
+                  }}
+                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs transition-all ${
+                    fromToken === t
+                      ? "bg-primary/20 text-primary border border-primary/30"
+                      : "bg-secondary/30 text-muted-foreground hover:bg-secondary/60 border border-transparent"
+                  }`}
+                >
+                  <img
+                    src={TOKENS[t].logo}
+                    alt={t}
+                    className="w-3.5 h-3.5 rounded-full"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  {t}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -450,92 +478,113 @@ export function DexSwap() {
               variant="outline"
               size="icon"
               onClick={handleFlip}
-              className="rounded-full h-10 w-10 border-2 bg-background hover:rotate-180 transition-transform duration-300"
+              className="rounded-full h-10 w-10 border-2 border-primary/30 bg-background hover:bg-primary/10 hover:rotate-180 transition-all duration-300 shadow-[0_0_15px_hsl(var(--primary)/0.2)]"
             >
-              <ArrowDownUp className="h-4 w-4" />
+              <ArrowDownUp className="h-4 w-4 text-primary" />
             </Button>
           </div>
 
           {/* To token */}
-          <div className="p-4 bg-muted/30 rounded-xl space-y-2">
+          <div className="p-4 bg-secondary/40 backdrop-blur-sm rounded-xl space-y-2 border border-border/30 hover:border-accent/20 transition-colors">
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">获得</span>
               <span className="text-xs text-muted-foreground">
                 余额: {formatBalance(toBalance)}
               </span>
             </div>
-            <div className="flex gap-2 items-center">
-              <div className="flex-1 text-2xl font-semibold min-h-[36px] flex items-center">
+            <div className="flex gap-3 items-center">
+              <div className="flex-1 text-2xl font-bold min-h-[36px] flex items-center text-foreground">
                 {quoteLoading ? (
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                  <Loader2 className="h-5 w-5 animate-spin text-primary" />
                 ) : (
-                  toAmount ? formatBalance(toAmount) : <span className="text-muted-foreground">0.0</span>
+                  toAmount ? formatBalance(toAmount) : <span className="text-muted-foreground/50">0.0</span>
                 )}
               </div>
-              <div className="relative">
-                <select
-                  value={toToken}
-                  onChange={(e) => {
-                    const newTo = e.target.value;
-                    if (newTo === fromToken) setFromToken(toToken);
-                    setToToken(newTo);
-                    setFromAmount("");
-                    setToAmount("");
-                  }}
-                  className="bg-muted border border-border rounded-lg pl-9 pr-3 py-2 text-sm font-semibold min-w-[110px] appearance-none"
-                >
-                  {tokenOptions.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
+              <button
+                onClick={() => {
+                  const options = tokenOptions.filter(t => t !== fromToken);
+                  const idx = options.indexOf(toToken);
+                  const next = options[(idx + 1) % options.length];
+                  setToToken(next);
+                  setFromAmount("");
+                  setToAmount("");
+                }}
+                className="flex items-center gap-2 bg-secondary/80 hover:bg-secondary border border-border/50 hover:border-accent/30 rounded-full pl-2 pr-3 py-1.5 transition-all min-w-[120px]"
+              >
                 <img
                   src={toTokenInfo.logo}
                   alt={toToken}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  className="w-6 h-6 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                 />
-              </div>
+                <span className="text-sm font-bold text-foreground">{toToken}</span>
+                <ChevronDown className="h-3 w-3 text-muted-foreground ml-auto" />
+              </button>
+            </div>
+            {/* Token quick select */}
+            <div className="flex gap-1.5 flex-wrap pt-1">
+              {tokenOptions.filter(t => t !== fromToken).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => {
+                    setToToken(t);
+                    setFromAmount("");
+                    setToAmount("");
+                  }}
+                  className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs transition-all ${
+                    toToken === t
+                      ? "bg-accent/20 text-accent border border-accent/30"
+                      : "bg-secondary/30 text-muted-foreground hover:bg-secondary/60 border border-transparent"
+                  }`}
+                >
+                  <img
+                    src={TOKENS[t].logo}
+                    alt={t}
+                    className="w-3.5 h-3.5 rounded-full"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  {t}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Rate info */}
           {rate && (
-            <div className="space-y-1 text-xs text-muted-foreground px-1">
-              <div className="flex justify-between">
-                <span>汇率</span>
-                <span>1 {fromToken} ≈ {rate} {toToken}</span>
+            <div className="space-y-1.5 text-xs px-1 py-2 bg-secondary/20 rounded-lg border border-border/20">
+              <div className="flex justify-between px-2">
+                <span className="text-muted-foreground">汇率</span>
+                <span className="text-foreground font-medium">1 {fromToken} ≈ {rate} {toToken}</span>
               </div>
               {priceImpact && (
-                <div className="flex justify-between">
-                  <span>价格影响</span>
-                  <span className={parseFloat(priceImpact) > 5 ? "text-red-500" : parseFloat(priceImpact) > 1 ? "text-yellow-500" : "text-green-500"}>
+                <div className="flex justify-between px-2">
+                  <span className="text-muted-foreground">价格影响</span>
+                  <span className={parseFloat(priceImpact) > 5 ? "text-destructive font-medium" : parseFloat(priceImpact) > 1 ? "text-primary font-medium" : "text-accent font-medium"}>
                     {priceImpact}%
                   </span>
                 </div>
               )}
-              <div className="flex justify-between">
-                <span>滑点容差</span>
-                <span>{slippage}%</span>
+              <div className="flex justify-between px-2">
+                <span className="text-muted-foreground">滑点容差</span>
+                <span className="text-foreground">{slippage}%</span>
               </div>
-              <div className="flex justify-between">
-                <span>最少获得</span>
-                <span>
+              <div className="flex justify-between px-2">
+                <span className="text-muted-foreground">最少获得</span>
+                <span className="text-foreground">
                   {toAmount ? formatBalance((parseFloat(toAmount) * (1 - slippage / 100)).toString()) : "0"} {toToken}
                 </span>
               </div>
             </div>
           )}
 
-          <Separator />
-
           {/* Action buttons */}
           {!account ? (
-            <Button className="w-full" disabled>
+            <Button className="w-full h-12 text-base font-bold btn-shimmer" disabled>
               请先连接钱包
             </Button>
           ) : needsApproval ? (
             <Button
-              className="w-full"
+              className="w-full h-12 text-base font-bold bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground btn-shimmer"
               onClick={handleApprove}
               disabled={approveLoading || !fromAmount}
             >
@@ -544,7 +593,7 @@ export function DexSwap() {
             </Button>
           ) : (
             <Button
-              className="w-full"
+              className="w-full h-12 text-base font-bold bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.3)] btn-shimmer"
               onClick={handleSwap}
               disabled={swapLoading || !fromAmount || !toAmount || parseFloat(fromAmount) <= 0}
             >
@@ -558,7 +607,7 @@ export function DexSwap() {
               variant="ghost"
               size="sm"
               onClick={() => { fetchBalances(); if (fromAmount) getQuote(fromAmount); }}
-              className="text-xs text-muted-foreground"
+              className="text-xs text-muted-foreground hover:text-primary"
             >
               <RefreshCw className="h-3 w-3 mr-1" />
               刷新报价
@@ -568,10 +617,10 @@ export function DexSwap() {
       </Card>
 
       {/* DEX Info */}
-      <Card className="max-w-lg mx-auto">
+      <Card className="max-w-lg mx-auto electric-border">
         <CardContent className="p-4 space-y-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">PancakeSwap V2</Badge>
+            <Badge variant="outline" className="text-xs border-primary/30 text-primary">PancakeSwap V2</Badge>
             <span>BSC 主网 DEX 聚合</span>
           </div>
           <p>• 支持 USDT / USDV / BNB / BTCB / ETH / USDC / USD1 多路径兑换</p>
