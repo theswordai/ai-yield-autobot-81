@@ -96,12 +96,12 @@ export default function USDV() {
               </p>
             </div>
 
-            {/* Tab Switcher */}
-            <div className="flex justify-center">
-              <div className="inline-flex bg-muted/50 rounded-xl p-1 gap-1">
+            {/* Tab Switcher - 移动端更突出 */}
+            <div className="flex justify-center md:-mt-2">
+              <div className="inline-flex bg-muted/50 backdrop-blur-md rounded-xl p-1 gap-1 border border-border/50 w-full max-w-sm md:w-auto">
                 <button
                   onClick={() => setActiveTab("usdv")}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 flex-1 md:flex-none px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
                     activeTab === "usdv"
                       ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -112,7 +112,7 @@ export default function USDV() {
                 </button>
                 <button
                   onClick={() => setActiveTab("dex")}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 flex-1 md:flex-none px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
                     activeTab === "dex"
                       ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted"
