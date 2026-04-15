@@ -1,20 +1,20 @@
 
 
-## 计划：钱包连接时自动切换到 BNB Chain
+## 修复 DEX 价格影响计算
 
 ### 问题
-连接钱包（如 OKX）时，如果钱包当前在错误的网络（如 chainId 9746），合约调用会报 `BAD_DATA` 错误。
+价格影响用 `|1 - rate| * 100` 计算，把汇率差异当成了价格影响。USDT→BNB 汇率 ~0.0016，所以显示 99.84%。
 
-### 方案
+### 修复方案
 
-#### 1. 修改 `src/hooks/useWeb3.ts`
-- 在 `connect()` 和 `connectWith()` 连接成功后，检查 chainId 是否为 56（BSC）
-- 如果不是，自动调用 `wallet_switchEthereumChain` 切换到 `0x38`
-- 如果钱包没有添加过 BSC 网络（错误码 4902），自动调用 `wallet_addEthereumChain` 添加 BSC 网络配置
-- 切换成功后刷新 provider/signer/chainId 状态
-- 使用 `activeEip1193Ref.current` 发送请求，兼容 OKX 等钱包
+**修改 `src/components/DexSwap.tsx` 的 `getQuote` 函数：**
 
-#### 2. 修改 `src/pages/Stake.tsx`
-- `refreshData` 中增加 `chainId !== 56` 判断，跳过合约调用
-- 捕获 `BAD_DATA` 错误，显示友好提示："请切换到 BNB Chain 网络"
+1. 用 1 单位小额调用 `getAmountsOut` 获取基准汇率（baseRate）
+2. 用实际金额调用 `getAmountsOut` 获取实际汇率（actualRate）  
+3. 价格影响 = `(baseRate - actualRate) / baseRate * 100%`
+
+这样无论代币价格差异多大，价格影响只反映交易量对池子的冲击，小额交易显示接近 0%。
+
+### 涉及文件
+- `src/components/DexSwap.tsx` — 修改 `getQuote` 中两处价格影响计算逻辑（第 136 行和第 151 行区域）
 
