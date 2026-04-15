@@ -153,6 +153,7 @@ export function DexSwap() {
         try {
           const result = await getQuoteForPath([fromTokenInfo.address, toTokenInfo.address]);
           setToAmount(result.outAmount);
+          setRawToAmountWei(result.rawOut);
           setRate(result.actualRate.toFixed(6));
           setPriceImpact(result.impact < 0.01 ? "<0.01" : result.impact.toFixed(2));
           setQuoteLoading(false);
@@ -164,6 +165,7 @@ export function DexSwap() {
 
       const result = await getQuoteForPath(path);
       setToAmount(result.outAmount);
+      setRawToAmountWei(result.rawOut);
       setRate(result.actualRate.toFixed(6));
       setPriceImpact(result.impact < 0.01 ? "<0.01" : result.impact.toFixed(2));
     } catch (err) {
