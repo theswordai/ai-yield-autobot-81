@@ -16,12 +16,25 @@ interface TokenInfo {
   address: string;
   symbol: string;
   decimals: number;
+  logo: string;
 }
 
+// BSC mainnet token addresses
+const BTCB_ADDRESS = "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c";
+const ETH_ADDRESS = "0x2170Ed0880ac9A755fd29B2688956BD959F933F8";
+const USDC_ADDRESS = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d";
+const USD1_ADDRESS = "0x8d0D000Ee44948FC98c9B98A4FA4921476f08B0d";
+
+const pancakeLogo = (addr: string) => `https://tokens.pancakeswap.finance/images/${addr}.png`;
+
 const TOKENS: Record<string, TokenInfo> = {
-  USDT: { address: USDT_ADDRESS, symbol: "USDT", decimals: USDT_DECIMALS },
-  USDV: { address: USDV_ADDRESS, symbol: "USDV", decimals: USDV_DECIMALS },
-  BNB: { address: WBNB_ADDRESS, symbol: "BNB", decimals: 18 },
+  USDT: { address: USDT_ADDRESS, symbol: "USDT", decimals: USDT_DECIMALS, logo: pancakeLogo(USDT_ADDRESS) },
+  USDV: { address: USDV_ADDRESS, symbol: "USDV", decimals: USDV_DECIMALS, logo: "/usdv-logo.png" },
+  BNB:  { address: WBNB_ADDRESS, symbol: "BNB", decimals: 18, logo: pancakeLogo(WBNB_ADDRESS) },
+  BTCB: { address: BTCB_ADDRESS, symbol: "BTCB", decimals: 18, logo: pancakeLogo(BTCB_ADDRESS) },
+  ETH:  { address: ETH_ADDRESS, symbol: "ETH", decimals: 18, logo: pancakeLogo(ETH_ADDRESS) },
+  USDC: { address: USDC_ADDRESS, symbol: "USDC", decimals: 18, logo: pancakeLogo(USDC_ADDRESS) },
+  USD1: { address: USD1_ADDRESS, symbol: "USD1", decimals: 18, logo: pancakeLogo(USD1_ADDRESS) },
 };
 
 const SLIPPAGE_OPTIONS = [0.1, 0.5, 1.0, 3.0];
@@ -405,21 +418,29 @@ export function DexSwap() {
                 onChange={(e) => setFromAmount(e.target.value)}
                 className="border-0 bg-transparent text-2xl font-semibold focus-visible:ring-0 p-0 h-auto"
               />
-              <select
-                value={fromToken}
-                onChange={(e) => {
-                  const newFrom = e.target.value;
-                  if (newFrom === toToken) setToToken(fromToken);
-                  setFromToken(newFrom);
-                  setFromAmount("");
-                  setToAmount("");
-                }}
-                className="bg-muted border border-border rounded-lg px-3 py-2 text-sm font-semibold min-w-[90px]"
-              >
-                {tokenOptions.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={fromToken}
+                  onChange={(e) => {
+                    const newFrom = e.target.value;
+                    if (newFrom === toToken) setToToken(fromToken);
+                    setFromToken(newFrom);
+                    setFromAmount("");
+                    setToAmount("");
+                  }}
+                  className="bg-muted border border-border rounded-lg pl-9 pr-3 py-2 text-sm font-semibold min-w-[110px] appearance-none"
+                >
+                  {tokenOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <img
+                  src={fromTokenInfo.logo}
+                  alt={fromToken}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
             </div>
           </div>
 
@@ -451,21 +472,29 @@ export function DexSwap() {
                   toAmount ? formatBalance(toAmount) : <span className="text-muted-foreground">0.0</span>
                 )}
               </div>
-              <select
-                value={toToken}
-                onChange={(e) => {
-                  const newTo = e.target.value;
-                  if (newTo === fromToken) setFromToken(toToken);
-                  setToToken(newTo);
-                  setFromAmount("");
-                  setToAmount("");
-                }}
-                className="bg-muted border border-border rounded-lg px-3 py-2 text-sm font-semibold min-w-[90px]"
-              >
-                {tokenOptions.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={toToken}
+                  onChange={(e) => {
+                    const newTo = e.target.value;
+                    if (newTo === fromToken) setFromToken(toToken);
+                    setToToken(newTo);
+                    setFromAmount("");
+                    setToAmount("");
+                  }}
+                  className="bg-muted border border-border rounded-lg pl-9 pr-3 py-2 text-sm font-semibold min-w-[110px] appearance-none"
+                >
+                  {tokenOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <img
+                  src={toTokenInfo.logo}
+                  alt={toToken}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
             </div>
           </div>
 
@@ -545,7 +574,7 @@ export function DexSwap() {
             <Badge variant="outline" className="text-xs">PancakeSwap V2</Badge>
             <span>BSC 主网 DEX 聚合</span>
           </div>
-          <p>• 支持 USDV ⇄ USDT ⇄ BNB 多路径兑换</p>
+          <p>• 支持 USDT / USDV / BNB / BTCB / ETH / USDC / USD1 多路径兑换</p>
           <p>• 智能路由自动选择最优交易路径</p>
           <p>• 交易手续费 0.25%（PancakeSwap 标准费率）</p>
         </CardContent>
