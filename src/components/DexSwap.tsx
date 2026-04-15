@@ -16,12 +16,25 @@ interface TokenInfo {
   address: string;
   symbol: string;
   decimals: number;
+  logo: string;
 }
 
+// BSC mainnet token addresses
+const BTCB_ADDRESS = "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c";
+const ETH_ADDRESS = "0x2170Ed0880ac9A755fd29B2688956BD959F933F8";
+const USDC_ADDRESS = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d";
+const USD1_ADDRESS = "0x8d0D000Ee44948FC98c9B98A4FA4921476f08B0d";
+
+const pancakeLogo = (addr: string) => `https://tokens.pancakeswap.finance/images/${addr}.png`;
+
 const TOKENS: Record<string, TokenInfo> = {
-  USDT: { address: USDT_ADDRESS, symbol: "USDT", decimals: USDT_DECIMALS },
-  USDV: { address: USDV_ADDRESS, symbol: "USDV", decimals: USDV_DECIMALS },
-  BNB: { address: WBNB_ADDRESS, symbol: "BNB", decimals: 18 },
+  USDT: { address: USDT_ADDRESS, symbol: "USDT", decimals: USDT_DECIMALS, logo: pancakeLogo(USDT_ADDRESS) },
+  USDV: { address: USDV_ADDRESS, symbol: "USDV", decimals: USDV_DECIMALS, logo: "/usdv-logo.png" },
+  BNB:  { address: WBNB_ADDRESS, symbol: "BNB", decimals: 18, logo: pancakeLogo(WBNB_ADDRESS) },
+  BTCB: { address: BTCB_ADDRESS, symbol: "BTCB", decimals: 18, logo: pancakeLogo(BTCB_ADDRESS) },
+  ETH:  { address: ETH_ADDRESS, symbol: "ETH", decimals: 18, logo: pancakeLogo(ETH_ADDRESS) },
+  USDC: { address: USDC_ADDRESS, symbol: "USDC", decimals: 18, logo: pancakeLogo(USDC_ADDRESS) },
+  USD1: { address: USD1_ADDRESS, symbol: "USD1", decimals: 18, logo: pancakeLogo(USD1_ADDRESS) },
 };
 
 const SLIPPAGE_OPTIONS = [0.1, 0.5, 1.0, 3.0];
