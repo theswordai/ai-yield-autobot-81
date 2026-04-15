@@ -64,6 +64,28 @@ export function DexSwap() {
   const fromTokenInfo = TOKENS[fromToken];
   const toTokenInfo = TOKENS[toToken];
 
+  // Sanitize input: cap decimal places to token's decimals
+  const sanitizeAmountInput = (value: string, decimals: number): string => {
+    if (!value) return "";
+    // Remove non-numeric except dot
+    let cleaned = value.replace(/[^0-9.]/g, "");
+    const parts = cleaned.split(".");
+    if (parts.length > 2) cleaned = parts[0] + "." + parts.slice(1).join("");
+    if (parts.length === 2 && parts[1].length > decimals) {
+      cleaned = parts[0] + "." + parts[1].slice(0, decimals);
+    }
+    return cleaned;
+  };
+
+  const isValidAmount = (value: string, decimals: number): boolean => {
+    if (!value || value === "." || value === "0.") return false;
+    const num = parseFloat(value);
+    if (isNaN(num) || num <= 0) return false;
+    const parts = value.split(".");
+    if (parts.length === 2 && parts[1].length > decimals) return false;
+    return true;
+  };
+
   // Fetch balances
   const fetchBalances = useCallback(async () => {
     if (!provider || !account) return;
@@ -103,11 +125,15 @@ export function DexSwap() {
       setNeedsApproval(false);
       return;
     }
+    if (!isValidAmount(fromAmount, fromTokenInfo.decimals)) {
+      setNeedsApproval(false);
+      return;
+    }
 
     try {
       const contract = new Contract(fromTokenInfo.address, ERC20_APPROVE_ABI, provider);
       const allowance = await contract.allowance(account, PANCAKE_ROUTER_ADDRESS);
-      const amountWei = parseUnits(fromAmount || "0", fromTokenInfo.decimals);
+      const amountWei = parseUnits(fromAmount, fromTokenInfo.decimals);
       setNeedsApproval(allowance < amountWei);
     } catch {
       setNeedsApproval(true);
@@ -120,8 +146,9 @@ export function DexSwap() {
 
   // Get quote
   const getQuote = useCallback(async (inputAmount: string) => {
-    if (!provider || !inputAmount || parseFloat(inputAmount) <= 0) {
+    if (!provider || !inputAmount || !isValidAmount(inputAmount, fromTokenInfo.decimals)) {
       setToAmount("");
+      setRawToAmountWei(BigInt(0));
       setRate(null);
       setPriceImpact(null);
       return;
@@ -134,13 +161,13 @@ export function DexSwap() {
 
       // Helper to get quote and compute impact for a given path
       const getQuoteForPath = async (path: string[]) => {
-        // Get actual quote
         const amounts = await router.getAmountsOut(amountIn, path);
-        const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
         const rawOut = amounts[amounts.length - 1];
-        const actualRate = parseFloat(outAmount) / parseFloat(inputAmount);
+        const outAmountFull = formatUnits(rawOut, toTokenInfo.decimals);
+        // Limit display precision to 8 decimals
+        const outAmountDisplay = parseFloat(outAmountFull).toFixed(8).replace(/\.?0+$/, "");
+        const actualRate = parseFloat(outAmountFull) / parseFloat(inputAmount);
 
-        // Get base rate with 1 unit for price impact calculation
         const baseAmountIn = parseUnits("1", fromTokenInfo.decimals);
         let baseRate = actualRate;
         try {
@@ -152,7 +179,7 @@ export function DexSwap() {
         }
 
         const impact = baseRate > 0 ? ((baseRate - actualRate) / baseRate) * 100 : 0;
-        return { outAmount, rawOut, actualRate, impact: Math.max(0, impact) };
+        return { outAmount: outAmountDisplay, rawOut, actualRate, impact: Math.max(0, impact) };
       };
 
       // Build path
@@ -184,6 +211,7 @@ export function DexSwap() {
     } catch (err) {
       console.error("Quote error:", err);
       setToAmount("");
+      setRawToAmountWei(BigInt(0));
       setRate(null);
       setPriceImpact(null);
     } finally {
@@ -201,10 +229,17 @@ export function DexSwap() {
 
   // Swap tokens direction
   const handleFlip = () => {
-    setFromToken(toToken);
-    setToToken(fromToken);
-    setFromAmount(toAmount);
-    setToAmount(fromAmount);
+    const newFromToken = toToken;
+    const newToToken = fromToken;
+    setFromToken(newFromToken);
+    setToToken(newToToken);
+    // Sanitize toAmount for the new from token's decimals before setting
+    const newFromInfo = TOKENS[newFromToken];
+    setFromAmount(sanitizeAmountInput(toAmount, newFromInfo.decimals));
+    setToAmount("");
+    setRawToAmountWei(BigInt(0));
+    setRate(null);
+    setPriceImpact(null);
   };
 
   // Approve
@@ -238,6 +273,14 @@ export function DexSwap() {
   const handleSwap = async () => {
     if (!signer || !account || !fromAmount || !toAmount) {
       toast.error("请先连接钱包并输入金额");
+      return;
+    }
+    if (!isValidAmount(fromAmount, fromTokenInfo.decimals)) {
+      toast.error(`输入金额无效，${fromToken} 最多支持 ${fromTokenInfo.decimals} 位小数`);
+      return;
+    }
+    if (rawToAmountWei <= BigInt(0)) {
+      toast.error("请等待报价完成后再兑换");
       return;
     }
 
@@ -420,7 +463,7 @@ export function DexSwap() {
                 type="number"
                 placeholder="0.0"
                 value={fromAmount}
-                onChange={(e) => setFromAmount(e.target.value)}
+                onChange={(e) => setFromAmount(sanitizeAmountInput(e.target.value, fromTokenInfo.decimals))}
                 className="border-0 bg-transparent text-2xl font-bold focus-visible:ring-0 p-0 h-auto text-foreground"
               />
               <div className="relative">
@@ -432,6 +475,9 @@ export function DexSwap() {
                     setFromToken(newFrom);
                     setFromAmount("");
                     setToAmount("");
+                    setRawToAmountWei(BigInt(0));
+                    setRate(null);
+                    setPriceImpact(null);
                   }}
                   className="bg-secondary/80 border border-border/50 hover:border-primary/30 rounded-full pl-9 pr-3 py-2 text-sm font-bold min-w-[120px] appearance-none text-foreground transition-all"
                 >
@@ -486,6 +532,9 @@ export function DexSwap() {
                     setToToken(newTo);
                     setFromAmount("");
                     setToAmount("");
+                    setRawToAmountWei(BigInt(0));
+                    setRate(null);
+                    setPriceImpact(null);
                   }}
                   className="bg-secondary/80 border border-border/50 hover:border-accent/30 rounded-full pl-9 pr-3 py-2 text-sm font-bold min-w-[120px] appearance-none text-foreground transition-all"
                 >
@@ -525,7 +574,7 @@ export function DexSwap() {
               <div className="flex justify-between px-2">
                 <span className="text-muted-foreground">最少获得</span>
                 <span className="text-foreground">
-                  {toAmount ? formatBalance((parseFloat(toAmount) * (1 - slippage / 100)).toString()) : "0"} {toToken}
+                  {rawToAmountWei > BigInt(0) ? formatBalance(formatUnits(rawToAmountWei * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000), toTokenInfo.decimals)) : "0"} {toToken}
                 </span>
               </div>
             </div>
@@ -549,7 +598,7 @@ export function DexSwap() {
             <Button
               className="w-full h-12 text-base font-bold bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.3)] btn-shimmer"
               onClick={handleSwap}
-              disabled={swapLoading || !fromAmount || !toAmount || parseFloat(fromAmount) <= 0}
+              disabled={swapLoading || !fromAmount || !toAmount || !isValidAmount(fromAmount, fromTokenInfo.decimals) || rawToAmountWei <= BigInt(0) || quoteLoading}
             >
               {swapLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
               兑换
