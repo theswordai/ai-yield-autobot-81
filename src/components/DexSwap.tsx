@@ -275,6 +275,14 @@ export function DexSwap() {
       toast.error("请先连接钱包并输入金额");
       return;
     }
+    if (!isValidAmount(fromAmount, fromTokenInfo.decimals)) {
+      toast.error(`输入金额无效，${fromToken} 最多支持 ${fromTokenInfo.decimals} 位小数`);
+      return;
+    }
+    if (rawToAmountWei <= BigInt(0)) {
+      toast.error("请等待报价完成后再兑换");
+      return;
+    }
 
     if (chainId !== 56) {
       toast.error("请切换到 BSC 主网");
