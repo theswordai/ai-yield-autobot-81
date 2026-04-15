@@ -446,6 +446,7 @@ export function DexSwap() {
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
               </div>
+            </div>
           </div>
 
           {/* Flip button */}
