@@ -418,21 +418,29 @@ export function DexSwap() {
                 onChange={(e) => setFromAmount(e.target.value)}
                 className="border-0 bg-transparent text-2xl font-semibold focus-visible:ring-0 p-0 h-auto"
               />
-              <select
-                value={fromToken}
-                onChange={(e) => {
-                  const newFrom = e.target.value;
-                  if (newFrom === toToken) setToToken(fromToken);
-                  setFromToken(newFrom);
-                  setFromAmount("");
-                  setToAmount("");
-                }}
-                className="bg-muted border border-border rounded-lg px-3 py-2 text-sm font-semibold min-w-[90px]"
-              >
-                {tokenOptions.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={fromToken}
+                  onChange={(e) => {
+                    const newFrom = e.target.value;
+                    if (newFrom === toToken) setToToken(fromToken);
+                    setFromToken(newFrom);
+                    setFromAmount("");
+                    setToAmount("");
+                  }}
+                  className="bg-muted border border-border rounded-lg pl-9 pr-3 py-2 text-sm font-semibold min-w-[110px] appearance-none"
+                >
+                  {tokenOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <img
+                  src={fromTokenInfo.logo}
+                  alt={fromToken}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
             </div>
           </div>
 
@@ -464,21 +472,29 @@ export function DexSwap() {
                   toAmount ? formatBalance(toAmount) : <span className="text-muted-foreground">0.0</span>
                 )}
               </div>
-              <select
-                value={toToken}
-                onChange={(e) => {
-                  const newTo = e.target.value;
-                  if (newTo === fromToken) setFromToken(toToken);
-                  setToToken(newTo);
-                  setFromAmount("");
-                  setToAmount("");
-                }}
-                className="bg-muted border border-border rounded-lg px-3 py-2 text-sm font-semibold min-w-[90px]"
-              >
-                {tokenOptions.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={toToken}
+                  onChange={(e) => {
+                    const newTo = e.target.value;
+                    if (newTo === fromToken) setFromToken(toToken);
+                    setToToken(newTo);
+                    setFromAmount("");
+                    setToAmount("");
+                  }}
+                  className="bg-muted border border-border rounded-lg pl-9 pr-3 py-2 text-sm font-semibold min-w-[110px] appearance-none"
+                >
+                  {tokenOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+                <img
+                  src={toTokenInfo.logo}
+                  alt={toToken}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                />
+              </div>
             </div>
           </div>
 
