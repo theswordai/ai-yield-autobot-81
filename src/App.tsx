@@ -34,7 +34,6 @@ const App = () => (
         <FAQCustomerService />
         <AppLayout>
         <Routes>
-        <Routes>
           {/* Language-specific routes */}
           <Route path="/zh" element={<Index />} />
           <Route path="/zh/invest" element={<Invest />} />
