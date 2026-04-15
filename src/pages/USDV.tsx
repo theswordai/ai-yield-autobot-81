@@ -7,12 +7,13 @@ import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { SpinWheel } from "@/components/SpinWheel";
+import { SwapInterface } from "@/components/SwapInterface";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy } from "lucide-react";
+import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy, ArrowLeftRight, Award } from "lucide-react";
 import { USDV_ADDRESS } from "@/config/contracts";
 import { toast } from "sonner";
 
