@@ -229,10 +229,17 @@ export function DexSwap() {
 
   // Swap tokens direction
   const handleFlip = () => {
-    setFromToken(toToken);
-    setToToken(fromToken);
-    setFromAmount(toAmount);
-    setToAmount(fromAmount);
+    const newFromToken = toToken;
+    const newToToken = fromToken;
+    setFromToken(newFromToken);
+    setToToken(newToToken);
+    // Sanitize toAmount for the new from token's decimals before setting
+    const newFromInfo = TOKENS[newFromToken];
+    setFromAmount(sanitizeAmountInput(toAmount, newFromInfo.decimals));
+    setToAmount("");
+    setRawToAmountWei(BigInt(0));
+    setRate(null);
+    setPriceImpact(null);
   };
 
   // Approve
