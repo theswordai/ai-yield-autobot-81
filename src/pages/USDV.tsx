@@ -7,12 +7,13 @@ import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { SpinWheel } from "@/components/SpinWheel";
+import { DexSwap } from "@/components/DexSwap";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy } from "lucide-react";
+import { Loader2, Wallet, Gift, TrendingUp, Target, Dice1, Copy, Coins, ArrowDownUp } from "lucide-react";
 import { USDV_ADDRESS } from "@/config/contracts";
 import { toast } from "sonner";
 
@@ -21,6 +22,7 @@ export default function USDV() {
   const { data, loading, formatAmount, formatPercent, refreshData } = useUSDVData();
   const { loading: actionLoading, claimStakeUSDV, claimProfitFollow, claimNewcomer, spin } = useUSDVActions();
   const [selectedPositions, setSelectedPositions] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<"usdv" | "dex">("usdv");
 
   const handlePositionSelect = (posId: string, checked: boolean) => {
     const newSelected = new Set(selectedPositions);
@@ -83,6 +85,42 @@ export default function USDV() {
                 {t("usdv.subheader")}
               </p>
             </div>
+
+            {/* Tab Switcher */}
+            <div className="flex justify-center">
+              <div className="inline-flex bg-muted/50 rounded-xl p-1 gap-1">
+                <button
+                  onClick={() => setActiveTab("usdv")}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                    activeTab === "usdv"
+                      ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  <Coins className="h-4 w-4" />
+                  USDV
+                </button>
+                <button
+                  onClick={() => setActiveTab("dex")}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                    activeTab === "dex"
+                      ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  <ArrowDownUp className="h-4 w-4" />
+                  DEX 兑换
+                </button>
+              </div>
+            </div>
+
+            {activeTab === "dex" ? (
+              <>
+                <WalletConnector />
+                <DexSwap />
+              </>
+            ) : (
+            <>
 
             {/* USDV介绍 */}
             <Card className="max-w-4xl mx-auto hologram">
@@ -412,6 +450,8 @@ export default function USDV() {
                   </p>
                 </CardContent>
               </Card>
+            )}
+            </>
             )}
           </div>
         </div>
