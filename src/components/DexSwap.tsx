@@ -237,7 +237,7 @@ export function DexSwap() {
       setSwapLoading(true);
       const router = new Contract(PANCAKE_ROUTER_ADDRESS, PANCAKE_ROUTER_ABI, signer);
       const amountIn = parseUnits(fromAmount, fromTokenInfo.decimals);
-      const minOut = parseUnits(toAmount, toTokenInfo.decimals) * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000);
+      const minOut = rawToAmountWei * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
 
       let tx;
@@ -365,7 +365,14 @@ export function DexSwap() {
                 余额: {formatBalance(fromBalance)}
                 <button
                   className="ml-1 text-primary hover:underline"
-                  onClick={() => setFromAmount(fromBalance)}
+                  onClick={() => {
+                    if (fromToken === "BNB") {
+                      const reserved = Math.max(0, parseFloat(fromBalance) - 0.005);
+                      setFromAmount(reserved > 0 ? reserved.toString() : "0");
+                    } else {
+                      setFromAmount(fromBalance);
+                    }
+                  }}
                 >
                   MAX
                 </button>
