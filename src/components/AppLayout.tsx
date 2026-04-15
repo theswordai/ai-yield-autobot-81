@@ -17,8 +17,7 @@ function SidebarToggleButton() {
         transition-all duration-300
         hidden md:flex
         top-20
-        ${isExpanded ? "left-[16.5rem]" : "left-[3.5rem]"}
-        btn-pulse`}
+        ${isExpanded ? "left-[16.5rem]" : "left-[3.5rem]"}`}
     >
       {isExpanded ? <PanelLeftClose className="w-5 h-5" /> : <PanelLeft className="w-5 h-5" />}
     </SidebarTrigger>
