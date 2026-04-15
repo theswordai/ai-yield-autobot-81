@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { HeroSection } from "@/components/HeroSection";
 import { Helmet } from "react-helmet-async";
@@ -32,7 +31,7 @@ const Index = () => {
         {/* Additional social platforms */}
         <meta property="telegram:image" content="/lovable-uploads/3c6b91d2-0114-4026-bfae-76468771746f.png" />
       </Helmet>
-      <Navbar />
+      
       <HeroSection />
     </PageWrapper>
   );

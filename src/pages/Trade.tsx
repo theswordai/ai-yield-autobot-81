@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Lock, TrendingUp, Calendar, DollarSign } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
+
 import { PageWrapper } from "@/components/PageWrapper";
 
 export default function Trade({ embedded = false }: { embedded?: boolean }) {
@@ -29,7 +29,7 @@ export default function Trade({ embedded = false }: { embedded?: boolean }) {
 
   return (
     <PageWrapper>
-      {!embedded && <Navbar />}
+      
       <div className={`${topPad} pb-10`}>
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-8 text-center">

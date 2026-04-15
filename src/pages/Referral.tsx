@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Copy, Users, Gift, TrendingUp, Share2, Trophy, QrCode, Download } from "lucide-react";
 import QRCode from "qrcode";
 import { useToast } from "@/hooks/use-toast";
-import { Navbar } from "@/components/Navbar";
+
 import { PageWrapper } from "@/components/PageWrapper";
 import { Helmet } from "react-helmet-async";
 import { Contract, formatUnits } from "ethers";
@@ -417,7 +417,7 @@ export default function Referral({
 
   return (
     <PageWrapper>
-      {!embedded && <Navbar />}
+      
       {!embedded && (
         <Helmet>
           <title>{t('referral.pageTitle')}</title>

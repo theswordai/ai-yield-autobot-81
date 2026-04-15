@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
@@ -10,13 +9,13 @@ export default function Whitepaper() {
   
   return (
     <PageWrapper>
-      <Navbar />
+      
       <Helmet>
         <title>{t('meta.title')} | 和谐财富引擎</title>
         <meta name="description" content="和谐财富引擎白皮书 - 构建财富与慈善的和谐统一" />
         <link rel="canonical" href="/whitepaper" />
       </Helmet>
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
             {/* Header */}

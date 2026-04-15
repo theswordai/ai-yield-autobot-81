@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
 import { useUSDVData } from "@/hooks/useUSDVData";
 import { useUSDVActions } from "@/hooks/useUSDVActions";
-import { Navbar } from "@/components/Navbar";
+
 import { PageWrapper } from "@/components/PageWrapper";
 import { WalletConnector } from "@/components/WalletConnector";
 import { SpinWheel } from "@/components/SpinWheel";
@@ -69,9 +69,8 @@ export default function USDV() {
         <meta name="description" content={t("usdv.pageDescription")} />
       </Helmet>
       
-      <Navbar />
 
-      <div className="pt-16 min-h-screen">
+      <div className="min-h-screen">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Header */}
