@@ -153,7 +153,7 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      <div className="relative z-10 container mx-auto px-4 pt-24 pb-16">
+      <div className="relative z-10 container mx-auto px-4 pt-8 pb-16">
         
         {/* ===== HERO HEADER ===== */}
         <div className="text-center mb-12">
