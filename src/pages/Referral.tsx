@@ -417,7 +417,7 @@ export default function Referral({
 
   return (
     <PageWrapper>
-      {!embedded && <Navbar />}
+      
       {!embedded && (
         <Helmet>
           <title>{t('referral.pageTitle')}</title>
