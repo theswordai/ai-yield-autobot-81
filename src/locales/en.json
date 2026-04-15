@@ -1553,15 +1553,5 @@
     "changeWallet": "Change Wallet",
     "disconnect": "Disconnect",
     "language": "Language"
-  },
-  "swap": {
-    "tab": "Trade",
-    "youPay": "YOU PAY",
-    "youReceive": "YOU RECEIVE",
-    "swap": "🔄 Swap",
-    "swapping": "Swapping...",
-    "approving": "Approving...",
-    "success": "Swap successful!",
-    "connectWallet": "Connect Wallet"
   }
 }

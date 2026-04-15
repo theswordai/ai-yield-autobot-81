@@ -1550,15 +1550,5 @@
     "changeWallet": "更换钱包",
     "disconnect": "断开连接",
     "language": "语言"
-  },
-  "swap": {
-    "tab": "交易",
-    "youPay": "支付",
-    "youReceive": "收到",
-    "swap": "🔄 兑换",
-    "swapping": "兑换中...",
-    "approving": "授权中...",
-    "success": "兑换成功！",
-    "connectWallet": "连接钱包"
   }
 }
