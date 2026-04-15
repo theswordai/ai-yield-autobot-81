@@ -574,7 +574,7 @@ export function DexSwap() {
             <Badge variant="outline" className="text-xs">PancakeSwap V2</Badge>
             <span>BSC 主网 DEX 聚合</span>
           </div>
-          <p>• 支持 USDV ⇄ USDT ⇄ BNB 多路径兑换</p>
+          <p>• 支持 USDT / USDV / BNB / BTCB / ETH / USDC / USD1 多路径兑换</p>
           <p>• 智能路由自动选择最优交易路径</p>
           <p>• 交易手续费 0.25%（PancakeSwap 标准费率）</p>
         </CardContent>
