@@ -27,7 +27,7 @@ const MobileBottomNav = () => {
       label: "兑换", 
       labelEn: "Swap",
       icon: Coins, 
-      path: `/${language}/usdv` 
+      path: `/${language}/usdv?tab=dex` 
     },
     { 
       id: "vip", 
