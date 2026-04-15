@@ -598,7 +598,7 @@ export function DexSwap() {
             <Button
               className="w-full h-12 text-base font-bold bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.3)] btn-shimmer"
               onClick={handleSwap}
-              disabled={swapLoading || !fromAmount || !toAmount || parseFloat(fromAmount) <= 0}
+              disabled={swapLoading || !fromAmount || !toAmount || !isValidAmount(fromAmount, fromTokenInfo.decimals) || rawToAmountWei <= BigInt(0) || quoteLoading}
             >
               {swapLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
               兑换
