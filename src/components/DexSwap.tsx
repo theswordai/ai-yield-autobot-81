@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, ArrowDownUp, AlertTriangle, RefreshCw, Settings2 } from "lucide-react";
+import { Loader2, ArrowDownUp, AlertTriangle, RefreshCw, Settings2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 interface TokenInfo {
