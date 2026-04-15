@@ -146,8 +146,9 @@ export function DexSwap() {
 
   // Get quote
   const getQuote = useCallback(async (inputAmount: string) => {
-    if (!provider || !inputAmount || parseFloat(inputAmount) <= 0) {
+    if (!provider || !inputAmount || !isValidAmount(inputAmount, fromTokenInfo.decimals)) {
       setToAmount("");
+      setRawToAmountWei(BigInt(0));
       setRate(null);
       setPriceImpact(null);
       return;
