@@ -161,13 +161,13 @@ export function DexSwap() {
 
       // Helper to get quote and compute impact for a given path
       const getQuoteForPath = async (path: string[]) => {
-        // Get actual quote
         const amounts = await router.getAmountsOut(amountIn, path);
-        const outAmount = formatUnits(amounts[amounts.length - 1], toTokenInfo.decimals);
         const rawOut = amounts[amounts.length - 1];
-        const actualRate = parseFloat(outAmount) / parseFloat(inputAmount);
+        const outAmountFull = formatUnits(rawOut, toTokenInfo.decimals);
+        // Limit display precision to 8 decimals
+        const outAmountDisplay = parseFloat(outAmountFull).toFixed(8).replace(/\.?0+$/, "");
+        const actualRate = parseFloat(outAmountFull) / parseFloat(inputAmount);
 
-        // Get base rate with 1 unit for price impact calculation
         const baseAmountIn = parseUnits("1", fromTokenInfo.decimals);
         let baseRate = actualRate;
         try {
@@ -179,7 +179,7 @@ export function DexSwap() {
         }
 
         const impact = baseRate > 0 ? ((baseRate - actualRate) / baseRate) * 100 : 0;
-        return { outAmount, rawOut, actualRate, impact: Math.max(0, impact) };
+        return { outAmount: outAmountDisplay, rawOut, actualRate, impact: Math.max(0, impact) };
       };
 
       // Build path
