@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
-import { Navbar } from '@/components/Navbar';
+import { PageWrapper } from '@/components/PageWrapper';
 import { PageWrapper } from '@/components/PageWrapper';
 import { Helmet } from 'react-helmet-async';
 import { useI18n } from '@/hooks/useI18n';
@@ -72,9 +72,8 @@ export default function Predict() {
       <Helmet>
         <title>{language === 'zh' ? '预测市场 | USD.ONLINE' : 'Prediction Markets | USD.ONLINE'}</title>
       </Helmet>
-      <Navbar />
 
-      <main className="container mx-auto px-3 sm:px-4 pt-16 sm:pt-20 pb-24">
+      <main className="container mx-auto px-3 sm:px-4 pt-6 sm:pt-8 pb-24">
         {/* Category Nav Bar - Polymarket style */}
         <div className="relative mb-6 border-b border-border">
           <button onClick={() => scrollTabs('left')} className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-1 bg-background/90 hidden sm:block">
