@@ -16,13 +16,17 @@ export function Navbar() {
   const navigation = [
     { name: t("nav.home"), href: `${langPrefix}` },
     { name: t("nav.invest"), href: `${langPrefix}/invest` },
-    { name: "USDV", href: `${langPrefix}/usdv` },
+    { name: t("nav.swap"), href: `${langPrefix}/usdv?tab=dex` },
     { name: t("nav.user"), href: `${langPrefix}/user` },
     { name: t("nav.whitepaper"), href: `${langPrefix}/whitepaper` },
     { name: t("nav.predict"), href: `${langPrefix}/predict` },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    // 移除查询参数进行比较
+    const cleanPath = path.split("?")[0];
+    return location.pathname === cleanPath;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
