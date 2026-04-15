@@ -64,6 +64,28 @@ export function DexSwap() {
   const fromTokenInfo = TOKENS[fromToken];
   const toTokenInfo = TOKENS[toToken];
 
+  // Sanitize input: cap decimal places to token's decimals
+  const sanitizeAmountInput = (value: string, decimals: number): string => {
+    if (!value) return "";
+    // Remove non-numeric except dot
+    let cleaned = value.replace(/[^0-9.]/g, "");
+    const parts = cleaned.split(".");
+    if (parts.length > 2) cleaned = parts[0] + "." + parts.slice(1).join("");
+    if (parts.length === 2 && parts[1].length > decimals) {
+      cleaned = parts[0] + "." + parts[1].slice(0, decimals);
+    }
+    return cleaned;
+  };
+
+  const isValidAmount = (value: string, decimals: number): boolean => {
+    if (!value || value === "." || value === "0.") return false;
+    const num = parseFloat(value);
+    if (isNaN(num) || num <= 0) return false;
+    const parts = value.split(".");
+    if (parts.length === 2 && parts[1].length > decimals) return false;
+    return true;
+  };
+
   // Fetch balances
   const fetchBalances = useCallback(async () => {
     if (!provider || !account) return;
