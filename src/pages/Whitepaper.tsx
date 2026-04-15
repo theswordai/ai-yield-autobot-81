@@ -1,5 +1,4 @@
 import { PageWrapper } from "@/components/PageWrapper";
-import { PageWrapper } from "@/components/PageWrapper";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
 import { PDFViewer } from "@/components/PDFViewer";
