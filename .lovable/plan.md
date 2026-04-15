@@ -1,31 +1,56 @@
 
+目标：修复 DEX 页面在“小数位很多”时兑换卡住的问题，同时保持启航页一致的交互风格，不暴露技术报错。
 
-## BNB→USDT 兑换失败修复
+实施方案
 
-### 问题
+1. 在 `src/components/DexSwap.tsx` 增加统一的金额处理函数
+- 新增 `sanitizeAmountInput(value, decimals)`：限制输入小数位不超过当前币种支持的 decimals
+- 新增 `isValidAmount(value, decimals)`：在授权、报价、兑换前统一校验
+- 作用：从源头避免用户输入超长小数导致 `parseUnits(...)` 异常或交易状态卡住
 
-用户看到 "Swap Exact ETH For Tokens" 错误信息。这是 PancakeSwap Router 合约的 revert reason。
+2. 把“展示金额”和“链上金额”彻底分开
+- 继续保留 `rawToAmountWei` 作为真实报价
+- `toAmount` 改为仅用于 UI 展示，限制显示精度（例如最多 6-8 位小数）
+- “最少获得”改为基于 `rawToAmountWei` 计算，不再依赖 `parseFloat(toAmount)`
+- 作用：避免显示字符串精度过长影响后续计算或让用户看到异常长小数
 
-最可能的原因是 **`minOut`（最小输出量）计算精度问题**。第 236 行：
+3. 在报价/授权/兑换流程里补齐防卡住保护
+- `getQuote` 中如果输入非法或小数位超限，直接清空报价并重置 `rawToAmountWei`
+- `checkAllowance` 中如果金额非法，不进入错误授权状态循环
+- `handleSwap` 中在开始前先校验：
+  - 输入金额可解析
+  - `rawToAmountWei > 0`
+  - 当前报价与当前输入一致
+- 作用：防止旧报价、非法金额、超长小数触发按钮转圈但交易无法继续
 
-```js
-const minOut = parseUnits(toAmount, toTokenInfo.decimals) * BigInt(...) / BigInt(10000);
-```
+4. 优化按钮状态与提示文案
+- 增加 `canSwap` 计算条件，只有“输入合法 + 已拿到有效报价 + 非加载中”才允许点兑换
+- 小数位超限时给用户友好提示，例如：`该币种最多支持 X 位小数`
+- 按现有项目规则，技术错误静默处理，只展示用户可理解的提示
 
-`toAmount` 是从 `formatUnits` 格式化后的字符串，可能包含超长小数位（如 `"0.001632456789012345678"`），`parseUnits` 会因小数位超过 `decimals` 而报错或产生不正确的值，导致 `minOut` 过大，交易 revert。
+5. 顺手修正几个高风险边角
+- `handleFlip()` 翻转币种时同步清空旧的 `rawToAmountWei`
+- 切换币种时重新按新币种 decimals 规范输入值
+- 避免 `toAmount` 显示被 `formatBalance` 再次过度舍入，导致展示和实际报价不一致
 
-### 修复方案
+预期效果
 
-**修改 `src/components/DexSwap.tsx`：**
+- 用户输入很多小数位时，不会再出现兑换按钮卡住
+- 非法精度会被自动截断或被友好拦截
+- 真实成交最小值仍基于链上原始 BigInt 报价计算，安全性不变
+- DEX 页面展示更稳定，长小数不会把 UI 和交互拖坏
 
-1. **保存原始 BigInt 输出值**：在 `getQuote` 中，将 `getAmountsOut` 返回的原始 `BigInt` 值存到新 state `rawToAmountWei`
-2. **用原始值计算 minOut**：`handleSwap` 中直接用 `rawToAmountWei * (10000 - slippageBps) / 10000`，不再用 `parseUnits(toAmount)`
-3. **BNB MAX 预留 gas**：当 fromToken 是 BNB 时，MAX 按钮扣除 0.005 BNB
+技术细节
+- 主要修改文件：`src/components/DexSwap.tsx`
+- 不涉及后端、数据库或合约改动
+- 核心改动点：
+  - 输入归一化
+  - 显示值/链上值分离
+  - 兑换前校验
+  - 清理 stale quote 状态
 
-### 技术细节
-
-- 新增 state：`const [rawToAmountWei, setRawToAmountWei] = useState<bigint>(BigInt(0))`
-- `getQuote` 中：`setRawToAmountWei(amounts[amounts.length - 1])` 
-- `handleSwap` 第 236 行替换为：`const minOut = rawToAmountWei * BigInt(Math.floor((100 - slippage) * 100)) / BigInt(10000)`
-- MAX 按钮逻辑：BNB 时 `Math.max(0, parseFloat(fromBalance) - 0.005).toString()`
-
+验证范围
+- USDT -> BNB：输入很多小数位，确认不会卡住
+- BNB -> USDT：输入很多小数位，确认可正常报价/拦截
+- 切换币种、翻转方向后再次输入，确认不会沿用旧报价
+- 移动端 390px 宽度下检查输入框、报价区、按钮状态是否正常
