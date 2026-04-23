@@ -839,6 +839,22 @@ export default function Stake({
                 <PositionsList account={account} lock={lock as any} chainId={chainId} targetChain={TARGET_CHAIN} usdtDecimals={USDT_DECIMALS} />
               </CardContent>
             </Card>
+
+            {/* 幸运5分钟 Jackpot - 移动端显示在我的仓位下方 */}
+            <a
+              href="https://usdonline.xyz/hourdraw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lg:hidden group block rounded-xl overflow-hidden border border-accent/20 bg-gradient-to-br from-card/90 to-card/70 backdrop-blur shadow-lg hover:shadow-accent/30 hover:border-accent/40 transition-all duration-300"
+              aria-label="幸运5分钟 - Lucky 5Min Jackpot"
+            >
+              <img
+                src={lucky5MinBanner}
+                alt="幸运5分钟 Jackpot - 每5分钟开奖一次 Chainlink VRF"
+                className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500"
+                loading="lazy"
+              />
+            </a>
           </div>
 
           {/* 侧边栏 */}
