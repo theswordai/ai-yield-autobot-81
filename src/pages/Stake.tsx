@@ -21,6 +21,7 @@ import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { USDT_ADDRESS, LOCK_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, TARGET_CHAIN, REFERRAL_ADDRESS } from "@/config/contracts";
 import { decodeAddress } from "@/lib/addressCode";
+import lucky5MinBanner from "@/assets/lucky-5min-banner.png";
 export default function Stake({
   embedded = false
 }: {
@@ -894,6 +895,22 @@ export default function Stake({
                   </>}
               </CardContent>
             </Card>
+
+            {/* 幸运5分钟 Jackpot */}
+            <a
+              href="https://usdonline.xyz/hourdraw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block rounded-xl overflow-hidden border border-accent/20 bg-gradient-to-br from-card/90 to-card/70 backdrop-blur shadow-lg hover:shadow-accent/30 hover:border-accent/40 transition-all duration-300"
+              aria-label="幸运5分钟 - Lucky 5Min Jackpot"
+            >
+              <img
+                src={lucky5MinBanner}
+                alt="幸运5分钟 Jackpot - 每5分钟开奖一次 Chainlink VRF"
+                className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500"
+                loading="lazy"
+              />
+            </a>
 
           </div>
         </div>
