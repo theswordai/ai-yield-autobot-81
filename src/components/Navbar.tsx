@@ -29,19 +29,19 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/55 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-[4.5rem]">
-          <Link to={langPrefix} className="flex items-center space-x-2.5" aria-label="USD.ONLINE Home">
+        <div className="flex items-center justify-between h-16">
+          <Link to={langPrefix} className="flex items-center space-x-2" aria-label="USD.ONLINE Home">
             <img
               src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png"
               alt="USD.ONLINE logo"
-              className="w-10 h-10 rounded-xl object-cover shadow-[0_0_18px_hsl(var(--primary)/0.2)]"
+              className="w-8 h-8 rounded-md object-cover"
               loading="eager"
-              width={40}
-              height={40}
+              width={32}
+              height={32}
             />
-            <span className="text-[1.9rem] leading-none font-black tracking-tight bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent md:text-2xl">
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               USD.ONLINE
             </span>
           </Link>
@@ -72,15 +72,14 @@ export function Navbar() {
           </div>
 
           {/* Mobile: X logo + menu button */}
-          <div className="md:hidden flex items-center space-x-3">
+          <div className="md:hidden flex items-center space-x-2">
             <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-              <img src="/lovable-uploads/x-logo.png" alt="X" className="w-11 h-11 rounded-2xl border border-border/70 bg-background/55 p-2" />
+              <img src="/lovable-uploads/x-logo.png" alt="X" className="w-7 h-7 rounded" />
             </a>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(!isOpen)}
-              className="h-11 w-11 rounded-2xl border border-border/70 bg-background/55 p-0 hover:bg-background/75"
             >
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>

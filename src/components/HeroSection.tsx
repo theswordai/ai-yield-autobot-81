@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle, HeartHandshake, FileText } from "lucide-react";
+import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
@@ -10,7 +10,6 @@ import { FeaturedPrices } from "@/components/FeaturedPrices";
 import { useI18n } from "@/hooks/useI18n";
 import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 import metamaskLogo from "@/assets/metamask-logo.png";
-import heroEarthNight from "@/assets/hero-earth-night.jpg";
 
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
@@ -154,70 +153,42 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      <div className="absolute inset-0 md:hidden">
-        <div className="absolute inset-x-0 top-0 h-[27rem] overflow-hidden bg-background">
-          <img
-            src={heroEarthNight}
-            alt="Night view of Earth"
-            className="h-full w-full object-contain object-top scale-[1.06]"
-            loading="eager"
-            width={1920}
-            height={1080}
-          />
-        </div>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.18)_0%,hsl(var(--background)/0.4)_20%,hsl(var(--background)/0.74)_48%,hsl(var(--background)/0.94)_74%,hsl(var(--background))_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,hsl(var(--primary)/0.15),transparent_22%)]" />
-      </div>
-
-      <div className="absolute inset-x-0 top-0 hidden md:block h-[42rem] overflow-hidden">
-        <img
-          src={heroEarthNight}
-          alt="Night view of Earth"
-          className="h-full w-full object-cover object-center opacity-50"
-          loading="eager"
-          width={1920}
-          height={1080}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.3)_0%,hsl(var(--background)/0.72)_60%,hsl(var(--background))_100%)]" />
-      </div>
-
       <div className="relative z-10 container mx-auto px-4 pt-24 pb-16">
         
         {/* ===== HERO HEADER ===== */}
-        <div className="text-center mb-12 md:mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/50 bg-background/45 px-4 py-2 shadow-[0_0_24px_hsl(var(--primary)/0.18)] backdrop-blur-md mb-5 md:mb-6">
-            <span className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
-            <span className="text-sm font-semibold text-primary uppercase">USD.ONLINE</span>
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-medium text-primary tracking-widest uppercase">USD.ONLINE</span>
           </div>
           
-          <h1 className="text-[3.55rem] leading-[0.95] md:text-7xl font-black mb-4 md:mb-5 tracking-tight">
-            <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.18)]">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
               {t("hero.title")}
             </span>
           </h1>
           
-          <p className="text-[1.05rem] md:text-2xl font-semibold text-foreground/90 mb-3 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-muted-foreground mb-3 max-w-3xl mx-auto leading-relaxed">
             {t("hero.subtitle")}
           </p>
-          <p className="text-sm md:text-base text-foreground/72 mb-8 max-w-3xl mx-auto leading-6 md:leading-7">
+          <p className="text-base text-muted-foreground/80 mb-8 max-w-3xl mx-auto">
             {t("hero.description")}
           </p>
 
           {/* CTA Buttons - Hero position */}
-          <div className="mx-auto flex w-full max-w-md flex-col gap-3 md:max-w-xl mb-10">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
             <Button 
               size="lg" 
-              className="h-16 rounded-[1.75rem] bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_30px_hsl(var(--primary)/0.28)] transition-all duration-300 px-6 text-xl font-bold"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-8 py-3 text-base font-semibold"
               onClick={() => navigate(`/${currentLang}/invest`)}
             >
-              <HeartHandshake className="mr-3 h-6 w-6 shrink-0" />
-              <span className="flex-1 text-center">{t("invest.charityButtonName")}</span>
-              <ArrowRight className="ml-3 h-6 w-6 shrink-0" />
+              {t("invest.charityButtonName")}
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="h-16 rounded-[1.75rem] border-border/70 bg-background/42 text-foreground hover:border-primary/40 hover:bg-background/58 backdrop-blur-md px-6 text-xl font-bold"
+              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-8 py-3 text-base"
               onClick={() => {
                 if (!showDetails) setShowDetails(true);
                 setTimeout(() => {
@@ -225,9 +196,7 @@ export function HeroSection() {
                 }, 100);
               }}
             >
-              <FileText className="mr-3 h-6 w-6 shrink-0 text-muted-foreground" />
-              <span className="flex-1 text-center">{t("invest.strategyButtonName")}</span>
-              <ArrowRight className="ml-3 h-6 w-6 shrink-0" />
+              {t("invest.strategyButtonName")}
             </Button>
           </div>
         </div>
