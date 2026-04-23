@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle } from "lucide-react";
+import { Bot, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle, Wallet, Gem, FileText, Landmark, Globe2 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
 import { FeaturedPrices } from "@/components/FeaturedPrices";
 import { useI18n } from "@/hooks/useI18n";
-import customerServiceAvatar from "@/assets/customer-service-avatar.png";
 import metamaskLogo from "@/assets/metamask-logo.png";
 
 export function HeroSection() {
@@ -18,33 +17,8 @@ export function HeroSection() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentLang = location.pathname.startsWith('/en') ? 'en' : 'zh';
+  const isEnglish = currentLang === 'en';
 
-  const strategies = [{
-    icon: "⚡",
-    title: t("hero.crossChainEngine.title"),
-    description: t("hero.crossChainEngine.description"),
-    fee: t("hero.crossChainEngine.fee"),
-    color: "text-primary",
-    change: "+2.4%"
-  }, {
-    icon: "🤖",
-    title: t("hero.aiRotation.title"),
-    description: t("hero.aiRotation.description"),
-    fee: t("hero.aiRotation.fee"),
-    color: "text-accent",
-    change: "+1.8%"
-  }, {
-    icon: "🏦",
-    title: t("hero.defiVault.title"),
-    description: t("hero.defiVault.description"),
-    fee: t("hero.defiVault.fee"),
-    color: "text-primary",
-    change: "+0.9%"
-  }];
-
-  const handleStrategyClick = (strategy: any) => {
-    setShowDetails(true);
-  };
 
   const partners = [{
     name: "FCA",
@@ -128,111 +102,229 @@ export function HeroSection() {
     tagline: t('partners.jupiter')
   }] as const;
 
+  const heroTags = isEnglish
+    ? ["Cross-chain Alpha Engine", "Adaptive Yield Rotation", "Decentralized Staking Vault", "Transparent On-chain Protocol"]
+    : ["跨链阿尔法引擎", "自适应收益轮动", "去中心化质押金库", "链上清晰透明协议"];
+
+  const quickLinks = [
+    {
+      title: isEnglish ? "Yield Strategy" : "收益策略",
+      subtitle: isEnglish ? "Alpha matrix" : "阿尔法矩阵",
+      icon: Gem,
+      action: () => {
+        if (!showDetails) setShowDetails(true);
+        setTimeout(() => document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth' }), 120);
+      },
+    },
+    {
+      title: isEnglish ? "My Assets" : "我的资产",
+      subtitle: isEnglish ? "Portfolio hub" : "资产总览",
+      icon: Wallet,
+      action: () => navigate(`/${currentLang}/user`),
+    },
+    {
+      title: isEnglish ? "Staking" : "质押挖矿",
+      subtitle: isEnglish ? "Stable yield" : "稳定收益",
+      icon: Landmark,
+      action: () => navigate(`/${currentLang}/stake`),
+    },
+    {
+      title: isEnglish ? "DAO" : "DAO 治理",
+      subtitle: isEnglish ? "Community layer" : "社区共治",
+      icon: Globe2,
+      action: () => navigate(`/${currentLang}/invite`),
+    },
+    {
+      title: isEnglish ? "Whitepaper" : "白皮书",
+      subtitle: isEnglish ? "Protocol docs" : "协议文档",
+      icon: FileText,
+      action: () => navigate(`/${currentLang}/whitepaper`),
+    },
+  ];
+
   const featureCards = [
     {
-      icon: <Zap className="w-8 h-8 md:w-10 md:h-10" />,
-      title: t("hero.crossChainEngine.title"),
-      description: t("hero.crossChainEngine.description"),
+      icon: Shield,
+      title: isEnglish ? "Security Audits" : "安全审计",
+      description: isEnglish ? "Smart-contract review" : "合约级风控巡检",
     },
     {
-      icon: <Shield className="w-8 h-8 md:w-10 md:h-10" />,
-      title: t("hero.transparentProtocol.title"),
-      description: t("hero.transparentProtocol.direction"),
+      icon: Globe2,
+      title: isEnglish ? "Decentralized" : "去中心化",
+      description: isEnglish ? "BSC-native execution" : "BSC 原生执行网络",
     },
     {
-      icon: <BarChart3 className="w-8 h-8 md:w-10 md:h-10" />,
-      title: t("hero.defiVault.title"),
-      description: t("hero.defiVault.description"),
+      icon: BarChart3,
+      title: isEnglish ? "High Efficiency" : "高效收益",
+      description: isEnglish ? "Adaptive yield engine" : "收益轮动引擎驱动",
     },
     {
-      icon: <Bot className="w-8 h-8 md:w-10 md:h-10" />,
-      title: t("hero.aiRotation.title"),
-      description: t("hero.aiRotation.description"),
+      icon: Zap,
+      title: isEnglish ? "Global Liquidity" : "全球流通",
+      description: isEnglish ? "Open market access" : "开放式资产连接能力",
     },
   ];
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      <div className="relative z-10 container mx-auto px-4 pt-24 pb-16">
-        
-        {/* ===== HERO HEADER ===== */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-medium text-primary tracking-widest uppercase">USD.ONLINE</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-              {t("hero.title")}
-            </span>
-          </h1>
-          
-          <p className="text-lg md:text-xl text-muted-foreground mb-3 max-w-3xl mx-auto leading-relaxed">
-            {t("hero.subtitle")}
-          </p>
-          <p className="text-base text-muted-foreground/80 mb-8 max-w-3xl mx-auto">
-            {t("hero.description")}
-          </p>
-
-          {/* CTA Buttons - Hero position */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
-            <Button 
-              size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-8 py-3 text-base font-semibold"
-              onClick={() => navigate(`/${currentLang}/invest`)}
-            >
-              {t("invest.charityButtonName")}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-8 py-3 text-base"
-              onClick={() => {
-                if (!showDetails) setShowDetails(true);
-                setTimeout(() => {
-                  document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }}
-            >
-              {t("invest.strategyButtonName")}
-            </Button>
-          </div>
-        </div>
-
-        {/* ===== PRICE TICKER ===== */}
-        <div className="max-w-5xl mx-auto mb-10">
-          <PriceTicker />
-        </div>
-        
-        {/* ===== FEATURED PRICES ===== */}
-        <FeaturedPrices />
-        
-        {/* ===== NEWS + FEATURE CARDS SIDE BY SIDE ===== */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left: NEWS */}
-            <div className="lg:col-span-1">
-              <NewsAnnouncement />
-            </div>
-
-            {/* Right: Feature Cards 2x2 */}
-            <div className="lg:col-span-2 grid grid-cols-2 gap-4">
-              {featureCards.map((card, index) => (
-                <div
-                  key={index}
-                  className="group relative rounded-xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm p-6 md:p-8 hover:border-primary/40 hover:bg-card/50 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 md:w-12 md:h-12 mb-4 md:mb-5 text-primary">
-                    {card.icon}
+      <div className="relative z-10 container mx-auto px-4 pb-16 pt-20 sm:pt-24">
+        <div className="mx-auto max-w-6xl space-y-6 sm:space-y-8">
+          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
+            <div className="rounded-[28px] border border-border/40 bg-card/45 p-5 shadow-card backdrop-blur-xl sm:p-7 lg:p-8">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/lovable-uploads/e6bca233-40fa-44a0-bf40-dd55b080b52d.png"
+                    alt="USD.ONLINE logo"
+                    className="h-11 w-11 rounded-xl object-cover"
+                    loading="eager"
+                    width={44}
+                    height={44}
+                  />
+                  <div>
+                    <p className="text-sm font-semibold tracking-[0.18em] text-muted-foreground">USD.ONLINE</p>
+                    <p className="text-xs text-muted-foreground/80">{isEnglish ? 'Moral Alpha 3.0' : '全球善意价值引擎'}</p>
                   </div>
-                  <h3 className="text-base md:text-lg font-bold text-foreground">{card.title}</h3>
                 </div>
-              ))}
+                <div className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-semibold tracking-[0.18em] text-primary">
+                  {isEnglish ? 'LIVE' : '已上线'}
+                </div>
+              </div>
+
+              <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/50 px-3 py-1.5 text-[11px] font-medium text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-accent" />
+                <span>{isEnglish ? 'Cross-chain Alpha Engine' : '跨链阿尔法引擎'}</span>
+              </div>
+
+              <div className="mt-5 space-y-4">
+                <h1 className="text-[2.6rem] font-black leading-[0.92] tracking-normal sm:text-[3.6rem] lg:text-[4.7rem]">
+                  <span className="bg-gradient-to-r from-primary via-foreground to-accent bg-clip-text text-transparent">
+                    USD.ONLINE
+                  </span>
+                </h1>
+                <div className="space-y-2">
+                  <p className="max-w-2xl text-base font-medium leading-7 text-foreground/95 sm:text-lg">
+                    {isEnglish ? 'Cross-chain alpha execution, adaptive yield rotation, and transparent on-chain treasury coordination.' : '跨链阿尔法执行、自适应收益轮动，以及链上透明资金协同。'}
+                  </p>
+                  <p className="max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+                    {isEnglish ? 'A mobile-first launch interface built around strategy discovery, market tracking, and instant access to core protocol actions.' : '面向移动端的启航界面，围绕策略发现、市场追踪与核心协议操作入口进行重构。'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {heroTags.map((tag) => (
+                  <div
+                    key={tag}
+                    className="rounded-full border border-border/50 bg-background/40 px-3 py-1.5 text-xs font-medium text-muted-foreground"
+                  >
+                    {tag}
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <Button
+                  size="lg"
+                  className="h-12 justify-between rounded-2xl bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-glow hover:bg-primary/90"
+                  onClick={() => navigate(`/${currentLang}/invest`)}
+                >
+                  <span>{t("invest.charityButtonName")}</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-12 rounded-2xl border-border/60 bg-background/40 px-5 text-sm font-semibold text-foreground hover:border-primary/40 hover:bg-primary/10"
+                  onClick={() => {
+                    if (!showDetails) setShowDetails(true);
+                    setTimeout(() => document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth' }), 120);
+                  }}
+                >
+                  {t("invest.strategyButtonName")}
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              <div className="rounded-[28px] border border-border/40 bg-card/45 p-5 shadow-card backdrop-blur-xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{isEnglish ? 'Launch Surface' : '启航面板'}</p>
+                    <p className="mt-1 text-lg font-semibold text-foreground">{isEnglish ? 'Fast protocol access' : '核心功能直达'}</p>
+                  </div>
+                  <div className="rounded-2xl border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+                    BSC
+                  </div>
+                </div>
+                <div className="mt-5 grid grid-cols-2 gap-3">
+                  {featureCards.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-2xl border border-border/40 bg-background/50 p-4 transition-colors hover:border-primary/30 hover:bg-background/70"
+                    >
+                      <item.icon className="mb-3 h-5 w-5 text-primary" />
+                      <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[28px] border border-border/40 bg-card/45 p-5 shadow-card backdrop-blur-xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{isEnglish ? 'Quick Access' : '快捷入口'}</p>
+                    <p className="mt-1 text-lg font-semibold text-foreground">{isEnglish ? 'Protocol shortcuts' : '协议功能导航'}</p>
+                  </div>
+                </div>
+                <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2">
+                  {quickLinks.map((item) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={item.action}
+                      className="group rounded-2xl border border-border/40 bg-background/45 p-4 text-left transition-all hover:border-primary/30 hover:bg-background/70"
+                    >
+                      <item.icon className="mb-3 h-5 w-5 text-primary transition-transform group-hover:translate-x-0.5" />
+                      <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                      <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.subtitle}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="mx-auto max-w-5xl">
+            <PriceTicker />
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <NewsAnnouncement />
+            <div className="rounded-[28px] border border-border/40 bg-card/45 p-4 shadow-card backdrop-blur-xl sm:p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{isEnglish ? 'Core Signals' : '核心信号'}</p>
+                  <p className="mt-1 text-lg font-semibold text-foreground">{isEnglish ? 'Protocol advantages' : '协议优势概览'}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {featureCards.map((card) => (
+                  <div
+                    key={card.title}
+                    className="rounded-2xl border border-border/40 bg-background/45 p-4 transition-colors hover:border-accent/30 hover:bg-background/60"
+                  >
+                    <card.icon className="mb-3 h-5 w-5 text-accent" />
+                    <h3 className="text-sm font-semibold text-foreground">{card.title}</h3>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{card.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <FeaturedPrices />
 
         {/* ===== ABOUT US VIDEO ===== */}
         <div className="max-w-3xl mx-auto mb-16">
