@@ -155,16 +155,18 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0 md:hidden">
-        <img
-          src={heroEarthNight}
-          alt="Night view of Earth"
-          className="h-full w-full object-cover object-center"
-          loading="eager"
-          width={1920}
-          height={1080}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.35)_0%,hsl(var(--background)/0.58)_28%,hsl(var(--background)/0.82)_58%,hsl(var(--background)/0.96)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_24%,hsl(var(--primary)/0.18),transparent_24%)]" />
+        <div className="absolute inset-x-0 top-0 h-[27rem] overflow-hidden bg-background">
+          <img
+            src={heroEarthNight}
+            alt="Night view of Earth"
+            className="h-full w-full object-contain object-top scale-[1.06]"
+            loading="eager"
+            width={1920}
+            height={1080}
+          />
+        </div>
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--background)/0.18)_0%,hsl(var(--background)/0.4)_20%,hsl(var(--background)/0.74)_48%,hsl(var(--background)/0.94)_74%,hsl(var(--background))_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,hsl(var(--primary)/0.15),transparent_22%)]" />
       </div>
 
       <div className="absolute inset-x-0 top-0 hidden md:block h-[42rem] overflow-hidden">
