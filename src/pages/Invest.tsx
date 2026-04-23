@@ -19,22 +19,24 @@ export default function Invest() {
           <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t("invest.header")}</h1>
           <p className="text-sm sm:text-base text-muted-foreground">{t("invest.subtitle")}</p>
         </header>
-        <a
-          href="https://usdonline.xyz/hourdraw"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block mb-4 sm:mb-6 rounded-2xl overflow-hidden border border-border/40 shadow-lg hover:shadow-primary/30 hover:scale-[1.01] transition-all duration-300"
-          aria-label="幸运5分钟 - Lucky 5Min Jackpot"
-        >
-          <img
-            src={lucky5MinBanner}
-            alt="幸运5分钟 Jackpot - 每5分钟开奖一次 Chainlink VRF"
-            className="w-full h-auto block"
-            loading="lazy"
-          />
-        </a>
         <div className="mt-6">
           <Stake embedded />
+        </div>
+        <div className="mt-6 max-w-2xl mx-auto">
+          <a
+            href="https://usdonline.xyz/hourdraw"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-2xl overflow-hidden border border-border/40 shadow-lg hover:shadow-primary/30 hover:scale-[1.01] transition-all duration-300"
+            aria-label="幸运5分钟 - Lucky 5Min Jackpot"
+          >
+            <img
+              src={lucky5MinBanner}
+              alt="幸运5分钟 Jackpot - 每5分钟开奖一次 Chainlink VRF"
+              className="w-full h-auto block"
+              loading="lazy"
+            />
+          </a>
         </div>
       </main>
     </PageWrapper>;
