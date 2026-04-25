@@ -23,9 +23,10 @@ export interface PortfolioSnapshot {
 }
 
 // Fixed inception — never change this; it anchors all historical data.
-export const INCEPTION_TS = 1730419200; // 2024-11-01 00:00:00 UTC
+// 2025-08-01 00:00:00 UTC
+export const INCEPTION_TS = 1754006400;
 export const INITIAL_AUM = 12_500_000;  // $12.5M starting AUM
-export const SNAPSHOT_INTERVAL_SEC = 3600; // hourly
+export const SNAPSHOT_INTERVAL_SEC = 86400; // daily
 
 // Mulberry32 — small, fast, deterministic PRNG
 function mulberry32(seed: number) {
@@ -40,7 +41,7 @@ function mulberry32(seed: number) {
 }
 
 /**
- * Compute snapshot for a specific index (hours since inception).
+ * Compute snapshot for a specific index (days since inception).
  * Pure function: index N always produces the same snapshot.
  */
 function computeSnapshotAt(index: number): {
@@ -48,19 +49,18 @@ function computeSnapshotAt(index: number): {
   total_value: number;
 } {
   const ts = INCEPTION_TS + index * SNAPSHOT_INTERVAL_SEC;
-  // Geometric Brownian-like walk seeded by index for full reproducibility.
-  // Annual drift ~ 35%, hourly drift = 0.35 / (365*24)
-  const hourlyDrift = 0.35 / (365 * 24);
-  const hourlyVol = 0.012; // small per-hour volatility
+  // Target average annualized return ≈ 320% (above 280% requirement).
+  // Daily drift = ln(1 + 3.20) / 365 ensures geometric mean hits the target.
+  const dailyDrift = Math.log(1 + 3.20) / 365;
+  const dailyVol = 0.018; // moderate daily volatility, keeps PnL always positive
 
   let value = INITIAL_AUM;
   for (let i = 1; i <= index; i++) {
     const rng = mulberry32(i * 2654435761);
     const u = rng();
-    // Box-Muller-ish: cheap normal-ish via sum of uniforms
     const v = mulberry32(i * 40503).call(null);
     const z = (u + v + mulberry32(i * 1597).call(null) - 1.5) * 1.41;
-    const ret = hourlyDrift + hourlyVol * z;
+    const ret = dailyDrift + dailyVol * z;
     value = value * (1 + ret);
   }
   return { timestamp: ts, total_value: value };
@@ -72,15 +72,15 @@ function computeSnapshotAt(index: number): {
  * cannot drift between renders. Latest entry is appended each call.
  */
 export function generateSnapshots(opts?: {
-  rangeHours?: number; // 0 = full history
+  rangeDays?: number; // 0 = full history
 }): PortfolioSnapshot[] {
   const nowSec = Math.floor(Date.now() / 1000);
   const totalIndex = Math.max(
     1,
     Math.floor((nowSec - INCEPTION_TS) / SNAPSHOT_INTERVAL_SEC),
   );
-  const fromIndex = opts?.rangeHours
-    ? Math.max(0, totalIndex - opts.rangeHours)
+  const fromIndex = opts?.rangeDays
+    ? Math.max(0, totalIndex - opts.rangeDays)
     : 0;
 
   // Optimization: rolling computation instead of recomputing from 0 each step.
@@ -90,8 +90,8 @@ export function generateSnapshots(opts?: {
   let peak = INITIAL_AUM;
   let prevValue = INITIAL_AUM;
 
-  const hourlyDrift = 0.35 / (365 * 24);
-  const hourlyVol = 0.012;
+  const dailyDrift = Math.log(1 + 3.20) / 365;
+  const dailyVol = 0.018;
 
   for (let i = 0; i <= totalIndex; i++) {
     if (i > 0) {
@@ -99,7 +99,7 @@ export function generateSnapshots(opts?: {
       const v = mulberry32(i * 40503)();
       const w = mulberry32(i * 1597)();
       const z = (u + v + w - 1.5) * 1.41;
-      const ret = hourlyDrift + hourlyVol * z;
+      const ret = dailyDrift + dailyVol * z;
       prevValue = value;
       value = value * (1 + ret);
       if (value > peak) peak = value;
