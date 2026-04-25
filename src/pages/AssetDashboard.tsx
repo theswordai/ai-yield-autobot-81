@@ -318,9 +318,8 @@ export default function AssetDashboard() {
           </Card>
         </section>
 
-        {/* Followers + Positions count */}
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <StatPill icon={Users} label={zh ? "跟单者收益" : "Followers Profit"} value={fmtUsd(metrics.followersProfit)} />
+        {/* Positions count + risk stats */}
+        <section className="grid grid-cols-3 gap-3">
           <StatPill icon={Activity} label={zh ? "活跃仓位" : "Open Positions"} value={`${metrics.positions}`} />
           <StatPill icon={TrendingUp} label={zh ? "胜率" : "Win Rate"} value={`${metrics.winRate.toFixed(1)}%`} />
           <StatPill icon={Shield} label={zh ? "夏普比率" : "Sharpe"} value={metrics.sharpe.toFixed(2)} />
