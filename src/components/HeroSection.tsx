@@ -14,7 +14,7 @@ import metamaskLogo from "@/assets/metamask-logo.png";
 export function HeroSection() {
   const [showDetails, setShowDetails] = useState(false);
   const [showTeam, setShowTeam] = useState(false);
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const navigate = useNavigate();
   const location = useLocation();
   const currentLang = location.pathname.startsWith('/en') ? 'en' : 'zh';
