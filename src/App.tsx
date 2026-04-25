@@ -47,6 +47,7 @@ const App = () => (
           <Route path="/zh/invite/:inviter" element={<Invite />} />
           <Route path="/zh/i/:code" element={<Invite />} />
           <Route path="/zh/whitepaper" element={<Whitepaper />} />
+          <Route path="/zh/audit" element={<Audit />} />
           <Route path="/zh/predict" element={<Predict />} />
           <Route path="/zh/predict/:id" element={<PredictDetail />} />
           
