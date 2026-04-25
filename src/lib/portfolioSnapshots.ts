@@ -209,12 +209,15 @@ export const STRATEGIES = [
   { name: "Delta-Neutral MM", apr: 113.0, sharpe: 2.78, weight: 16, status: "live" },
 ];
 
-// Static positions roster.
+// Static positions roster — `weight` (% of AUM) is the source of truth.
+// Actual `size` is computed at render time as AUM × weight, so the sum of
+// position sizes always equals total net assets (cash reserve included).
 export const POSITIONS = [
-  { id: "P-0142", asset: "BTC/USDT", side: "Long", size: 1850000, entry: 67420, mark: 71280, pnl: 105891 },
-  { id: "P-0138", asset: "ETH/USDT", side: "Long", size: 920000, entry: 3210, mark: 3398, pnl: 53889 },
-  { id: "P-0135", asset: "SOL/USDT", side: "Long", size: 480000, entry: 162.4, mark: 178.9, pnl: 48830 },
-  { id: "P-0131", asset: "BNB/USDT", side: "Long", size: 320000, entry: 598, mark: 612, pnl: 7491 },
-  { id: "P-0128", asset: "ETH/BTC", side: "Short", size: 410000, entry: 0.0478, mark: 0.0469, pnl: 7720 },
-  { id: "P-0124", asset: "USDV-LP", side: "Stake", size: 2200000, entry: 1.0, mark: 1.0, pnl: 18420 },
+  { id: "P-0142", asset: "BTC/USDT",  weight: 32, entry: 67420,  mark: 71280  },
+  { id: "P-0138", asset: "ETH/USDT",  weight: 22, entry: 3210,   mark: 3398   },
+  { id: "P-0135", asset: "SOL/USDT",  weight: 12, entry: 162.4,  mark: 178.9  },
+  { id: "P-0131", asset: "BNB/USDT",  weight: 8,  entry: 598,    mark: 612    },
+  { id: "P-0128", asset: "ETH/BTC",   weight: 6,  entry: 0.0478, mark: 0.0469 },
+  { id: "P-0124", asset: "USDV-LP",   weight: 14, entry: 1.0,    mark: 1.0    },
+  { id: "P-0001", asset: "USDT-CASH", weight: 6,  entry: 1.0,    mark: 1.0    },
 ];
