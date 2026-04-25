@@ -203,10 +203,10 @@ export const ASSET_ALLOCATION = [
 
 // Static strategy roster.
 export const STRATEGIES = [
-  { name: "Cross-chain Alpha", apr: 28.4, sharpe: 2.31, weight: 32, status: "live" },
-  { name: "AI Rotation", apr: 41.7, sharpe: 1.94, weight: 28, status: "live" },
-  { name: "Staking Vault", apr: 18.2, sharpe: 3.42, weight: 24, status: "live" },
-  { name: "Delta-Neutral MM", apr: 22.6, sharpe: 2.78, weight: 16, status: "live" },
+  { name: "Cross-chain Alpha", apr: 142.0, sharpe: 2.31, weight: 32, status: "live" },
+  { name: "AI Rotation", apr: 208.5, sharpe: 1.94, weight: 28, status: "live" },
+  { name: "Staking Vault", apr: 91.0, sharpe: 3.42, weight: 24, status: "live" },
+  { name: "Delta-Neutral MM", apr: 113.0, sharpe: 2.78, weight: 16, status: "live" },
 ];
 
 // Static positions roster.
