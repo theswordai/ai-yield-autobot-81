@@ -11,6 +11,7 @@ import Referral from "./pages/Referral";
 import Stake from "./pages/Stake";
 import StakeNew from "./pages/StakeNew";
 import Whitepaper from "./pages/Whitepaper";
+import Audit from "./pages/Audit";
 import NotFound from "./pages/NotFound";
 import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
