@@ -344,19 +344,33 @@ export default function AssetDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {POSITIONS.map((p) => (
-                  <tr key={p.id} className="border-t border-border/30 hover:bg-muted/10">
-                    <td className="px-3 sm:px-6 py-2.5 font-mono text-muted-foreground">{p.id}</td>
-                    <td className="px-3 sm:px-6 py-2.5 font-semibold">{p.asset}</td>
-                    <td className="px-3 sm:px-6 py-2.5 text-right font-mono">{fmtUsd(p.size)}</td>
-                    <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
-                      {p.entry < 10 ? p.entry.toFixed(4) : p.entry.toLocaleString()}
-                    </td>
-                    <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
-                      {p.mark < 10 ? p.mark.toFixed(4) : p.mark.toLocaleString()}
-                    </td>
-                  </tr>
-                ))}
+                {POSITIONS.map((p) => {
+                  const size = (metrics.totalValue * p.weight) / 100;
+                  return (
+                    <tr key={p.id} className="border-t border-border/30 hover:bg-muted/10">
+                      <td className="px-3 sm:px-6 py-2.5 font-mono text-muted-foreground">{p.id}</td>
+                      <td className="px-3 sm:px-6 py-2.5 font-semibold">
+                        {p.asset}
+                        <span className="ml-2 text-[10px] font-mono text-muted-foreground">{p.weight}%</span>
+                      </td>
+                      <td className="px-3 sm:px-6 py-2.5 text-right font-mono">{fmtUsd(size)}</td>
+                      <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
+                        {p.entry < 10 ? p.entry.toFixed(4) : p.entry.toLocaleString()}
+                      </td>
+                      <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
+                        {p.mark < 10 ? p.mark.toFixed(4) : p.mark.toLocaleString()}
+                      </td>
+                    </tr>
+                  );
+                })}
+                <tr className="border-t-2 border-border/60 bg-muted/10 font-semibold">
+                  <td className="px-3 sm:px-6 py-2.5 font-mono text-[10px] uppercase text-muted-foreground" colSpan={2}>
+                    {zh ? "合计 (= 总净资产)" : "Total (= Net AUM)"}
+                  </td>
+                  <td className="px-3 sm:px-6 py-2.5 text-right font-mono text-primary">{fmtUsd(metrics.totalValue)}</td>
+                  <td className="hidden sm:table-cell" />
+                  <td className="hidden sm:table-cell" />
+                </tr>
               </tbody>
             </table>
           </div>
