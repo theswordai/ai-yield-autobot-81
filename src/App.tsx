@@ -61,6 +61,7 @@ const App = () => (
           <Route path="/en/invite/:inviter" element={<Invite />} />
           <Route path="/en/i/:code" element={<Invite />} />
           <Route path="/en/whitepaper" element={<Whitepaper />} />
+          <Route path="/en/audit" element={<Audit />} />
           <Route path="/en/predict" element={<Predict />} />
           <Route path="/en/predict/:id" element={<PredictDetail />} />
 
