@@ -72,15 +72,15 @@ function computeSnapshotAt(index: number): {
  * cannot drift between renders. Latest entry is appended each call.
  */
 export function generateSnapshots(opts?: {
-  rangeHours?: number; // 0 = full history
+  rangeDays?: number; // 0 = full history
 }): PortfolioSnapshot[] {
   const nowSec = Math.floor(Date.now() / 1000);
   const totalIndex = Math.max(
     1,
     Math.floor((nowSec - INCEPTION_TS) / SNAPSHOT_INTERVAL_SEC),
   );
-  const fromIndex = opts?.rangeHours
-    ? Math.max(0, totalIndex - opts.rangeHours)
+  const fromIndex = opts?.rangeDays
+    ? Math.max(0, totalIndex - opts.rangeDays)
     : 0;
 
   // Optimization: rolling computation instead of recomputing from 0 each step.

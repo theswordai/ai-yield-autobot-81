@@ -37,11 +37,11 @@ import {
   INCEPTION_TS,
 } from "@/lib/portfolioSnapshots";
 
-type RangeKey = "1D" | "7D" | "30D" | "ALL";
-const RANGE_HOURS: Record<RangeKey, number> = {
-  "1D": 24,
-  "7D": 24 * 7,
-  "30D": 24 * 30,
+type RangeKey = "7D" | "30D" | "90D" | "ALL";
+const RANGE_DAYS: Record<RangeKey, number> = {
+  "7D": 7,
+  "30D": 30,
+  "90D": 90,
   ALL: 0,
 };
 
