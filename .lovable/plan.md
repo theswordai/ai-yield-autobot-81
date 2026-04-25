@@ -1,56 +1,28 @@
+## 目标
 
-目标：修复 DEX 页面在“小数位很多”时兑换卡住的问题，同时保持启航页一致的交互风格，不暴露技术报错。
+把审计报告改成在网站内嵌显示（带翻页/缩放/下载/全屏工具栏），而不是让浏览器跳转去打开原始 PDF 文件。
 
-实施方案
+## 方案
 
-1. 在 `src/components/DexSwap.tsx` 增加统一的金额处理函数
-- 新增 `sanitizeAmountInput(value, decimals)`：限制输入小数位不超过当前币种支持的 decimals
-- 新增 `isValidAmount(value, decimals)`：在授权、报价、兑换前统一校验
-- 作用：从源头避免用户输入超长小数导致 `parseUnits(...)` 异常或交易状态卡住
+复用项目里已有的 `PDFViewer` 组件（白皮书页面也是这么做的），新增一个 `/zh/audit` 和 `/en/audit` 路由，启航页底部那个按钮点开后进入这个站内页面。
 
-2. 把“展示金额”和“链上金额”彻底分开
-- 继续保留 `rawToAmountWei` 作为真实报价
-- `toAmount` 改为仅用于 UI 展示，限制显示精度（例如最多 6-8 位小数）
-- “最少获得”改为基于 `rawToAmountWei` 计算，不再依赖 `parseFloat(toAmount)`
-- 作用：避免显示字符串精度过长影响后续计算或让用户看到异常长小数
+## 改动清单
 
-3. 在报价/授权/兑换流程里补齐防卡住保护
-- `getQuote` 中如果输入非法或小数位超限，直接清空报价并重置 `rawToAmountWei`
-- `checkAllowance` 中如果金额非法，不进入错误授权状态循环
-- `handleSwap` 中在开始前先校验：
-  - 输入金额可解析
-  - `rawToAmountWei > 0`
-  - 当前报价与当前输入一致
-- 作用：防止旧报价、非法金额、超长小数触发按钮转圈但交易无法继续
+1. **新建页面 `src/pages/Audit.tsx`**
+   - 仿照 `src/pages/Whitepaper.tsx` 的结构
+   - 标题："审计报告 / Audit Report"
+   - 副标题简短说明（LockStaking V3 智能合约安全审计）
+   - 用 `<PDFViewer url="/LockStakingV3_Audit_Report.pdf" title="LockStaking V3 审计报告" />` 嵌入
+   - 包裹在 `PageWrapper` + `Navbar` 中，保持站内一致的玻璃拟态风格
 
-4. 优化按钮状态与提示文案
-- 增加 `canSwap` 计算条件，只有“输入合法 + 已拿到有效报价 + 非加载中”才允许点兑换
-- 小数位超限时给用户友好提示，例如：`该币种最多支持 X 位小数`
-- 按现有项目规则，技术错误静默处理，只展示用户可理解的提示
+2. **注册路由 `src/App.tsx`**
+   - 添加 `/zh/audit` 和 `/en/audit` 两条路由，指向新的 `Audit` 页面
+   - 添加 `/audit` → `/zh/audit` 的兜底重定向
 
-5. 顺手修正几个高风险边角
-- `handleFlip()` 翻转币种时同步清空旧的 `rawToAmountWei`
-- 切换币种时重新按新币种 decimals 规范输入值
-- 避免 `toAmount` 显示被 `formatBalance` 再次过度舍入，导致展示和实际报价不一致
+3. **更新启航页底部入口 `src/components/HeroSection.tsx`**
+   - 把"审计报告"那个图标的 `<a href="/LockStakingV3_Audit_Report.pdf" target="_blank">` 改成 React Router 的 `<Link to="/zh/audit">`（使用当前语言路径），不再新开窗口
+   - 保留同样的 FileText 图标和样式
 
-预期效果
+## 用户体验
 
-- 用户输入很多小数位时，不会再出现兑换按钮卡住
-- 非法精度会被自动截断或被友好拦截
-- 真实成交最小值仍基于链上原始 BigInt 报价计算，安全性不变
-- DEX 页面展示更稳定，长小数不会把 UI 和交互拖坏
-
-技术细节
-- 主要修改文件：`src/components/DexSwap.tsx`
-- 不涉及后端、数据库或合约改动
-- 核心改动点：
-  - 输入归一化
-  - 显示值/链上值分离
-  - 兑换前校验
-  - 清理 stale quote 状态
-
-验证范围
-- USDT -> BNB：输入很多小数位，确认不会卡住
-- BNB -> USDT：输入很多小数位，确认可正常报价/拦截
-- 切换币种、翻转方向后再次输入，确认不会沿用旧报价
-- 移动端 390px 宽度下检查输入框、报价区、按钮状态是否正常
+点击启航页底部的"审计报告"图标 → 跳转到 `/zh/audit` 站内页面 → 在站内查看 PDF（可翻页、缩放、旋转、下载、全屏），整体导航和品牌风格一致。
