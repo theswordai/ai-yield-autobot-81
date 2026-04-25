@@ -12,6 +12,7 @@ import Stake from "./pages/Stake";
 import StakeNew from "./pages/StakeNew";
 import Whitepaper from "./pages/Whitepaper";
 import Audit from "./pages/Audit";
+import AssetDashboard from "./pages/AssetDashboard";
 import NotFound from "./pages/NotFound";
 import Invest from "./pages/Invest";
 import UserCenter from "./pages/UserCenter";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/zh/i/:code" element={<Invite />} />
           <Route path="/zh/whitepaper" element={<Whitepaper />} />
           <Route path="/zh/audit" element={<Audit />} />
+          <Route path="/zh/asset-dashboard" element={<AssetDashboard />} />
           <Route path="/zh/predict" element={<Predict />} />
           <Route path="/zh/predict/:id" element={<PredictDetail />} />
           
@@ -62,6 +64,7 @@ const App = () => (
           <Route path="/en/i/:code" element={<Invite />} />
           <Route path="/en/whitepaper" element={<Whitepaper />} />
           <Route path="/en/audit" element={<Audit />} />
+          <Route path="/en/asset-dashboard" element={<AssetDashboard />} />
           <Route path="/en/predict" element={<Predict />} />
           <Route path="/en/predict/:id" element={<PredictDetail />} />
 
@@ -76,6 +79,7 @@ const App = () => (
           <Route path="/i/:code" element={<Navigate to="/zh/i/:code" replace />} />
           <Route path="/whitepaper" element={<Navigate to="/zh/whitepaper" replace />} />
           <Route path="/audit" element={<Navigate to="/zh/audit" replace />} />
+          <Route path="/asset-dashboard" element={<Navigate to="/zh/asset-dashboard" replace />} />
 
           {/* Legacy routes -> redirects */}
           <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />

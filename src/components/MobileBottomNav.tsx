@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Rocket, Heart, Coins, Crown, FileText, TrendingUp } from "lucide-react";
+import { Rocket, Heart, Coins, Crown, FileText, TrendingUp, BarChart3 } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
 
 const MobileBottomNav = () => {
@@ -21,6 +21,13 @@ const MobileBottomNav = () => {
       labelEn: "Charity",
       icon: Heart, 
       path: `/${language}/invest` 
+    },
+    { 
+      id: "asset", 
+      label: "资产看板", 
+      labelEn: "Assets",
+      icon: BarChart3, 
+      path: `/${language}/asset-dashboard` 
     },
     { 
       id: "swap", 
