@@ -75,6 +75,7 @@ const App = () => (
           <Route path="/invite/:inviter" element={<Navigate to="/zh/invite/:inviter" replace />} />
           <Route path="/i/:code" element={<Navigate to="/zh/i/:code" replace />} />
           <Route path="/whitepaper" element={<Navigate to="/zh/whitepaper" replace />} />
+          <Route path="/audit" element={<Navigate to="/zh/audit" replace />} />
 
           {/* Legacy routes -> redirects */}
           <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />
