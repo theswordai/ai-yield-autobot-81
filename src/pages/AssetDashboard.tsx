@@ -109,7 +109,7 @@ export default function AssetDashboard() {
               {zh ? "资产看板" : "Asset Dashboard"}
             </h1>
             <p className="text-xs text-muted-foreground mt-1 font-mono">
-              {zh ? "起始日" : "Inception"}: {inceptionDate} · {zh ? "快照频率" : "Snapshot interval"}: 1H · {snapshots.length} {zh ? "条记录" : "records"}
+              {zh ? "起始日" : "Inception"}: {inceptionDate} · {zh ? "快照频率" : "Snapshot interval"}: 1D · {snapshots.length} {zh ? "条记录" : "records"}
             </p>
           </div>
           <div className="flex items-center gap-2">
