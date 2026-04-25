@@ -853,15 +853,13 @@ export function HeroSection() {
               <div className="text-center">
                 <span className="text-sm text-muted-foreground mb-3 block">审计报告</span>
                 <div className="flex justify-center gap-4">
-                  <a 
-                    href="/LockStakingV3_Audit_Report.pdf" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <Link
+                    to={`/${language || 'zh'}/audit`}
                     className="w-12 h-12 rounded-lg border border-border/40 bg-card/50 flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group"
                     title="LockStaking V3 审计报告"
                   >
                     <FileText className="w-6 h-6 text-accent" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
