@@ -63,7 +63,7 @@ export default function AssetDashboard() {
   }, []);
 
   const snapshots = useMemo(
-    () => generateSnapshots({ rangeHours: RANGE_HOURS[range] }),
+    () => generateSnapshots({ rangeDays: RANGE_DAYS[range] }),
     [range, tick],
   );
   const metrics = useMemo(() => computeMetrics(snapshots), [snapshots]);
@@ -123,7 +123,7 @@ export default function AssetDashboard() {
               onValueChange={(v) => v && setRange(v as RangeKey)}
               className="bg-muted/30 rounded-md border border-border/40 p-0.5"
             >
-              {(["1D", "7D", "30D", "ALL"] as RangeKey[]).map((r) => (
+              {(["7D", "30D", "90D", "ALL"] as RangeKey[]).map((r) => (
                 <ToggleGroupItem
                   key={r}
                   value={r}
@@ -202,7 +202,6 @@ export default function AssetDashboard() {
                   tickLine={false}
                   tickFormatter={(v) => {
                     const d = new Date(v);
-                    if (range === "1D") return d.toISOString().slice(11, 16);
                     return `${d.getMonth() + 1}/${d.getDate()}`;
                   }}
                   minTickGap={40}
