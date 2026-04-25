@@ -363,14 +363,6 @@ export default function AssetDashboard() {
                     </tr>
                   );
                 })}
-                <tr className="border-t-2 border-border/60 bg-muted/10 font-semibold">
-                  <td className="px-3 sm:px-6 py-2.5 font-mono text-[10px] uppercase text-muted-foreground" colSpan={2}>
-                    {zh ? "合计 (= 总净资产)" : "Total (= Net AUM)"}
-                  </td>
-                  <td className="px-3 sm:px-6 py-2.5 text-right font-mono text-primary">{fmtUsd(metrics.totalValue)}</td>
-                  <td className="hidden sm:table-cell" />
-                  <td className="hidden sm:table-cell" />
-                </tr>
               </tbody>
             </table>
           </div>
