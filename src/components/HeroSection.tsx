@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle } from "lucide-react";
+import { Bot, TrendingUp, Zap, Shield, ChevronDown, ChevronUp, BarChart3, ArrowRight, Send, MessageCircle, FileText } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PriceTicker } from "@/components/PriceTicker";
 import { NewsAnnouncement } from "@/components/NewsAnnouncement";
@@ -846,6 +846,21 @@ export function HeroSection() {
                     title="X (Twitter)"
                   >
                     <img src="/lovable-uploads/x-logo.png" alt="X" className="w-6 h-6 rounded" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <span className="text-sm text-muted-foreground mb-3 block">审计报告</span>
+                <div className="flex justify-center gap-4">
+                  <a 
+                    href="/LockStakingV3_Audit_Report.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 rounded-lg border border-border/40 bg-card/50 flex items-center justify-center hover:border-accent/50 hover:bg-accent/10 transition-all duration-300 group"
+                    title="LockStaking V3 审计报告"
+                  >
+                    <FileText className="w-6 h-6 text-accent" />
                   </a>
                 </div>
               </div>
