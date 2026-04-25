@@ -338,11 +338,9 @@ export default function AssetDashboard() {
                 <tr className="text-left text-[10px] sm:text-xs uppercase font-mono text-muted-foreground bg-muted/20">
                   <th className="px-3 sm:px-6 py-2 sm:py-3">ID</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3">{zh ? "标的" : "Asset"}</th>
-                  <th className="px-3 sm:px-6 py-2 sm:py-3">{zh ? "方向" : "Side"}</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-right">{zh ? "规模" : "Size"}</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden sm:table-cell">Entry</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden sm:table-cell">Mark</th>
-                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-right">PnL</th>
                 </tr>
               </thead>
               <tbody>
@@ -350,28 +348,12 @@ export default function AssetDashboard() {
                   <tr key={p.id} className="border-t border-border/30 hover:bg-muted/10">
                     <td className="px-3 sm:px-6 py-2.5 font-mono text-muted-foreground">{p.id}</td>
                     <td className="px-3 sm:px-6 py-2.5 font-semibold">{p.asset}</td>
-                    <td className="px-3 sm:px-6 py-2.5">
-                      <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                        p.side === "Long"
-                          ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"
-                          : p.side === "Short"
-                          ? "bg-red-500/10 text-red-500 border border-red-500/20"
-                          : "bg-primary/10 text-primary border border-primary/20"
-                      }`}>
-                        {p.side.toUpperCase()}
-                      </span>
-                    </td>
                     <td className="px-3 sm:px-6 py-2.5 text-right font-mono">{fmtUsd(p.size)}</td>
                     <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
                       {p.entry < 10 ? p.entry.toFixed(4) : p.entry.toLocaleString()}
                     </td>
                     <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
                       {p.mark < 10 ? p.mark.toFixed(4) : p.mark.toLocaleString()}
-                    </td>
-                    <td className={`px-3 sm:px-6 py-2.5 text-right font-mono font-semibold ${
-                      p.pnl >= 0 ? "text-emerald-500" : "text-red-500"
-                    }`}>
-                      {p.pnl >= 0 ? "+" : ""}{fmtUsd(p.pnl)}
                     </td>
                   </tr>
                 ))}
