@@ -235,7 +235,7 @@ export function HeroSection() {
         </div>
 
         {/* ===== ABOUT US VIDEO ===== */}
-        <div className="max-w-3xl mx-auto mb-16">
+        <div className="max-w-3xl mx-auto mb-10">
           <div className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-5 shadow-card">
             <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase">About us</h2>
             <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
