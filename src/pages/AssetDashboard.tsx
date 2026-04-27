@@ -454,11 +454,14 @@ export default function AssetDashboard() {
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-right">{zh ? "规模" : "Size"}</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden sm:table-cell">Entry</th>
                   <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden sm:table-cell">Mark</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden md:table-cell">PnL %</th>
                 </tr>
               </thead>
               <tbody>
-                {POSITIONS.map((p) => {
+                {livePositions.map((p) => {
                   const size = (metrics.totalValue * p.weight) / 100;
+                  const pnlColor =
+                    p.pnlPct >= 0 ? "text-emerald-500" : "text-red-500";
                   return (
                     <tr key={p.id} className="border-t border-border/30 hover:bg-muted/10">
                       <td className="px-3 sm:px-6 py-2.5 font-mono text-muted-foreground">{p.id}</td>
@@ -468,10 +471,13 @@ export default function AssetDashboard() {
                       </td>
                       <td className="px-3 sm:px-6 py-2.5 text-right font-mono">{fmtUsd(size)}</td>
                       <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
-                        {p.entry < 10 ? p.entry.toFixed(4) : p.entry.toLocaleString()}
+                        {formatPrice(p.asset, p.entry)}
                       </td>
                       <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
-                        {p.mark < 10 ? p.mark.toFixed(4) : p.mark.toLocaleString()}
+                        {formatPrice(p.asset, p.mark)}
+                      </td>
+                      <td className={`px-3 sm:px-6 py-2.5 text-right font-mono hidden md:table-cell ${pnlColor}`}>
+                        {fmtPct(p.pnlPct)}
                       </td>
                     </tr>
                   );
