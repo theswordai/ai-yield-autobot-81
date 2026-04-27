@@ -210,7 +210,7 @@ export function HeroSection() {
         <FeaturedPrices />
         
         {/* ===== NEWS + FEATURE CARDS SIDE BY SIDE ===== */}
-        <div className="max-w-6xl mx-auto mb-16">
+        <div className="max-w-6xl mx-auto -mt-2 mb-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left: NEWS */}
             <div className="lg:col-span-1">
