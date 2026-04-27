@@ -69,11 +69,16 @@ export default function AssetDashboard() {
   const zh = language === "zh";
   const [range, setRange] = useState<RangeKey>("30D");
   const [tick, setTick] = useState(0);
+  const [now, setNow] = useState(() => new Date());
 
-  // Poll every 60s — appends at most one new snapshot per hour (deterministic).
+  // Slow tick (60s) drives snapshot regeneration; fast tick (1s) drives the clock.
   useEffect(() => {
-    const id = setInterval(() => setTick((t) => t + 1), 60_000);
-    return () => clearInterval(id);
+    const slow = setInterval(() => setTick((t) => t + 1), 60_000);
+    const fast = setInterval(() => setNow(new Date()), 1000);
+    return () => {
+      clearInterval(slow);
+      clearInterval(fast);
+    };
   }, []);
 
   const snapshots = useMemo(
@@ -81,6 +86,12 @@ export default function AssetDashboard() {
     [range, tick],
   );
   const metrics = useMemo(() => computeMetrics(snapshots), [snapshots]);
+  const strategies = useMemo(() => getStrategies(), [tick]);
+  const livePositions = useMemo(
+    () => getLivePositions(metrics.totalValue),
+    [metrics.totalValue, tick],
+  );
+  const trades = useMemo(() => generateRecentTrades(10), [tick]);
 
   const chartData = useMemo(
     () =>
