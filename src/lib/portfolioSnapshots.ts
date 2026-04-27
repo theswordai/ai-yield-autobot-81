@@ -397,6 +397,62 @@ const TRADE_ASSETS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "BNB/USDT", "ETH/BTC",
 const TRADE_STRATS = STRATEGY_DEFS.map((s) => s.name);
 const TRADE_ACTIONS: TradeEvent["action"][] = ["OPEN", "CLOSE", "REDUCE", "ADD", "REINVEST"];
 
+// ---------------------------------------------------------------------------
+// Range stats + sparkline helpers
+// ---------------------------------------------------------------------------
+export interface RangeStats {
+  rangeReturnPct: number;
+  high: number;
+  low: number;
+  highTs: number;
+  lowTs: number;
+  volPct: number;     // annualized vol %
+  sharpe: number;
+  maxDdPct: number;
+}
+
+export function computeRangeStats(snapshots: PortfolioSnapshot[]): RangeStats {
+  if (snapshots.length === 0) {
+    return { rangeReturnPct: 0, high: 0, low: 0, highTs: 0, lowTs: 0, volPct: 0, sharpe: 0, maxDdPct: 0 };
+  }
+  const first = snapshots[0];
+  const last = snapshots[snapshots.length - 1];
+  let high = first.total_value, low = first.total_value, highTs = first.timestamp, lowTs = first.timestamp;
+  let peak = first.total_value, maxDd = 0;
+  const rets: number[] = [];
+  for (let i = 0; i < snapshots.length; i++) {
+    const s = snapshots[i];
+    if (s.total_value > high) { high = s.total_value; highTs = s.timestamp; }
+    if (s.total_value < low)  { low  = s.total_value; lowTs  = s.timestamp; }
+    if (s.total_value > peak) peak = s.total_value;
+    const dd = (s.total_value - peak) / peak;
+    if (dd < maxDd) maxDd = dd;
+    if (i > 0) {
+      const prev = snapshots[i - 1].total_value;
+      rets.push((s.total_value - prev) / prev);
+    }
+  }
+  const mean = rets.reduce((a, b) => a + b, 0) / Math.max(1, rets.length);
+  const variance = rets.reduce((a, b) => a + (b - mean) ** 2, 0) / Math.max(1, rets.length);
+  const std = Math.sqrt(variance);
+  const sharpe = std > 0 ? (mean / std) * Math.sqrt(365) : 0;
+  return {
+    rangeReturnPct: ((last.total_value - first.total_value) / first.total_value) * 100,
+    high, low, highTs, lowTs,
+    volPct: std * Math.sqrt(365) * 100,
+    sharpe,
+    maxDdPct: maxDd * 100,
+  };
+}
+
+/** Tiny sparkline series for KPI cards — returns last N daily values. */
+export function getSparkline(days = 14): number[] {
+  const total = todayIndex();
+  const values = walkPath(total);
+  const start = Math.max(0, values.length - days);
+  return values.slice(start);
+}
+
 /**
  * Generate the most recent N trade events, ending at "now". The same wall-clock
  * day always produces the same tape (append-only).
