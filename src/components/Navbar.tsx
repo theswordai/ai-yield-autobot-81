@@ -65,16 +65,34 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Wallet Connector + X Link */}
+          {/* Wallet Connector + Theme Toggle + X Link */}
           <div className="hidden md:flex items-center space-x-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="text-muted-foreground hover:text-primary"
+            >
+              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </Button>
             <WalletConnector />
             <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
               <img src="/lovable-uploads/x-logo.png" alt="X" className="w-8 h-8 rounded" />
             </a>
           </div>
 
-          {/* Mobile: X logo + menu button */}
-          <div className="md:hidden flex items-center space-x-2">
+          {/* Mobile: theme toggle + X logo + menu button */}
+          <div className="md:hidden flex items-center space-x-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="text-muted-foreground hover:text-primary h-9 w-9"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
             <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
               <img src="/lovable-uploads/x-logo.png" alt="X" className="w-7 h-7 rounded" />
             </a>
