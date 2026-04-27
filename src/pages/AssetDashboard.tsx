@@ -502,9 +502,6 @@ export default function AssetDashboard() {
                 <Activity className="w-4 h-4 text-accent" />
                 {zh ? "最近成交记录" : "Recent Fills"}
               </h2>
-              <p className="text-[10px] sm:text-[11px] text-muted-foreground font-mono mt-0.5">
-                {zh ? "执行引擎实时回报 · 仅追加" : "Execution feed · append-only"}
-              </p>
             </div>
             <Badge variant="outline" className="text-[10px] font-mono">
               {trades.length} {zh ? "条" : "events"}
@@ -620,11 +617,6 @@ export default function AssetDashboard() {
           </div>
         </Card>
 
-        <p className="text-[10px] text-muted-foreground font-mono text-center pb-4 tracking-wider">
-          {zh
-            ? "所有快照采用确定性追加结构 · 历史数据不可修改 · 同样的输入永远生成同样的曲线"
-            : "Append-only deterministic snapshots · historical data is immutable · same input always produces the same curve"}
-        </p>
       </div>
     </>
   );
