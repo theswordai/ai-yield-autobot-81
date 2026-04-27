@@ -227,7 +227,7 @@ export function HeroSection() {
                   <div className="w-6 h-6 md:w-12 md:h-12 mb-1.5 md:mb-5 text-primary">
                     {card.icon}
                   </div>
-                  <h3 className="text-[10px] leading-tight md:text-lg font-bold text-foreground">{card.title}</h3>
+                  <h3 className="text-[10px] leading-tight md:text-lg text-foreground font-thin">{card.title}</h3>
                 </div>
               ))}
             </div>
