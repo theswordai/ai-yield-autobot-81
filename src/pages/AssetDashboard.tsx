@@ -32,8 +32,10 @@ import {
   generateSnapshots,
   computeMetrics,
   ASSET_ALLOCATION,
-  STRATEGIES,
-  POSITIONS,
+  getStrategies,
+  getLivePositions,
+  generateRecentTrades,
+  formatPrice,
   INCEPTION_TS,
 } from "@/lib/portfolioSnapshots";
 
