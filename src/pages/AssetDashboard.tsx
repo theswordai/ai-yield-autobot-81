@@ -185,7 +185,7 @@ export default function AssetDashboard() {
           <MetricCard
             label={zh ? "总净资产 (AUM)" : "Net AUM"}
             value={fmtUsdCents(metrics.totalValue)}
-            sub={`${zh ? "初始" : "Initial"} ${fmtUsd(metrics.initialValue)}`}
+            sub=""
             icon={Wallet}
             accent="primary"
             spark={spark}
@@ -226,11 +226,6 @@ export default function AssetDashboard() {
                 {zh ? "净值曲线" : "Equity Curve"}
                 <span className="text-[10px] font-mono text-muted-foreground font-normal">/ AUM · USD</span>
               </h2>
-              <p className="text-[10px] sm:text-[11px] text-muted-foreground font-mono mt-0.5">
-                {zh
-                  ? "不可篡改时间序列 · 仅追加 · 同输入恒等输出"
-                  : "Append-only · immutable time-series · deterministic output"}
-              </p>
             </div>
             <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-border/40 text-muted-foreground">SEED v1.0</span>
@@ -419,7 +414,7 @@ export default function AssetDashboard() {
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">AUM</p>
                 <p className="text-base font-bold font-mono tabular-nums">{fmtUsdAbbr(metrics.totalValue)}</p>
-                <p className="text-[9px] font-mono text-muted-foreground mt-0.5">{ASSET_ALLOCATION.length} {zh ? "种资产" : "assets"}</p>
+                
               </div>
             </div>
             <ul className="mt-3 space-y-1.5">
