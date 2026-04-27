@@ -314,37 +314,122 @@ export default function AssetDashboard() {
               {zh ? "策略表现" : "Strategy Performance"}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {STRATEGIES.map((s) => (
-                <div
-                  key={s.name}
-                  className="rounded-lg border border-border/40 bg-background/40 p-3"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-sm font-semibold">{s.name}</p>
-                      <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
-                        weight {s.weight}%
-                      </p>
+              {strategies.map((s) => {
+                const live = s.status === "live";
+                return (
+                  <div
+                    key={s.name}
+                    className="rounded-lg border border-border/40 bg-background/40 p-3"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <p className="text-sm font-semibold">{s.name}</p>
+                        <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">
+                          weight {s.weight}%
+                        </p>
+                      </div>
+                      <span
+                        className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
+                          live
+                            ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                            : "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                        }`}
+                      >
+                        ● {live ? "LIVE" : "PAUSED"}
+                      </span>
                     </div>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                      ● LIVE
-                    </span>
+                    <div className="grid grid-cols-2 gap-2 mt-3">
+                      <div>
+                        <p className="text-[10px] text-muted-foreground uppercase font-mono">APR</p>
+                        <p className="text-base font-bold text-emerald-500 font-mono">+{s.apr}%</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-muted-foreground uppercase font-mono">Sharpe</p>
+                        <p className="text-base font-bold font-mono">{s.sharpe}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 mt-3">
-                    <div>
-                      <p className="text-[10px] text-muted-foreground uppercase font-mono">APR</p>
-                      <p className="text-base font-bold text-emerald-500 font-mono">+{s.apr}%</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-muted-foreground uppercase font-mono">Sharpe</p>
-                      <p className="text-base font-bold font-mono">{s.sharpe}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
         </section>
+
+        {/* Recent trade tape */}
+        <Card className="bg-card/60 backdrop-blur border-border/50 overflow-hidden">
+          <div className="p-4 sm:p-6 border-b border-border/40 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm sm:text-base font-semibold flex items-center gap-2">
+                <Activity className="w-4 h-4 text-accent" />
+                {zh ? "最近成交记录" : "Recent Fills"}
+              </h2>
+              <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mt-0.5">
+                {zh ? "执行引擎实时回报 · 仅追加" : "Execution feed · append-only"}
+              </p>
+            </div>
+            <Badge variant="outline" className="text-[10px] font-mono hidden sm:inline-flex">
+              {trades.length} {zh ? "条" : "events"}
+            </Badge>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs sm:text-sm">
+              <thead>
+                <tr className="text-left text-[10px] sm:text-xs uppercase font-mono text-muted-foreground bg-muted/20">
+                  <th className="px-3 sm:px-6 py-2 sm:py-3">{zh ? "时间" : "Time"}</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 hidden md:table-cell">{zh ? "策略" : "Strategy"}</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3">{zh ? "动作" : "Action"}</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3">{zh ? "标的" : "Asset"}</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden sm:table-cell">{zh ? "数量" : "Qty"}</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-right hidden sm:table-cell">{zh ? "价格" : "Price"}</th>
+                  <th className="px-3 sm:px-6 py-2 sm:py-3 text-right">{zh ? "盈亏" : "PnL"}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {trades.map((t, i) => {
+                  const actionColor =
+                    t.action === "OPEN" || t.action === "ADD"
+                      ? "text-primary border-primary/30 bg-primary/10"
+                      : t.action === "REINVEST"
+                      ? "text-accent border-accent/30 bg-accent/10"
+                      : "text-amber-500 border-amber-500/30 bg-amber-500/10";
+                  const pnlColor =
+                    t.pnl == null
+                      ? "text-muted-foreground"
+                      : t.pnl >= 0
+                      ? "text-emerald-500"
+                      : "text-red-500";
+                  return (
+                    <tr key={`${t.ts}-${i}`} className="border-t border-border/30 hover:bg-muted/10">
+                      <td className="px-3 sm:px-6 py-2.5 font-mono text-muted-foreground whitespace-nowrap">
+                        {fmtTradeTs(t.ts)}
+                      </td>
+                      <td className="px-3 sm:px-6 py-2.5 hidden md:table-cell">{t.strategy}</td>
+                      <td className="px-3 sm:px-6 py-2.5">
+                        <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${actionColor}`}>
+                          {t.action}
+                        </span>
+                      </td>
+                      <td className="px-3 sm:px-6 py-2.5 font-semibold">{t.asset}</td>
+                      <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
+                        {t.qty < 1
+                          ? t.qty.toFixed(4)
+                          : t.qty.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                      </td>
+                      <td className="px-3 sm:px-6 py-2.5 text-right font-mono hidden sm:table-cell">
+                        {formatPrice(t.asset, t.price)}
+                      </td>
+                      <td className={`px-3 sm:px-6 py-2.5 text-right font-mono ${pnlColor}`}>
+                        {t.pnl == null
+                          ? "—"
+                          : `${t.pnl >= 0 ? "+" : ""}${fmtUsd(t.pnl)}`}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Card>
 
         {/* Positions count + risk stats */}
         <section className="grid grid-cols-3 gap-3">
