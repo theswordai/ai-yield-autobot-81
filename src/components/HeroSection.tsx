@@ -218,16 +218,16 @@ export function HeroSection() {
             </div>
 
             {/* Right: Feature Cards 2x2 */}
-            <div className="lg:col-span-2 grid grid-cols-4 md:grid-cols-2 gap-2 md:gap-4">
+            <div className="lg:col-span-2 grid grid-cols-2 gap-4">
               {featureCards.map((card, index) => (
                 <div
                   key={index}
-                  className="group relative rounded-lg md:rounded-xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm p-2 md:p-8 hover:border-primary/40 hover:bg-card/50 transition-all duration-300 flex flex-col items-center md:items-start text-center md:text-left"
+                  className="group relative rounded-xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm p-6 md:p-8 hover:border-primary/40 hover:bg-card/50 transition-all duration-300"
                 >
-                  <div className="w-6 h-6 md:w-12 md:h-12 mb-1.5 md:mb-5 text-primary">
+                  <div className="w-10 h-10 md:w-12 md:h-12 mb-4 md:mb-5 text-primary">
                     {card.icon}
                   </div>
-                  <h3 className="text-[10px] leading-tight md:text-lg text-foreground font-thin">{card.title}</h3>
+                  <h3 className="text-base md:text-lg font-bold text-foreground">{card.title}</h3>
                 </div>
               ))}
             </div>
