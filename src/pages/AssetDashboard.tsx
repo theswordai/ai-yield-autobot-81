@@ -168,15 +168,15 @@ export default function AssetDashboard() {
         <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <MetricCard
             label={zh ? "总净资产 (AUM)" : "Net AUM"}
-            value={fmtUsd(metrics.totalValue)}
+            value={fmtUsdCents(metrics.totalValue)}
             sub={`${zh ? "初始" : "Initial"} ${fmtUsd(metrics.initialValue)}`}
             icon={Wallet}
             accent="primary"
           />
           <MetricCard
             label={zh ? "累计收益 PnL" : "Cumulative PnL"}
-            value={fmtUsd(metrics.pnl)}
-            sub={`${zh ? "已实现" : "Realized"} ${fmtUsd(metrics.pnlRealized)} · ${zh ? "未实现" : "Unrealized"} ${fmtUsd(metrics.pnlUnrealized)}`}
+            value={fmtUsdCents(metrics.pnl)}
+            sub={`24h ${metrics.change24hAbs >= 0 ? "+" : ""}${fmtUsd(metrics.change24hAbs)} (${fmtPct(metrics.change24hPct)}) · ${zh ? "已实现" : "Real."} ${fmtUsd(metrics.pnlRealized)}`}
             icon={metrics.pnl >= 0 ? ArrowUpRight : ArrowDownRight}
             accent={metrics.pnl >= 0 ? "up" : "down"}
           />
