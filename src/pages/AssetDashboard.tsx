@@ -142,6 +142,9 @@ export default function AssetDashboard() {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               LIVE
             </span>
+            <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
+              {zh ? "最后同步" : "Last sync"} {fmtClock(now)}
+            </span>
             <ToggleGroup
               type="single"
               value={range}
