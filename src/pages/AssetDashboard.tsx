@@ -49,8 +49,20 @@ const RANGE_DAYS: Record<RangeKey, number> = {
 
 const fmtUsd = (n: number, digits = 0) =>
   `$${n.toLocaleString(undefined, { maximumFractionDigits: digits, minimumFractionDigits: digits })}`;
+const fmtUsdCents = (n: number) =>
+  `$${n.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 })}`;
 const fmtPct = (n: number, digits = 2) =>
   `${n >= 0 ? "+" : ""}${n.toFixed(digits)}%`;
+const fmtClock = (d: Date) =>
+  `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}:${String(d.getUTCSeconds()).padStart(2, "0")} UTC`;
+const fmtTradeTs = (sec: number) => {
+  const d = new Date(sec * 1000);
+  const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(d.getUTCDate()).padStart(2, "0");
+  const hh = String(d.getUTCHours()).padStart(2, "0");
+  const mi = String(d.getUTCMinutes()).padStart(2, "0");
+  return `${mm}-${dd} ${hh}:${mi} UTC`;
+};
 
 export default function AssetDashboard() {
   const { language } = useI18n();
