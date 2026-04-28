@@ -585,16 +585,16 @@ export default function Stake({
           {/* 投资设置 */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-primary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-primary" />
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Lock className="w-4 h-4 text-primary" />
                   {t("staking.charityInvestmentConfig")}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-3">
-                  <Label htmlFor="amount" className="text-base font-medium">{t("staking.investAmountLabel")}</Label>
-                  <div className="relative flex items-center bg-muted/40 rounded-xl border border-border/50 p-1">
+              <CardContent className="space-y-4 p-4 pt-2">
+                <div className="space-y-2">
+                  <Label htmlFor="amount" className="text-sm font-medium">{t("staking.investAmountLabel")}</Label>
+                  <div className="relative flex items-center bg-muted/40 rounded-lg border border-border/50 p-1">
                     <Input 
                       id="amount" 
                       type="number" 
@@ -602,65 +602,65 @@ export default function Stake({
                       value={amount} 
                       onChange={e => setAmount(e.target.value)} 
                       placeholder="0.00" 
-                      className="text-2xl font-mono font-bold h-14 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40" 
+                      className="text-lg font-mono font-bold h-11 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40" 
                     />
-                    <div className="flex items-center gap-2 pr-3 shrink-0">
-                      <span className="text-primary font-bold text-base">USDT</span>
+                    <div className="flex items-center gap-2 pr-2 shrink-0">
+                      <span className="text-primary font-bold text-sm">USDT</span>
                       <Button 
                         type="button" 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs font-bold bg-muted/60 border-border/60 hover:bg-muted"
+                        className="h-7 px-2 text-[11px] font-bold bg-muted/60 border-border/60 hover:bg-muted"
                         onClick={() => setAmount(formatUnits(balance, USDT_DECIMALS))}
                       >
                         MAX
                       </Button>
                     </div>
                   </div>
-                  <div className="flex items-center gap-6 text-sm font-mono text-muted-foreground px-1">
+                  <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground px-1">
                     <span>Balance: {Number(formatUnits(balance, USDT_DECIMALS)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT</span>
                     <span>Min: 200 USDT</span>
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <Label className="text-base font-medium">{t("staking.lockPeriodLabel")}</Label>
-                  <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-3">
-                    <label htmlFor="l0" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                      <div className="flex items-center gap-3">
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">{t("staking.lockPeriodLabel")}</Label>
+                  <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-2">
+                    <label htmlFor="l0" className="flex items-center justify-between p-3 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                      <div className="flex items-center gap-2.5">
                         <RadioGroupItem id="l0" value="0" />
                         <div>
-                          <div className="font-semibold">{t("staking.ninetyDaysLock")}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="font-semibold text-sm">{t("staking.ninetyDaysLock")}</div>
+                          <div className="text-xs text-muted-foreground">
                             APR: 50% | APY: 64.82% <span className="text-accent">({t("staking.compound")})</span>
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline">{t("staking.shortTerm")}</Badge>
+                      <Badge variant="outline" className="text-[10px]">{t("staking.shortTerm")}</Badge>
                     </label>
-                    <label htmlFor="l1" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                      <div className="flex items-center gap-3">
+                    <label htmlFor="l1" className="flex items-center justify-between p-3 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                      <div className="flex items-center gap-2.5">
                         <RadioGroupItem id="l1" value="1" />
                         <div>
-                          <div className="font-semibold">{t("staking.oneEightyDaysLock")}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="font-semibold text-sm">{t("staking.oneEightyDaysLock")}</div>
+                          <div className="text-xs text-muted-foreground">
                             APR: 120% | APY: 231.36% <span className="text-accent">({t("staking.compound")})</span>
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline">{t("staking.mediumTerm")}</Badge>
+                      <Badge variant="outline" className="text-[10px]">{t("staking.mediumTerm")}</Badge>
                     </label>
-                    <label htmlFor="l2" className="flex items-center justify-between p-4 border-2 border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                      <div className="flex items-center gap-3">
+                    <label htmlFor="l2" className="flex items-center justify-between p-3 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
+                      <div className="flex items-center gap-2.5">
                         <RadioGroupItem id="l2" value="2" />
                         <div>
-                          <div className="font-semibold">{t("staking.threeSixtyFiveDaysLock")}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="font-semibold text-sm">{t("staking.threeSixtyFiveDaysLock")}</div>
+                          <div className="text-xs text-muted-foreground">
                             APR: 280% | APY: 1526.99% <span className="text-accent font-semibold">({t("staking.compound")} 🚀)</span>
                           </div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-primary/10 text-primary">{t("staking.longTerm")}</Badge>
+                      <Badge variant="outline" className="bg-primary/10 text-primary text-[10px]">{t("staking.longTerm")}</Badge>
                     </label>
                   </RadioGroup>
                 </div>
