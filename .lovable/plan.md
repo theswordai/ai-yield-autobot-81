@@ -1,95 +1,60 @@
-# 资产看板 · 精细化升级方案
+## 目标
 
-目标：把当前看板从「展示型图表」升级为「机构级资金管理终端」的观感。重点打磨净值曲线，其余模块统一一套更严谨的视觉语言。整体 UI 框架（导航、主题、玻璃拟态）保持不变。
+启航页（`HeroSection`）在手机端（≤640px）显得松散、字号过大、留白过多。本次只调整移动端密度，桌面端保持不变（用 Tailwind `sm:` / `md:` 断点保护）。
 
----
+## 调整清单（仅 `src/components/HeroSection.tsx`）
 
-## 1. 净值曲线（重点）
+### 1. 容器内边距
+- `pt-24 pb-16` → `pt-16 pb-8 sm:pt-24 sm:pb-16`
+- `px-4` → `px-3 sm:px-4`
 
-当前问题：单一面积图 + 稀疏网格 + 默认 Tooltip，信息密度低、专业感弱。
+### 2. Hero 头部（标题区）
+- 顶部标签 chip：`px-4 py-1.5 mb-6` → `px-3 py-1 mb-4 sm:mb-6`
+- 主标题 H1：`text-5xl md:text-7xl mb-6` → `text-3xl sm:text-5xl md:text-7xl mb-3 sm:mb-6`，`leading-tight`
+- 副标题 p：`text-lg md:text-xl mb-3` → `text-sm sm:text-lg md:text-xl mb-2 sm:mb-3`
+- 描述 p：`text-base mb-8` → `text-xs sm:text-base mb-5 sm:mb-8`
+- 整块外边距：`mb-12` → `mb-6 sm:mb-12`
 
-升级要点：
+### 3. CTA 按钮
+- 容器：`gap-3 mb-10` → `gap-2 mb-6 sm:gap-3 sm:mb-10`
+- 按钮：`px-8 py-3 text-base` → `px-5 py-2.5 text-sm sm:px-8 sm:py-3 sm:text-base`
+- 移动端 `size="lg"` 视觉过大：改成移动用 `size="default"`，通过 className 控制
 
-- **复合图层**：主图改为 `ComposedChart`，叠加：
-  - 主曲线：净值 Area（更细腻的双段渐变 0.35→0.05），`stroke-width: 1.75`，`type="monotone"`。
-  - 基准虚线：初始 AUM 水平参考线（`ReferenceLine`，dashed，标注 "Inception"）。
-  - 高/低水位：周期内最高净值、最低净值各打一个 `ReferenceDot` + 角标（HWM / LWM），数值带 $ 标。
-  - 回撤底色：在曲线下方叠一条很淡的 drawdown 区域（红色 0.06 透明度），可视化压力区。
-- **坐标轴**：
-  - X 轴：根据区间动态切换 tick 格式（7D=日+时、30D/90D=月/日、ALL=年/月），`minTickGap` 自适应。
-  - Y 轴：智能单位（K / M），右侧再加一条隐形 Y 轴显示「ROI %」（双轴），让收益百分比与美元金额并列。
-  - 网格：极淡的水平 dashed 线（`strokeDasharray="2 4"`，opacity 0.08），不画竖线，符合彭博/TradingView 风格。
-- **Tooltip**：自定义组件，内容包括：
-  - 时间（精确到分钟，UTC 标识）
-  - AUM 美金 + 当日 Δ（金额 + %）
-  - 累计 ROI %
-  - 当前回撤 %
-  - 顶部一条颜色细条指示当日方向（绿/红）
-- **十字光标**：`Tooltip cursor` 用 dashed 竖线 + 顶部小圆点，悬停时顶部固定显示当前时间。
-- **图表头部信息条**：曲线上方加一行 KPI 微指标 chip：
-  `区间收益 +X.XX%` · `区间高 $X.XXM` · `区间低 $X.XXM` · `波动率 σ X.XX%` · `Sharpe X.XX`
-  （随 7D/30D/90D/ALL 切换实时计算）
-- **右上角标识**：把 `SEED v1.0 · AUDITABLE` 拆为两个细 chip：`SEED v1.0` + `AUDITABLE` + 一个 `SHA256: ab12…ef` 的伪哈希，强化「不可篡改」感。
-- **加载/空状态**：保留骨架占位，避免空白闪烁。
+### 4. Price Ticker / Featured Prices 间距
+- `mb-10` → `mb-5 sm:mb-10`
+- 与下一块的负边距 `-mt-2` 在移动端调整为 `-mt-1`
 
----
+### 5. News + Feature Cards 区
+- 外层 `mb-6` → `mb-4 sm:mb-6`
+- 网格 `gap-6` → `gap-3 sm:gap-6`
+- Feature Card 2x2 `gap-4` → `gap-2 sm:gap-4`
+- 卡片内边距 `p-6 md:p-8` → `p-3 sm:p-6 md:p-8`
+- 卡片图标容器 `w-10 h-10 mb-4` → `w-7 h-7 mb-2 sm:w-10 sm:h-10 sm:mb-4`
+- 图标本身（在 `featureCards` 数组里）：`w-8 h-8 md:w-10 md:h-10` → `w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10`
+- 卡片标题 `text-base md:text-lg` → `text-xs sm:text-base md:text-lg`
 
-## 2. 顶部 KPI 卡片
+### 6. About us 视频块
+- 外层 `mb-10` → `mb-5 sm:mb-10`
+- 卡片 `p-5` → `p-3 sm:p-5`
+- 标题 `text-xl mb-4` → `text-sm sm:text-xl mb-2 sm:mb-4`
 
-- 数值用 `tabular-nums` + `font-mono`，统一字宽，避免跳动。
-- 每张卡片右下角加一条 14 天迷你 sparkline（`AreaChart` 30px 高），与主指标同色，瞬间提升专业度。
-- 涨跌方向用细箭头 + 颜色，金额前缀 `+ / −`，括号里的百分比单独一行，不再挤在一起。
-- 卡片左侧加一条 2px 强调色竖条（按 accent: primary / up / down 配色）。
+### 7. Strategy Details Toggle 按钮
+- 外层 `mb-8` → `mb-5 sm:mb-8`
+- 按钮添加 `text-sm sm:text-base` 并缩小图标 margin
 
----
+### 8. Strategy Details 展开区（`#strategy-details`）
+- 外层 `mb-16` → `mb-8 sm:mb-16`
+- 标题 `text-3xl mb-8` → `text-xl sm:text-3xl mb-4 sm:mb-8`
+- Card `p-6` → `p-3 sm:p-6`
+- 内部 `gap-8` → `gap-4 sm:gap-8`，`gap-6` → `gap-3 sm:gap-6`
+- `mb-6` → `mb-3 sm:mb-6`，`space-y-3` → `space-y-2 sm:space-y-3`
 
-## 3. 资产配置 + 策略表现
+## 不改动
 
-- 饼图改为**圆环 + 中心大字**（中心显示 AUM 总额 + 资产数量），更像基金披露文档。
-- 图例改为右侧列表式，每行：`色块 · 资产名 · 权重% · $ 估值`，对齐右侧。
-- 策略卡片：
-  - 顶部加一条彩色权重进度条（按 weight 填充）。
-  - 增加 `MAX DD`、`30D PnL` 两个次级指标。
-  - LIVE / PAUSED 状态点用呼吸动画。
+- 桌面端样式（所有 `sm:`/`md:`/`lg:` 之上的尺寸保留原值）
+- 文案、配色、玻璃拟态、网格背景
+- HeroSection 之外的组件（`PriceTicker`、`FeaturedPrices`、`NewsAnnouncement` 内部）—— 如后续仍觉松散，再单独处理
 
----
+## 验收
 
-## 4. 成交记录表
-
-- 表头加 sticky + 半透明背景。
-- 行高加大到 36px，hover 时左侧出现 2px accent 竖条。
-- Action 标签统一胶囊样式（OPEN/ADD/REINVEST/CLOSE 四色规范）。
-- 价格、数量、PnL 全部 `tabular-nums font-mono` 右对齐。
-- 末尾追加 `TX` 列：伪哈希 `0xab12…ef34`（不可点击，纯展示），强化链上感。
-
----
-
-## 5. 全局微调
-
-- Header：右上角 LIVE 指示加一个 `BLOCK #xxxxxxx` 当前块号（伪造递增）+ `LATENCY 42ms` chip。
-- 全页统一一种等宽字（保留现有 `font-mono`），数字一律 tabular。
-- Section 之间加一条极淡的分隔线 + 区段编号（01 / 02 / 03 / 04），像研报目录。
-- 颜色规范：上涨 `emerald-400`，下跌 `rose-400`，中性 `slate-400`，主色保持当前 primary，避免再引入新色。
-
----
-
-## 技术实现
-
-- 文件：仅修改 `src/pages/AssetDashboard.tsx`；如曲线区独立可拆出 `EquityCurve.tsx` 子组件，便于维护。
-- `src/lib/portfolioSnapshots.ts` 增加两个纯函数：
-  - `computeRangeStats(snapshots)` → `{ rangeReturnPct, high, low, vol, sharpe }`，供曲线头部 KPI 条使用。
-  - `computeRollingDrawdown(snapshots)` → 给图层叠加用。
-- 使用现有 `recharts` 的 `ComposedChart`、`ReferenceLine`、`ReferenceDot`，无需新依赖。
-- 自定义 Tooltip 组件内联在文件内，使用 Tailwind + `font-mono` + tabular-nums。
-- 颜色全部走 CSS 变量（`hsl(var(--primary))` 等），保证亮/暗主题一致。
-- 不修改全局 token，不动导航与其他页面。
-
----
-
-## 范围与不动项
-
-- ✅ 改：`src/pages/AssetDashboard.tsx`、`src/lib/portfolioSnapshots.ts`（仅追加导出函数）。
-- ❌ 不改：导航栏、主题切换、其他页面、全局样式 token、底部导航。
-- ❌ 不引入新 npm 依赖。
-
-实施后会保留所有现有数据源与历史值（历史曲线不可篡改的约束依旧成立）。
+手机端（390px）从首屏到策略详情：标题不再占大半屏，按钮更细，卡片之间间距明显收紧，整体一屏可看到更多内容，视觉密度接近专业金融 App。
