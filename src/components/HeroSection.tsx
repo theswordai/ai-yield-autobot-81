@@ -176,7 +176,7 @@ export function HeroSection() {
           </p>
 
           {/* CTA Buttons - Hero position */}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mb-6 sm:mb-10">
+          <div className="flex flex-row gap-2 sm:gap-3 justify-center mb-6 sm:mb-10">
             <Button 
               className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-5 py-2.5 text-sm sm:px-8 sm:py-3 sm:text-base font-semibold sm:h-11"
               onClick={() => navigate(`/${currentLang}/invest`)}
