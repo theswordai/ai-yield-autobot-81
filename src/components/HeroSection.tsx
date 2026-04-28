@@ -153,42 +153,40 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      <div className="relative z-10 container mx-auto px-4 pt-24 pb-16">
+      <div className="relative z-10 container mx-auto px-3 sm:px-4 pt-16 pb-8 sm:pt-24 sm:pb-16">
         
         {/* ===== HERO HEADER ===== */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-6">
+        <div className="text-center mb-6 sm:mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-primary/30 bg-primary/5 mb-4 sm:mb-6">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-medium text-primary tracking-widest uppercase">USD.ONLINE</span>
+            <span className="text-[10px] sm:text-xs font-medium text-primary tracking-widest uppercase">USD.ONLINE</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-3 sm:mb-6 leading-tight">
             <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
               {t("hero.title")}
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-muted-foreground mb-3 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-2 sm:mb-3 max-w-3xl mx-auto leading-relaxed">
             {t("hero.subtitle")}
           </p>
-          <p className="text-base text-muted-foreground/80 mb-8 max-w-3xl mx-auto">
+          <p className="text-xs sm:text-base text-muted-foreground/80 mb-5 sm:mb-8 max-w-3xl mx-auto">
             {t("hero.description")}
           </p>
 
           {/* CTA Buttons - Hero position */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mb-6 sm:mb-10">
             <Button 
-              size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-8 py-3 text-base font-semibold"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-5 py-2.5 text-sm sm:px-8 sm:py-3 sm:text-base font-semibold sm:h-11"
               onClick={() => navigate(`/${currentLang}/invest`)}
             >
               {t("invest.charityButtonName")}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button 
-              size="lg" 
               variant="outline" 
-              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-8 py-3 text-base"
+              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-5 py-2.5 text-sm sm:px-8 sm:py-3 sm:text-base sm:h-11"
               onClick={() => {
                 if (!showDetails) setShowDetails(true);
                 setTimeout(() => {
@@ -202,7 +200,7 @@ export function HeroSection() {
         </div>
 
         {/* ===== PRICE TICKER ===== */}
-        <div className="max-w-5xl mx-auto mb-10">
+        <div className="max-w-5xl mx-auto mb-5 sm:mb-10">
           <PriceTicker />
         </div>
         
@@ -210,24 +208,24 @@ export function HeroSection() {
         <FeaturedPrices />
         
         {/* ===== NEWS + FEATURE CARDS SIDE BY SIDE ===== */}
-        <div className="max-w-6xl mx-auto -mt-2 mb-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="max-w-6xl mx-auto -mt-1 sm:-mt-2 mb-4 sm:mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
             {/* Left: NEWS */}
             <div className="lg:col-span-1">
               <NewsAnnouncement />
             </div>
 
             {/* Right: Feature Cards 2x2 */}
-            <div className="lg:col-span-2 grid grid-cols-2 gap-4">
+            <div className="lg:col-span-2 grid grid-cols-2 gap-2 sm:gap-4">
               {featureCards.map((card, index) => (
                 <div
                   key={index}
-                  className="group relative rounded-xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm p-6 md:p-8 hover:border-primary/40 hover:bg-card/50 transition-all duration-300"
+                  className="group relative rounded-xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm p-3 sm:p-6 md:p-8 hover:border-primary/40 hover:bg-card/50 transition-all duration-300"
                 >
-                  <div className="w-10 h-10 md:w-12 md:h-12 mb-4 md:mb-5 text-primary">
+                  <div className="w-7 h-7 mb-2 sm:w-10 sm:h-10 md:w-12 md:h-12 sm:mb-4 md:mb-5 text-primary">
                     {card.icon}
                   </div>
-                  <h3 className="text-base md:text-lg font-bold text-foreground">{card.title}</h3>
+                  <h3 className="text-xs sm:text-base md:text-lg font-bold text-foreground">{card.title}</h3>
                 </div>
               ))}
             </div>
@@ -235,9 +233,9 @@ export function HeroSection() {
         </div>
 
         {/* ===== ABOUT US VIDEO ===== */}
-        <div className="max-w-3xl mx-auto mb-10">
-          <div className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-5 shadow-card">
-            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase">About us</h2>
+        <div className="max-w-3xl mx-auto mb-5 sm:mb-10">
+          <div className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-3 sm:p-5 shadow-card">
+            <h2 className="text-sm sm:text-xl font-bold tracking-wide text-primary mb-2 sm:mb-4 text-left uppercase">About us</h2>
             <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
               <iframe
                 className="absolute inset-0 w-full h-full"
@@ -251,27 +249,28 @@ export function HeroSection() {
         </div>
 
         {/* ===== STRATEGY DETAILS TOGGLE ===== */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-5 sm:mb-8">
           <Button
             variant="outline"
-            className="border-border/60 hover:border-primary/40 hover:bg-primary/5"
+            size="sm"
+            className="border-border/60 hover:border-primary/40 hover:bg-primary/5 text-sm sm:text-base sm:h-10 sm:px-4"
             onClick={() => setShowDetails(!showDetails)}
           >
-            <Shield className="w-5 h-5 mr-2" />
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
             {t("invest.strategyButtonName")}
-            {showDetails ? <ChevronUp className="w-4 h-4 ml-2" /> : <ChevronDown className="w-4 h-4 ml-2" />}
+            {showDetails ? <ChevronUp className="w-4 h-4 ml-1.5 sm:ml-2" /> : <ChevronDown className="w-4 h-4 ml-1.5 sm:ml-2" />}
           </Button>
         </div>
 
         {/* Strategy Details Section */}
         {showDetails && (
-          <div id="strategy-details" className="mb-16 animate-fade-in">
+          <div id="strategy-details" className="mb-8 sm:mb-16 animate-fade-in">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8">{t("hero.strategyDetails")}</h2>
+              <h2 className="text-xl sm:text-3xl font-bold text-center mb-4 sm:mb-8">{t("hero.strategyDetails")}</h2>
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
                 {/* 跨链阿尔法引擎策略 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-6 lg:col-span-3">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-3 sm:p-6 lg:col-span-3">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                       <Zap className="w-6 h-6 text-primary" />
@@ -380,7 +379,7 @@ export function HeroSection() {
                 </Card>
 
                 {/* AI轮动策略 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-6 lg:col-span-3">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-3 sm:p-6 lg:col-span-3">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
                       <Bot className="w-6 h-6 text-accent" />
@@ -479,7 +478,7 @@ export function HeroSection() {
                 </Card>
 
                 {/* DeFi质押策略 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-6 lg:col-span-3">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-3 sm:p-6 lg:col-span-3">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-6 h-6 text-primary" />
