@@ -478,7 +478,7 @@ export function HeroSection() {
                 </Card>
 
                 {/* DeFi质押策略 */}
-                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-6 lg:col-span-3">
+                <Card className="bg-card/50 backdrop-blur-sm border-border/40 p-3 sm:p-6 lg:col-span-3">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                       <BarChart3 className="w-6 h-6 text-primary" />
