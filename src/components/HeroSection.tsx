@@ -176,10 +176,10 @@ export function HeroSection() {
           </p>
 
           {/* CTA Buttons - Hero position */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+          <div className="flex flex-row flex-nowrap gap-2 sm:gap-3 justify-center mb-10">
             <Button 
               size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-8 py-3 text-base font-semibold"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-4 sm:px-8 py-3 text-sm sm:text-base font-semibold whitespace-nowrap"
               onClick={() => navigate(`/${currentLang}/invest`)}
             >
               {t("invest.charityButtonName")}
@@ -188,7 +188,7 @@ export function HeroSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-8 py-3 text-base"
+              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-4 sm:px-8 py-3 text-sm sm:text-base whitespace-nowrap"
               onClick={() => {
                 if (!showDetails) setShowDetails(true);
                 setTimeout(() => {
