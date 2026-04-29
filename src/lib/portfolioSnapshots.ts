@@ -393,7 +393,8 @@ export interface TradeEvent {
   pnl: number | null;     // null for OPEN
 }
 
-const TRADE_ASSETS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "BNB/USDT", "ETH/BTC", "USDV-LP"];
+// Note: USDV-LP intentionally excluded from trade tape (per product decision — do not re-add).
+const TRADE_ASSETS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "BNB/USDT", "ETH/BTC"];
 const TRADE_STRATS = STRATEGY_DEFS.map((s) => s.name);
 const TRADE_ACTIONS: TradeEvent["action"][] = ["OPEN", "CLOSE", "REDUCE", "ADD", "REINVEST"];
 
