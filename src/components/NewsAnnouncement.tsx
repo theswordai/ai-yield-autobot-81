@@ -10,6 +10,17 @@ export function NewsAnnouncement() {
 
   const announcements = [
     {
+      id: 5,
+      title: "USD.ONLINE 2026年6月20日正式上线",
+      titleEn: "USD.ONLINE Officially Launches on June 20, 2026",
+      content: "USD.ONLINE将于2026年6月20日正式上线，敬请期待",
+      contentEn: "USD.ONLINE will officially launch on June 20, 2026. Stay tuned.",
+      date: "2026-06-20",
+      time: "00:00 UTC",
+      type: "event",
+      urgent: true,
+    },
+    {
       id: 4,
       title: "USD.ONLINE兑换功能已上线",
       titleEn: "USD.ONLINE Swap Feature is Now Live",
