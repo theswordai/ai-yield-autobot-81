@@ -198,6 +198,15 @@ export function HeroSection() {
             >
               {t("invest.strategyButtonName")}
             </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-border/60 hover:border-accent/40 hover:bg-accent/5 px-4 sm:px-8 py-3 text-sm sm:text-base whitespace-nowrap"
+              onClick={() => navigate(`/${currentLang}/audit`)}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              {language === 'zh' ? '审计报告' : 'Audit Report'}
+            </Button>
           </div>
         </div>
 
