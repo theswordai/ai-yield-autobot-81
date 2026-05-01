@@ -31,19 +31,19 @@ const MobileBottomNav = () => {
     { id: "launch",  label: "启航",  labelEn: "Launch",  icon: Rocket,     path: `/${language}` },
     { id: "charity", label: "善举",  labelEn: "Charity", icon: Heart,      path: `/${language}/invest` },
     { id: "swap",    label: "兑换",  labelEn: "Swap",    icon: Coins,      path: `/${language}/usdv?tab=dex` },
-    { id: "predict", label: "预测",  labelEn: "Predict", icon: TrendingUp, path: `/${language}/predict` },
+    { id: "asset",   label: "资产看板", labelEn: "Asset Dashboard", icon: BarChart3, path: `/${language}/asset-dashboard` },
   ];
 
   // Secondary slots — surfaced via "More" drawer
   const moreItems = [
     {
-      id: "asset",
-      label: "资产看板",
-      labelEn: "Asset Dashboard",
-      desc: "实时净值 · ROI · 持仓",
-      descEn: "Live AUM, ROI & positions",
-      icon: BarChart3,
-      path: `/${language}/asset-dashboard`,
+      id: "predict",
+      label: "预测",
+      labelEn: "Predict",
+      desc: "预测市场 · Polymarket",
+      descEn: "Prediction markets",
+      icon: TrendingUp,
+      path: `/${language}/predict`,
     },
     {
       id: "vip",
