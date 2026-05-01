@@ -191,6 +191,7 @@ export function HeroSection() {
               className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-4 sm:px-8 py-3 text-sm sm:text-base whitespace-nowrap"
               onClick={() => navigate(`/${currentLang}/asset-dashboard`)}
             >
+              <BarChart3 className="w-4 h-4 mr-2" />
               {language === 'zh' ? '资产看板' : 'Asset Dashboard'}
             </Button>
             <Button
