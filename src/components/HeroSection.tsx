@@ -189,14 +189,9 @@ export function HeroSection() {
               size="lg" 
               variant="outline" 
               className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-4 sm:px-8 py-3 text-sm sm:text-base whitespace-nowrap"
-              onClick={() => {
-                if (!showDetails) setShowDetails(true);
-                setTimeout(() => {
-                  document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }}
+              onClick={() => navigate(`/${currentLang}/asset-dashboard`)}
             >
-              {t("invest.strategyButtonName")}
+              {language === 'zh' ? '资产看板' : 'Asset Dashboard'}
             </Button>
             <Button
               size="lg"
