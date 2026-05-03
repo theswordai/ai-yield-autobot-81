@@ -8,6 +8,7 @@ import {
   TrendingUp,
   BarChart3,
   Crown,
+  Wallet,
   MoreHorizontal,
   X,
 } from "lucide-react";
@@ -36,6 +37,15 @@ const MobileBottomNav = () => {
 
   // Secondary slots — surfaced via "More" drawer
   const moreItems = [
+    {
+      id: "flexible",
+      label: "活期",
+      labelEn: "Flexible",
+      desc: "活期理财 · 灵活存取 · 10代返佣",
+      descEn: "Flexible pool · 10-gen commission",
+      icon: Wallet,
+      path: `/${language}/flexible`,
+    },
     {
       id: "predict",
       label: "预测",
