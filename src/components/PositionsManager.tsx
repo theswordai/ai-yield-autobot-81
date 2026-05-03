@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +15,8 @@ interface PositionsManagerProps {
 }
 
 export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProps) {
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang?: string }>();
   const { data, formatAmount, loading: dataLoading } = useStakingData();
   const { loading, claimYield, withdraw, compoundYield } = useStakingActions();
   const [showClaimDialog, setShowClaimDialog] = useState(false);
@@ -36,15 +39,11 @@ export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProp
     setShowClaimDialog(true);
   };
 
-  const handleReinvest = async () => {
-    if (selectedPosition) {
-      const success = await compoundYield(selectedPosition.posId, selectedPosition.lockChoice);
-      setShowClaimDialog(false);
-      setSelectedPosition(null);
-      if (success && onRefresh) {
-        onRefresh();
-      }
-    }
+  const handleReinvest = () => {
+    setShowClaimDialog(false);
+    setSelectedPosition(null);
+    const prefix = lang === 'en' ? '/en' : '/zh';
+    navigate(`${prefix}/flexible`);
   };
 
   const handleDirectClaim = async () => {
