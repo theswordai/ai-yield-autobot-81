@@ -15,6 +15,8 @@ interface PositionsManagerProps {
 }
 
 export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProps) {
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang?: string }>();
   const { data, formatAmount, loading: dataLoading } = useStakingData();
   const { loading, claimYield, withdraw, compoundYield } = useStakingActions();
   const [showClaimDialog, setShowClaimDialog] = useState(false);
