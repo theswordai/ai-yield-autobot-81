@@ -531,7 +531,7 @@ export default function Flexible() {
             </Button>
             <Button
               onClick={confirmClose}
-              disabled={!closePreview || (closeTarget && actionLoading[`close-${closeTarget.id}`])}
+              disabled={!closePreview || !!(closeTarget && actionLoading[`close-${closeTarget.id}`])}
             >
               {closeTarget && actionLoading[`close-${closeTarget.id}`]
                 ? (isZh ? "平仓中…" : "Closing…")
