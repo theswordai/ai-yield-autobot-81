@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -20,6 +21,8 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
   const [loading, setLoading] = useState(false);
   const [realtimeUpdate, setRealtimeUpdate] = useState(0); // 用于触发实时更新
   const { t } = useI18n();
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang?: string }>();
   const [items, setItems] = useState<
     Array<{
       id: bigint;
@@ -210,15 +213,11 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
     setShowClaimDialog(true);
   };
 
-  const handleReinvest = async () => {
-    if (!selectedPosition) return;
-    
-    const success = await compoundYield(selectedPosition.posId, selectedPosition.lockChoice);
+  const handleReinvest = () => {
     setShowClaimDialog(false);
     setSelectedPosition(null);
-    if (success) {
-      await load();
-    }
+    const prefix = lang === 'en' ? '/en' : '/zh';
+    navigate(`${prefix}/flexible`);
   };
 
   const handleDirectClaim = async () => {
