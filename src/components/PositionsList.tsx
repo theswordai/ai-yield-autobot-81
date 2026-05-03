@@ -21,6 +21,8 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
   const [loading, setLoading] = useState(false);
   const [realtimeUpdate, setRealtimeUpdate] = useState(0); // 用于触发实时更新
   const { t } = useI18n();
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang?: string }>();
   const [items, setItems] = useState<
     Array<{
       id: bigint;
