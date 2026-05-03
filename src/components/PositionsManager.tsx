@@ -39,15 +39,11 @@ export function PositionsManager({ onRefresh, onReinvest }: PositionsManagerProp
     setShowClaimDialog(true);
   };
 
-  const handleReinvest = async () => {
-    if (selectedPosition) {
-      const success = await compoundYield(selectedPosition.posId, selectedPosition.lockChoice);
-      setShowClaimDialog(false);
-      setSelectedPosition(null);
-      if (success && onRefresh) {
-        onRefresh();
-      }
-    }
+  const handleReinvest = () => {
+    setShowClaimDialog(false);
+    setSelectedPosition(null);
+    const prefix = lang === 'en' ? '/en' : '/zh';
+    navigate(`${prefix}/flexible`);
   };
 
   const handleDirectClaim = async () => {
