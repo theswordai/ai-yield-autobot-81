@@ -31,21 +31,13 @@ const MobileBottomNav = () => {
   const primaryItems = [
     { id: "launch",  label: "启航",  labelEn: "Launch",  icon: Rocket,     path: `/${language}` },
     { id: "charity", label: "善举",  labelEn: "Charity", icon: Heart,      path: `/${language}/invest` },
+    { id: "flexible", label: "活期", labelEn: "Flexible", icon: Wallet,    path: `/${language}/flexible` },
     { id: "swap",    label: "兑换",  labelEn: "Swap",    icon: Coins,      path: `/${language}/usdv?tab=dex` },
-    { id: "asset",   label: "资产看板", labelEn: "Asset Dashboard", icon: BarChart3, path: `/${language}/asset-dashboard` },
+    { id: "asset",   label: "资产", labelEn: "Asset", icon: BarChart3, path: `/${language}/asset-dashboard` },
   ];
 
   // Secondary slots — surfaced via "More" drawer
   const moreItems = [
-    {
-      id: "flexible",
-      label: "活期",
-      labelEn: "Flexible",
-      desc: "活期理财 · 灵活存取 · 10代返佣",
-      descEn: "Flexible pool · 10-gen commission",
-      icon: Wallet,
-      path: `/${language}/flexible`,
-    },
     {
       id: "predict",
       label: "预测",
