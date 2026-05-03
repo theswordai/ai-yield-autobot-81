@@ -15,6 +15,7 @@ import Audit from "./pages/Audit";
 import AssetDashboard from "./pages/AssetDashboard";
 import NotFound from "./pages/NotFound";
 import Invest from "./pages/Invest";
+import Flexible from "./pages/Flexible";
 import UserCenter from "./pages/UserCenter";
 import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
@@ -50,6 +51,7 @@ const App = () => (
           <Route path="/zh/whitepaper" element={<Whitepaper />} />
           <Route path="/zh/audit" element={<Audit />} />
           <Route path="/zh/asset-dashboard" element={<AssetDashboard />} />
+          <Route path="/zh/flexible" element={<Flexible />} />
           <Route path="/zh/predict" element={<Predict />} />
           <Route path="/zh/predict/:id" element={<PredictDetail />} />
           
@@ -65,6 +67,7 @@ const App = () => (
           <Route path="/en/whitepaper" element={<Whitepaper />} />
           <Route path="/en/audit" element={<Audit />} />
           <Route path="/en/asset-dashboard" element={<AssetDashboard />} />
+          <Route path="/en/flexible" element={<Flexible />} />
           <Route path="/en/predict" element={<Predict />} />
           <Route path="/en/predict/:id" element={<PredictDetail />} />
 
