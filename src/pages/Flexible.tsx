@@ -187,9 +187,9 @@ export default function Flexible() {
             <>
               {/* Wallet bar */}
               <Card className="backdrop-blur-md bg-card/40 border-border/50">
-                <CardContent className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">{isZh ? "钱包地址" : "Wallet"}</p>
+                <CardContent className="p-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+                  <div className="inline-flex items-center gap-2 whitespace-nowrap">
+                    <span className="text-xs text-muted-foreground">{isZh ? "钱包地址" : "Wallet"}</span>
                     <button
                       onClick={() => copy(account, "wallet")}
                       className="font-mono text-foreground hover:text-primary inline-flex items-center gap-1"
@@ -198,21 +198,13 @@ export default function Flexible() {
                       {copied === "wallet" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                     </button>
                   </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">USDT {isZh ? "余额" : "Balance"}</p>
-                    <p className="font-semibold">{formatUSDT(data.usdtBalance)}</p>
+                  <div className="inline-flex items-center gap-2 whitespace-nowrap">
+                    <span className="text-xs text-muted-foreground">USDT {isZh ? "余额" : "Balance"}</span>
+                    <span className="font-semibold">{formatUSDT(data.usdtBalance)}</span>
                   </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">{isZh ? "已授权" : "Allowance"}</p>
-                    <p className="font-semibold">{formatUSDT(data.usdtAllowance)}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground mb-1">{isZh ? "合约状态" : "Status"}</p>
-                    <Badge variant={data.paused || data.frozen ? "destructive" : "secondary"}>
-                      {data.paused || data.frozen
-                        ? (isZh ? "已暂停" : "Paused")
-                        : (isZh ? "正常运行" : "Active")}
-                    </Badge>
+                  <div className="inline-flex items-center gap-2 whitespace-nowrap">
+                    <span className="text-xs text-muted-foreground">{isZh ? "已授权" : "Allowance"}</span>
+                    <span className="font-semibold">{formatUSDT(data.usdtAllowance)}</span>
                   </div>
                 </CardContent>
               </Card>
