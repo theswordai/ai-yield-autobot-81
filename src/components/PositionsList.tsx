@@ -213,15 +213,11 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
     setShowClaimDialog(true);
   };
 
-  const handleReinvest = async () => {
-    if (!selectedPosition) return;
-    
-    const success = await compoundYield(selectedPosition.posId, selectedPosition.lockChoice);
+  const handleReinvest = () => {
     setShowClaimDialog(false);
     setSelectedPosition(null);
-    if (success) {
-      await load();
-    }
+    const prefix = lang === 'en' ? '/en' : '/zh';
+    navigate(`${prefix}/flexible`);
   };
 
   const handleDirectClaim = async () => {
