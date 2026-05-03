@@ -83,6 +83,7 @@ const App = () => (
           <Route path="/whitepaper" element={<Navigate to="/zh/whitepaper" replace />} />
           <Route path="/audit" element={<Navigate to="/zh/audit" replace />} />
           <Route path="/asset-dashboard" element={<Navigate to="/zh/asset-dashboard" replace />} />
+          <Route path="/flexible" element={<Navigate to="/zh/flexible" replace />} />
 
           {/* Legacy routes -> redirects */}
           <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />
