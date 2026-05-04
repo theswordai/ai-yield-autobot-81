@@ -176,7 +176,7 @@ export function HeroSection() {
           </p>
 
           {/* CTA Buttons - Hero position */}
-          <div className="flex flex-row flex-nowrap gap-2 sm:gap-3 justify-center mb-10">
+          <div className="flex flex-row flex-nowrap gap-2 sm:gap-3 justify-center mb-4 md:mb-10">
             <Button 
               size="lg" 
               className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-4 sm:px-8 py-3 text-sm sm:text-base font-semibold whitespace-nowrap"
@@ -207,10 +207,10 @@ export function HeroSection() {
         </div>
 
         {/* ===== PRICE TICKER ===== */}
-        <div className="max-w-5xl mx-auto mb-10">
+        <div className="max-w-5xl mx-auto mb-3 md:mb-10">
           <PriceTicker />
         </div>
-        
+
         {/* ===== FEATURED PRICES ===== */}
         <FeaturedPrices />
         
