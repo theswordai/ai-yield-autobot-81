@@ -116,6 +116,25 @@ export default function Flexible() {
     }
   };
 
+  // ---- downline by generation ----
+  const [genRows, setGenRows] = useState<Array<{ gen: number; count: number; principal: bigint }>>([]);
+  const [genLoading, setGenLoading] = useState(false);
+  const effectiveMaxGen = Math.max(1, data.maxGeneration || 1);
+  const reloadGens = async () => {
+    if (!account || !isBSC) return;
+    setGenLoading(true);
+    try {
+      const rows = await loadDownlineByGen(effectiveMaxGen);
+      setGenRows(rows);
+    } finally {
+      setGenLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (account && isBSC) reloadGens();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, isBSC, effectiveMaxGen]);
+
   return (
     <>
       <Helmet>
