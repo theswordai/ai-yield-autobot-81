@@ -135,8 +135,9 @@ export default function AssetDashboard() {
             : "USD.ONLINE institutional asset terminal — real-time AUM, ROI, Sharpe, drawdown and positions."}
         />
       </Helmet>
+      <Navbar />
 
-      <div className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 max-w-7xl space-y-5 sm:space-y-7">
+      <div className="container mx-auto px-3 sm:px-6 py-4 sm:py-6 max-w-7xl space-y-5 sm:space-y-7 pb-24 md:pb-6">
         {/* Header */}
         <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-border/40 pb-4">
           <div>
