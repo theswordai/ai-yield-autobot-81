@@ -10,6 +10,7 @@ import {
   Crown,
   Wallet,
   MoreHorizontal,
+  MessageCircleQuestion,
   X,
 } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
@@ -20,6 +21,7 @@ import {
   DrawerTitle,
   DrawerClose,
 } from "@/components/ui/drawer";
+import { FAQ_OPEN_EVENT } from "@/components/FAQCustomerService";
 
 const MobileBottomNav = () => {
   const location = useLocation();
@@ -65,6 +67,15 @@ const MobileBottomNav = () => {
       icon: FileText,
       path: `/${language}/whitepaper`,
     },
+    {
+      id: "faq",
+      label: "100问",
+      labelEn: "100 FAQ",
+      desc: "常见问题 · 客服解答",
+      descEn: "Frequently asked questions",
+      icon: MessageCircleQuestion,
+      path: "__faq__",
+    },
   ];
 
   const isActive = (path: string) => {
@@ -80,6 +91,10 @@ const MobileBottomNav = () => {
 
   const goTo = (path: string) => {
     setMoreOpen(false);
+    if (path === "__faq__") {
+      window.dispatchEvent(new Event(FAQ_OPEN_EVENT));
+      return;
+    }
     navigate(path);
   };
 
