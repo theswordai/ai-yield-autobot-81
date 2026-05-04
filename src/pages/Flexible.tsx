@@ -479,16 +479,6 @@ export default function Flexible() {
                 </CardContent>
               </Card>
 
-              <p className="text-center text-[11px] text-muted-foreground pt-2">
-                {isZh ? "合约地址" : "Contract"}:{" "}
-                <a
-                  href={`https://bscscan.com/address/${FLEXIBLE_ADDRESS}`}
-                  target="_blank" rel="noreferrer"
-                  className="font-mono hover:text-primary"
-                >
-                  {short(FLEXIBLE_ADDRESS)}
-                </a>
-              </p>
             </>
           )}
         </div>
