@@ -299,6 +299,52 @@ export function useFlexiblePool() {
     } finally { setKey("claim", false); }
   }, [checkReady, writeContracts, refresh]);
 
+  // ---------- Downline by generation ----------
+  const loadDownlineByGen = useCallback(
+    async (maxGen: number, addressLimit = 800): Promise<Array<{ gen: number; count: number; principal: bigint }>> => {
+      if (!readContracts || !account) return [];
+      const { pool } = readContracts;
+      const safe = async <T,>(p: Promise<T>, fb: T): Promise<T> => {
+        try { return await p; } catch { return fb; }
+      };
+      const result: Array<{ gen: number; count: number; principal: bigint }> = [];
+      const seen = new Set<string>([account.toLowerCase()]);
+      let frontier: string[] = [account];
+      let total = 0;
+      const cap = Math.max(1, maxGen);
+      for (let g = 1; g <= cap; g++) {
+        if (frontier.length === 0) {
+          result.push({ gen: g, count: 0, principal: 0n });
+          continue;
+        }
+        const directsArrays = await Promise.all(
+          frontier.map((addr) => safe(pool.getDirects(addr) as Promise<string[]>, [] as string[]))
+        );
+        const next: string[] = [];
+        for (const arr of directsArrays) {
+          for (const a of arr) {
+            const key = a.toLowerCase();
+            if (seen.has(key)) continue;
+            seen.add(key);
+            next.push(a);
+            total++;
+            if (total >= addressLimit) break;
+          }
+          if (total >= addressLimit) break;
+        }
+        const principals = await Promise.all(
+          next.map((a) => safe(pool.principalOf(a) as Promise<bigint>, 0n))
+        );
+        const sum = principals.reduce((s, v) => s + v, 0n);
+        result.push({ gen: g, count: next.length, principal: sum });
+        frontier = next;
+        if (total >= addressLimit) break;
+      }
+      return result;
+    },
+    [readContracts, account]
+  );
+
   return {
     data,
     loading,
@@ -310,6 +356,7 @@ export function useFlexiblePool() {
     closePosition,
     previewClose,
     claimCommission,
+    loadDownlineByGen,
     isBSC: chainId === BSC_CHAIN_ID,
     account,
   };

@@ -57,6 +57,7 @@ export default function Flexible() {
   const {
     data, refresh, isBSC,
     bind, approve, deposit, closePosition, previewClose, claimCommission,
+    loadDownlineByGen,
     actionLoading,
   } = useFlexiblePool();
   const { copied, copy } = useCopy();
@@ -114,6 +115,25 @@ export default function Flexible() {
       setClosePreview(null);
     }
   };
+
+  // ---- downline by generation ----
+  const [genRows, setGenRows] = useState<Array<{ gen: number; count: number; principal: bigint }>>([]);
+  const [genLoading, setGenLoading] = useState(false);
+  const effectiveMaxGen = Math.max(1, data.maxGeneration || 1);
+  const reloadGens = async () => {
+    if (!account || !isBSC) return;
+    setGenLoading(true);
+    try {
+      const rows = await loadDownlineByGen(effectiveMaxGen);
+      setGenRows(rows);
+    } finally {
+      setGenLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (account && isBSC) reloadGens();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, isBSC, effectiveMaxGen]);
 
   return (
     <>
@@ -402,6 +422,59 @@ export default function Flexible() {
                       ))}
                     </div>
                   )}
+                </CardContent>
+              </Card>
+
+              {/* Team by generation */}
+              <Card className="backdrop-blur-md bg-card/40 border-border/50">
+                <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Users className="w-4 h-4" />
+                    {isZh
+                      ? `团队层级数据 (Lv${data.level || 0} · 可统计 ${effectiveMaxGen} 代)`
+                      : `Team by Generation (Lv${data.level || 0} · ${effectiveMaxGen} gens)`}
+                  </CardTitle>
+                  <Button size="sm" variant="ghost" onClick={reloadGens} disabled={genLoading}>
+                    {genLoading ? (isZh ? "加载中…" : "Loading…") : (isZh ? "刷新" : "Refresh")}
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  {genLoading && genRows.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      {isZh ? "正在聚合链上数据…" : "Aggregating on-chain data…"}
+                    </p>
+                  ) : genRows.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      {isZh ? "暂无下级" : "No downline yet"}
+                    </p>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {genRows.map((r) => (
+                        <div
+                          key={r.gen}
+                          className="flex items-center justify-between rounded-lg border border-border/50 bg-muted/20 px-3 py-2.5"
+                        >
+                          <Badge className="bg-primary/15 text-primary border-primary/30 text-[11px]">
+                            {isZh ? `第 ${r.gen} 代` : `Gen ${r.gen}`}
+                          </Badge>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="text-muted-foreground text-xs">
+                              {isZh ? "人数" : "Users"}{" "}
+                              <span className="font-semibold text-foreground tabular-nums">{r.count}</span>
+                            </span>
+                            <span className="font-semibold tabular-nums text-primary">
+                              {formatUSDT(r.principal)} USDT
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-[11px] text-muted-foreground pt-1">
+                    {isZh
+                      ? "* 链上实时聚合，最多统计 800 个地址；等级提升后将展示更多代。"
+                      : "* On-chain aggregation, capped at 800 addresses. Higher level reveals more generations."}
+                  </p>
                 </CardContent>
               </Card>
 
