@@ -238,35 +238,6 @@ export default function Flexible() {
                 />
               </div>
 
-              {/* Commission claim */}
-              <Card className="backdrop-blur-md bg-card/40 border-border/50">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Gift className="w-4 h-4" />
-                    {isZh ? "可领取佣金" : "Claimable Commission"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div>
-                    <p className="text-3xl font-bold text-primary">
-                      {formatUSDT(data.claimableCommission)} <span className="text-base text-muted-foreground">USDT</span>
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {isZh
-                        ? `领取手续费 ${commissionFeePct}%（基于利息计算，不扣本金）`
-                        : `${commissionFeePct}% claim fee (paid on interest, principal untouched)`}
-                    </p>
-                  </div>
-                  <Button
-                    onClick={claimCommission}
-                    disabled={data.claimableCommission === 0n || actionLoading.claim || data.paused}
-                    className="bg-gradient-to-r from-primary to-accent"
-                  >
-                    {actionLoading.claim ? (isZh ? "领取中…" : "Claiming…") : (isZh ? "领取佣金" : "Claim Commission")}
-                  </Button>
-                </CardContent>
-              </Card>
-
               {/* Inviter binding */}
               <Card className="backdrop-blur-md bg-card/40 border-border/50">
                 <CardHeader className="pb-3">
@@ -429,6 +400,35 @@ export default function Flexible() {
                       ))}
                     </div>
                   )}
+                </CardContent>
+              </Card>
+
+              {/* Commission claim */}
+              <Card className="backdrop-blur-md bg-card/40 border-border/50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Gift className="w-4 h-4" />
+                    {isZh ? "可领取佣金" : "Claimable Commission"}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <p className="text-3xl font-bold text-primary">
+                      {formatUSDT(data.claimableCommission)} <span className="text-base text-muted-foreground">USDT</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {isZh
+                        ? `领取手续费 ${commissionFeePct}%（基于利息计算，不扣本金）`
+                        : `${commissionFeePct}% claim fee (paid on interest, principal untouched)`}
+                    </p>
+                  </div>
+                  <Button
+                    onClick={claimCommission}
+                    disabled={data.claimableCommission === 0n || actionLoading.claim || data.paused}
+                    className="bg-gradient-to-r from-primary to-accent"
+                  >
+                    {actionLoading.claim ? (isZh ? "领取中…" : "Claiming…") : (isZh ? "领取佣金" : "Claim Commission")}
+                  </Button>
                 </CardContent>
               </Card>
 
