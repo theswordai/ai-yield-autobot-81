@@ -127,6 +127,7 @@ export default function Flexible() {
         />
       </Helmet>
 
+      <Navbar />
       <div className="relative min-h-screen pb-24 md:pb-12">
         {/* Background grid overlay */}
         <div
@@ -138,7 +139,7 @@ export default function Flexible() {
           }}
         />
 
-        <div className="relative max-w-6xl mx-auto px-4 py-8 space-y-6">
+        <div className="relative max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-6">
           {/* Header */}
           <header className="text-center space-y-2">
             <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
