@@ -443,27 +443,27 @@ export default function Flexible() {
                           {isZh ? "等级与返佣规则" : "Level & Commission Rules"}
                         </span>
                       </AccordionTrigger>
-                      <AccordionContent className="px-4 space-y-4">
+                      <AccordionContent className="px-2 sm:px-4 space-y-3 sm:space-y-4">
                         <div>
-                          <p className="text-sm font-medium mb-2">{isZh ? "等级门槛（等级本金 = 自己本金 + 直推一级本金）" : "Level Thresholds (Level Principal = Self + Direct)"}</p>
-                          <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                          <p className="text-xs sm:text-sm font-medium mb-2">{isZh ? "等级门槛（等级本金 = 自己 + 直推）" : "Level Thresholds (Self + Direct)"}</p>
+                          <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
                             {LEVEL_RULES.map((r) => (
-                              <div key={r.lvl} className="rounded-lg border border-border/50 bg-muted/20 p-3 text-center">
-                                <Badge className="bg-primary/15 text-primary border-primary/30 mb-1">Lv{r.lvl}</Badge>
-                                <p className="text-xs text-muted-foreground">≥ {r.min.toLocaleString()} USDT</p>
-                                <p className="text-sm font-semibold mt-1">{isZh ? `拿 ${r.gens} 代` : `${r.gens} gens`}</p>
+                              <div key={r.lvl} className="rounded-md sm:rounded-lg border border-border/50 bg-muted/20 p-1.5 sm:p-3 text-center">
+                                <Badge className="bg-primary/15 text-primary border-primary/30 mb-0.5 sm:mb-1 text-[9px] sm:text-xs px-1 sm:px-2 py-0">Lv{r.lvl}</Badge>
+                                <p className="text-[9px] sm:text-xs text-muted-foreground leading-tight">≥{r.min >= 1000 ? `${r.min / 1000}k` : r.min}</p>
+                                <p className="text-[10px] sm:text-sm font-semibold mt-0.5 sm:mt-1">{isZh ? `${r.gens}代` : `${r.gens}g`}</p>
                               </div>
                             ))}
                           </div>
                         </div>
                         <Separator />
                         <div>
-                          <p className="text-sm font-medium mb-2">{isZh ? "10 代返佣比例（基于利息计算）" : "10-Gen Commission Rates (on interest)"}</p>
-                          <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
+                          <p className="text-xs sm:text-sm font-medium mb-2">{isZh ? "10 代返佣比例（基于利息）" : "10-Gen Commission (on interest)"}</p>
+                          <div className="grid grid-cols-5 sm:grid-cols-10 gap-1 sm:gap-1.5">
                             {COMMISSION_RATES.map((rate, i) => (
-                              <div key={i} className="rounded border border-border/50 bg-muted/20 p-2 text-center">
-                                <p className="text-[10px] text-muted-foreground">{isZh ? `${i + 1}代` : `Gen ${i + 1}`}</p>
-                                <p className="text-sm font-bold text-primary">{rate}%</p>
+                              <div key={i} className="rounded border border-border/50 bg-muted/20 p-1 sm:p-2 text-center">
+                                <p className="text-[9px] sm:text-[10px] text-muted-foreground leading-tight">{isZh ? `${i + 1}代` : `G${i + 1}`}</p>
+                                <p className="text-xs sm:text-sm font-bold text-primary">{rate}%</p>
                               </div>
                             ))}
                           </div>
