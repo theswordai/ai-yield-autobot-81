@@ -91,6 +91,10 @@ const MobileBottomNav = () => {
 
   const goTo = (path: string) => {
     setMoreOpen(false);
+    if (path === "__faq__") {
+      window.dispatchEvent(new Event(FAQ_OPEN_EVENT));
+      return;
+    }
     navigate(path);
   };
 
