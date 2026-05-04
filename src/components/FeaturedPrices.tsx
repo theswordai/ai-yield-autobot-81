@@ -342,15 +342,15 @@ function PriceCard({
   extra?: React.ReactNode;
 }) {
   return (
-    <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-6 hover:shadow-lg transition-shadow">
-      <div className="flex items-start justify-between mb-4">
+    <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-3 md:p-6 hover:shadow-lg transition-shadow">
+      <div className="flex items-start justify-between mb-2 md:mb-4">
         <div className="flex-1">
-          <h3 className="text-sm text-muted-foreground font-medium mb-1">{label}</h3>
+          <h3 className="text-xs md:text-sm text-muted-foreground font-medium mb-0.5 md:mb-1">{label}</h3>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold">${data?.price || fallbackPrice}</span>
+            <span className="text-xl md:text-3xl font-bold">${data?.price || fallbackPrice}</span>
             {data && (
-              <div className={`flex items-center gap-1 text-sm font-medium ${data.isPositive ? "text-accent" : "text-destructive"}`}>
-                {data.isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+              <div className={`flex items-center gap-1 text-xs md:text-sm font-medium ${data.isPositive ? "text-accent" : "text-destructive"}`}>
+                {data.isPositive ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
                 <span>{data.isPositive ? "+" : ""}{data.change24h}%</span>
               </div>
             )}
@@ -358,7 +358,7 @@ function PriceCard({
           {extra}
         </div>
       </div>
-      <div className="h-24">
+      <div className="h-14 md:h-24">
         <MiniKChart color={color} data={history} />
       </div>
     </Card>
