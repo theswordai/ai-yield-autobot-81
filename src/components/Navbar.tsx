@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { WalletConnector } from "@/components/WalletConnector";
 import { useI18n } from "@/hooks/useI18n";
 import { useTheme } from "@/hooks/useTheme";
+import { MessageCenter } from "@/components/MessageCenter";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
