@@ -36,6 +36,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarToggleButton />
           <main className="flex-1">{children}</main>
         </div>
+        <AnnouncementPopup />
       </div>
     </SidebarProvider>
   );
