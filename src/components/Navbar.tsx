@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { WalletConnector } from "@/components/WalletConnector";
 import { useI18n } from "@/hooks/useI18n";
 import { useTheme } from "@/hooks/useTheme";
+import { MessageCenter } from "@/components/MessageCenter";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,6 +78,7 @@ export function Navbar() {
             >
               {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
+            <MessageCenter />
             <WalletConnector />
             <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
               <img src="/lovable-uploads/x-logo.png" alt="X" className="w-8 h-8 rounded" />
@@ -97,6 +99,7 @@ export function Navbar() {
             <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
               <img src="/lovable-uploads/x-logo.png" alt="X" className="w-7 h-7 rounded" />
             </a>
+            <MessageCenter />
             <Button
               variant="ghost"
               size="sm"
