@@ -1,66 +1,55 @@
-## Flexible Pool 活期理财页面
+## 目标
 
-合约：`0x709020b91e5e8405e96eee06bfb2a0a3ae4d6004` (BSC)，USDT (`0x55d398326f99059fF775485246999027B3197955`, 18 decimals)。
+在活期理财页面新增「我的团队层级数据」板块，按代（Gen 1 → Gen N）展示：
+- 该层级的下级人数
+- 该层级所有下级的活期本金合计
 
-ABI 已从 BscScan 拉取并核对完毕，所有需求函数都存在。
+层数取合约返回的 `getMaxGeneration(account)`（即根据当前等级可拿的代数，1~10 代）。
 
-### 关键 ABI 摘要（已确认）
+## 数据来源（合约已支持）
 
-**写入**：`bind(address)`、`deposit(uint256) -> positionId`、`closePosition(uint256)`、`claimCommission()`
+`FlexiblePool` ABI 已暴露：
+- `getDirects(address) -> address[]` 直推下级
+- `principalOf(address) -> uint256` 该地址当前活期本金
+- `getMaxGeneration(address) -> uint256` 当前可拿代数
 
-**读取**（按页面区块归类）：
-- 用户数据：`principalOf(user)`（我的活期本金）、`directPrincipalOf(user)`（直推本金）、`getLevelPrincipal(user)`（等级本金=自己+直推）、`getLevel(user)`（0–5）、`getMaxGeneration(user)`（可拿代数）、`claimableCommission(user)`、`inviterOf(user)`、`getDirects(user)`
-- 仓位：`getUserPositions(user)`、`getOpenPositions(user)`、`positions(id) -> (user, principal, startTime, lastAccruedAt, closed)`、`pendingYield(id)`、`previewClose(id) -> (principal, yieldAmt, principalFee, yieldFee, netPaid)`
-- 全局：`apr()` (bps)、`minDeposit()`、`PRINCIPAL_FEE_BPS`、`YIELD_FEE_BPS`、`COMMISSION_FEE_BPS`、`paused`、`frozen`、`totalPrincipal`、`contractBalance`
+通过对 `account` 做 BFS：
+- 第 N 代 = 第 N-1 代每个地址的 `getDirects` 去重合并
+- 各层并行调用 `principalOf` 求和
+- 设上限 800 个地址防止极端团队下 RPC 过载
 
-**重要发现**（需求里没提到，但页面必须呈现，否则用户会困惑）：
-- 平仓时合约会从**本金**和**利息**各扣一笔费用，所以「Close Position」之前必须用 `previewClose` 显示净到账金额（principal、yield、principalFee、yieldFee、netPaid 五个数字）
-- 领取佣金时也有 `COMMISSION_FEE_BPS` 手续费
-- 合约有 `paused` / `frozen` 开关，需在页面顶部根据状态禁用操作并提示
+## 改动文件
 
-### 路由
-- `src/App.tsx`：新增 `/zh/flexible`、`/en/flexible`，以及 `/flexible` → `/zh/flexible` 兜底
-- 导航入口：`Navbar.tsx`（PC）+ `MobileBottomNav.tsx`（移动）增加「活期 / Flexible」
+1. **`src/hooks/useFlexiblePool.ts`**
+   - 新增 `loadDownlineByGen(maxGen, addressLimit=800)` 函数
+   - 返回 `Array<{ gen, count, principal: bigint }>`
+   - 不放进自动刷新（按需触发，避免影响首屏）
 
-### 新增文件
+2. **`src/pages/Flexible.tsx`**
+   - 在「我的仓位」与「可领取佣金」之间插入 Card：「我的团队层级数据 / Team by Generation」
+   - 进入页面或 `data.maxGeneration` 变化时自动加载一次
+   - 提供「刷新」按钮
+   - 网格展示：每行 Gen N · 人数 · 本金合计 (USDT)
+   - 移动端紧凑（单列），桌面 2 列
+   - 加载中显示骨架占位；返回为空时显示「暂无下级」
+   - 顶部小提示：仅统计当前等级可拿的 N 代；如等级提升后会展示更多代
 
-1. **`src/abis/FlexiblePool.ts`** —— 完整 ABI（来自 BscScan）
-2. **`src/config/flexible.ts`** —— `FLEXIBLE_ADDRESS = 0x7090...`、`USDT_BSC = 0x55d3...`、`USDT_DECIMALS = 18`
-3. **`src/hooks/useFlexibleData.ts`** —— 一次性读取所有用户/全局数据，30s 自动刷新；遇到 BAD_DATA / RPC 错误按全局策略静默回退
-4. **`src/hooks/useFlexibleActions.ts`** —— `bind / approveUSDT / deposit / closePosition / claimCommission`，统一 toast、loading、BSC 网络检查（复用 `useWeb3.connect`）
-5. **`src/pages/Flexible.tsx`** —— 页面主体
+## UI 草图
 
-### 页面布局（Flexible.tsx，沿用玻璃态 + 60px 网格 overlay）
+```
+我的团队层级数据 (按当前等级 Lv3，可统计 5 代)        [刷新]
+─────────────────────────────────────────────
+ Gen 1   人数 12     本金 8,420.00 USDT
+ Gen 2   人数 38     本金 21,150.00 USDT
+ Gen 3   人数 95     本金 17,002.50 USDT
+ Gen 4   人数 0      本金 0.00 USDT
+ Gen 5   人数 0      本金 0.00 USDT
+─────────────────────────────────────────────
+* 数据为链上实时聚合，最多统计 800 个地址。
+```
 
-1. **顶部状态条**：钱包地址（缩短+复制）、USDT 余额、已授权额度、合约状态徽章（paused/frozen 时红色）
-2. **核心数据卡（4 宫格）**
-   - 当前 APR：`apr()/100` %，并按全局规则同步显示日复利 APY = `(1 + APR/365)^365 - 1`
-   - 我的活期本金：`principalOf`
-   - 我的等级本金：`getLevelPrincipal`（hover/小字说明=自己+直推）
-   - 我的等级 + 可拿代数：`Lv{getLevel}` Badge + `{getMaxGeneration} 代`
-3. **可领取佣金卡**：`claimableCommission` 大号显示 + 「Claim Commission」按钮（按钮旁小字提示扣 `COMMISSION_FEE_BPS` 手续费，按 bps 折算百分比）
-4. **邀请绑定卡**
-   - 已绑定 → 显示上级地址（缩短+复制），不可改
-   - 未绑定 → 输入框 + 「Bind」按钮，自动从 URL `?inviter=` 或 `localStorage("inviter")` 预填
-5. **存款卡**
-   - 金额输入，最低 `minDeposit()`（合约即 200 USDT）
-   - 智能按钮：allowance < amount → 「Approve」；否则 → 「Deposit」
-   - 提示：未绑定上级时按钮上方显示黄色提醒「建议先绑定上级，否则您的存款无法为您的上级带来佣金」（按合约逻辑，绑定与否不影响存款本身，但会影响推荐链）
-6. **我的仓位列表**（卡片栅格）
-   - 来源：`getUserPositions(user)` → 逐个 `positions(id)` + `pendingYield(id)`
-   - 每张卡：positionId、principal、startTime（本地时间）、pendingInterest（实时）、closed 徽章
-   - 「Close Position」按钮 → 弹出确认 Dialog，先调 `previewClose(id)` 展示 principal / yield / principalFee / yieldFee / netPaid 明细，确认后再 `closePosition`
-   - 已关闭仓位置灰，不显示按钮
-7. **等级与返佣规则**（折叠卡，纯静态展示，与合约文档一致）
-   - 等级表：Lv1 ≥200U 拿1代 / Lv2 ≥1000U 拿3代 / Lv3 ≥5000U 拿5代 / Lv4 ≥20000U 拿7代 / Lv5 ≥50000U 拿10代
-   - 10代返佣：30/20/15/10/8/6/4/3/2/2 %
-   - 备注：返佣基于「利息」计算，不从本金扣除；等级本金 = 自己当前活期本金 + 直推一级当前活期本金
+## 备注
 
-### i18n
-`src/locales/zh.json` 与 `en.json` 增加 `flexible.*` 命名空间（标题、字段名、按钮、提示、规则文本）。
-
-### 技术栈
-- 沿用 ethers v6 + 现有 `useWeb3`（项目目前不用 wagmi，避免引入新依赖）
-- 写操作前自动 `ensureBSC` 切链
-- 所有金额用 `parseUnits/formatUnits(_, 18)`
-- 静默错误处理遵循 [Error Handling](mem://technical/error-handling-strategy)
+- 全部读链，不依赖任何后端。
+- 若用户尚未绑定上级或未投资，依然显示 Gen 1 起的数据（自身直推）。
+- 等级（`level`）与可统计代数（`maxGeneration`）已在卡片网格里显示，无需再额外展示。
