@@ -386,8 +386,8 @@ export default function Flexible() {
 
                   <p className="text-[11px] text-muted-foreground">
                     {isZh
-                      ? `平仓时本金扣 ${principalFeePct}%、利息扣 ${yieldFeePct}% 手续费`
-                      : `On close: ${principalFeePct}% principal fee, ${yieldFeePct}% yield fee`}
+                      ? `平仓时平台扣除平仓金额 2% 的手续费`
+                      : `On close: platform charges a 2% fee on the close amount`}
                   </p>
                 </CardContent>
               </Card>
