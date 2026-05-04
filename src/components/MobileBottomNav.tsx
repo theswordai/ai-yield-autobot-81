@@ -10,6 +10,7 @@ import {
   Crown,
   Wallet,
   MoreHorizontal,
+  MessageCircleQuestion,
   X,
 } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
@@ -20,6 +21,7 @@ import {
   DrawerTitle,
   DrawerClose,
 } from "@/components/ui/drawer";
+import { FAQ_OPEN_EVENT } from "@/components/FAQCustomerService";
 
 const MobileBottomNav = () => {
   const location = useLocation();
