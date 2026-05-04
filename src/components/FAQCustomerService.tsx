@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { MessageCircleQuestion, X, ChevronDown } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { MessageCircleQuestion, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -18,21 +17,21 @@ import {
 } from '@/components/ui/select';
 import { faqCategories, faqData, getQuestionsByCategory, FAQItem } from '@/data/faqData';
 
+export const FAQ_OPEN_EVENT = 'faq:open';
+
 const FAQCustomerService: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const location = useLocation();
 
-  // Only show on home page (启航)
-  const isHomePage = location.pathname === '/' || 
-    location.pathname === '/zh' || 
-    location.pathname === '/en' ||
-    location.pathname === '/zh/' ||
-    location.pathname === '/en/';
+  useEffect(() => {
+    const handler = () => setIsOpen(true);
+    window.addEventListener(FAQ_OPEN_EVENT, handler);
+    return () => window.removeEventListener(FAQ_OPEN_EVENT, handler);
+  }, []);
 
-  const displayedQuestions: FAQItem[] = 
-    selectedCategory === 'all' 
-      ? faqData 
+  const displayedQuestions: FAQItem[] =
+    selectedCategory === 'all'
+      ? faqData
       : getQuestionsByCategory(selectedCategory);
 
   const getCategoryName = (categoryId: string): string => {
@@ -40,20 +39,12 @@ const FAQCustomerService: React.FC = () => {
     return category ? `${category.icon} ${category.name}` : '';
   };
 
-  if (!isHomePage) {
+  if (!isOpen) {
     return null;
   }
 
   return (
     <>
-      {/* Floating Button - adjusted for mobile bottom nav */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 ${isOpen ? 'hidden' : ''}`}
-        aria-label="打开常见问题"
-      >
-        <MessageCircleQuestion className="w-5 h-5 md:w-6 md:h-6" />
-      </button>
 
       {/* FAQ Panel - adjusted for mobile */}
       {isOpen && (
