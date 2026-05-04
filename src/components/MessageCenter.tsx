@@ -25,11 +25,10 @@ export function MessageCenter({ floating = true }: MessageCenterProps = {}) {
             aria-label="在线客服"
             className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50"
           >
-            <span className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:scale-110 transition-all duration-300 ring-2 ring-background">
-              <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping opacity-50 pointer-events-none" />
-              <MessageSquareMore className="w-6 h-6 relative z-10" />
+            <span className="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90 transition-colors">
+              <MessageSquareMore className="w-5 h-5" />
               {mc.totalUnread > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-[11px] flex items-center justify-center font-bold ring-2 ring-background z-20">
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-bold ring-2 ring-background">
                   {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
                 </span>
               )}
