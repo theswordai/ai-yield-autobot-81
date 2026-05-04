@@ -45,6 +45,7 @@ import {
   INCEPTION_TS,
   INITIAL_AUM,
 } from "@/lib/portfolioSnapshots";
+import { Navbar } from "@/components/Navbar";
 
 type RangeKey = "7D" | "30D" | "90D" | "ALL";
 const RANGE_DAYS: Record<RangeKey, number> = { "7D": 7, "30D": 30, "90D": 90, ALL: 0 };
