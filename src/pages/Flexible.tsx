@@ -128,7 +128,7 @@ export default function Flexible() {
       </Helmet>
 
       <Navbar />
-      <div className="relative min-h-screen pb-24 md:pb-12">
+      <div className="relative min-h-screen pt-16 pb-24 md:pb-12">
         {/* Background grid overlay */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.03]"
