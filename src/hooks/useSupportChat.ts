@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+const AUTO_WELCOME_MESSAGE = `您好，欢迎联系 USDONLINE 在线客服
+常见问题请查看网站白皮书
+
+我们已收到您的咨询，工作人员将尽快为您回复，请稍候片刻
+
+工作时间：每日 09:00 - 24:00 (UTC+8)`;
+
 export interface SupportMessage {
   id: string;
   thread_id: string;
