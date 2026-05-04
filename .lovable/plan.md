@@ -1,31 +1,27 @@
-# 把站内信改为右下角浮窗式客服按钮
+## 目标
+当用户在客服对话中发送**第一条消息**时，系统自动以"客服"身份回复一段固定欢迎语。
 
-## 改动
+## 自动回复内容（固定）
+```
+您好，欢迎联系 USDONLINE 在线客服
+常见问题请查看网站白皮书
 
-**`src/components/MessageCenter.tsx`**
-- 添加 `floating?: boolean` prop（默认 `true`）
-- `floating=true` 时渲染为右下角浮窗：
-  - 位置：`fixed bottom-6 right-6`（移动端 `bottom-24` 避开底部 Tab 栏）
-  - 圆形渐变按钮（primary→accent），ring 圈白边
-  - 头像图标 `MessageSquareMore`
-  - 周围加 `animate-ping` 呼吸光环吸引注意
-  - 未读红点徽章贴在右上角（高对比 ring 边）
-  - hover 放大 1.1 + 阴影加深
-- `floating=false` 时保留原小图标按钮，供 Navbar 使用（如需）
-- Sheet 标题改为"消息中心 / 在线客服"
+我们已收到您的咨询，工作人员将尽快为您回复，请稍候片刻
 
-**`src/components/Navbar.tsx`**
-- 移除桌面与移动端 Navbar 中的 `<MessageCenter />`（避免与浮窗重复）
+工作时间：每日 09:00 - 24:00 (UTC+8)
+```
 
-**`src/components/AppLayout.tsx`**
-- 全局挂载 `<MessageCenter />`（默认浮窗模式），保证所有页面右下角都有
+## 实现方式
+仅修改 `src/hooks/useSupportChat.ts` 的 `send` 方法（用户端逻辑）：
 
-## 位置避让
+1. 在用户端发送消息前，记录此次发送是否会创建新 thread（即 `threadId` 当前为 null）。
+2. 用户消息插入成功后，如果是新建 thread，则紧接着插入一条 `sender: "admin"` 的固定欢迎消息（上面的文本，作为 `AUTO_WELCOME_MESSAGE` 常量）。
+3. 仍保持 `unread_admin = true`，让真人客服知道有新会话需要跟进。
 
-- 右下角原本有 FAQ 100问浮按钮 — 已在上一步改为放进"更多"抽屉，不再占用右下角
-- 移动端底部有 Tab 栏（h-16），所以移动端浮窗用 `bottom-24` 留够安全距离
-- 桌面端用 `bottom-6 right-6`
+## 不影响
+- 管理员真人回复流程不变
+- 已有会话再次发消息不会重复触发
+- 公告 / 站内信功能不变
 
-## 视觉
-
-类似在线客服 widget 风格：圆形渐变 + 呼吸光环 + 红色未读徽章，醒目但不抢戏。点击展开右侧抽屉，内含三个 Tab：公告、站内信、客服对话（保持现有功能不变）。
+## 影响文件
+- `src/hooks/useSupportChat.ts`
