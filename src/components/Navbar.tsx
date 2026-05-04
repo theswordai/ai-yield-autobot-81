@@ -78,6 +78,7 @@ export function Navbar() {
             >
               {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
+            <MessageCenter />
             <WalletConnector />
             <a href="https://x.com/ONLINE_USD" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
               <img src="/lovable-uploads/x-logo.png" alt="X" className="w-8 h-8 rounded" />
