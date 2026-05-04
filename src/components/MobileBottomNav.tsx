@@ -67,6 +67,15 @@ const MobileBottomNav = () => {
       icon: FileText,
       path: `/${language}/whitepaper`,
     },
+    {
+      id: "faq",
+      label: "100问",
+      labelEn: "100 FAQ",
+      desc: "常见问题 · 客服解答",
+      descEn: "Frequently asked questions",
+      icon: MessageCircleQuestion,
+      path: "__faq__",
+    },
   ];
 
   const isActive = (path: string) => {
