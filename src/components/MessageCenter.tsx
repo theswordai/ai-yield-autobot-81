@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Megaphone, Mail, Headphones } from "lucide-react";
+import { Headphones, Megaphone, Mail, MessageSquareMore } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,25 +9,46 @@ import { useMessageCenter } from "@/hooks/useMessageCenter";
 import { SupportChat } from "@/components/SupportChat";
 import { cn } from "@/lib/utils";
 
-export function MessageCenter() {
+interface MessageCenterProps {
+  floating?: boolean;
+}
+
+export function MessageCenter({ floating = true }: MessageCenterProps = {}) {
   const [open, setOpen] = useState(false);
   const mc = useMessageCenter();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-9 w-9" aria-label="消息中心">
-          <Bell className="w-5 h-5" />
-          {mc.totalUnread > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-bold">
-              {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
+        {floating ? (
+          <button
+            aria-label="在线客服"
+            className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50"
+          >
+            <span className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-xl shadow-primary/30 hover:shadow-primary/50 hover:scale-110 transition-all duration-300 ring-2 ring-background">
+              <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping opacity-50 pointer-events-none" />
+              <MessageSquareMore className="w-6 h-6 relative z-10" />
+              {mc.totalUnread > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-[11px] flex items-center justify-center font-bold ring-2 ring-background z-20">
+                  {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
+                </span>
+              )}
             </span>
-          )}
-        </Button>
+          </button>
+        ) : (
+          <Button variant="ghost" size="icon" className="relative h-9 w-9" aria-label="消息中心">
+            <MessageSquareMore className="w-5 h-5" />
+            {mc.totalUnread > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-bold">
+                {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
+              </span>
+            )}
+          </Button>
+        )}
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="p-4 border-b border-border">
-          <SheetTitle>消息中心</SheetTitle>
+          <SheetTitle className="flex items-center gap-2"><Headphones className="w-4 h-4 text-primary" />消息中心 / 在线客服</SheetTitle>
         </SheetHeader>
         <Tabs defaultValue="announcements" className="flex-1 flex flex-col min-h-0">
           <TabsList className="grid grid-cols-3 mx-4 mt-3">
