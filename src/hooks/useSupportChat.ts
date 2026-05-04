@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+const AUTO_WELCOME_MESSAGE = `您好，欢迎联系 USDONLINE 在线客服
+常见问题请查看网站白皮书
+
+我们已收到您的咨询，工作人员将尽快为您回复，请稍候片刻
+
+工作时间：每日 09:00 - 24:00 (UTC+8)`;
+
 export interface SupportMessage {
   id: string;
   thread_id: string;
@@ -75,6 +82,7 @@ export function useSupportChat(opts: { wallet?: string | null; threadId?: string
     const text = content.trim();
     if (!text) return;
     let tid = threadId;
+    let isNewThread = false;
     if (!tid) {
       if (side !== "user" || !wallet) return;
       const { data } = await supabase
@@ -83,7 +91,10 @@ export function useSupportChat(opts: { wallet?: string | null; threadId?: string
         .select("id")
         .single();
       tid = data?.id || null;
-      if (tid) setThreadId(tid);
+      if (tid) {
+        setThreadId(tid);
+        isNewThread = true;
+      }
     }
     if (!tid) return;
     await supabase.from("support_messages").insert({ thread_id: tid, sender: side, content: text });
@@ -92,6 +103,19 @@ export function useSupportChat(opts: { wallet?: string | null; threadId?: string
       ...(side === "user" ? { unread_admin: true, unread_user: false } : { unread_user: true, unread_admin: false }),
     };
     await supabase.from("support_threads").update(patch).eq("id", tid);
+
+    // Auto welcome reply on the very first user message of a brand-new thread
+    if (isNewThread && side === "user") {
+      await supabase.from("support_messages").insert({
+        thread_id: tid,
+        sender: "admin",
+        content: AUTO_WELCOME_MESSAGE,
+      });
+      await supabase.from("support_threads").update({
+        last_message_at: new Date().toISOString(),
+        unread_admin: true,
+      }).eq("id", tid);
+    }
   }, [threadId, side, wallet]);
 
   return { threadId, messages, loading, send };
