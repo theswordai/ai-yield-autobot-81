@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/AppSidebar";
 import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { AnnouncementPopup } from "@/components/AnnouncementPopup";
+import { MessageCenter } from "@/components/MessageCenter";
 
 function SidebarToggleButton() {
   const { state } = useSidebar();
@@ -37,6 +38,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <main className="flex-1">{children}</main>
         </div>
         <AnnouncementPopup />
+        <MessageCenter />
       </div>
     </SidebarProvider>
   );
