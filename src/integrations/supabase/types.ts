@@ -14,7 +14,181 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_wallets: {
+        Row: {
+          created_at: string
+          note: string | null
+          wallet_address: string
+        }
+        Insert: {
+          created_at?: string
+          note?: string | null
+          wallet_address: string
+        }
+        Update: {
+          created_at?: string
+          note?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      announcement_reads: {
+        Row: {
+          announcement_id: string
+          id: string
+          read_at: string
+          wallet_address: string
+        }
+        Insert: {
+          announcement_id: string
+          id?: string
+          read_at?: string
+          wallet_address: string
+        }
+        Update: {
+          announcement_id?: string
+          id?: string
+          read_at?: string
+          wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "announcement_reads_announcement_id_fkey"
+            columns: ["announcement_id"]
+            isOneToOne: false
+            referencedRelation: "announcements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      announcements: {
+        Row: {
+          content: string
+          created_at: string
+          end_at: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          priority: number
+          start_at: string | null
+          title: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          end_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          priority?: number
+          start_at?: string | null
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          end_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          priority?: number
+          start_at?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      inbox_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_read: boolean
+          title: string
+          wallet_address: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          title: string
+          wallet_address: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          title?: string
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      support_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          sender: string
+          thread_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          sender: string
+          thread_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          sender?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "support_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_threads: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string
+          status: string
+          subject: string | null
+          unread_admin: boolean
+          unread_user: boolean
+          wallet_address: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          status?: string
+          subject?: string | null
+          unread_admin?: boolean
+          unread_user?: boolean
+          wallet_address: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          status?: string
+          subject?: string | null
+          unread_admin?: boolean
+          unread_user?: boolean
+          wallet_address?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
