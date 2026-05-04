@@ -9,11 +9,11 @@ import { HelmetProvider } from 'react-helmet-async'
 (function initTheme() {
   try {
     const saved = localStorage.getItem('theme');
-    const theme = saved === 'light' ? 'light' : 'dark';
+    const theme = saved === 'dark' ? 'dark' : 'light';
     if (theme === 'dark') document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
   } catch {
-    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('dark');
   }
 })();
 
