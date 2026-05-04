@@ -57,6 +57,7 @@ export default function Flexible() {
   const {
     data, refresh, isBSC,
     bind, approve, deposit, closePosition, previewClose, claimCommission,
+    loadDownlineByGen,
     actionLoading,
   } = useFlexiblePool();
   const { copied, copy } = useCopy();
