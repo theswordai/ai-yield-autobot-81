@@ -5,10 +5,10 @@ export type Theme = "light" | "dark";
 const STORAGE_KEY = "theme";
 
 function readInitial(): Theme {
-  if (typeof window === "undefined") return "dark";
+  if (typeof window === "undefined") return "light";
   const saved = window.localStorage.getItem(STORAGE_KEY);
   if (saved === "light" || saved === "dark") return saved;
-  return "dark"; // default = preserve current experience
+  return "light"; // default = light theme
 }
 
 function applyTheme(theme: Theme) {
