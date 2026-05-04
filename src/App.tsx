@@ -21,6 +21,7 @@ import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
 import Predict from "./pages/Predict";
 import PredictDetail from "./pages/PredictDetail";
+import Admin from "./pages/Admin";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
 import { AppLayout } from "./components/AppLayout";
@@ -70,6 +71,9 @@ const App = () => (
           <Route path="/en/flexible" element={<Flexible />} />
           <Route path="/en/predict" element={<Predict />} />
           <Route path="/en/predict/:id" element={<PredictDetail />} />
+          <Route path="/zh/admin" element={<Admin />} />
+          <Route path="/en/admin" element={<Admin />} />
+          <Route path="/admin" element={<Admin />} />
 
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
