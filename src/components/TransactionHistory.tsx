@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Contract, formatUnits } from "ethers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -55,7 +55,7 @@ interface Props {
   mockRowsByAccount?: Record<string, HistoryRow[]>;
   /** Max rows to display (default 5). */
   maxRows?: number;
-  /** Only scan this many recent blocks (default 30000 ≈ ~1 day on BSC). */
+  /** Kept for compatibility; history now starts from the current block only. */
   recentBlocks?: number;
 }
 
@@ -77,15 +77,18 @@ export function TransactionHistory({
   decimals = 18,
   explorerBase = "https://bscscan.com/tx/",
   isZh = true,
-  fromBlock = 0,
   mockRowsByAccount,
   maxRows = 5,
-  recentBlocks = 30000,
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [hadFailures, setHadFailures] = useState(false);
   const [didLoad, setDidLoad] = useState(false);
+  const loadingRef = useRef(false);
+  const contractsRef = useRef(contracts);
+  const scanStartByAccountRef = useRef<Record<string, number>>({});
+
+  contractsRef.current = contracts;
 
   const accountKey = account?.toLowerCase() ?? "";
 
@@ -96,6 +99,8 @@ export function TransactionHistory({
       return;
     }
 
+    if (loadingRef.current) return;
+
     // Mock account fast path
     const mock = mockRowsByAccount?.[account.toLowerCase()];
     if (mock && mock.length) {
@@ -105,6 +110,7 @@ export function TransactionHistory({
       return;
     }
 
+    loadingRef.current = true;
     setLoading(true);
     setHadFailures(false);
     try {
@@ -115,16 +121,29 @@ export function TransactionHistory({
         return;
       }
 
+      if (!scanStartByAccountRef.current[accountKey]) {
+        scanStartByAccountRef.current[accountKey] = latest + 1;
+        setRows([]);
+        setHadFailures(false);
+        return;
+      }
+
+      const start = scanStartByAccountRef.current[accountKey];
+      if (start > latest) {
+        setRows([]);
+        setHadFailures(false);
+        return;
+      }
+
       const all: HistoryRow[] = [];
       let anyFailed = false;
 
       await Promise.all(
-        contracts.map(async (spec) => {
+        contractsRef.current.map(async (spec) => {
           if (!spec.contract) return;
           const addr = await spec.contract.getAddress().catch(() => null);
           if (!addr) return;
           const abi = (spec.contract.interface as any).fragments;
-          const start = Math.max(spec.fromBlock ?? fromBlock ?? 0, latest - recentBlocks);
 
           await Promise.all(
             spec.events.map(async (ev) => {
@@ -177,6 +196,7 @@ export function TransactionHistory({
       setHadFailures(true);
       setRows([]);
     } finally {
+      loadingRef.current = false;
       setLoading(false);
       setDidLoad(true);
     }
