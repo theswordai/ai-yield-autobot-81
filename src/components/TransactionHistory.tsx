@@ -95,13 +95,13 @@ export function TransactionHistory({
   const accountKey = account?.toLowerCase() ?? "";
 
   const fetchHistory = useCallback(async () => {
-    if (loadingRef.current) return;
-
     if (!account) {
       setRows([]);
       setDidLoad(false);
       return;
     }
+
+    if (loadingRef.current) return;
 
     // Mock account fast path
     const mock = mockRowsByAccount?.[account.toLowerCase()];
@@ -112,6 +112,7 @@ export function TransactionHistory({
       return;
     }
 
+    loadingRef.current = true;
     setLoading(true);
     setHadFailures(false);
     try {
@@ -197,6 +198,7 @@ export function TransactionHistory({
       setHadFailures(true);
       setRows([]);
     } finally {
+      loadingRef.current = false;
       setLoading(false);
       setDidLoad(true);
     }
