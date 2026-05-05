@@ -171,7 +171,7 @@ export function TransactionHistory({
       );
 
       all.sort((a, b) => b.timestamp - a.timestamp || b.blockNumber - a.blockNumber);
-      setRows(all);
+      setRows(all.slice(0, maxRows));
       setHadFailures(anyFailed);
     } catch {
       setHadFailures(true);
