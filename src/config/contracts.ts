@@ -11,10 +11,3 @@ export const SPIN_WHEEL_ADDRESS = "0x19a2bD6b4bC3724AC93D096B866c55691E0FaAd7";
 export const USDT_DECIMALS = 18; // Real BSC USDT is 18 decimals
 export const USDV_DECIMALS = 18; // USDV decimals
 export const TARGET_CHAIN = 56; // BSC Mainnet
-
-// Contract deployment blocks (used to bound eth_getLogs scans)
-export const LOCK_DEPLOY_BLOCK = 57985086;
-export const VAULT_DEPLOY_BLOCK = 57985340;
-// FlexiblePool: deploy block unknown — use a conservative recent floor.
-// Will scan from max(latest - 3_000_000, this value).
-export const FLEXIBLE_DEPLOY_BLOCK = 55000000;

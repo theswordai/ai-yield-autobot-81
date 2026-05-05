@@ -1,14 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Contract, formatUnits } from "ethers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { History, ExternalLink, RefreshCw, AlertTriangle } from "lucide-react";
-import {
-  queryEventsChunked,
-  getBlockTimestamp,
-  getLatestBlock,
-} from "@/lib/eventQuery";
+import { History, ExternalLink, RefreshCw } from "lucide-react";
 
 export interface HistoryEventConfig {
   /** Event name as defined in the ABI */
@@ -35,28 +30,17 @@ export interface HistoryRow {
   sub?: string;
 }
 
-interface ContractSpec {
-  contract: Contract | null;
-  events: HistoryEventConfig[];
-  /** Earliest block to scan for this contract. */
-  fromBlock?: number;
-}
-
 interface Props {
   title: string;
-  contracts: ContractSpec[];
+  contracts: Array<{
+    contract: Contract | null;
+    events: HistoryEventConfig[];
+  }>;
   account: string | null;
   decimals?: number;
-  explorerBase?: string;
+  explorerBase?: string; // e.g. https://bscscan.com/tx/
   isZh?: boolean;
-  /** Default fromBlock when a ContractSpec doesn't provide one. */
-  fromBlock?: number;
-  /** Optional mock rows by lowercase address (for demo accounts w/ no chain events). */
-  mockRowsByAccount?: Record<string, HistoryRow[]>;
-  /** Max rows to display (default 5). */
-  maxRows?: number;
-  /** Kept for compatibility; history now starts from the current block only. */
-  recentBlocks?: number;
+  fromBlock?: number | "earliest";
 }
 
 const fmt = (v: bigint, decimals: number) => {
@@ -77,93 +61,36 @@ export function TransactionHistory({
   decimals = 18,
   explorerBase = "https://bscscan.com/tx/",
   isZh = true,
-  mockRowsByAccount,
-  maxRows = 5,
+  fromBlock = 0,
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
-  const [hadFailures, setHadFailures] = useState(false);
-  const [didLoad, setDidLoad] = useState(false);
-  const loadingRef = useRef(false);
-  const contractsRef = useRef(contracts);
-  const scanStartByAccountRef = useRef<Record<string, number>>({});
 
-  contractsRef.current = contracts;
-
-  const accountKey = account?.toLowerCase() ?? "";
+  const blockTimeCache = useMemo(() => new Map<number, number>(), []);
 
   const fetchHistory = useCallback(async () => {
     if (!account) {
       setRows([]);
-      setDidLoad(false);
       return;
     }
-
-    if (loadingRef.current) return;
-
-    // Mock account fast path
-    const mock = mockRowsByAccount?.[account.toLowerCase()];
-    if (mock && mock.length) {
-      setRows([...mock].sort((a, b) => b.timestamp - a.timestamp));
-      setHadFailures(false);
-      setDidLoad(true);
-      return;
-    }
-
-    loadingRef.current = true;
     setLoading(true);
-    setHadFailures(false);
     try {
-      const latest = await getLatestBlock();
-      if (!latest) {
-        setHadFailures(true);
-        setRows([]);
-        return;
-      }
-
-      if (!scanStartByAccountRef.current[accountKey]) {
-        scanStartByAccountRef.current[accountKey] = latest + 1;
-        setRows([]);
-        setHadFailures(false);
-        return;
-      }
-
-      const start = scanStartByAccountRef.current[accountKey];
-      if (start > latest) {
-        setRows([]);
-        setHadFailures(false);
-        return;
-      }
-
       const all: HistoryRow[] = [];
-      let anyFailed = false;
 
       await Promise.all(
-        contractsRef.current.map(async (spec) => {
-          if (!spec.contract) return;
-          const addr = await spec.contract.getAddress().catch(() => null);
-          if (!addr) return;
-          const abi = (spec.contract.interface as any).fragments;
-
+        contracts.map(async ({ contract, events }) => {
+          if (!contract) return;
           await Promise.all(
-            spec.events.map(async (ev) => {
+            events.map(async (ev) => {
               try {
-                // Build filter against any provider via spec.contract (only uses interface)
-                const filter = (spec.contract!.filters as any)[ev.name](account);
-                const { logs, failedRanges } = await queryEventsChunked(
-                  addr,
-                  abi,
-                  filter,
-                  start,
-                  latest
-                );
-                if (failedRanges.length > 0) anyFailed = true;
+                const filter = (contract.filters as any)[ev.name](account);
+                const logs = await contract.queryFilter(filter, fromBlock, "latest");
                 for (const log of logs as any[]) {
                   const args = log.args ?? {};
                   const parsed = ev.parse(args);
                   all.push({
-                    key: `${log.transactionHash}-${log.logIndex ?? log.index ?? 0}`,
-                    timestamp: 0,
+                    key: `${log.transactionHash}-${log.logIndex}`,
+                    timestamp: 0, // filled in below
                     blockNumber: log.blockNumber,
                     txHash: log.transactionHash,
                     label: ev.label,
@@ -173,35 +100,41 @@ export function TransactionHistory({
                   });
                 }
               } catch {
-                anyFailed = true;
+                // silent fallback per project policy
               }
             })
           );
         })
       );
 
-      // Resolve timestamps
-      const uniq = Array.from(new Set(all.map((r) => r.blockNumber)));
+      // Resolve block timestamps with caching
+      const provider = contracts.find((c) => c.contract)?.contract?.runner as any;
+      const uniqueBlocks = Array.from(new Set(all.map((r) => r.blockNumber)));
       await Promise.all(
-        uniq.map(async (bn) => {
-          const ts = await getBlockTimestamp(bn);
-          for (const r of all) if (r.blockNumber === bn) r.timestamp = ts;
+        uniqueBlocks.map(async (bn) => {
+          if (blockTimeCache.has(bn)) return;
+          try {
+            const blk = await provider?.provider?.getBlock?.(bn) ?? await provider?.getBlock?.(bn);
+            if (blk?.timestamp) blockTimeCache.set(bn, Number(blk.timestamp));
+          } catch {
+            // ignore
+          }
         })
       );
 
+      for (const r of all) {
+        r.timestamp = blockTimeCache.get(r.blockNumber) ?? 0;
+      }
+
       all.sort((a, b) => b.timestamp - a.timestamp || b.blockNumber - a.blockNumber);
-      setRows(all.slice(0, maxRows));
-      setHadFailures(anyFailed);
+      setRows(all);
     } catch {
-      setHadFailures(true);
       setRows([]);
     } finally {
-      loadingRef.current = false;
       setLoading(false);
-      setDidLoad(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountKey]);
+  }, [account, contracts, fromBlock]);
 
   useEffect(() => {
     fetchHistory();
@@ -229,34 +162,11 @@ export function TransactionHistory({
             {isZh ? "加载链上记录中…" : "Loading on-chain history…"}
           </p>
         ) : rows.length === 0 ? (
-          <div className="text-center py-6 space-y-2">
-            <p className="text-sm text-muted-foreground">
-              {hadFailures
-                ? isZh
-                  ? "节点繁忙，记录暂未加载完成"
-                  : "Network busy, history not fully loaded"
-                : isZh
-                ? "暂无历史记录"
-                : "No history yet"}
-            </p>
-            {hadFailures && (
-              <Button size="sm" variant="outline" onClick={fetchHistory}>
-                {isZh ? "重试" : "Retry"}
-              </Button>
-            )}
-          </div>
+          <p className="text-sm text-muted-foreground text-center py-6">
+            {isZh ? "暂无历史记录" : "No history yet"}
+          </p>
         ) : (
           <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
-            {hadFailures && (
-              <div className="flex items-center gap-2 text-[11px] text-amber-500/90 bg-amber-500/10 border border-amber-500/30 rounded-md px-2.5 py-1.5">
-                <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                <span>
-                  {isZh
-                    ? "部分历史区块未加载成功，点刷新可重试"
-                    : "Some history segments failed to load. Click refresh to retry."}
-                </span>
-              </div>
-            )}
             {rows.map((r) => (
               <div
                 key={r.key}

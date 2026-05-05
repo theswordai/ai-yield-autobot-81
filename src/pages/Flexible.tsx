@@ -23,7 +23,6 @@ import { useI18n } from "@/hooks/useI18n";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useFlexiblePool, formatUSDT, FlexiblePosition } from "@/hooks/useFlexiblePool";
 import { FLEXIBLE_ADDRESS, USDT_DECIMALS } from "@/config/flexible";
-import { FLEXIBLE_DEPLOY_BLOCK } from "@/config/contracts";
 import { Navbar } from "@/components/Navbar";
 import { TransactionHistory } from "@/components/TransactionHistory";
 import { Contract } from "ethers";
@@ -442,7 +441,6 @@ export default function Flexible() {
                 contracts={[
                   {
                     contract: poolRead,
-                    fromBlock: FLEXIBLE_DEPLOY_BLOCK,
                     events: [
                       {
                         name: "PositionOpened",
