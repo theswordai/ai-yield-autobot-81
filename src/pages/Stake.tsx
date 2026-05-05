@@ -17,6 +17,7 @@ import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown } from "lucide-react";
 import { PositionsList } from "@/components/PositionsList";
+import { TransactionHistory, HistoryEventConfig } from "@/components/TransactionHistory";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
 import { USDT_ADDRESS, LOCK_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, TARGET_CHAIN, REFERRAL_ADDRESS } from "@/config/contracts";
