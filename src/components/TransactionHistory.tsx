@@ -53,6 +53,10 @@ interface Props {
   fromBlock?: number;
   /** Optional mock rows by lowercase address (for demo accounts w/ no chain events). */
   mockRowsByAccount?: Record<string, HistoryRow[]>;
+  /** Max rows to display (default 5). */
+  maxRows?: number;
+  /** Only scan this many recent blocks (default 30000 ≈ ~1 day on BSC). */
+  recentBlocks?: number;
 }
 
 const fmt = (v: bigint, decimals: number) => {
@@ -75,6 +79,8 @@ export function TransactionHistory({
   isZh = true,
   fromBlock = 0,
   mockRowsByAccount,
+  maxRows = 5,
+  recentBlocks = 30000,
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -118,7 +124,7 @@ export function TransactionHistory({
           const addr = await spec.contract.getAddress().catch(() => null);
           if (!addr) return;
           const abi = (spec.contract.interface as any).fragments;
-          const start = spec.fromBlock ?? fromBlock ?? 0;
+          const start = Math.max(spec.fromBlock ?? fromBlock ?? 0, latest - recentBlocks);
 
           await Promise.all(
             spec.events.map(async (ev) => {
@@ -165,7 +171,7 @@ export function TransactionHistory({
       );
 
       all.sort((a, b) => b.timestamp - a.timestamp || b.blockNumber - a.blockNumber);
-      setRows(all);
+      setRows(all.slice(0, maxRows));
       setHadFailures(anyFailed);
     } catch {
       setHadFailures(true);
