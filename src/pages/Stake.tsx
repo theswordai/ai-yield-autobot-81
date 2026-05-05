@@ -846,7 +846,58 @@ export default function Stake({
               </CardContent>
             </Card>
 
-            {/* 幸运5分钟 Jackpot - 移动端显示在我的仓位下方 */}
+            {/* 我的历史记录 / On-chain history */}
+            <TransactionHistory
+              title="我的历史记录"
+              account={account}
+              decimals={USDT_DECIMALS}
+              isZh={true}
+              contracts={[
+                {
+                  contract: lockRead,
+                  events: [
+                    {
+                      name: "Deposited",
+                      label: "存入本金",
+                      badgeClass: "bg-primary/15 text-primary border-primary/30 text-[11px]",
+                      parse: (a) => ({ amount: a[2] as bigint, sub: `仓位 #${(a[1] as bigint).toString()}` }),
+                    },
+                    {
+                      name: "Claimed",
+                      label: "领取收益",
+                      badgeClass: "bg-accent/20 text-accent border-accent/30 text-[11px]",
+                      parse: (a) => ({ amount: a[2] as bigint, sub: `仓位 #${(a[1] as bigint).toString()}` }),
+                    },
+                    {
+                      name: "Withdrawn",
+                      label: "取出本金",
+                      badgeClass: "bg-secondary text-secondary-foreground border-border text-[11px]",
+                      parse: (a) => {
+                        const principal = a[2] as bigint;
+                        const penalty = a[3] as bigint;
+                        return {
+                          amount: principal,
+                          sub: penalty > 0n ? `仓位 #${(a[1] as bigint).toString()} · 罚金 ${Number(formatUnits(penalty, USDT_DECIMALS)).toFixed(2)} USDT` : `仓位 #${(a[1] as bigint).toString()}`,
+                        };
+                      },
+                    },
+                  ],
+                },
+                {
+                  contract: vault,
+                  events: [
+                    {
+                      name: "Claimed",
+                      label: "领取奖励",
+                      badgeClass: "bg-accent/20 text-accent border-accent/30 text-[11px]",
+                      parse: (a) => ({ amount: a[1] as bigint, sub: "奖励金库" }),
+                    },
+                  ],
+                },
+              ]}
+            />
+
+
             <a
               href="https://usdonline.xyz/hourdraw"
               target="_blank"
