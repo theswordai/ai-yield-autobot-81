@@ -124,7 +124,7 @@ export function TransactionHistory({
           const addr = await spec.contract.getAddress().catch(() => null);
           if (!addr) return;
           const abi = (spec.contract.interface as any).fragments;
-          const start = spec.fromBlock ?? fromBlock ?? 0;
+          const start = Math.max(spec.fromBlock ?? fromBlock ?? 0, latest - recentBlocks);
 
           await Promise.all(
             spec.events.map(async (ev) => {
