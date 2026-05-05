@@ -20,7 +20,7 @@ import { PositionsList } from "@/components/PositionsList";
 import { TransactionHistory, HistoryEventConfig } from "@/components/TransactionHistory";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
-import { USDT_ADDRESS, LOCK_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, TARGET_CHAIN, REFERRAL_ADDRESS } from "@/config/contracts";
+import { USDT_ADDRESS, LOCK_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, TARGET_CHAIN, REFERRAL_ADDRESS, LOCK_DEPLOY_BLOCK, VAULT_DEPLOY_BLOCK } from "@/config/contracts";
 import { decodeAddress } from "@/lib/addressCode";
 import lucky5MinBanner from "@/assets/lucky-5min-banner.png";
 export default function Stake({
@@ -855,6 +855,7 @@ export default function Stake({
               contracts={[
                 {
                   contract: lockRead,
+                  fromBlock: LOCK_DEPLOY_BLOCK,
                   events: [
                     {
                       name: "Deposited",
@@ -885,6 +886,7 @@ export default function Stake({
                 },
                 {
                   contract: vault,
+                  fromBlock: VAULT_DEPLOY_BLOCK,
                   events: [
                     {
                       name: "Claimed",
