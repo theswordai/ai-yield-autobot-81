@@ -79,6 +79,8 @@ export function TransactionHistory({
   isZh = true,
   fromBlock = 0,
   mockRowsByAccount,
+  maxRows = 5,
+  recentBlocks = 30000,
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
