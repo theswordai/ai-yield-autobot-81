@@ -65,11 +65,31 @@ export function TransactionHistory({
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [startBlock, setStartBlock] = useState<number | null>(null);
 
   const blockTimeCache = useMemo(() => new Map<number, number>(), []);
 
+  // Capture the current block as the starting point — only show events from now on.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const provider = (contracts.find((c) => c.contract)?.contract?.runner as any);
+      const p = provider?.provider ?? provider;
+      try {
+        const bn = await p?.getBlockNumber?.();
+        if (!cancelled && typeof bn === "number") setStartBlock(bn);
+      } catch {
+        if (!cancelled) setStartBlock(0);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
+
   const fetchHistory = useCallback(async () => {
-    if (!account) {
+    if (!account || startBlock === null) {
       setRows([]);
       return;
     }
@@ -84,7 +104,7 @@ export function TransactionHistory({
             events.map(async (ev) => {
               try {
                 const filter = (contract.filters as any)[ev.name](account);
-                const logs = await contract.queryFilter(filter, fromBlock, "latest");
+                const logs = await contract.queryFilter(filter, startBlock, "latest");
                 for (const log of logs as any[]) {
                   const args = log.args ?? {};
                   const parsed = ev.parse(args);
