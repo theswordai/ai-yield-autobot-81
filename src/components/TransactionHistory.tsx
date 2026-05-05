@@ -181,7 +181,7 @@ export function TransactionHistory({
       setDidLoad(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountKey, contracts, fromBlock]);
+  }, [accountKey]);
 
   useEffect(() => {
     fetchHistory();
