@@ -441,6 +441,7 @@ export default function Flexible() {
                 contracts={[
                   {
                     contract: poolRead,
+                    fromBlock: FLEXIBLE_DEPLOY_BLOCK,
                     events: [
                       {
                         name: "PositionOpened",
