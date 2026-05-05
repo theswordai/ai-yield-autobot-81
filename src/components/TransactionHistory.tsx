@@ -53,6 +53,10 @@ interface Props {
   fromBlock?: number;
   /** Optional mock rows by lowercase address (for demo accounts w/ no chain events). */
   mockRowsByAccount?: Record<string, HistoryRow[]>;
+  /** Max rows to display (default 5). */
+  maxRows?: number;
+  /** Only scan this many recent blocks (default 30000 ≈ ~1 day on BSC). */
+  recentBlocks?: number;
 }
 
 const fmt = (v: bigint, decimals: number) => {
