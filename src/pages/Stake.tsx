@@ -104,6 +104,11 @@ export default function Stake({
     if (!signer) return null;
     return new Contract(LOCK_ADDRESS, LockStaking_ABI, signer);
   }, [signer]);
+  const lockRead = useMemo(() => {
+    const p = signer ?? provider;
+    if (!p) return null;
+    return new Contract(LOCK_ADDRESS, LockStaking_ABI, p);
+  }, [signer, provider]);
   const vault = useMemo(() => {
     const p = signer ?? provider;
     if (!p) return null;
