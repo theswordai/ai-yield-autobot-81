@@ -27,7 +27,6 @@ import { Navbar } from "@/components/Navbar";
 import { TransactionHistory } from "@/components/TransactionHistory";
 import { Contract } from "ethers";
 import { FlexiblePool_ABI } from "@/abis/FlexiblePool";
-import { useWeb3 as useWeb3Hook } from "@/hooks/useWeb3";
 
 const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
 
