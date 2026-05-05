@@ -432,6 +432,57 @@ export default function Flexible() {
                 </CardContent>
               </Card>
 
+              {/* My on-chain history */}
+              <TransactionHistory
+                title={isZh ? "我的历史记录" : "My History"}
+                account={account}
+                decimals={USDT_DECIMALS}
+                isZh={isZh}
+                contracts={[
+                  {
+                    contract: poolRead,
+                    events: [
+                      {
+                        name: "PositionOpened",
+                        label: isZh ? "活期存入" : "Deposit",
+                        badgeClass: "bg-primary/15 text-primary border-primary/30 text-[11px]",
+                        parse: (a) => ({
+                          amount: a[2] as bigint,
+                          sub: isZh ? `仓位 #${(a[1] as bigint).toString()}` : `Pos #${(a[1] as bigint).toString()}`,
+                        }),
+                      },
+                      {
+                        name: "PositionClosed",
+                        label: isZh ? "活期平仓" : "Close",
+                        badgeClass: "bg-secondary text-secondary-foreground border-border text-[11px]",
+                        parse: (a) => {
+                          const principal = a[2] as bigint;
+                          const yieldAmt = a[3] as bigint;
+                          const netPaid = a[6] as bigint;
+                          return {
+                            amount: netPaid,
+                            sub: isZh
+                              ? `本金 ${formatUSDT(principal)} · 利息 ${formatUSDT(yieldAmt, 6)}`
+                              : `Principal ${formatUSDT(principal)} · Yield ${formatUSDT(yieldAmt, 6)}`,
+                          };
+                        },
+                      },
+                      {
+                        name: "CommissionClaimed",
+                        label: isZh ? "领取佣金" : "Claim Commission",
+                        badgeClass: "bg-accent/20 text-accent border-accent/30 text-[11px]",
+                        parse: (a) => ({
+                          amount: a[3] as bigint,
+                          sub: isZh
+                            ? `毛 ${formatUSDT(a[1] as bigint)} · 费 ${formatUSDT(a[2] as bigint)}`
+                            : `Gross ${formatUSDT(a[1] as bigint)} · Fee ${formatUSDT(a[2] as bigint)}`,
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+              />
+
               {/* Team by generation */}
               <Card className="backdrop-blur-md bg-card/40 border-border/50">
                 <CardHeader className="pb-3 flex flex-row items-center justify-between">
