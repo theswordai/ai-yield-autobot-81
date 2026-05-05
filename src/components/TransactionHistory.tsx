@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Contract, formatUnits } from "ethers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -55,7 +55,7 @@ interface Props {
   mockRowsByAccount?: Record<string, HistoryRow[]>;
   /** Max rows to display (default 5). */
   maxRows?: number;
-  /** Only scan this many recent blocks (default 30000 ≈ ~1 day on BSC). */
+  /** Kept for compatibility; history now starts from the current block only. */
   recentBlocks?: number;
 }
 
@@ -80,12 +80,17 @@ export function TransactionHistory({
   fromBlock = 0,
   mockRowsByAccount,
   maxRows = 5,
-  recentBlocks = 30000,
+  recentBlocks: _recentBlocks = 30000,
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [hadFailures, setHadFailures] = useState(false);
   const [didLoad, setDidLoad] = useState(false);
+  const loadingRef = useRef(false);
+  const contractsRef = useRef(contracts);
+  const scanStartByAccountRef = useRef<Record<string, number>>({});
+
+  contractsRef.current = contracts;
 
   const accountKey = account?.toLowerCase() ?? "";
 
