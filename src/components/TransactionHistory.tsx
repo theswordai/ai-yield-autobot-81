@@ -77,10 +77,8 @@ export function TransactionHistory({
   decimals = 18,
   explorerBase = "https://bscscan.com/tx/",
   isZh = true,
-  fromBlock = 0,
   mockRowsByAccount,
   maxRows = 5,
-  recentBlocks: _recentBlocks = 30000,
 }: Props) {
   const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
