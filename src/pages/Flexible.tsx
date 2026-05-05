@@ -56,7 +56,11 @@ const useCopy = () => {
 export default function Flexible() {
   const { language } = useI18n();
   const isZh = language === "zh";
-  const { account, connect } = useWeb3();
+  const { account, connect, provider } = useWeb3();
+  const poolRead = useMemo(
+    () => (provider ? new Contract(FLEXIBLE_ADDRESS, FlexiblePool_ABI, provider) : null),
+    [provider]
+  );
   const {
     data, refresh, isBSC,
     bind, approve, deposit, closePosition, previewClose, claimCommission,
