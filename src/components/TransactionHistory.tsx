@@ -63,21 +63,77 @@ export function TransactionHistory({
   isZh = true,
   fromBlock = 0,
 }: Props) {
-  const [rows, setRows] = useState<HistoryRow[]>([]);
+  // Stable per-account, per-contract-set storage key so history persists across reloads.
+  const storageKey = useMemo(() => {
+    const addrs = contracts
+      .map((c) => (c.contract as any)?.target ?? "")
+      .filter(Boolean)
+      .join("|");
+    return account ? `txhist:${title}:${account.toLowerCase()}:${addrs}` : null;
+  }, [title, account, contracts]);
+
+  const startBlockKey = storageKey ? `${storageKey}:startBlock` : null;
+  const rowsKey = storageKey ? `${storageKey}:rows` : null;
+
+  const [rows, setRows] = useState<HistoryRow[]>(() => {
+    if (typeof window === "undefined" || !rowsKey) return [];
+    try {
+      const raw = localStorage.getItem(rowsKey);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw) as Array<Omit<HistoryRow, "amount"> & { amount: string }>;
+      return parsed.map((r) => ({ ...r, amount: BigInt(r.amount) }));
+    } catch {
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(false);
   const [startBlock, setStartBlock] = useState<number | null>(null);
 
   const blockTimeCache = useMemo(() => new Map<number, number>(), []);
 
-  // Capture the current block as the starting point — only show events from now on.
+  // Re-hydrate rows when account/key changes (e.g. wallet switch).
+  useEffect(() => {
+    if (!rowsKey) {
+      setRows([]);
+      return;
+    }
+    try {
+      const raw = localStorage.getItem(rowsKey);
+      if (!raw) {
+        setRows([]);
+        return;
+      }
+      const parsed = JSON.parse(raw) as Array<Omit<HistoryRow, "amount"> & { amount: string }>;
+      setRows(parsed.map((r) => ({ ...r, amount: BigInt(r.amount) })));
+    } catch {
+      setRows([]);
+    }
+  }, [rowsKey]);
+
+  // Capture the start block once per account; persist so it survives reloads.
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      if (!startBlockKey) {
+        setStartBlock(null);
+        return;
+      }
+      const cached = localStorage.getItem(startBlockKey);
+      if (cached) {
+        const n = Number(cached);
+        if (Number.isFinite(n)) {
+          if (!cancelled) setStartBlock(n);
+          return;
+        }
+      }
       const provider = (contracts.find((c) => c.contract)?.contract?.runner as any);
       const p = provider?.provider ?? provider;
       try {
         const bn = await p?.getBlockNumber?.();
-        if (!cancelled && typeof bn === "number") setStartBlock(bn);
+        if (!cancelled && typeof bn === "number") {
+          localStorage.setItem(startBlockKey, String(bn));
+          setStartBlock(bn);
+        }
       } catch {
         if (!cancelled) setStartBlock(0);
       }
@@ -86,16 +142,13 @@ export function TransactionHistory({
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, [startBlockKey]);
 
   const fetchHistory = useCallback(async () => {
-    if (!account || startBlock === null) {
-      setRows([]);
-      return;
-    }
+    if (!account || startBlock === null) return;
     setLoading(true);
     try {
-      const all: HistoryRow[] = [];
+      const fetched: HistoryRow[] = [];
 
       await Promise.all(
         contracts.map(async ({ contract, events }) => {
@@ -108,9 +161,9 @@ export function TransactionHistory({
                 for (const log of logs as any[]) {
                   const args = log.args ?? {};
                   const parsed = ev.parse(args);
-                  all.push({
+                  fetched.push({
                     key: `${log.transactionHash}-${log.logIndex}`,
-                    timestamp: 0, // filled in below
+                    timestamp: 0,
                     blockNumber: log.blockNumber,
                     txHash: log.transactionHash,
                     label: ev.label,
@@ -120,21 +173,20 @@ export function TransactionHistory({
                   });
                 }
               } catch {
-                // silent fallback per project policy
+                // silent fallback
               }
             })
           );
         })
       );
 
-      // Resolve block timestamps with caching
       const provider = contracts.find((c) => c.contract)?.contract?.runner as any;
-      const uniqueBlocks = Array.from(new Set(all.map((r) => r.blockNumber)));
+      const uniqueBlocks = Array.from(new Set(fetched.map((r) => r.blockNumber)));
       await Promise.all(
         uniqueBlocks.map(async (bn) => {
           if (blockTimeCache.has(bn)) return;
           try {
-            const blk = await provider?.provider?.getBlock?.(bn) ?? await provider?.getBlock?.(bn);
+            const blk = (await provider?.provider?.getBlock?.(bn)) ?? (await provider?.getBlock?.(bn));
             if (blk?.timestamp) blockTimeCache.set(bn, Number(blk.timestamp));
           } catch {
             // ignore
@@ -142,19 +194,37 @@ export function TransactionHistory({
         })
       );
 
-      for (const r of all) {
+      for (const r of fetched) {
         r.timestamp = blockTimeCache.get(r.blockNumber) ?? 0;
       }
 
-      all.sort((a, b) => b.timestamp - a.timestamp || b.blockNumber - a.blockNumber);
-      setRows(all);
+      // Merge with cached rows, dedupe by key, sort desc.
+      setRows((prev) => {
+        const map = new Map<string, HistoryRow>();
+        for (const r of prev) map.set(r.key, r);
+        for (const r of fetched) map.set(r.key, r);
+        const merged = Array.from(map.values()).sort(
+          (a, b) => b.timestamp - a.timestamp || b.blockNumber - a.blockNumber
+        );
+        if (rowsKey) {
+          try {
+            localStorage.setItem(
+              rowsKey,
+              JSON.stringify(merged.map((r) => ({ ...r, amount: r.amount.toString() })))
+            );
+          } catch {
+            // ignore quota errors
+          }
+        }
+        return merged;
+      });
     } catch {
-      setRows([]);
+      // keep existing rows on error
     } finally {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, contracts, startBlock]);
+  }, [account, contracts, startBlock, rowsKey]);
 
   useEffect(() => {
     fetchHistory();
