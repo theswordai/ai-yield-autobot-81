@@ -1,50 +1,52 @@
-# 添加交易历史记录
+## Add USDV Reward Feature to 活期 (Flexible Pool)
 
-在「善举」(Stake `/invest`) 和「活期」(`/flexible`) 页面新增"我的历史记录"区块，显示当前钱包在合约上的链上操作记录：什么时候存款、什么时候领取了收益、领了多少、什么时候取出本金等，并附 BscScan 交易链接。
+Integrate the new Rewarder contract `0x96a0c407Ce4cceF6B9405197ee8d8d94Dd983B9D` so that for each deposit position users can register → close → claim USDV (10× the yield earned) on the existing Flexible page.
 
-## 实现方式
+### New files
 
-通过 ethers 的 `queryFilter` 查询合约事件日志，按当前钱包地址过滤（事件中的 `user` 参数是 indexed，链上原生支持过滤）。这与项目里 `useStakingData.ts` 已用的 `rewardsVault.queryFilter` 是同一个模式。
+**`src/abis/Rewarder.ts`** — minimal ABI: `register`, `claim`, `isRegistered`, `isClaimed`, `previewClaim`, `previewLive`, `multiplier`, `totalUsdvMinted`.
 
-## 具体改动
+**`src/config/rewarder.ts`** — exports `REWARDER_ADDRESS`, `USDV_TOKEN_ADDRESS` (`0x14B26c4A87e7ADddb401c281A4858090D79d1391`), `USDV_DECIMALS = 18`.
 
-**1. `src/abis/LockStaking.ts`** — 补全事件签名（目前只有 `Deposited` 和 `ReferralAccrued`，缺 `Claimed`、`Withdrawn`），以便能 queryFilter：
+**`src/hooks/useRewarder.ts`** — hook providing:
+- `globalInfo`: `{ multiplier, totalMinted, usdvBalance }` (refreshed on account/refresh)
+- `getStatus(positionId, closed)` → `{ registered, claimed, previewAmount }` (cached map keyed by id)
+- `register(id)`, `claim(id)` write functions with the same toast/error pattern as `useFlexiblePool`
+- Standard error mapping for the messages listed in the spec (already registered / already closed / not registered / not closed / already claimed / daily mint cap) translated zh/en
+
+### Changes to `src/pages/Flexible.tsx`
+
+1. Use `useRewarder()` alongside the existing pool hook.
+2. After `deposit(amount)` returns success, automatically open a small confirmation dialog: **"激活 USDV 奖励 / Activate USDV Reward"** for the newly created position. Use `pool.queryFilter("PositionOpened", fromBlock)` filtered by user to grab the new `positionId` (or read latest from `data.positions` after refresh — newest is index 0). One-click → `rewarder.register(id)`. User can dismiss; the position card will continue to surface an "Activate" button.
+3. Extend `PositionCard` props with `usdvStatus`, `usdvMultiplier`, `onRegister`, `onClaimUsdv`, `actionBusy`. Inside the card, render a new row under "Pending Yield":
+   - Open + not registered → amber badge "⚠️ USDV 未激活" + "激活" button (`register`)
+   - Open + registered → green badge "🟢 USDV 已激活 (×10)" + small text "预计可得 ≈ {previewLive} USDV"
+   - Closed + registered + not claimed → "🎁 领取 USDV ({previewClaim})" button
+   - Closed + claimed → "✅ 已领取 {amount} USDV"
+   - Closed + never registered → muted "❌ 未激活，无 USDV 奖励"
+4. After `closePosition` succeeds in `confirmClose`, if the position was registered, show a toast/dialog: **"🎉 您可以领取 X USDV"** with a Claim button calling `rewarder.claim(id)`; on success refresh data so USDV balance updates.
+5. New StatCard row above "我的仓位": **USDV 奖励** card with three stats:
+   - 我的 USDV 余额 (from token `balanceOf`)
+   - 全网累计铸造 USDV (`totalUsdvMinted`)
+   - 倍数: "×{multiplier} 利息" with subtitle "活期利息 → USDV 空投"
+6. Add a short explainer banner inside the deposit card: "存款后请激活 USDV 奖励，平仓前必须激活，否则无法领取。"
+
+### Technical notes
+
+- All reads use the existing `provider`; writes use `signer`. Wrap RPC calls in try/catch returning fallbacks to honor the silent-error policy for read failures.
+- USDV balance is also fetched in `useRewarder` (separate ERC20 contract, just `balanceOf`).
+- `getStatus` is called in batch: `Promise.all(positions.map(...))`. Cache results in component state keyed by `id.toString()`; refetch when `data.positions` changes or after register/claim/close.
+- Per-position write loading keys: `register-${id}`, `claim-usdv-${id}`.
+- Format: `Number(formatUnits(v, 18)).toLocaleString(undefined,{maximumFractionDigits:2})` + " USDV".
+- No Supabase changes. No locale file edits required (inline zh/en strings, matching the existing Flexible page style).
+- No changes to `Stake.tsx` (lock pool) — feature lives only on the activity that emits `PositionOpened` from the Flexible pool.
+
+### UX flow
+
+```text
+Deposit USDT → position created → auto-prompt "Activate USDV"
+                                          ↓ (register tx)
+        ... yield accrues (live preview shown on card) ...
+                                          ↓
+Close position → USDT received → toast "Claim X USDV" → claim tx → USDV in wallet
 ```
-event Claimed(address indexed user, uint256 indexed posId, uint256 amount)
-event Withdrawn(address indexed user, uint256 indexed posId, uint256 principalReturned, uint256 penalty)
-```
-
-**2. 新增 `src/components/TransactionHistory.tsx`** — 通用历史记录组件，参数：
-- `contract`（ethers Contract 只读实例）
-- `account`（当前钱包）
-- `events`：要查询的事件列表，每条带 label（中/英）、参数解析函数、金额字段名
-- `chainExplorerBase`（BscScan）
-
-内部逻辑：
-- 对每个事件 `contract.queryFilter(filters.X(account), fromBlock, 'latest')` 并行抓取
-- 合并日志，去 `provider.getBlock(blockNumber)` 拉时间戳（带缓存避免重复请求）
-- 按时间降序排序，渲染为表格：时间 / 类型 / 金额(USDT) / Tx
-- 失败静默回退到空列表（遵循项目的 silent fallback 规则）
-- 加 30 秒/手动刷新；显示 loading skeleton
-
-**3. `src/pages/Stake.tsx`（善举页）** — 在仓位列表下方插入 `<TransactionHistory>`，订阅 LockStaking 合约的：
-- `Deposited` → "存入本金"
-- `Claimed` → "领取收益"
-- `Withdrawn` → "取出本金"（如有罚金额外显示）
-
-同时也读取 `RewardsVault` 的 `Claimed` 事件 → "领取静态/动态奖励"。
-
-**4. `src/pages/Flexible.tsx`（活期页）** — 在仓位卡片下方插入 `<TransactionHistory>`，订阅 FlexiblePool 的：
-- `PositionOpened` → "活期存入"
-- `PositionClosed` → "活期平仓"，金额展示 `netPaid`，副信息显示 `principal / yield / fees`
-- `CommissionClaimed` → "领取返佣"，显示 net 金额
-
-## 表格样式
-
-复用 `@/components/ui/table`，与项目 glass-morphism 风格一致（`backdrop-blur-md bg-card/40 border-border/50` 卡片包裹）。移动端折叠为卡片列表（参考 PositionsList 的响应式做法）。
-
-## 注意事项
-
-- RPC 对 `getLogs` 区块范围有限制；初版用 `fromBlock=0, toBlock='latest'`（与现有 rewardsVault 调用一致）。如某些公共节点拒绝，组件捕获错误后静默返回空，不影响主页面。
-- 特殊 mock 账号（`useStakingData` 里硬编码的两个地址）链上没有真实事件，历史会为空 —— 这与现状一致，无需 mock 历史数据（除非你想让我也给这两个账号补几条假记录）。
-- 不修改任何金额/利率/UI 文案规则。
