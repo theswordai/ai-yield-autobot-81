@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { formatUnits, parseUnits } from "ethers";
 import {
   Wallet, Coins, TrendingUp, Users, Award, Gift,
-  Copy, Check, Lock, Clock, Info, AlertTriangle,
+  Copy, Check, Lock, Clock, Info, AlertTriangle, Sparkles,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ import { Navbar } from "@/components/Navbar";
 import { TransactionHistory } from "@/components/TransactionHistory";
 import { Contract } from "ethers";
 import { FlexiblePool_ABI } from "@/abis/FlexiblePool";
+import { useRewarder, formatUSDV, UsdvPositionStatus } from "@/hooks/useRewarder";
 
 const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
 
