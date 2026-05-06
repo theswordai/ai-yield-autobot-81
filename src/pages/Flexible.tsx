@@ -68,7 +68,14 @@ export default function Flexible() {
     loadDownlineByGen,
     actionLoading,
   } = useFlexiblePool();
+  const rewarder = useRewarder(isZh);
   const { copied, copy } = useCopy();
+
+  // Track positions for which the activate prompt has been shown to avoid spamming
+  const promptedRef = useRef<Set<string>>(new Set());
+  const prevPosIdsRef = useRef<Set<string>>(new Set());
+  const [activatePrompt, setActivatePrompt] = useState<{ id: bigint } | null>(null);
+  const [claimUsdvPrompt, setClaimUsdvPrompt] = useState<{ id: bigint; amount: bigint } | null>(null);
 
   // ---- inviter input (prefill from URL/localStorage) ----
   const [inviterInput, setInviterInput] = useState("");
