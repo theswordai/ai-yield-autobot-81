@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { formatUnits, parseUnits } from "ethers";
 import {
   Wallet, Coins, TrendingUp, Users, Award, Gift,
-  Copy, Check, Lock, Clock, Info, AlertTriangle,
+  Copy, Check, Lock, Clock, Info, AlertTriangle, Sparkles,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ import { Navbar } from "@/components/Navbar";
 import { TransactionHistory } from "@/components/TransactionHistory";
 import { Contract } from "ethers";
 import { FlexiblePool_ABI } from "@/abis/FlexiblePool";
+import { useRewarder, formatUSDV, UsdvPositionStatus } from "@/hooks/useRewarder";
 
 const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
 
@@ -67,7 +68,14 @@ export default function Flexible() {
     loadDownlineByGen,
     actionLoading,
   } = useFlexiblePool();
+  const rewarder = useRewarder(isZh);
   const { copied, copy } = useCopy();
+
+  // Track positions for which the activate prompt has been shown to avoid spamming
+  const promptedRef = useRef<Set<string>>(new Set());
+  const prevPosIdsRef = useRef<Set<string>>(new Set());
+  const [activatePrompt, setActivatePrompt] = useState<{ id: bigint } | null>(null);
+  const [claimUsdvPrompt, setClaimUsdvPrompt] = useState<{ id: bigint; amount: bigint } | null>(null);
 
   // ---- inviter input (prefill from URL/localStorage) ----
   const [inviterInput, setInviterInput] = useState("");
@@ -116,12 +124,57 @@ export default function Flexible() {
 
   const confirmClose = async () => {
     if (!closeTarget) return;
-    const ok = await closePosition(closeTarget.id);
+    const closingId = closeTarget.id;
+    const wasRegistered = rewarder.statusMap[closingId.toString()]?.registered;
+    const ok = await closePosition(closingId);
     if (ok) {
       setCloseTarget(null);
       setClosePreview(null);
+      if (wasRegistered) {
+        // Wait briefly for refresh, then prompt to claim USDV
+        setTimeout(async () => {
+          await rewarder.fetchStatuses(
+            data.positions.map((pp) => ({ id: pp.id, closed: pp.id === closingId ? true : pp.closed }))
+          );
+          // previewClaim is now valid since position is closed
+          const amt = rewarder.statusMap[closingId.toString()]?.preview ?? 0n;
+          setClaimUsdvPrompt({ id: closingId, amount: amt });
+        }, 1200);
+      }
     }
   };
+
+  // ---- USDV reward: fetch statuses whenever positions change ----
+  useEffect(() => {
+    if (!account || !isBSC) return;
+    rewarder.fetchStatuses(
+      data.positions.map((p) => ({ id: p.id, closed: p.closed }))
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, isBSC, data.positions.map((p) => `${p.id}-${p.closed}`).join(",")]);
+
+  // ---- Auto-prompt to activate USDV on newly opened positions ----
+  useEffect(() => {
+    if (!account || !isBSC) return;
+    const currentIds = new Set(data.positions.filter((p) => !p.closed).map((p) => p.id.toString()));
+    const prev = prevPosIdsRef.current;
+    if (prev.size > 0) {
+      for (const id of currentIds) {
+        if (!prev.has(id) && !promptedRef.current.has(id)) {
+          const status = rewarder.statusMap[id];
+          if (!status?.registered) {
+            const pos = data.positions.find((p) => p.id.toString() === id);
+            if (pos) {
+              promptedRef.current.add(id);
+              setActivatePrompt({ id: pos.id });
+              break;
+            }
+          }
+        }
+      }
+    }
+    prevPosIdsRef.current = currentIds;
+  }, [account, isBSC, data.positions, rewarder.statusMap]);
 
   // ---- downline by generation ----
   const [genRows, setGenRows] = useState<Array<{ gen: number; count: number; principal: bigint }>>([]);
@@ -399,6 +452,42 @@ export default function Flexible() {
                 </CardContent>
               </Card>
 
+              {/* USDV Reward overview */}
+              <Card className="backdrop-blur-md bg-gradient-to-br from-primary/10 via-card/40 to-accent/10 border-primary/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    {isZh ? "USDV 奖励" : "USDV Rewards"}
+                    <Badge className="bg-primary/20 text-primary border-primary/40 text-[10px]">
+                      ×{Number(rewarder.global.multiplier)} {isZh ? "利息" : "yield"}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-lg border border-border/50 bg-background/30 p-3">
+                    <p className="text-[11px] text-muted-foreground mb-1">{isZh ? "我的 USDV 余额" : "My USDV Balance"}</p>
+                    <p className="text-xl font-bold text-primary tabular-nums">{formatUSDV(rewarder.global.usdvBalance)}</p>
+                  </div>
+                  <div className="rounded-lg border border-border/50 bg-background/30 p-3">
+                    <p className="text-[11px] text-muted-foreground mb-1">{isZh ? "全网累计铸造" : "Total Minted"}</p>
+                    <p className="text-xl font-bold tabular-nums">{formatUSDV(rewarder.global.totalMinted, 0)}</p>
+                  </div>
+                  <div className="rounded-lg border border-border/50 bg-background/30 p-3">
+                    <p className="text-[11px] text-muted-foreground mb-1">{isZh ? "奖励倍数" : "Multiplier"}</p>
+                    <p className="text-xl font-bold tabular-nums">×{Number(rewarder.global.multiplier)}</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">{isZh ? "活期利息 → USDV 空投" : "yield → USDV airdrop"}</p>
+                  </div>
+                </CardContent>
+                <CardContent className="pt-0">
+                  <p className="text-[11px] text-muted-foreground flex items-start gap-1">
+                    <Info className="w-3 h-3 mt-0.5 shrink-0" />
+                    {isZh
+                      ? "存款后请激活 USDV 奖励，平仓前必须激活，否则该仓位将无法领取 USDV。"
+                      : "Activate USDV reward after deposit. Activation must happen before closing the position."}
+                  </p>
+                </CardContent>
+              </Card>
+
               {/* Positions */}
               <Card className="backdrop-blur-md bg-card/40 border-border/50">
                 <CardHeader className="pb-3 flex flex-row items-center justify-between">
@@ -425,6 +514,12 @@ export default function Flexible() {
                           loading={!!actionLoading[`close-${p.id}`]}
                           paused={data.paused}
                           onClose={() => openCloseDialog(p)}
+                          usdvStatus={rewarder.statusMap[p.id.toString()]}
+                          usdvMultiplier={Number(rewarder.global.multiplier)}
+                          onRegister={() => rewarder.register(p.id)}
+                          onClaimUsdv={() => rewarder.claim(p.id)}
+                          registerBusy={!!rewarder.actionLoading[`register-${p.id}`]}
+                          claimBusy={!!rewarder.actionLoading[`claim-usdv-${p.id}`]}
                         />
                       ))}
                     </div>
@@ -655,6 +750,91 @@ export default function Flexible() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Activate USDV prompt (after deposit) */}
+      <Dialog open={!!activatePrompt} onOpenChange={(o) => { if (!o) setActivatePrompt(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              {isZh ? "激活 USDV 奖励" : "Activate USDV Reward"}
+            </DialogTitle>
+            <DialogDescription>
+              {isZh
+                ? `存款成功！激活后您将额外获得 ${Number(rewarder.global.multiplier)} 倍利息的 USDV 空投。⚠️ 必须在平仓前激活，否则 USDV 奖励将作废。`
+                : `Deposit successful! Activate to earn ${Number(rewarder.global.multiplier)}× your yield as USDV airdrop. Must be done before closing or the reward is forfeit.`}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="text-sm rounded-lg border border-border/50 bg-muted/20 p-3">
+            {isZh ? "仓位 ID" : "Position ID"}: <span className="font-mono font-semibold">#{activatePrompt?.id.toString()}</span>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setActivatePrompt(null)}>
+              {isZh ? "稍后激活" : "Later"}
+            </Button>
+            <Button
+              className="bg-gradient-to-r from-primary to-accent"
+              disabled={activatePrompt ? !!rewarder.actionLoading[`register-${activatePrompt.id}`] : false}
+              onClick={async () => {
+                if (!activatePrompt) return;
+                const ok = await rewarder.register(activatePrompt.id);
+                if (ok) {
+                  setActivatePrompt(null);
+                  await rewarder.fetchStatuses(data.positions.map((p) => ({ id: p.id, closed: p.closed })));
+                }
+              }}
+            >
+              <Sparkles className="w-4 h-4 mr-1" />
+              {activatePrompt && rewarder.actionLoading[`register-${activatePrompt.id}`]
+                ? (isZh ? "激活中…" : "Activating…")
+                : (isZh ? "立即激活" : "Activate now")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Claim USDV prompt (after close) */}
+      <Dialog open={!!claimUsdvPrompt} onOpenChange={(o) => { if (!o) setClaimUsdvPrompt(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Gift className="w-5 h-5 text-primary" />
+              {isZh ? "领取 USDV 奖励" : "Claim USDV Reward"}
+            </DialogTitle>
+            <DialogDescription>
+              {isZh
+                ? "🎉 平仓成功！您可以领取本仓位对应的 USDV 奖励。"
+                : "🎉 Position closed! You can now claim the USDV reward for this position."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="text-center py-4">
+            <p className="text-3xl font-bold text-primary">
+              {formatUSDV(claimUsdvPrompt?.amount ?? 0n)} <span className="text-base text-muted-foreground">USDV</span>
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setClaimUsdvPrompt(null)}>
+              {isZh ? "稍后领取" : "Later"}
+            </Button>
+            <Button
+              className="bg-gradient-to-r from-primary to-accent"
+              disabled={claimUsdvPrompt ? !!rewarder.actionLoading[`claim-usdv-${claimUsdvPrompt.id}`] : false}
+              onClick={async () => {
+                if (!claimUsdvPrompt) return;
+                const ok = await rewarder.claim(claimUsdvPrompt.id);
+                if (ok) {
+                  setClaimUsdvPrompt(null);
+                  await rewarder.fetchStatuses(data.positions.map((p) => ({ id: p.id, closed: p.closed })));
+                }
+              }}
+            >
+              {claimUsdvPrompt && rewarder.actionLoading[`claim-usdv-${claimUsdvPrompt.id}`]
+                ? (isZh ? "领取中…" : "Claiming…")
+                : (isZh ? "立即领取" : "Claim now")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -678,12 +858,24 @@ function StatCard({
 
 function PositionCard({
   p, isZh, loading, paused, onClose,
-}: { p: FlexiblePosition; isZh: boolean; loading: boolean; paused: boolean; onClose: () => void }) {
+  usdvStatus, usdvMultiplier, onRegister, onClaimUsdv, registerBusy, claimBusy,
+}: {
+  p: FlexiblePosition; isZh: boolean; loading: boolean; paused: boolean; onClose: () => void;
+  usdvStatus?: UsdvPositionStatus;
+  usdvMultiplier: number;
+  onRegister: () => void;
+  onClaimUsdv: () => void;
+  registerBusy: boolean;
+  claimBusy: boolean;
+}) {
   const date = p.startTime
     ? new Date(p.startTime * 1000).toLocaleString(isZh ? "zh-CN" : "en-US", { hour12: false })
     : "—";
+  const registered = !!usdvStatus?.registered;
+  const claimed = !!usdvStatus?.claimed;
+  const previewAmt = usdvStatus?.preview ?? 0n;
   return (
-    <div className={`rounded-xl border p-4 ${p.closed ? "opacity-60 border-border/30 bg-muted/10" : "border-border/50 bg-card/30"}`}>
+    <div className={`rounded-xl border p-4 ${p.closed ? "opacity-80 border-border/30 bg-muted/10" : "border-border/50 bg-card/30"}`}>
       <div className="flex items-center justify-between mb-3">
         <Badge variant="outline" className="font-mono text-[11px]">#{p.id.toString()}</Badge>
         {p.closed ? (
@@ -706,6 +898,49 @@ function PositionCard({
           <span className="text-xs">{date}</span>
         </div>
       </div>
+
+      {/* USDV reward row */}
+      <div className="mt-3 pt-3 border-t border-border/40">
+        {!p.closed && !registered && (
+          <div className="flex items-center justify-between gap-2">
+            <Badge className="bg-yellow-500/15 text-yellow-600 dark:text-yellow-400 border-yellow-500/30 text-[10px]">
+              ⚠️ {isZh ? "USDV 未激活" : "USDV not activated"}
+            </Badge>
+            <Button size="sm" variant="default" className="h-7 px-3 text-[11px] bg-gradient-to-r from-primary to-accent"
+              onClick={onRegister} disabled={registerBusy}>
+              <Sparkles className="w-3 h-3 mr-1" />
+              {registerBusy ? (isZh ? "激活中…" : "Activating…") : (isZh ? "激活 USDV" : "Activate")}
+            </Button>
+          </div>
+        )}
+        {!p.closed && registered && (
+          <div className="flex items-center justify-between gap-2">
+            <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30 text-[10px]">
+              🟢 {isZh ? `USDV 已激活 (×${usdvMultiplier})` : `USDV active (×${usdvMultiplier})`}
+            </Badge>
+            <span className="text-[11px] text-muted-foreground">
+              ≈ {formatUSDV(previewAmt)} USDV
+            </span>
+          </div>
+        )}
+        {p.closed && registered && !claimed && (
+          <Button size="sm" className="w-full h-8 text-[12px] bg-gradient-to-r from-primary to-accent"
+            onClick={onClaimUsdv} disabled={claimBusy}>
+            🎁 {claimBusy ? (isZh ? "领取中…" : "Claiming…") : (isZh ? `领取 ${formatUSDV(previewAmt)} USDV` : `Claim ${formatUSDV(previewAmt)} USDV`)}
+          </Button>
+        )}
+        {p.closed && claimed && (
+          <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30 text-[10px]">
+            ✅ {isZh ? "USDV 已领取" : "USDV claimed"}
+          </Badge>
+        )}
+        {p.closed && !registered && (
+          <span className="text-[11px] text-muted-foreground">
+            ❌ {isZh ? "未激活，无 USDV 奖励" : "Not activated — no USDV reward"}
+          </span>
+        )}
+      </div>
+
       {!p.closed && (
         <Button
           size="sm" variant="outline" className="w-full mt-3"

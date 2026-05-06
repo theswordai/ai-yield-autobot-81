@@ -1,0 +1,4 @@
+// USDV Rewarder + USDV token (BSC Mainnet)
+export const REWARDER_ADDRESS = "0x96a0c407Ce4cceF6B9405197ee8d8d94Dd983B9D";
+export const USDV_TOKEN_ADDRESS = "0x14B26c4A87e7ADddb401c281A4858090D79d1391";
+export const USDV_DECIMALS = 18;
