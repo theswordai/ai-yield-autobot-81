@@ -124,12 +124,57 @@ export default function Flexible() {
 
   const confirmClose = async () => {
     if (!closeTarget) return;
-    const ok = await closePosition(closeTarget.id);
+    const closingId = closeTarget.id;
+    const wasRegistered = rewarder.statusMap[closingId.toString()]?.registered;
+    const ok = await closePosition(closingId);
     if (ok) {
       setCloseTarget(null);
       setClosePreview(null);
+      if (wasRegistered) {
+        // Wait briefly for refresh, then prompt to claim USDV
+        setTimeout(async () => {
+          await rewarder.fetchStatuses(
+            data.positions.map((pp) => ({ id: pp.id, closed: pp.id === closingId ? true : pp.closed }))
+          );
+          // previewClaim is now valid since position is closed
+          const amt = rewarder.statusMap[closingId.toString()]?.preview ?? 0n;
+          setClaimUsdvPrompt({ id: closingId, amount: amt });
+        }, 1200);
+      }
     }
   };
+
+  // ---- USDV reward: fetch statuses whenever positions change ----
+  useEffect(() => {
+    if (!account || !isBSC) return;
+    rewarder.fetchStatuses(
+      data.positions.map((p) => ({ id: p.id, closed: p.closed }))
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, isBSC, data.positions.map((p) => `${p.id}-${p.closed}`).join(",")]);
+
+  // ---- Auto-prompt to activate USDV on newly opened positions ----
+  useEffect(() => {
+    if (!account || !isBSC) return;
+    const currentIds = new Set(data.positions.filter((p) => !p.closed).map((p) => p.id.toString()));
+    const prev = prevPosIdsRef.current;
+    if (prev.size > 0) {
+      for (const id of currentIds) {
+        if (!prev.has(id) && !promptedRef.current.has(id)) {
+          const status = rewarder.statusMap[id];
+          if (!status?.registered) {
+            const pos = data.positions.find((p) => p.id.toString() === id);
+            if (pos) {
+              promptedRef.current.add(id);
+              setActivatePrompt({ id: pos.id });
+              break;
+            }
+          }
+        }
+      }
+    }
+    prevPosIdsRef.current = currentIds;
+  }, [account, isBSC, data.positions, rewarder.statusMap]);
 
   // ---- downline by generation ----
   const [genRows, setGenRows] = useState<Array<{ gen: number; count: number; principal: bigint }>>([]);
