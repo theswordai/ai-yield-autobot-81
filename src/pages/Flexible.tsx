@@ -750,6 +750,91 @@ export default function Flexible() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Activate USDV prompt (after deposit) */}
+      <Dialog open={!!activatePrompt} onOpenChange={(o) => { if (!o) setActivatePrompt(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              {isZh ? "激活 USDV 奖励" : "Activate USDV Reward"}
+            </DialogTitle>
+            <DialogDescription>
+              {isZh
+                ? `存款成功！激活后您将额外获得 ${Number(rewarder.global.multiplier)} 倍利息的 USDV 空投。⚠️ 必须在平仓前激活，否则 USDV 奖励将作废。`
+                : `Deposit successful! Activate to earn ${Number(rewarder.global.multiplier)}× your yield as USDV airdrop. Must be done before closing or the reward is forfeit.`}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="text-sm rounded-lg border border-border/50 bg-muted/20 p-3">
+            {isZh ? "仓位 ID" : "Position ID"}: <span className="font-mono font-semibold">#{activatePrompt?.id.toString()}</span>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setActivatePrompt(null)}>
+              {isZh ? "稍后激活" : "Later"}
+            </Button>
+            <Button
+              className="bg-gradient-to-r from-primary to-accent"
+              disabled={activatePrompt ? !!rewarder.actionLoading[`register-${activatePrompt.id}`] : false}
+              onClick={async () => {
+                if (!activatePrompt) return;
+                const ok = await rewarder.register(activatePrompt.id);
+                if (ok) {
+                  setActivatePrompt(null);
+                  await rewarder.fetchStatuses(data.positions.map((p) => ({ id: p.id, closed: p.closed })));
+                }
+              }}
+            >
+              <Sparkles className="w-4 h-4 mr-1" />
+              {activatePrompt && rewarder.actionLoading[`register-${activatePrompt.id}`]
+                ? (isZh ? "激活中…" : "Activating…")
+                : (isZh ? "立即激活" : "Activate now")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Claim USDV prompt (after close) */}
+      <Dialog open={!!claimUsdvPrompt} onOpenChange={(o) => { if (!o) setClaimUsdvPrompt(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Gift className="w-5 h-5 text-primary" />
+              {isZh ? "领取 USDV 奖励" : "Claim USDV Reward"}
+            </DialogTitle>
+            <DialogDescription>
+              {isZh
+                ? "🎉 平仓成功！您可以领取本仓位对应的 USDV 奖励。"
+                : "🎉 Position closed! You can now claim the USDV reward for this position."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="text-center py-4">
+            <p className="text-3xl font-bold text-primary">
+              {formatUSDV(claimUsdvPrompt?.amount ?? 0n)} <span className="text-base text-muted-foreground">USDV</span>
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setClaimUsdvPrompt(null)}>
+              {isZh ? "稍后领取" : "Later"}
+            </Button>
+            <Button
+              className="bg-gradient-to-r from-primary to-accent"
+              disabled={claimUsdvPrompt ? !!rewarder.actionLoading[`claim-usdv-${claimUsdvPrompt.id}`] : false}
+              onClick={async () => {
+                if (!claimUsdvPrompt) return;
+                const ok = await rewarder.claim(claimUsdvPrompt.id);
+                if (ok) {
+                  setClaimUsdvPrompt(null);
+                  await rewarder.fetchStatuses(data.positions.map((p) => ({ id: p.id, closed: p.closed })));
+                }
+              }}
+            >
+              {claimUsdvPrompt && rewarder.actionLoading[`claim-usdv-${claimUsdvPrompt.id}`]
+                ? (isZh ? "领取中…" : "Claiming…")
+                : (isZh ? "立即领取" : "Claim now")}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
