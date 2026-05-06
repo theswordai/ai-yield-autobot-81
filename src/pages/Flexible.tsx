@@ -452,6 +452,42 @@ export default function Flexible() {
                 </CardContent>
               </Card>
 
+              {/* USDV Reward overview */}
+              <Card className="backdrop-blur-md bg-gradient-to-br from-primary/10 via-card/40 to-accent/10 border-primary/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                    {isZh ? "USDV 奖励" : "USDV Rewards"}
+                    <Badge className="bg-primary/20 text-primary border-primary/40 text-[10px]">
+                      ×{Number(rewarder.global.multiplier)} {isZh ? "利息" : "yield"}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-lg border border-border/50 bg-background/30 p-3">
+                    <p className="text-[11px] text-muted-foreground mb-1">{isZh ? "我的 USDV 余额" : "My USDV Balance"}</p>
+                    <p className="text-xl font-bold text-primary tabular-nums">{formatUSDV(rewarder.global.usdvBalance)}</p>
+                  </div>
+                  <div className="rounded-lg border border-border/50 bg-background/30 p-3">
+                    <p className="text-[11px] text-muted-foreground mb-1">{isZh ? "全网累计铸造" : "Total Minted"}</p>
+                    <p className="text-xl font-bold tabular-nums">{formatUSDV(rewarder.global.totalMinted, 0)}</p>
+                  </div>
+                  <div className="rounded-lg border border-border/50 bg-background/30 p-3">
+                    <p className="text-[11px] text-muted-foreground mb-1">{isZh ? "奖励倍数" : "Multiplier"}</p>
+                    <p className="text-xl font-bold tabular-nums">×{Number(rewarder.global.multiplier)}</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">{isZh ? "活期利息 → USDV 空投" : "yield → USDV airdrop"}</p>
+                  </div>
+                </CardContent>
+                <CardContent className="pt-0">
+                  <p className="text-[11px] text-muted-foreground flex items-start gap-1">
+                    <Info className="w-3 h-3 mt-0.5 shrink-0" />
+                    {isZh
+                      ? "存款后请激活 USDV 奖励，平仓前必须激活，否则该仓位将无法领取 USDV。"
+                      : "Activate USDV reward after deposit. Activation must happen before closing the position."}
+                  </p>
+                </CardContent>
+              </Card>
+
               {/* Positions */}
               <Card className="backdrop-blur-md bg-card/40 border-border/50">
                 <CardHeader className="pb-3 flex flex-row items-center justify-between">
@@ -478,6 +514,12 @@ export default function Flexible() {
                           loading={!!actionLoading[`close-${p.id}`]}
                           paused={data.paused}
                           onClose={() => openCloseDialog(p)}
+                          usdvStatus={rewarder.statusMap[p.id.toString()]}
+                          usdvMultiplier={Number(rewarder.global.multiplier)}
+                          onRegister={() => rewarder.register(p.id)}
+                          onClaimUsdv={() => rewarder.claim(p.id)}
+                          registerBusy={!!rewarder.actionLoading[`register-${p.id}`]}
+                          claimBusy={!!rewarder.actionLoading[`claim-usdv-${p.id}`]}
                         />
                       ))}
                     </div>
