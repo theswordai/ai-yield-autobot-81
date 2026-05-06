@@ -773,12 +773,24 @@ function StatCard({
 
 function PositionCard({
   p, isZh, loading, paused, onClose,
-}: { p: FlexiblePosition; isZh: boolean; loading: boolean; paused: boolean; onClose: () => void }) {
+  usdvStatus, usdvMultiplier, onRegister, onClaimUsdv, registerBusy, claimBusy,
+}: {
+  p: FlexiblePosition; isZh: boolean; loading: boolean; paused: boolean; onClose: () => void;
+  usdvStatus?: UsdvPositionStatus;
+  usdvMultiplier: number;
+  onRegister: () => void;
+  onClaimUsdv: () => void;
+  registerBusy: boolean;
+  claimBusy: boolean;
+}) {
   const date = p.startTime
     ? new Date(p.startTime * 1000).toLocaleString(isZh ? "zh-CN" : "en-US", { hour12: false })
     : "—";
+  const registered = !!usdvStatus?.registered;
+  const claimed = !!usdvStatus?.claimed;
+  const previewAmt = usdvStatus?.preview ?? 0n;
   return (
-    <div className={`rounded-xl border p-4 ${p.closed ? "opacity-60 border-border/30 bg-muted/10" : "border-border/50 bg-card/30"}`}>
+    <div className={`rounded-xl border p-4 ${p.closed ? "opacity-80 border-border/30 bg-muted/10" : "border-border/50 bg-card/30"}`}>
       <div className="flex items-center justify-between mb-3">
         <Badge variant="outline" className="font-mono text-[11px]">#{p.id.toString()}</Badge>
         {p.closed ? (
@@ -801,6 +813,49 @@ function PositionCard({
           <span className="text-xs">{date}</span>
         </div>
       </div>
+
+      {/* USDV reward row */}
+      <div className="mt-3 pt-3 border-t border-border/40">
+        {!p.closed && !registered && (
+          <div className="flex items-center justify-between gap-2">
+            <Badge className="bg-yellow-500/15 text-yellow-600 dark:text-yellow-400 border-yellow-500/30 text-[10px]">
+              ⚠️ {isZh ? "USDV 未激活" : "USDV not activated"}
+            </Badge>
+            <Button size="sm" variant="default" className="h-7 px-3 text-[11px] bg-gradient-to-r from-primary to-accent"
+              onClick={onRegister} disabled={registerBusy}>
+              <Sparkles className="w-3 h-3 mr-1" />
+              {registerBusy ? (isZh ? "激活中…" : "Activating…") : (isZh ? "激活 USDV" : "Activate")}
+            </Button>
+          </div>
+        )}
+        {!p.closed && registered && (
+          <div className="flex items-center justify-between gap-2">
+            <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30 text-[10px]">
+              🟢 {isZh ? `USDV 已激活 (×${usdvMultiplier})` : `USDV active (×${usdvMultiplier})`}
+            </Badge>
+            <span className="text-[11px] text-muted-foreground">
+              ≈ {formatUSDV(previewAmt)} USDV
+            </span>
+          </div>
+        )}
+        {p.closed && registered && !claimed && (
+          <Button size="sm" className="w-full h-8 text-[12px] bg-gradient-to-r from-primary to-accent"
+            onClick={onClaimUsdv} disabled={claimBusy}>
+            🎁 {claimBusy ? (isZh ? "领取中…" : "Claiming…") : (isZh ? `领取 ${formatUSDV(previewAmt)} USDV` : `Claim ${formatUSDV(previewAmt)} USDV`)}
+          </Button>
+        )}
+        {p.closed && claimed && (
+          <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30 text-[10px]">
+            ✅ {isZh ? "USDV 已领取" : "USDV claimed"}
+          </Badge>
+        )}
+        {p.closed && !registered && (
+          <span className="text-[11px] text-muted-foreground">
+            ❌ {isZh ? "未激活，无 USDV 奖励" : "Not activated — no USDV reward"}
+          </span>
+        )}
+      </div>
+
       {!p.closed && (
         <Button
           size="sm" variant="outline" className="w-full mt-3"
