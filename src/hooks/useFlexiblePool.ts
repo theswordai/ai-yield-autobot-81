@@ -246,6 +246,7 @@ export function useFlexiblePool() {
       toast.info(`存款已提交: ${tx.hash.slice(0, 10)}...`);
       await tx.wait();
       toast.success("存款成功 / Deposited");
+      bumpHistoryRefresh();
       await refresh();
       return true;
     } catch (e: any) {
