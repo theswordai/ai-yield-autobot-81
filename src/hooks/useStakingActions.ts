@@ -150,6 +150,7 @@ export function useStakingActions() {
       toast.info(`赎回交易已提交: ${tx.hash.slice(0, 8)}...`);
       await tx.wait();
       toast.success("赎回成功");
+      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
