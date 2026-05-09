@@ -310,6 +310,7 @@ export function useStakingActions() {
       await depositTx.wait();
       
       toast.success(`🎉 复投成功！${claimedAmountFormatted} USDT 已重新质押`);
+      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
