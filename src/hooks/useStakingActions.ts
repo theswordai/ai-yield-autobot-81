@@ -200,6 +200,7 @@ export function useStakingActions() {
       } else {
         toast.success("推荐奖励领取成功");
       }
+      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
