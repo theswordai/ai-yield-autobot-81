@@ -10,6 +10,7 @@ import {
   USDT_DECIMALS,
   BSC_CHAIN_ID,
 } from "@/config/flexible";
+import { bumpHistoryRefresh } from "@/lib/historyRefresh";
 
 export interface FlexiblePosition {
   id: bigint;
@@ -245,6 +246,7 @@ export function useFlexiblePool() {
       toast.info(`存款已提交: ${tx.hash.slice(0, 10)}...`);
       await tx.wait();
       toast.success("存款成功 / Deposited");
+      bumpHistoryRefresh();
       await refresh();
       return true;
     } catch (e: any) {
@@ -275,6 +277,7 @@ export function useFlexiblePool() {
       toast.info(`平仓已提交: ${tx.hash.slice(0, 10)}...`);
       await tx.wait();
       toast.success("平仓成功 / Closed");
+      bumpHistoryRefresh();
       await refresh();
       return true;
     } catch (e: any) {
@@ -291,6 +294,7 @@ export function useFlexiblePool() {
       toast.info(`领取已提交: ${tx.hash.slice(0, 10)}...`);
       await tx.wait();
       toast.success("佣金领取成功 / Claimed");
+      bumpHistoryRefresh();
       await refresh();
       return true;
     } catch (e: any) {
