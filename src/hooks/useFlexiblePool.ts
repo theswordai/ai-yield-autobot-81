@@ -294,6 +294,7 @@ export function useFlexiblePool() {
       toast.info(`领取已提交: ${tx.hash.slice(0, 10)}...`);
       await tx.wait();
       toast.success("佣金领取成功 / Claimed");
+      bumpHistoryRefresh();
       await refresh();
       return true;
     } catch (e: any) {
