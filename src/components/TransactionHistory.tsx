@@ -1,21 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Contract, formatUnits } from "ethers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { History, ExternalLink, RefreshCw } from "lucide-react";
+import { onHistoryRefresh } from "@/lib/historyRefresh";
 
 export interface HistoryEventConfig {
-  /** Event name as defined in the ABI */
   name: string;
-  /** Display label */
   label: string;
-  /** Tailwind classes for the type badge */
   badgeClass?: string;
-  /**
-   * Given the event args, return the display amount in wei (bigint)
-   * and an optional sub-info string.
-   */
   parse: (args: any) => { amount: bigint; sub?: string };
 }
 
@@ -38,9 +32,8 @@ interface Props {
   }>;
   account: string | null;
   decimals?: number;
-  explorerBase?: string; // e.g. https://bscscan.com/tx/
+  explorerBase?: string;
   isZh?: boolean;
-  fromBlock?: number | "earliest";
 }
 
 const fmt = (v: bigint, decimals: number) => {
@@ -54,6 +47,9 @@ const fmt = (v: bigint, decimals: number) => {
   }
 };
 
+// BSC public RPCs cap eth_getLogs at ~5000 blocks per call.
+const CHUNK = 4500;
+
 export function TransactionHistory({
   title,
   contracts,
@@ -61,37 +57,32 @@ export function TransactionHistory({
   decimals = 18,
   explorerBase = "https://bscscan.com/tx/",
   isZh = true,
-  fromBlock = 0,
 }: Props) {
-  // Stable per-account, per-contract-set storage key so history persists across reloads.
-  const storageKey = useMemo(() => {
-    const addrs = contracts
-      .map((c) => (c.contract as any)?.target ?? "")
-      .filter(Boolean)
-      .join("|");
-    return account ? `txhist:${title}:${account.toLowerCase()}:${addrs}` : null;
-  }, [title, account, contracts]);
+  // Keep latest contracts in a ref so callbacks can use them without changing identity.
+  const contractsRef = useRef(contracts);
+  contractsRef.current = contracts;
 
+  // Stable string key derived only from primitive values (addresses + account + title).
+  const addrsKey = useMemo(
+    () =>
+      contracts
+        .map((c) => ((c.contract as any)?.target ?? "").toString().toLowerCase())
+        .filter(Boolean)
+        .join("|"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [contracts.length, contracts.map((c) => (c.contract as any)?.target ?? "").join("|")]
+  );
+
+  const storageKey = account ? `txhist:${title}:${account.toLowerCase()}:${addrsKey}` : null;
   const startBlockKey = storageKey ? `${storageKey}:startBlock` : null;
   const rowsKey = storageKey ? `${storageKey}:rows` : null;
 
-  const [rows, setRows] = useState<HistoryRow[]>(() => {
-    if (typeof window === "undefined" || !rowsKey) return [];
-    try {
-      const raw = localStorage.getItem(rowsKey);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw) as Array<Omit<HistoryRow, "amount"> & { amount: string }>;
-      return parsed.map((r) => ({ ...r, amount: BigInt(r.amount) }));
-    } catch {
-      return [];
-    }
-  });
+  const [rows, setRows] = useState<HistoryRow[]>([]);
   const [loading, setLoading] = useState(false);
-  const [startBlock, setStartBlock] = useState<number | null>(null);
 
   const blockTimeCache = useMemo(() => new Map<number, number>(), []);
 
-  // Re-hydrate rows when account/key changes (e.g. wallet switch).
+  // Hydrate rows from localStorage when the storage key changes.
   useEffect(() => {
     if (!rowsKey) {
       setRows([]);
@@ -110,95 +101,85 @@ export function TransactionHistory({
     }
   }, [rowsKey]);
 
-  // Capture the start block once per account; persist so it survives reloads.
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      if (!startBlockKey) {
-        setStartBlock(null);
-        return;
-      }
-      const cached = localStorage.getItem(startBlockKey);
-      if (cached) {
-        const n = Number(cached);
-        if (Number.isFinite(n)) {
-          if (!cancelled) setStartBlock(n);
-          return;
-        }
-      }
-      const provider = (contracts.find((c) => c.contract)?.contract?.runner as any);
-      const p = provider?.provider ?? provider;
-      try {
-        const bn = await p?.getBlockNumber?.();
-        if (!cancelled && typeof bn === "number") {
-          localStorage.setItem(startBlockKey, String(bn));
-          setStartBlock(bn);
-        }
-      } catch {
-        if (!cancelled) setStartBlock(0);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startBlockKey]);
-
   const fetchHistory = useCallback(async () => {
-    if (!account || startBlock === null) return;
+    if (!account || !startBlockKey || !rowsKey) return;
+    const list = contractsRef.current;
+    const provider = (list.find((c) => c.contract)?.contract?.runner as any)?.provider
+      ?? (list.find((c) => c.contract)?.contract?.runner as any);
+    if (!provider?.getBlockNumber) return;
+
     setLoading(true);
     try {
+      const latest = Number(await provider.getBlockNumber());
+
+      // Resolve startBlock from cache, or initialize to current block on first run.
+      let startBlock: number;
+      const cached = localStorage.getItem(startBlockKey);
+      if (cached && Number.isFinite(Number(cached))) {
+        startBlock = Number(cached);
+      } else {
+        startBlock = latest;
+        localStorage.setItem(startBlockKey, String(latest));
+      }
+      if (startBlock > latest) startBlock = latest;
+
       const fetched: HistoryRow[] = [];
+      let highestScanned = startBlock;
 
-      await Promise.all(
-        contracts.map(async ({ contract, events }) => {
-          if (!contract) return;
-          await Promise.all(
-            events.map(async (ev) => {
-              try {
-                const filter = (contract.filters as any)[ev.name](account);
-                const logs = await contract.queryFilter(filter, startBlock, "latest");
-                for (const log of logs as any[]) {
-                  const args = log.args ?? {};
-                  const parsed = ev.parse(args);
-                  fetched.push({
-                    key: `${log.transactionHash}-${log.logIndex}`,
-                    timestamp: 0,
-                    blockNumber: log.blockNumber,
-                    txHash: log.transactionHash,
-                    label: ev.label,
-                    badgeClass: ev.badgeClass,
-                    amount: parsed.amount,
-                    sub: parsed.sub,
-                  });
-                }
-              } catch {
-                // silent fallback
+      for (const { contract, events } of list) {
+        if (!contract) continue;
+        for (const ev of events) {
+          let filter: any;
+          try {
+            filter = (contract.filters as any)[ev.name](account);
+          } catch (e) {
+            console.warn(`[txhist] filter build failed for ${ev.name}`, e);
+            continue;
+          }
+          // Chunked scan to bypass RPC range limits.
+          for (let from = startBlock; from <= latest; from += CHUNK + 1) {
+            const to = Math.min(from + CHUNK, latest);
+            try {
+              const logs = await contract.queryFilter(filter, from, to);
+              for (const log of logs as any[]) {
+                const args = log.args ?? {};
+                const parsed = ev.parse(args);
+                fetched.push({
+                  key: `${log.transactionHash}-${log.logIndex}`,
+                  timestamp: 0,
+                  blockNumber: log.blockNumber,
+                  txHash: log.transactionHash,
+                  label: ev.label,
+                  badgeClass: ev.badgeClass,
+                  amount: parsed.amount,
+                  sub: parsed.sub,
+                });
               }
-            })
-          );
-        })
-      );
+              if (to > highestScanned) highestScanned = to;
+            } catch (e) {
+              console.warn(`[txhist] queryFilter ${ev.name} ${from}-${to} failed`, e);
+              // skip this chunk; keep scanning others
+            }
+          }
+        }
+      }
 
-      const provider = contracts.find((c) => c.contract)?.contract?.runner as any;
+      // Resolve block timestamps.
       const uniqueBlocks = Array.from(new Set(fetched.map((r) => r.blockNumber)));
       await Promise.all(
         uniqueBlocks.map(async (bn) => {
           if (blockTimeCache.has(bn)) return;
           try {
-            const blk = (await provider?.provider?.getBlock?.(bn)) ?? (await provider?.getBlock?.(bn));
+            const blk = await provider.getBlock?.(bn);
             if (blk?.timestamp) blockTimeCache.set(bn, Number(blk.timestamp));
           } catch {
             // ignore
           }
         })
       );
+      for (const r of fetched) r.timestamp = blockTimeCache.get(r.blockNumber) ?? 0;
 
-      for (const r of fetched) {
-        r.timestamp = blockTimeCache.get(r.blockNumber) ?? 0;
-      }
-
-      // Merge with cached rows, dedupe by key, sort desc.
+      // Merge with cached rows.
       setRows((prev) => {
         const map = new Map<string, HistoryRow>();
         for (const r of prev) map.set(r.key, r);
@@ -206,28 +187,41 @@ export function TransactionHistory({
         const merged = Array.from(map.values()).sort(
           (a, b) => b.timestamp - a.timestamp || b.blockNumber - a.blockNumber
         );
-        if (rowsKey) {
-          try {
-            localStorage.setItem(
-              rowsKey,
-              JSON.stringify(merged.map((r) => ({ ...r, amount: r.amount.toString() })))
-            );
-          } catch {
-            // ignore quota errors
-          }
+        try {
+          localStorage.setItem(
+            rowsKey,
+            JSON.stringify(merged.map((r) => ({ ...r, amount: r.amount.toString() })))
+          );
+        } catch {
+          // ignore quota errors
         }
         return merged;
       });
-    } catch {
-      // keep existing rows on error
+
+      // Advance the cached startBlock so next scan is short.
+      try {
+        localStorage.setItem(startBlockKey, String(highestScanned));
+      } catch {
+        // ignore
+      }
+    } catch (e) {
+      console.warn("[txhist] fetchHistory failed", e);
     } finally {
       setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, contracts, startBlock, rowsKey]);
+  }, [account, startBlockKey, rowsKey, addrsKey, blockTimeCache]);
 
+  // Initial + key-change fetch.
   useEffect(() => {
     fetchHistory();
+  }, [fetchHistory]);
+
+  // Cross-component refresh trigger (fired after deposit/claim/withdraw txs).
+  useEffect(() => {
+    return onHistoryRefresh(() => {
+      // small delay to let the node index the new block
+      setTimeout(() => fetchHistory(), 1500);
+    });
   }, [fetchHistory]);
 
   return (
