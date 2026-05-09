@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { useWeb3 } from "./useWeb3";
 import { useContracts } from "./useContracts";
 import { USDT_DECIMALS, TARGET_CHAIN, LOCK_ADDRESS } from "@/config/contracts";
-import { bumpHistoryRefresh } from "@/lib/historyRefresh";
 
 export function useStakingActions() {
   const { account, chainId } = useWeb3(); 
@@ -94,7 +93,6 @@ export function useStakingActions() {
       toast.info(`质押交易已提交: ${tx.hash.slice(0, 8)}...`);
       await tx.wait();
       toast.success("质押成功！收益已开始计算");
-      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
@@ -122,7 +120,6 @@ export function useStakingActions() {
       toast.info(`领取交易已提交: ${tx.hash.slice(0, 8)}...`);
       await tx.wait();
       toast.success("收益领取成功");
-      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
@@ -150,7 +147,6 @@ export function useStakingActions() {
       toast.info(`赎回交易已提交: ${tx.hash.slice(0, 8)}...`);
       await tx.wait();
       toast.success("赎回成功");
-      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
@@ -200,7 +196,6 @@ export function useStakingActions() {
       } else {
         toast.success("推荐奖励领取成功");
       }
-      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
@@ -310,7 +305,6 @@ export function useStakingActions() {
       await depositTx.wait();
       
       toast.success(`🎉 复投成功！${claimedAmountFormatted} USDT 已重新质押`);
-      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
