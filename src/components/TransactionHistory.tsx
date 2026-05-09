@@ -5,6 +5,30 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { History, ExternalLink, RefreshCw } from "lucide-react";
 import { onHistoryRefresh } from "@/lib/historyRefresh";
+import { rpcClient } from "@/lib/rpcClient";
+
+// Wrap any promise with a timeout so a hung wallet/RPC call cannot stall the UI.
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`[txhist] ${label} timeout ${ms}ms`)), ms);
+    p.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      }
+    );
+  });
+}
+
+// Per-RPC-call timeout, and max blocks we'll ever look back on first scan (~7 days on BSC).
+const CALL_TIMEOUT_MS = 8000;
+const MAX_INITIAL_LOOKBACK = 200_000;
+// Hard ceiling on the entire fetch — even if everything misbehaves, the spinner stops.
+const HARD_LOADING_CEILING_MS = 20_000;
 
 export interface HistoryEventConfig {
   name: string;
@@ -104,30 +128,57 @@ export function TransactionHistory({
   const fetchHistory = useCallback(async () => {
     if (!account || !startBlockKey || !rowsKey) return;
     const list = contractsRef.current;
-    const provider = (list.find((c) => c.contract)?.contract?.runner as any)?.provider
-      ?? (list.find((c) => c.contract)?.contract?.runner as any);
+
+    // Always use a stable public BSC RPC for historical reads — wallet-injected
+    // providers (TokenPocket / imToken / Bitget / WalletConnect mobile) often
+    // hang on eth_getLogs or silently return empty results.
+    const provider = rpcClient.getCurrentProvider();
     if (!provider?.getBlockNumber) return;
 
-    setLoading(true);
-    try {
-      const latest = Number(await provider.getBlockNumber());
+    // Build read-only shadow contracts bound to the public provider so
+    // queryFilter doesn't go through the wallet at all.
+    const shadow = list
+      .filter((c) => c.contract)
+      .map(({ contract, events }) => ({
+        contract: new Contract(
+          (contract as any).target,
+          (contract as any).interface,
+          provider
+        ),
+        events,
+      }));
 
-      // Resolve startBlock from cache, or initialize to current block on first run.
+    setLoading(true);
+    // Hard ceiling: even if every fallback misbehaves, the spinner stops.
+    const ceiling = setTimeout(() => setLoading(false), HARD_LOADING_CEILING_MS);
+
+    try {
+      let latest: number;
+      try {
+        latest = Number(
+          await withTimeout(provider.getBlockNumber(), CALL_TIMEOUT_MS, "getBlockNumber")
+        );
+      } catch (e) {
+        console.warn("[txhist] getBlockNumber failed", e);
+        return;
+      }
+
+      // Resolve startBlock from cache, or initialize on first run with a
+      // bounded look-back so a brand-new device doesn't scan months of blocks.
       let startBlock: number;
       const cached = localStorage.getItem(startBlockKey);
       if (cached && Number.isFinite(Number(cached))) {
         startBlock = Number(cached);
       } else {
-        startBlock = latest;
-        localStorage.setItem(startBlockKey, String(latest));
+        startBlock = Math.max(latest - MAX_INITIAL_LOOKBACK, 0);
+        localStorage.setItem(startBlockKey, String(startBlock));
       }
       if (startBlock > latest) startBlock = latest;
 
       const fetched: HistoryRow[] = [];
       let highestScanned = startBlock;
 
-      for (const { contract, events } of list) {
-        if (!contract) continue;
+      for (const { contract, events } of shadow) {
         for (const ev of events) {
           let filter: any;
           try {
@@ -136,12 +187,16 @@ export function TransactionHistory({
             console.warn(`[txhist] filter build failed for ${ev.name}`, e);
             continue;
           }
-          // Chunked scan to bypass RPC range limits.
+          // Chunked scan to bypass RPC range limits, with per-chunk timeout.
           for (let from = startBlock; from <= latest; from += CHUNK + 1) {
             const to = Math.min(from + CHUNK, latest);
             try {
-              const logs = await contract.queryFilter(filter, from, to);
-              for (const log of logs as any[]) {
+              const logs = await withTimeout(
+                contract.queryFilter(filter, from, to) as Promise<any[]>,
+                CALL_TIMEOUT_MS,
+                `queryFilter ${ev.name} ${from}-${to}`
+              );
+              for (const log of logs) {
                 const args = log.args ?? {};
                 const parsed = ev.parse(args);
                 fetched.push({
@@ -164,13 +219,17 @@ export function TransactionHistory({
         }
       }
 
-      // Resolve block timestamps.
+      // Resolve block timestamps via the same public provider, with timeout.
       const uniqueBlocks = Array.from(new Set(fetched.map((r) => r.blockNumber)));
       await Promise.all(
         uniqueBlocks.map(async (bn) => {
           if (blockTimeCache.has(bn)) return;
           try {
-            const blk = await provider.getBlock?.(bn);
+            const blk = await withTimeout(
+              provider.getBlock(bn),
+              CALL_TIMEOUT_MS,
+              `getBlock ${bn}`
+            );
             if (blk?.timestamp) blockTimeCache.set(bn, Number(blk.timestamp));
           } catch {
             // ignore
@@ -207,6 +266,7 @@ export function TransactionHistory({
     } catch (e) {
       console.warn("[txhist] fetchHistory failed", e);
     } finally {
+      clearTimeout(ceiling);
       setLoading(false);
     }
   }, [account, startBlockKey, rowsKey, addrsKey, blockTimeCache]);
