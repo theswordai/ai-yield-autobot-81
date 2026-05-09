@@ -5,6 +5,30 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { History, ExternalLink, RefreshCw } from "lucide-react";
 import { onHistoryRefresh } from "@/lib/historyRefresh";
+import { rpcClient } from "@/lib/rpcClient";
+
+// Wrap any promise with a timeout so a hung wallet/RPC call cannot stall the UI.
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`[txhist] ${label} timeout ${ms}ms`)), ms);
+    p.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      }
+    );
+  });
+}
+
+// Per-RPC-call timeout, and max blocks we'll ever look back on first scan (~7 days on BSC).
+const CALL_TIMEOUT_MS = 8000;
+const MAX_INITIAL_LOOKBACK = 200_000;
+// Hard ceiling on the entire fetch — even if everything misbehaves, the spinner stops.
+const HARD_LOADING_CEILING_MS = 20_000;
 
 export interface HistoryEventConfig {
   name: string;
