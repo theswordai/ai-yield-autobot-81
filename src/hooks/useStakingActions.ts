@@ -94,6 +94,7 @@ export function useStakingActions() {
       toast.info(`质押交易已提交: ${tx.hash.slice(0, 8)}...`);
       await tx.wait();
       toast.success("质押成功！收益已开始计算");
+      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
