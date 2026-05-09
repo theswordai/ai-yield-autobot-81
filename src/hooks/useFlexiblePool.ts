@@ -277,6 +277,7 @@ export function useFlexiblePool() {
       toast.info(`平仓已提交: ${tx.hash.slice(0, 10)}...`);
       await tx.wait();
       toast.success("平仓成功 / Closed");
+      bumpHistoryRefresh();
       await refresh();
       return true;
     } catch (e: any) {
