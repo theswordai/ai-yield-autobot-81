@@ -10,6 +10,7 @@ import {
   USDT_DECIMALS,
   BSC_CHAIN_ID,
 } from "@/config/flexible";
+import { bumpHistoryRefresh } from "@/lib/historyRefresh";
 
 export interface FlexiblePosition {
   id: bigint;
