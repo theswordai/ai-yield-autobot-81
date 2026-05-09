@@ -266,6 +266,7 @@ export function TransactionHistory({
     } catch (e) {
       console.warn("[txhist] fetchHistory failed", e);
     } finally {
+      clearTimeout(ceiling);
       setLoading(false);
     }
   }, [account, startBlockKey, rowsKey, addrsKey, blockTimeCache]);
