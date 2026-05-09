@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { useWeb3 } from "./useWeb3";
 import { useContracts } from "./useContracts";
 import { USDT_DECIMALS, TARGET_CHAIN, LOCK_ADDRESS } from "@/config/contracts";
+import { bumpHistoryRefresh } from "@/lib/historyRefresh";
 
 export function useStakingActions() {
   const { account, chainId } = useWeb3(); 
