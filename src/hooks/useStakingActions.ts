@@ -122,6 +122,7 @@ export function useStakingActions() {
       toast.info(`领取交易已提交: ${tx.hash.slice(0, 8)}...`);
       await tx.wait();
       toast.success("收益领取成功");
+      bumpHistoryRefresh();
       return true;
 
     } catch (error: any) {
