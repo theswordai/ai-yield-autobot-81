@@ -52,8 +52,9 @@ export function useChatRoom(opts?: { enabled?: boolean }) {
   // Realtime
   useEffect(() => {
     if (!enabled) return;
+    const channelName = `chat_messages_realtime_${Math.random().toString(36).slice(2, 9)}`;
     const ch = supabase
-      .channel("chat_messages_realtime")
+      .channel(channelName)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (payload) => {
         const m = payload.new as ChatMessage;
         if (m.is_deleted) return;
