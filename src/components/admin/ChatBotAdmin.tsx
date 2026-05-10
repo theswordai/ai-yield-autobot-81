@@ -48,15 +48,24 @@ export function ChatBotAdmin() {
   const sendOne = async () => {
     setSending(true);
     try {
-      const { data, error } = await supabase.functions.invoke("chat-bot-tick", {
-        body: { force: true },
-      });
+      // Pick from same regular pool client-side (small subset is fine for manual test)
+      const wallets = [
+        "0x3a7f1c9b8d2e4a6c1f0e9b7a5d3c2e1f4b6a8d0c",
+        "0x8c2e9a1b3d5f7e9c0a2b4d6f8e0c2a4b6d8f0e1c",
+        "0x9d3c5e7f1b3a5d7f9c1e3a5d7f9b1c3e5a7d9f1b",
+        "0xa3c5e7f9b1d3a5c7e9f1b3d5a7c9e1f3b5d7a9c1",
+      ];
+      const lines = [
+        "再观望就真的晚了",
+        `刚补仓 ${(200 + Math.random() * 19800).toFixed(2)} U`,
+        "USDONLINE 的复利曲线是真扛打",
+        "邀请人怎么绑定来着？",
+      ];
+      const wallet = wallets[Math.floor(Math.random() * wallets.length)];
+      const content = lines[Math.floor(Math.random() * lines.length)];
+      const { error } = await supabase.from("chat_messages").insert({ wallet_address: wallet, content });
       if (error) throw error;
-      if ((data as any)?.posted) {
-        toast({ title: "已发送一条机器人消息" });
-      } else {
-        toast({ title: "未发送", description: JSON.stringify(data), variant: "destructive" });
-      }
+      toast({ title: "已发送一条机器人消息", description: `${wallet.slice(0, 6)}…：${content}` });
     } catch (e: any) {
       toast({ title: "发送失败", description: e?.message || String(e), variant: "destructive" });
     } finally {
