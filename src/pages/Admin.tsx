@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { AnnouncementsAdmin } from "@/components/admin/AnnouncementsAdmin";
 import { InboxAdmin } from "@/components/admin/InboxAdmin";
 import { SupportAdmin } from "@/components/admin/SupportAdmin";
+import { ChatBotAdmin } from "@/components/admin/ChatBotAdmin";
 
 export default function Admin() {
   const { isAdmin, loading, account } = useIsAdmin();
@@ -59,10 +60,12 @@ export default function Admin() {
             <TabsTrigger value="announcements">公告管理</TabsTrigger>
             <TabsTrigger value="inbox">站内信发送</TabsTrigger>
             <TabsTrigger value="support">客服会话</TabsTrigger>
+            <TabsTrigger value="chatbot">聊天机器人</TabsTrigger>
           </TabsList>
           <TabsContent value="announcements" className="mt-4"><AnnouncementsAdmin /></TabsContent>
           <TabsContent value="inbox" className="mt-4"><InboxAdmin /></TabsContent>
           <TabsContent value="support" className="mt-4"><SupportAdmin /></TabsContent>
+          <TabsContent value="chatbot" className="mt-4"><ChatBotAdmin /></TabsContent>
         </Tabs>
       )}
     </main>

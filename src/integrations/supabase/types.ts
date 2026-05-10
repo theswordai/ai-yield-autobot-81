@@ -97,6 +97,33 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_bot_config: {
+        Row: {
+          enabled: boolean
+          id: number
+          last_bot_post_at: string | null
+          max_interval_minutes: number
+          min_interval_minutes: number
+          updated_at: string
+        }
+        Insert: {
+          enabled?: boolean
+          id?: number
+          last_bot_post_at?: string | null
+          max_interval_minutes?: number
+          min_interval_minutes?: number
+          updated_at?: string
+        }
+        Update: {
+          enabled?: boolean
+          id?: number
+          last_bot_post_at?: string | null
+          max_interval_minutes?: number
+          min_interval_minutes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           content: string

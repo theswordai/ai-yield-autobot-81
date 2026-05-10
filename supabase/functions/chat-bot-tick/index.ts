@@ -1,0 +1,226 @@
+import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.0/cors";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
+
+// 40 fixed "regular" wallet addresses (deterministic-looking but generated once)
+const REGULAR_WALLETS: string[] = [
+  "0x3a7f1c9b8d2e4a6c1f0e9b7a5d3c2e1f4b6a8d0c",
+  "0x8c2e9a1b3d5f7e9c0a2b4d6f8e0c2a4b6d8f0e1c",
+  "0x1f4b6a8d0c3e5f7a9b1d3c5e7f9a1b3d5c7e9f0a",
+  "0x9d3c5e7f1b3a5d7f9c1e3a5d7f9b1c3e5a7d9f1b",
+  "0x4a6c8e0f2d4b6a8c0e2f4d6b8a0c2e4f6d8b0a2c",
+  "0x7e9c1a3d5f7b9e1c3a5d7f9b1e3c5a7d9f1b3e5c",
+  "0x2d4f6a8c0e2b4d6f8a0c2e4b6d8f0a2c4e6b8d0f",
+  "0x5b7d9f1e3a5c7d9f1b3e5a7c9f1d3b5e7a9c1f3d",
+  "0xc1e3a5d7f9b1c3e5a7d9f1b3c5e7a9d1f3b5c7e9",
+  "0xf0a2c4e6b8d0f2a4c6e8b0d2f4a6c8e0b2d4f6a8",
+  "0x6b8d0f2a4c6e8b0d2f4a6c8e0b2d4f6a8c0e2b4d",
+  "0xa3c5e7f9b1d3a5c7e9f1b3d5a7c9e1f3b5d7a9c1",
+  "0x0e2f4d6b8a0c2e4f6d8b0a2c4e6f8d0b2a4c6e8f",
+  "0xd5f7b9e1c3a5d7f9b1e3c5a7d9f1b3e5c7a9d1f3",
+  "0x4b6d8f0a2c4e6b8d0f2a4c6e8b0d2f4a6c8e0b2d",
+  "0x91b3d5c7e9f1a3b5d7c9e1f3a5b7d9c1e3f5a7b9",
+  "0x6f8e0c2a4b6d8f0e1c3a5b7d9f0e2c4a6b8d0f1e",
+  "0xc3a5d7f9b1e3c5a7d9f1b3e5c7a9d1f3b5c7e9a1",
+  "0x2a4c6e8b0d2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c",
+  "0x7d9f1b3e5c7a9d1f3b5c7e9a1d3f5b7c9e1a3d5f",
+  "0xe9f1a3b5d7c9e1f3a5b7d9c1e3f5a7b9d1c3e5f7",
+  "0x4f6d8b0a2c4e6f8d0b2a4c6e8f0d2b4a6c8e0f2d",
+  "0xb1d3a5c7e9f1b3d5a7c9e1f3b5d7a9c1e3f5b7d9",
+  "0x82e0c4a6b8d0f2e4c6a8b0d2f4e6c8a0b2d4f6e8",
+  "0x37b5d9c1e3f5a7b9d1c3e5f7a9b1d3c5e7f9a1b3",
+  "0xc5a7d9f1b3c5e7a9d1f3b5c7e9a1d3f5b7c9e1a3",
+  "0x6e8b0d2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e4f",
+  "0xa9c1e3f5b7d9a1c3e5f7b9d1a3c5e7f9b1d3a5c7",
+  "0x18d4f0e2c6a8b4d0f2e6c8a4b0d2f6e8c4a0b2d6",
+  "0x5c7a9d1f3b5e7c9a1d3f5b7e9c1a3d5f7b9e1c3a",
+  "0xb7d9c1e3f5a7b9d1c3e5f7a9b1d3c5e7f9a1b3d5",
+  "0x40c2e6f8a4b0d2f6e8c4a0b2d6f8e4c0a2b4d6f8",
+  "0x9b1d3c5e7f9a1b3d5c7e9f1a3b5d7c9e1f3a5b7d",
+  "0xe1c3a5d7f9b1e3c5a7d9f1b3e5c7a9d1f3b5c7e9",
+  "0x26b8d4f0e2c6a8b4d0f2e6c8a4b0d2f6e8c4a0b2",
+  "0x7f9b1c3e5a7d9f1b3c5e7a9d1f3b5c7e9a1d3f5b",
+  "0xd3c5e7f9a1b3d5c7e9f1a3b5d7c9e1f3a5b7d9c1",
+  "0x4e6f8d0b2a4c6e8f0d2b4a6c8e0f2d4b6a8c0e2f",
+  "0xa1b3d5c7e9f1a3b5d7c9e1f3a5b7d9c1e3f5a7b9",
+  "0x59f1b3e5c7a9d1f3b5c7e9a1d3f5b7c9e1a3d5f7",
+];
+
+// Templates: {amount} -> 200..20000 with 2 decimals; {yield} -> 3..380 with 2 decimals; {days} -> 90/180/365
+const TEMPLATES = {
+  fomo: [
+    "再观望就真的晚了",
+    "APY 又涨了？再不冲我急了",
+    "错过这波别哭，去年错过 DeFi 的别再错过这次",
+    "上个月没上车，肠子悔青",
+    "兄弟们冲，年底见",
+    "稳定币还能这个 APY，闭眼上",
+    "这个项目讲真，越看越扎实",
+    "群友都在加仓，我也要冲了",
+    "今晚必须加点仓",
+    "这种机会一年也没几次",
+    "USDONLINE 真的稳，已经让朋友也进了",
+    "BSC 上现在最值得做的就这一个",
+    "复利曲线看一眼就忍不住",
+    "锁仓到期前不下车",
+    "看这数据，团队是真做事的",
+  ],
+  showoff: [
+    "刚补仓 {amount} U",
+    "今天领了 {yield} U 收益，已复投",
+    "锁了 {amount} U 进 {days} 天，到期再加码",
+    "刚到账 {yield} U，舒服",
+    "本金 {amount} U 滚到现在已经香了",
+    "把币安搬过来 {amount} U 全锁了",
+    "今日收益 {yield} U，复投继续",
+    "复投了 {yield} U，雪球开始转了",
+    "上车 {amount} U 没纠结",
+    "邀请奖励到账 {yield} U，nice",
+    "把 OKX 提了 {amount} U 进来",
+    "今晚再加 {amount} U",
+  ],
+  discuss: [
+    "USDONLINE 的复利曲线是真扛打",
+    "邀请奖励比预想高，朋友也开始问了",
+    "BSC 上 gas 几乎可忽略",
+    "审计页面的合约地址我自己 BscScan 查过了，没问题",
+    "这个团队产品节奏挺稳的",
+    "白皮书读完更有信心了",
+    "比起其他 DeFi，这个收益和透明度都顶",
+    "看了下 TVL 一直在涨",
+    "VIP 体系做得不错，长期主义",
+    "邀请人 + 质押双收益结构挺合理",
+    "比之前撸过的羊毛靠谱多了",
+    "美元稳定币 + 高 APY，这种组合不多见",
+  ],
+  question: [
+    "{days} 天和 365 天哪个更划算？",
+    "邀请人怎么绑定来着？",
+    "白皮书在哪里看",
+    "提现要多久到账啊",
+    "锁仓中途能加仓吗",
+    "新人有什么注意事项",
+    "BSC 链上 gas 大概多少？",
+    "这个 APY 是浮动的还是固定？",
+    "邀请奖励是直接到钱包吗？",
+    "客服在线时间是几点到几点",
+  ],
+} as const;
+
+const CATEGORY_WEIGHTS: Array<[keyof typeof TEMPLATES, number]> = [
+  ["fomo", 35],
+  ["showoff", 30],
+  ["discuss", 20],
+  ["question", 15],
+];
+
+function pickWeighted<T>(entries: Array<[T, number]>): T {
+  const total = entries.reduce((s, [, w]) => s + w, 0);
+  let r = Math.random() * total;
+  for (const [v, w] of entries) {
+    r -= w;
+    if (r <= 0) return v;
+  }
+  return entries[entries.length - 1][0];
+}
+
+function pick<T>(arr: readonly T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function randomNewWallet(): string {
+  const hex = "0123456789abcdef";
+  let s = "0x";
+  for (let i = 0; i < 40; i++) s += hex[Math.floor(Math.random() * 16)];
+  return s;
+}
+
+function pickWallet(): string {
+  return Math.random() < 0.8 ? pick(REGULAR_WALLETS) : randomNewWallet();
+}
+
+function fillTemplate(t: string): string {
+  return t
+    .replace(/\{amount\}/g, () => (200 + Math.random() * 19800).toFixed(2))
+    .replace(/\{yield\}/g, () => (3 + Math.random() * 377).toFixed(2))
+    .replace(/\{days\}/g, () => pick([90, 180, 365]).toString());
+}
+
+function pickContent(): string {
+  const cat = pickWeighted(CATEGORY_WEIGHTS);
+  const tpl = pick(TEMPLATES[cat]);
+  return fillTemplate(tpl);
+}
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+
+  // No auth: pacing logic in chat_bot_config protects against abuse — at most one
+  // bot post per min_interval_minutes, regardless of who triggers the function.
+  let body: any = {};
+  try { body = await req.json(); } catch { /* empty */ }
+  const force = false; // pacing always enforced; manual sends from admin go through direct insert
+  void body;
+
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+
+  // Read config
+  const { data: cfg } = await supabase
+    .from("chat_bot_config").select("*").eq("id", 1).maybeSingle();
+  if (!cfg) {
+    return new Response(JSON.stringify({ ok: false, reason: "no-config" }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  if (!force && !cfg.enabled) {
+    return new Response(JSON.stringify({ ok: true, posted: false, reason: "disabled" }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  let shouldPost = force;
+  if (!force) {
+    const { data: latest } = await supabase
+      .from("chat_messages").select("created_at")
+      .order("created_at", { ascending: false }).limit(1).maybeSingle();
+    const lastTs = latest?.created_at ? new Date(latest.created_at).getTime() : 0;
+    const idleMin = (Date.now() - lastTs) / 60000;
+    const minI = Math.max(1, cfg.min_interval_minutes || 20);
+    const maxI = Math.max(minI + 1, cfg.max_interval_minutes || 40);
+
+    if (idleMin < minI) {
+      shouldPost = false;
+    } else if (idleMin >= maxI) {
+      shouldPost = true;
+    } else {
+      const p = (idleMin - minI) / (maxI - minI);
+      shouldPost = Math.random() < p;
+    }
+  }
+
+  if (!shouldPost) {
+    return new Response(JSON.stringify({ ok: true, posted: false }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const wallet = pickWallet();
+  const content = pickContent();
+
+  const { error } = await supabase
+    .from("chat_messages").insert({ wallet_address: wallet, content });
+  if (error) {
+    return new Response(JSON.stringify({ ok: false, error: error.message }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  await supabase.from("chat_bot_config")
+    .update({ last_bot_post_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .eq("id", 1);
+
+  return new Response(JSON.stringify({ ok: true, posted: true, wallet, content }), {
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+});
