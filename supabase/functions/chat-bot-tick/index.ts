@@ -157,16 +157,15 @@ Deno.serve(async (req) => {
   // Shared secret (only required when called from cron). Admin "send now" uses force=true via direct insert from the client.
   const secret = Deno.env.get("BOT_TICK_SECRET") || "";
   const headerSecret = req.headers.get("x-bot-secret") || "";
-
-  let body: any = {};
-  try { body = await req.json(); } catch { /* empty */ }
-  const force = body?.force === true;
-
-  if (!force && secret && headerSecret !== secret) {
+  if (!secret || headerSecret !== secret) {
     return new Response(JSON.stringify({ ok: false, reason: "unauthorized" }), {
       status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
+
+  let body: any = {};
+  try { body = await req.json(); } catch { /* empty */ }
+  const force = body?.force === true;
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
