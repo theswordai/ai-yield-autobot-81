@@ -135,7 +135,7 @@ export function ChatBotAdmin() {
         <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-4">
           <li>定时任务每分钟触发一次，按节奏决定是否发言。</li>
           <li>每次发言：80% 从固定老用户池抽取地址，20% 即时随机生成新地址。</li>
-          <li>文案分为 FOMO 短句、晒单数字、项目讨论、提问互动四类，权重 35/30/20/15。</li>
+          <li>文案分为晒单数字、FOMO 短句、项目讨论、提问互动四类，权重 45/25/20/10（晒单最多）。</li>
           <li>「立即发一条」会绕过节奏直接发送，可用于测试效果。</li>
         </ul>
       </Card>
