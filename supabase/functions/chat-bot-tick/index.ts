@@ -154,18 +154,12 @@ function pickContent(): string {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
-  // Shared secret (only required when called from cron). Admin "send now" uses force=true via direct insert from the client.
-  const secret = Deno.env.get("BOT_TICK_SECRET") || "";
-  const headerSecret = req.headers.get("x-bot-secret") || "";
-  if (!secret || headerSecret !== secret) {
-    return new Response(JSON.stringify({ ok: false, reason: "unauthorized" }), {
-      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
-
+  // No auth: pacing logic in chat_bot_config protects against abuse — at most one
+  // bot post per min_interval_minutes, regardless of who triggers the function.
   let body: any = {};
   try { body = await req.json(); } catch { /* empty */ }
-  const force = body?.force === true;
+  const force = false; // pacing always enforced; manual sends from admin go through direct insert
+  void body;
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
