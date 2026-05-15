@@ -27,15 +27,7 @@ import { Navbar } from "@/components/Navbar";
 
 const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
 
-const LEVEL_RULES = [
-  { lvl: 1, min: 200,    gens: 1 },
-  { lvl: 2, min: 1000,   gens: 3 },
-  { lvl: 3, min: 5000,   gens: 5 },
-  { lvl: 4, min: 20000,  gens: 7 },
-  { lvl: 5, min: 50000,  gens: 10 },
-];
 
-const COMMISSION_RATES = [30, 20, 15, 10, 8, 6, 4, 3, 2, 2];
 
 const short = (a: string) => (a && a !== ZERO_ADDR ? `${a.slice(0, 6)}…${a.slice(-4)}` : "—");
 
