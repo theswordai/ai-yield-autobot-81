@@ -37,14 +37,13 @@ function fmtDate(ts: bigint): string {
 export function PositionsTab() {
   const { account, connect } = useWeb3();
   const { data, refetch } = useLegendaryDashboard();
-  const { claimInterest, withdraw, earlyWithdraw, compoundToPool2, busy } =
+  const { claimInterest, withdraw, earlyWithdraw, busy } =
     useLegendaryActions(refetch);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [earlyTarget, setEarlyTarget] = useState<LegendaryPosition | null>(null);
-  const [compoundOpen, setCompoundOpen] = useState(false);
-  const [compoundAmount, setCompoundAmount] = useState("");
 
-  const active = data.positions.filter((p) => !p.withdrawn);
+  const active = data.positions.filter((p) => !p.withdrawn && p.poolType === 1);
+  const totalPrincipal = data.pool1Principal + data.pool2Principal;
 
   const toggle = (id: bigint) => {
     const key = id.toString();
@@ -72,9 +71,34 @@ export function PositionsTab() {
 
   return (
     <div className="space-y-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <StatCard
+          icon={Wallet}
+          label="我的总锁仓本金"
+          value={`${fmt(totalPrincipal)} USDT`}
+          sub={`一池 ${fmt(data.pool1Principal)} · 二池 ${fmt(data.pool2Principal)}`}
+        />
+        <StatCard
+          icon={TrendingUp}
+          label="累计可领利息"
+          value={`${fmt(data.totalPending)} USDT`}
+        />
+        <StatCard
+          icon={Gift}
+          label="可领奖励"
+          value={`${fmt(data.referralClaimable)} USDT`}
+        />
+        <StatCard
+          icon={Crown}
+          label="我的等级"
+          value={data.level === 0 ? "V0" : `V${data.level}`}
+          sub={`自投 ${fmt(data.selfStake, 0)} · 业绩 ${fmt(data.teamPerf, 0)}`}
+        />
+      </div>
+
       <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10 flex flex-wrap gap-2 items-center">
         <div className="text-sm text-muted-foreground mr-auto">
-          共 {active.length} 个活跃仓位 · 已选 {selectedIds.length}
+          共 {active.length} 个一池活跃仓位 · 已选 {selectedIds.length}
         </div>
         <Button
           size="sm"
@@ -85,15 +109,8 @@ export function PositionsTab() {
         >
           批量领利息
         </Button>
-        <Button
-          size="sm"
-          disabled={selectedIds.length === 0 || busy !== null}
-          onClick={() => setCompoundOpen(true)}
-          className="bg-gradient-to-r from-amber-500 to-yellow-600"
-        >
-          复投到二池
-        </Button>
       </Card>
+
 
       {active.length === 0 && (
         <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center text-muted-foreground">
