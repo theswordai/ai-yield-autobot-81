@@ -4,7 +4,7 @@ import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { CLAIM_COOLDOWN_SEC, aprBpsToApyPct } from "@/config/legendary";
 import { useEffect, useState } from "react";
-import { TrendingUp, Wallet, Gift, Crown, Users, Activity } from "lucide-react";
+import { TrendingUp, Wallet, Gift, Crown } from "lucide-react";
 
 function StatCard({ icon: Icon, label, value, sub }: any) {
   return (
@@ -78,25 +78,6 @@ export function DashboardTab({ onGoto }: { onGoto: (tab: string) => void }) {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <StatCard
-          icon={Activity}
-          label="全网一池本金"
-          value={`${fmt(data.totalPool1)} USDT`}
-          sub={`APR 260% · APY ${aprBpsToApyPct(26000).toFixed(0)}%`}
-        />
-        <StatCard
-          icon={Activity}
-          label="全网二池本金"
-          value={`${fmt(data.totalPool2)} USDT`}
-          sub={`APR 360% · APY ${aprBpsToApyPct(36000).toFixed(0)}%`}
-        />
-        <StatCard
-          icon={Users}
-          label="当日全网入金"
-          value={`${fmt(data.currentDayInflow)} USDT`}
-        />
-      </div>
 
       <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
         <div className="flex flex-wrap gap-3">
