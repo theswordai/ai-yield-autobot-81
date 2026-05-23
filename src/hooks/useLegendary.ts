@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Contract, formatUnits } from "ethers";
+import { Contract, formatUnits, MaxUint256 } from "ethers";
 import { useWeb3 } from "./useWeb3";
 import { LegendaryStaking_ABI } from "@/abis/LegendaryStaking";
 import { LegendaryReferral_ABI } from "@/abis/LegendaryReferral";
