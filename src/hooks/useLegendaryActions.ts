@@ -170,9 +170,19 @@ export function useLegendaryActions(onDone?: () => void) {
     [write, account, run]
   );
 
+  const approve = useCallback(async () => {
+    if (!write) return false;
+    return run(
+      "approve",
+      () => write.usdt.approve(LEGENDARY_STAKING_ADDRESS, MaxUint256),
+      "授权成功"
+    );
+  }, [write, run]);
+
   return {
     busy,
     deposit,
+    approve,
     claimInterest,
     withdraw,
     earlyWithdraw,
@@ -181,3 +191,4 @@ export function useLegendaryActions(onDone?: () => void) {
     bind,
   };
 }
+

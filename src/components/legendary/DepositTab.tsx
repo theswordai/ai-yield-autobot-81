@@ -14,10 +14,10 @@ import { useWeb3 } from "@/hooks/useWeb3";
 export function DepositTab({ onDone }: { onDone: () => void }) {
   const { account, connect } = useWeb3();
   const { data, refetch } = useLegendaryDashboard();
-  const { deposit, busy } = useLegendaryActions(() => {
+  const { deposit, approve, busy } = useLegendaryActions(() => {
     refetch();
-    onDone();
   });
+
   const [amount, setAmount] = useState("");
 
   const amountWei = useMemo(() => {
@@ -33,8 +33,11 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const needApprove = amountWei > 0n && data.allowance < amountWei;
   const tooLow = amountWei > 0n && amountWei < 200n * 10n ** 18n;
   const overBalance = amountWei > data.usdtBalance;
-  const disabled =
-    !account || busy !== null || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
+  const baseInvalid =
+    !account || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
+  const approveDisabled = baseInvalid || busy !== null || !needApprove;
+  const depositDisabled = baseInvalid || busy !== null || needApprove;
+
 
   if (!account) {
     return (
