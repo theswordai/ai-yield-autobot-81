@@ -14,10 +14,10 @@ import { useWeb3 } from "@/hooks/useWeb3";
 export function DepositTab({ onDone }: { onDone: () => void }) {
   const { account, connect } = useWeb3();
   const { data, refetch } = useLegendaryDashboard();
-  const { deposit, busy } = useLegendaryActions(() => {
+  const { deposit, approve, busy } = useLegendaryActions(() => {
     refetch();
-    onDone();
   });
+
   const [amount, setAmount] = useState("");
 
   const amountWei = useMemo(() => {
@@ -33,8 +33,11 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const needApprove = amountWei > 0n && data.allowance < amountWei;
   const tooLow = amountWei > 0n && amountWei < 200n * 10n ** 18n;
   const overBalance = amountWei > data.usdtBalance;
-  const disabled =
-    !account || busy !== null || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
+  const baseInvalid =
+    !account || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
+  const approveDisabled = baseInvalid || busy !== null || !needApprove;
+  const depositDisabled = baseInvalid || busy !== null || needApprove;
+
 
   if (!account) {
     return (
@@ -117,23 +120,41 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
           </Alert>
         )}
 
-        <Button
-          disabled={disabled}
-          onClick={() => deposit(amount, data.allowance)}
-          className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 h-12 text-base font-semibold"
-        >
-          {busy === "approve"
-            ? "授权中..."
-            : busy === "deposit"
-            ? "存款中..."
-            : needApprove
-            ? "授权 USDT + 存款"
-            : "立即存款"}
-        </Button>
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            disabled={approveDisabled}
+            onClick={async () => {
+              await approve();
+              await refetch();
+            }}
+            variant="outline"
+            className="h-12 text-base font-semibold border-amber-400/40 text-amber-300 hover:bg-amber-400/10"
+          >
+            {busy === "approve"
+              ? "授权中..."
+              : !needApprove && amountWei > 0n
+              ? "✓ 已授权"
+              : "1. 授权 USDT"}
+          </Button>
+          <Button
+            disabled={depositDisabled}
+            onClick={async () => {
+              const ok = await deposit(amount, data.allowance);
+              if (ok) onDone();
+            }}
+            className="h-12 text-base font-semibold bg-gradient-to-r from-amber-500 to-yellow-600"
+          >
+            {busy === "deposit" ? "存款中..." : "2. 立即存款"}
+          </Button>
+        </div>
 
         <p className="text-xs text-muted-foreground text-center">
           已授权额度：{fmt(data.allowance)} USDT
+          {needApprove && amountWei > 0n && (
+            <span className="text-amber-400"> · 需先授权再存款</span>
+          )}
         </p>
+
       </div>
     </Card>
   );
