@@ -121,6 +121,14 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
             <AlertDescription>账户已冻结，请联系客服</AlertDescription>
           </Alert>
         )}
+        {notBound && account && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              请先到「邀请团队」页面绑定上线地址后再存款，否则合约会拒绝交易。
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="grid grid-cols-2 gap-3">
           <Button
