@@ -9,7 +9,7 @@ import { PositionsTab } from "@/components/legendary/PositionsTab";
 import { Pool2Tab } from "@/components/legendary/Pool2Tab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
-import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
+import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { useWeb3 } from "@/hooks/useWeb3";
 
 
@@ -45,7 +45,7 @@ export default function Legendary() {
               </div>
               <div>
                 <p className="text-xs sm:text-sm text-muted-foreground">已授权额度</p>
-                <p className="text-sm sm:text-lg font-semibold">{fmt(data.allowance)} USDT</p>
+                <p className="text-sm sm:text-lg font-semibold">{fmtAllowance(data.allowance)} USDT</p>
               </div>
             </div>
           </Card>

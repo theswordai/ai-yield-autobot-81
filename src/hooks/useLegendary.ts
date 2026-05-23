@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Contract, formatUnits } from "ethers";
+import { Contract, formatUnits, MaxUint256 } from "ethers";
 import { useWeb3 } from "./useWeb3";
 import { LegendaryStaking_ABI } from "@/abis/LegendaryStaking";
 import { LegendaryReferral_ABI } from "@/abis/LegendaryReferral";
@@ -235,4 +235,9 @@ export function fmt(value: bigint, digits = 2): string {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   });
+}
+
+export function fmtAllowance(value: bigint): string {
+  if (value > MaxUint256 / 2n) return "无限";
+  return fmt(value);
 }

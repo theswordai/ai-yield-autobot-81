@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
+import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { calcPool1AprBps, aprBpsToApyPct } from "@/config/legendary";
 import { useWeb3 } from "@/hooks/useWeb3";
@@ -149,7 +149,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          已授权额度：{fmt(data.allowance)} USDT
+          已授权额度：{fmtAllowance(data.allowance)} USDT
           {needApprove && amountWei > 0n && (
             <span className="text-amber-400"> · 需先授权再存款</span>
           )}
