@@ -2,19 +2,27 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Crown, LayoutDashboard, Wallet, ListChecks, Users, Gift } from "lucide-react";
 import { PageWrapper } from "@/components/PageWrapper";
+import { Navbar } from "@/components/Navbar";
+import { Card } from "@/components/ui/card";
 import { DashboardTab } from "@/components/legendary/DashboardTab";
 import { DepositTab } from "@/components/legendary/DepositTab";
 import { PositionsTab } from "@/components/legendary/PositionsTab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
+import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
+import { useWeb3 } from "@/hooks/useWeb3";
 
 
 export default function Legendary() {
   const [tab, setTab] = useState("dashboard");
+  const { account } = useWeb3();
+  const { data } = useLegendaryDashboard();
 
   return (
     <PageWrapper>
-      <div className="container mx-auto px-4 py-6 pb-32 md:pb-12 max-w-6xl">
+      <Navbar />
+      <div className="container mx-auto px-4 pt-20 sm:pt-24 pb-32 md:pb-12 max-w-6xl">
+
         <div className="mb-6 flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/30 to-yellow-600/30 backdrop-blur-xl border border-amber-400/40 flex items-center justify-center">
             <Crown className="w-6 h-6 text-amber-400" />
@@ -26,7 +34,23 @@ export default function Legendary() {
             <p className="text-sm text-muted-foreground">
               BSC 链上 365 天锁仓 · 一池 APR 260% 起 · 二池复投 APR 360%
             </p>
-          </div>
+        </div>
+
+        {account && (
+          <Card className="mb-6 p-3 sm:p-4 bg-white/5 backdrop-blur-xl border-white/10">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm text-muted-foreground">USDT 余额</p>
+                <p className="text-sm sm:text-lg font-semibold">{fmt(data.usdtBalance)} USDT</p>
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm text-muted-foreground">已授权额度</p>
+                <p className="text-sm sm:text-lg font-semibold">{fmt(data.allowance)} USDT</p>
+              </div>
+            </div>
+          </Card>
+        )}
+
         </div>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
