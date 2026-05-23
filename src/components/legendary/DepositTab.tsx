@@ -33,10 +33,12 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const needApprove = amountWei > 0n && data.allowance < amountWei;
   const tooLow = amountWei > 0n && amountWei < 200n * 10n ** 18n;
   const overBalance = amountWei > data.usdtBalance;
+  const zeroAddr = "0x0000000000000000000000000000000000000000";
+  const notBound = !data.inviter || data.inviter.toLowerCase() === zeroAddr;
   const baseInvalid =
     !account || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
   const approveDisabled = baseInvalid || busy !== null || !needApprove;
-  const depositDisabled = baseInvalid || busy !== null || needApprove;
+  const depositDisabled = baseInvalid || busy !== null || needApprove || notBound;
 
 
   if (!account) {
@@ -117,6 +119,14 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>账户已冻结，请联系客服</AlertDescription>
+          </Alert>
+        )}
+        {notBound && account && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              请先到「邀请团队」页面绑定上线地址后再存款，否则合约会拒绝交易。
+            </AlertDescription>
           </Alert>
         )}
 

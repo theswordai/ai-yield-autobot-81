@@ -7,7 +7,7 @@ import { LEGENDARY_STAKING_ADDRESS } from "@/config/legendary";
 
 const REVERT_MAP: Record<string, string> = {
   "below min": "金额低于最低门槛",
-  "not authorized": "未授权操作",
+  "not authorized": "请先绑定上线后再操作",
   frozen: "账户已被冻结",
   paused: "合约已暂停",
   "already bound": "已绑定过上线",
