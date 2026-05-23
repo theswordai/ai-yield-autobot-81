@@ -90,15 +90,22 @@ const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
   }
 };
 
-export function useLegendaryDashboard() {
-  const { account } = useWeb3();
-  const { read } = useLegendaryContracts();
-  const [data, setData] = useState<LegendaryDashboard>(EMPTY_DASHBOARD);
-  const [loading, setLoading] = useState(false);
+// ---------- Shared singleton state ----------
+let sharedData: LegendaryDashboard = EMPTY_DASHBOARD;
+let sharedLoading = false;
+let inflight: Promise<void> | null = null;
+const listeners = new Set<() => void>();
+const notify = () => listeners.forEach((fn) => fn());
 
-  const refetch = useCallback(async () => {
-    if (!read) return;
-    setLoading(true);
+async function doRefetch(
+  read: ReturnType<typeof useLegendaryContracts>["read"],
+  account: string | null
+) {
+  if (!read) return;
+  if (inflight) return inflight;
+  sharedLoading = true;
+  notify();
+  inflight = (async () => {
     try {
       const [totalPool1, totalPool2, currentDayInflow, paused] = await Promise.all([
         safe(read.staking.totalPool1Principal() as Promise<bigint>, 0n),
@@ -108,13 +115,7 @@ export function useLegendaryDashboard() {
       ]);
 
       if (!account) {
-        setData({
-          ...EMPTY_DASHBOARD,
-          totalPool1,
-          totalPool2,
-          currentDayInflow,
-          paused,
-        });
+        sharedData = { ...EMPTY_DASHBOARD, totalPool1, totalPool2, currentDayInflow, paused };
         return;
       }
 
@@ -150,10 +151,7 @@ export function useLegendaryDashboard() {
 
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
-          const pos = await safe(
-            read.staking.positions(id) as Promise<any>,
-            null as any
-          );
+          const pos = await safe(read.staking.positions(id) as Promise<any>, null as any);
           const pending = await safe(
             read.staking.pendingInterest(id) as Promise<bigint>,
             0n
@@ -194,7 +192,7 @@ export function useLegendaryDashboard() {
         .reduce((s, p) => s + p.principal, 0n);
       const totalPending = active.reduce((s, p) => s + p.pending, 0n);
 
-      setData({
+      sharedData = {
         pool1Principal,
         pool2Principal,
         totalPending,
@@ -212,10 +210,31 @@ export function useLegendaryDashboard() {
         paused,
         frozen,
         positions,
-      });
+      };
     } finally {
-      setLoading(false);
+      sharedLoading = false;
+      inflight = null;
+      notify();
     }
+  })();
+  return inflight;
+}
+
+export function useLegendaryDashboard() {
+  const { account } = useWeb3();
+  const { read } = useLegendaryContracts();
+  const [, force] = useState(0);
+
+  useEffect(() => {
+    const fn = () => force((n) => n + 1);
+    listeners.add(fn);
+    return () => {
+      listeners.delete(fn);
+    };
+  }, []);
+
+  const refetch = useCallback(async () => {
+    await doRefetch(read, account);
   }, [read, account]);
 
   useEffect(() => {
@@ -224,8 +243,9 @@ export function useLegendaryDashboard() {
     return () => clearInterval(t);
   }, [refetch]);
 
-  return { data, loading, refetch };
+  return { data: sharedData, loading: sharedLoading, refetch };
 }
+
 
 export function fmt(value: bigint, digits = 2): string {
   const s = formatUnits(value, 18);
