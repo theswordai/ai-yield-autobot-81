@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { Rocket, Heart, Coins, Crown, FileText, TrendingUp, User, BarChart3 } from "lucide-react";
+import { Rocket, Heart, Coins, Crown, FileText, TrendingUp, User, BarChart3, Gem } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
 import {
   Sidebar,
@@ -60,6 +60,11 @@ export function AppSidebar() {
       title: language === "zh" ? "预测" : "Predict",
       icon: TrendingUp,
       href: `${langPrefix}/predict`,
+    },
+    {
+      title: language === "zh" ? "传奇锁仓" : "Legendary",
+      icon: Gem,
+      href: `${langPrefix}/legendary`,
     },
   ];
 

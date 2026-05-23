@@ -21,6 +21,7 @@ import Invite from "./pages/Invite";
 import USDV from "./pages/USDV";
 import Predict from "./pages/Predict";
 import PredictDetail from "./pages/PredictDetail";
+import Legendary from "./pages/Legendary";
 import Admin from "./pages/Admin";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/zh/flexible" element={<Flexible />} />
           <Route path="/zh/predict" element={<Predict />} />
           <Route path="/zh/predict/:id" element={<PredictDetail />} />
+          <Route path="/zh/legendary" element={<Legendary />} />
           
           <Route path="/en" element={<Index />} />
           <Route path="/en/invest" element={<Invest />} />
@@ -71,6 +73,7 @@ const App = () => (
           <Route path="/en/flexible" element={<Flexible />} />
           <Route path="/en/predict" element={<Predict />} />
           <Route path="/en/predict/:id" element={<PredictDetail />} />
+          <Route path="/en/legendary" element={<Legendary />} />
           <Route path="/zh/admin" element={<Admin />} />
           <Route path="/en/admin" element={<Admin />} />
           <Route path="/admin" element={<Admin />} />

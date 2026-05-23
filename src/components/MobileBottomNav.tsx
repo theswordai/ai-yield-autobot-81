@@ -9,6 +9,7 @@ import {
   BarChart3,
   Crown,
   Wallet,
+  Gem,
   MoreHorizontal,
   MessageCircleQuestion,
   X,
@@ -40,6 +41,15 @@ const MobileBottomNav = () => {
 
   // Secondary slots — surfaced via "More" drawer
   const moreItems = [
+    {
+      id: "legendary",
+      label: "传奇锁仓",
+      labelEn: "Legendary",
+      desc: "365天锁仓 · APR 260%起",
+      descEn: "365-day lock · 260%+ APR",
+      icon: Gem,
+      path: `/${language}/legendary`,
+    },
     {
       id: "predict",
       label: "预测",
