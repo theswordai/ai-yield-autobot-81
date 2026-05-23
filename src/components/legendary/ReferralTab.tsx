@@ -11,7 +11,6 @@ import { toast } from "sonner";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
-import { LEVELS } from "@/config/legendary";
 
 const ZERO = "0x0000000000000000000000000000000000000000";
 

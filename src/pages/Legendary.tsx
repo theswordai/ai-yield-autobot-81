@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Crown, LayoutDashboard, Wallet, ListChecks, Users, Gift, HelpCircle } from "lucide-react";
+import { Crown, LayoutDashboard, Wallet, ListChecks, Users, Gift } from "lucide-react";
 import { PageWrapper } from "@/components/PageWrapper";
 import { DashboardTab } from "@/components/legendary/DashboardTab";
 import { DepositTab } from "@/components/legendary/DepositTab";
 import { PositionsTab } from "@/components/legendary/PositionsTab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
-import { FaqTab } from "@/components/legendary/FaqTab";
+
 
 export default function Legendary() {
   const [tab, setTab] = useState("dashboard");
@@ -30,7 +30,7 @@ export default function Legendary() {
         </div>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 gap-1 h-auto bg-white/5 backdrop-blur-xl border border-white/10 p-1">
+          <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-1 h-auto bg-white/5 backdrop-blur-xl border border-white/10 p-1">
             <TabsTrigger value="dashboard" className="flex flex-col md:flex-row gap-1 py-2 text-xs md:text-sm">
               <LayoutDashboard className="w-4 h-4" /> 看板
             </TabsTrigger>
@@ -45,9 +45,6 @@ export default function Legendary() {
             </TabsTrigger>
             <TabsTrigger value="rewards" className="flex flex-col md:flex-row gap-1 py-2 text-xs md:text-sm">
               <Gift className="w-4 h-4" /> 奖励
-            </TabsTrigger>
-            <TabsTrigger value="faq" className="flex flex-col md:flex-row gap-1 py-2 text-xs md:text-sm">
-              <HelpCircle className="w-4 h-4" /> FAQ
             </TabsTrigger>
           </TabsList>
 
@@ -65,9 +62,6 @@ export default function Legendary() {
           </TabsContent>
           <TabsContent value="rewards" className="mt-6">
             <RewardsTab />
-          </TabsContent>
-          <TabsContent value="faq" className="mt-6">
-            <FaqTab />
           </TabsContent>
         </Tabs>
       </div>
