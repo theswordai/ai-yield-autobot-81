@@ -249,45 +249,6 @@ export function PositionsTab() {
         </DialogContent>
       </Dialog>
 
-      {/* Compound to pool2 */}
-      <Dialog open={compoundOpen} onOpenChange={setCompoundOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>复投到二池（APR 360%）</DialogTitle>
-            <DialogDescription>
-              从已选 {selectedIds.length} 个仓位的未领利息中扣除，复投进入二池，锁 365 天。最低 200
-              USDT。
-            </DialogDescription>
-          </DialogHeader>
-          <Input
-            type="number"
-            min="200"
-            step="1"
-            placeholder="≥ 200"
-            value={compoundAmount}
-            onChange={(e) => setCompoundAmount(e.target.value)}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setCompoundOpen(false)}>
-              取消
-            </Button>
-            <Button
-              disabled={busy !== null}
-              onClick={async () => {
-                const ok = await compoundToPool2(selectedIds, compoundAmount);
-                if (ok) {
-                  setCompoundOpen(false);
-                  setCompoundAmount("");
-                  setSelected(new Set());
-                }
-              }}
-              className="bg-gradient-to-r from-amber-500 to-yellow-600"
-            >
-              确认复投
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
