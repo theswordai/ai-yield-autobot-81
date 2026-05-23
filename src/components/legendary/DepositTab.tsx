@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
+import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { calcPool1AprBps, aprBpsToApyPct } from "@/config/legendary";
 import { useWeb3 } from "@/hooks/useWeb3";
