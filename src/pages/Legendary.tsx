@@ -34,7 +34,23 @@ export default function Legendary() {
             <p className="text-sm text-muted-foreground">
               BSC 链上 365 天锁仓 · 一池 APR 260% 起 · 二池复投 APR 360%
             </p>
-          </div>
+        </div>
+
+        {account && (
+          <Card className="mb-6 p-3 sm:p-4 bg-white/5 backdrop-blur-xl border-white/10">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div>
+                <p className="text-xs sm:text-sm text-muted-foreground">USDT 余额</p>
+                <p className="text-sm sm:text-lg font-semibold">{fmt(data.usdtBalance)} USDT</p>
+              </div>
+              <div>
+                <p className="text-xs sm:text-sm text-muted-foreground">已授权额度</p>
+                <p className="text-sm sm:text-lg font-semibold">{fmt(data.allowance)} USDT</p>
+              </div>
+            </div>
+          </Card>
+        )}
+
         </div>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
