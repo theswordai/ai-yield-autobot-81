@@ -236,3 +236,8 @@ export function fmt(value: bigint, digits = 2): string {
     maximumFractionDigits: digits,
   });
 }
+
+export function fmtAllowance(value: bigint): string {
+  if (value > MaxUint256 / 2n) return "无限";
+  return fmt(value);
+}
