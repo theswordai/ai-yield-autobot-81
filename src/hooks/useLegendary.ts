@@ -227,7 +227,7 @@ export function useLegendaryDashboard() {
   return { data, loading, refetch };
 }
 
-export function fmt(value: bigint, digits = 4): string {
+export function fmt(value: bigint, digits = 2): string {
   const s = formatUnits(value, 18);
   const n = Number(s);
   if (!isFinite(n)) return "0.0000";
