@@ -45,7 +45,7 @@ export default function Legendary() {
               </div>
               <div>
                 <p className="text-xs sm:text-sm text-muted-foreground">已授权额度</p>
-                <p className="text-sm sm:text-lg font-semibold">{fmt(data.allowance)} USDT</p>
+                <p className="text-sm sm:text-lg font-semibold">{fmtAllowance(data.allowance)} USDT</p>
               </div>
             </div>
           </Card>
