@@ -24,6 +24,7 @@ const REVERT_MAP: Record<string, string> = {
   "use withdraw": "仓位已到期，请使用「到期取本金」",
   "zero": "参数错误",
   "nothing": "暂无可领取金额",
+  "nothing or unavailable": "暂无可领代币或合约未配置",
 };
 
 function parseRevert(err: any): string {
@@ -161,6 +162,15 @@ export function useLegendaryActions(onDone?: () => void) {
     return run("claimRewards", () => write.staking.claimRewards(), "奖励已领取");
   }, [write, run]);
 
+  const claimTokenRewards = useCallback(() => {
+    if (!write) return;
+    return run(
+      "claimTokenRewards",
+      () => write.staking.claimTokenRewards(),
+      "USDV / FDAO 已到账"
+    );
+  }, [write, run]);
+
   const bind = useCallback(
     async (inviter: string) => {
       if (!write) return;
@@ -195,6 +205,7 @@ export function useLegendaryActions(onDone?: () => void) {
     earlyWithdraw,
     compoundToPool2,
     claimRewards,
+    claimTokenRewards,
     bind,
   };
 }

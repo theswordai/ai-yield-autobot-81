@@ -4,11 +4,13 @@ import { useWeb3 } from "./useWeb3";
 import { LegendaryStaking_ABI } from "@/abis/LegendaryStaking";
 import { LegendaryReferral_ABI } from "@/abis/LegendaryReferral";
 import { MockUSDT_ABI } from "@/abis/MockUSDT";
+import { USDV_ABI } from "@/abis/USDV";
+import { FutureDao_ABI } from "@/abis/FutureDao";
 import {
   LEGENDARY_STAKING_ADDRESS,
   LEGENDARY_REFERRAL_ADDRESS,
 } from "@/config/legendary";
-import { USDT_ADDRESS } from "@/config/contracts";
+import { USDT_ADDRESS, USDV_ADDRESS, FDAO_ADDRESS } from "@/config/contracts";
 
 export type LegendaryPosition = {
   id: bigint;
@@ -41,7 +43,17 @@ export type LegendaryDashboard = {
   frozen: boolean;
   earlyPenaltyBps: number;
   positions: LegendaryPosition[];
+  pendingUsdv: bigint;
+  pendingFdao: bigint;
+  previewUsdvInterest: bigint;
+  previewUsdvLevel: bigint;
+  previewFdaoInterest: bigint;
+  previewFdaoLevel: bigint;
+  usdvBalance: bigint;
+  fdaoBalance: bigint;
 };
+
+// placeholder to keep diff context
 
 const EMPTY_DASHBOARD: LegendaryDashboard = {
   pool1Principal: 0n,
@@ -62,6 +74,14 @@ const EMPTY_DASHBOARD: LegendaryDashboard = {
   frozen: false,
   earlyPenaltyBps: 5000,
   positions: [],
+  pendingUsdv: 0n,
+  pendingFdao: 0n,
+  previewUsdvInterest: 0n,
+  previewUsdvLevel: 0n,
+  previewFdaoInterest: 0n,
+  previewFdaoLevel: 0n,
+  usdvBalance: 0n,
+  fdaoBalance: 0n,
 };
 
 export function useLegendaryContracts() {
@@ -72,12 +92,16 @@ export function useLegendaryContracts() {
       staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, provider),
       referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, provider),
       usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, provider),
+      usdv: new Contract(USDV_ADDRESS, USDV_ABI, provider),
+      fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, provider),
     };
     const write = signer
       ? {
           staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, signer),
           referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, signer),
           usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, signer),
+          usdv: new Contract(USDV_ADDRESS, USDV_ABI, signer),
+          fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, signer),
         }
       : null;
     return { read, write };
@@ -134,6 +158,11 @@ async function doRefetch(
         allowance,
         frozen,
         posIdsFromCall,
+        pendingUsdv,
+        pendingFdao,
+        previewTok,
+        usdvBalance,
+        fdaoBalance,
       ] = await Promise.all([
         safe(read.staking.referralClaimable(account) as Promise<bigint>, 0n),
         safe(read.staking.lastClaimAt(account) as Promise<bigint>, 0n),
@@ -159,7 +188,20 @@ async function doRefetch(
             return [];
           }
         })(),
+        safe(read.staking.pendingUsdv(account) as Promise<bigint>, 0n),
+        safe(read.staking.pendingFdao(account) as Promise<bigint>, 0n),
+        safe(
+          read.staking.previewTokenRewards(account) as Promise<[bigint, bigint, bigint, bigint]>,
+          [0n, 0n, 0n, 0n] as [bigint, bigint, bigint, bigint]
+        ),
+        safe(read.usdv.balanceOf(account) as Promise<bigint>, 0n),
+        safe(read.fdao.balanceOf(account) as Promise<bigint>, 0n),
       ]);
+
+      const previewUsdvInterest = (previewTok as any)?.[0] ?? 0n;
+      const previewUsdvLevel = (previewTok as any)?.[1] ?? 0n;
+      const previewFdaoInterest = (previewTok as any)?.[2] ?? 0n;
+      const previewFdaoLevel = (previewTok as any)?.[3] ?? 0n;
 
       // Fallback: scan Deposited events to recover posIds the call may have missed
       const posIds: bigint[] = [...posIdsFromCall];
@@ -247,6 +289,14 @@ async function doRefetch(
         frozen,
         earlyPenaltyBps,
         positions,
+        pendingUsdv,
+        pendingFdao,
+        previewUsdvInterest,
+        previewUsdvLevel,
+        previewFdaoInterest,
+        previewFdaoLevel,
+        usdvBalance,
+        fdaoBalance,
       };
     } finally {
       sharedLoading = false;

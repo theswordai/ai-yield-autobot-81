@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatUnits } from "ethers";
-import { Gift, Clock, RefreshCw, ExternalLink } from "lucide-react";
+import { Gift, Clock, RefreshCw, ExternalLink, Coins } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
@@ -18,7 +18,7 @@ import {
 export function RewardsTab() {
   const { account, connect } = useWeb3();
   const { data, refetch } = useLegendaryDashboard();
-  const { claimRewards, busy } = useLegendaryActions(refetch);
+  const { claimRewards, claimTokenRewards, busy } = useLegendaryActions(refetch);
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
   const [claims, setClaims] = useState<ClaimRecord[] | null>(null);
   const [loadingClaims, setLoadingClaims] = useState(false);
@@ -108,6 +108,70 @@ export function RewardsTab() {
           </Button>
         </div>
       </Card>
+
+      {/* USDV / FDAO 代币奖励 */}
+      {(() => {
+        const usdvTotal = data.previewUsdvInterest + data.previewUsdvLevel;
+        const fdaoTotal = data.previewFdaoInterest + data.previewFdaoLevel;
+        const canClaimTokens = usdvTotal > 0n || fdaoTotal > 0n;
+        return (
+          <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-violet-500/15 via-fuchsia-600/8 to-transparent backdrop-blur-xl border-violet-400/30 animate-fade-in">
+            <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-violet-400/20 blur-3xl" />
+            <div className="relative">
+              <div className="flex items-center gap-2 text-violet-700 dark:text-violet-300 mb-4">
+                <span className="inline-flex w-8 h-8 rounded-xl bg-violet-400/20 border border-violet-400/40 items-center justify-center">
+                  <Coins className="w-4 h-4" />
+                </span>
+                <span className="text-sm font-medium tracking-wide">代币奖励 USDV / FDAO</span>
+                <Badge variant="outline" className="ml-auto border-violet-400/40 text-violet-700 dark:text-violet-300">
+                  当前 V{data.level}
+                </Badge>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                {/* USDV */}
+                <div className="rounded-xl p-4 bg-foreground/5 border border-foreground/10">
+                  <div className="text-xs text-muted-foreground mb-1">待领 USDV</div>
+                  <div className="text-2xl font-extrabold bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
+                    {fmt(usdvTotal, 2)}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-2 space-y-0.5">
+                    <div>利息累计：<span className="text-foreground font-medium">{fmt(data.previewUsdvInterest, 2)}</span></div>
+                    <div>等级一次性：<span className="text-foreground font-medium">{fmt(data.previewUsdvLevel, 2)}</span></div>
+                    <div className="opacity-70">钱包余额：{fmt(data.usdvBalance, 2)}</div>
+                  </div>
+                </div>
+                {/* FDAO */}
+                <div className="rounded-xl p-4 bg-foreground/5 border border-foreground/10">
+                  <div className="text-xs text-muted-foreground mb-1">待领 FDAO</div>
+                  <div className="text-2xl font-extrabold bg-gradient-to-r from-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+                    {fmt(fdaoTotal, 2)}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-2 space-y-0.5">
+                    <div>利息累计：<span className="text-foreground font-medium">{fmt(data.previewFdaoInterest, 2)}</span></div>
+                    <div>等级一次性：<span className="text-foreground font-medium">{fmt(data.previewFdaoLevel, 2)}</span></div>
+                    <div className="opacity-70">钱包余额：{fmt(data.fdaoBalance, 2)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                disabled={!canClaimTokens || busy !== null}
+                onClick={() => claimTokenRewards()}
+                className="w-full md:w-auto bg-gradient-to-r from-violet-500 to-fuchsia-600 hover:from-violet-400 hover:to-fuchsia-500 h-12 px-8 font-semibold shadow-[0_8px_30px_-8px_rgba(168,85,247,0.6)] transition-all hover:scale-[1.02]"
+              >
+                领取 USDV / FDAO
+              </Button>
+
+              <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
+                领 USDT 利息、到期取息、复投到二池时，会按比例累计 USDV 和 FDAO；
+                升到 V1~V6 后首次领取代币时，还可获得等级一次性奖励。
+              </p>
+            </div>
+          </Card>
+        );
+      })()}
+
 
       {/* 历史领取记录 */}
       <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
