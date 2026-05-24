@@ -35,13 +35,14 @@ function fmtDate(ts: bigint): string {
   return new Date(Number(ts) * 1000).toLocaleString("zh-CN");
 }
 
-export function PositionsTab() {
+export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void } = {}) {
   const { account, connect } = useWeb3();
   const { data, refetch } = useLegendaryDashboard();
   const { claimInterest, withdraw, earlyWithdraw, busy } =
     useLegendaryActions(refetch);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [earlyTarget, setEarlyTarget] = useState<LegendaryPosition | null>(null);
+  const [claimTarget, setClaimTarget] = useState<LegendaryPosition | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = async () => {
