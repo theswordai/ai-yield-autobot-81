@@ -16,7 +16,7 @@ import { MockUSDT_ABI } from "@/abis/MockUSDT";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown, TrendingUp, ArrowRight } from "lucide-react";
+import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown, ArrowRight } from "lucide-react";
 import { PositionsList } from "@/components/PositionsList";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
