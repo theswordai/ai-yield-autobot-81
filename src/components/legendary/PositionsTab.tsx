@@ -61,7 +61,7 @@ export function PositionsTab() {
 
   if (!account) {
     return (
-      <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center">
+      <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center">
         <p className="text-muted-foreground mb-4">请先连接钱包查看你的仓位</p>
         <Button onClick={() => connect()} className="bg-gradient-to-r from-amber-500 to-yellow-600">
           连接钱包
@@ -101,7 +101,7 @@ export function PositionsTab() {
         />
       </div>
 
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10 flex flex-wrap gap-2 items-center">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15 flex flex-wrap gap-2 items-center">
         <div className="text-sm text-muted-foreground mr-auto">
           共 {active.length} 个活跃仓位 · 已选 {selectedIds.length}
         </div>
@@ -118,7 +118,7 @@ export function PositionsTab() {
 
 
       {active.length === 0 && (
-        <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center text-muted-foreground">
+        <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center text-muted-foreground">
           暂无活跃仓位
         </Card>
       )}
@@ -127,7 +127,7 @@ export function PositionsTab() {
         {active.map((p) => {
           const matured = Number(p.startTime) + LOCK_SEC <= Math.floor(Date.now() / 1000);
           return (
-            <Card key={p.id.toString()} className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+            <Card key={p.id.toString()} className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
               <div className="flex flex-wrap items-start gap-4">
                 <div className="flex items-start gap-2">
                   <Checkbox
@@ -141,8 +141,8 @@ export function PositionsTab() {
                         variant="outline"
                         className={
                           p.poolType === 1
-                            ? "border-amber-400/40 text-amber-400"
-                            : "border-emerald-400/40 text-emerald-400"
+                            ? "border-amber-400/40 text-amber-600 dark:text-amber-400"
+                            : "border-emerald-400/40 text-emerald-600 dark:text-emerald-400"
                         }
                       >
                         {p.poolType === 1 ? "一池" : "二池"}
@@ -159,13 +159,13 @@ export function PositionsTab() {
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">APR</div>
-                    <div className="font-semibold text-amber-400">
+                    <div className="font-semibold text-amber-600 dark:text-amber-400">
                       {(Number(p.aprBps) / 100).toFixed(2)}%
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">已计利息</div>
-                    <div className="font-semibold text-emerald-400">{fmt(p.pending)}</div>
+                    <div className="font-semibold text-emerald-600 dark:text-emerald-400">{fmt(p.pending)}</div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">到期剩余</div>
@@ -174,7 +174,7 @@ export function PositionsTab() {
                 </div>
               </div>
 
-              <div className="mt-3 pt-3 border-t border-white/5 flex flex-wrap gap-2 items-center">
+              <div className="mt-3 pt-3 border-t border-foreground/10 flex flex-wrap gap-2 items-center">
                 <span className="text-xs text-muted-foreground mr-auto">
                   开始：{fmtDate(p.startTime)}
                 </span>
@@ -243,7 +243,7 @@ export function PositionsTab() {
                 <div>本金：{fmt(earlyTarget.principal)} USDT</div>
                 <div>
                   返还本金：
-                  <span className="text-amber-400"> {fmt(returned)} USDT</span>
+                  <span className="text-amber-600 dark:text-amber-400"> {fmt(returned)} USDT</span>
                 </div>
                 <div>
                   罚金：
@@ -251,7 +251,7 @@ export function PositionsTab() {
                 </div>
                 <div>
                   返还利息：
-                  <span className="text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
                 </div>
                 {levelDown && (
                   <div className="mt-2 p-2 rounded bg-destructive/10 border border-destructive/30 text-destructive text-xs">

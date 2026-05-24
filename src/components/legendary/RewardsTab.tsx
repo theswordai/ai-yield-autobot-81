@@ -87,7 +87,7 @@ export function RewardsTab() {
 
   if (!account) {
     return (
-      <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center">
+      <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center">
         <p className="text-muted-foreground mb-4">连接钱包查看你的奖励</p>
         <Button onClick={() => connect()} className="bg-gradient-to-r from-amber-500 to-yellow-600">
           连接钱包
@@ -110,14 +110,14 @@ export function RewardsTab() {
         <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-amber-400/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-20 -left-10 w-48 h-48 rounded-full bg-yellow-600/10 blur-3xl" />
         <div className="relative">
-          <div className="flex items-center gap-2 text-amber-300 mb-2">
+          <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 mb-2">
             <span className="inline-flex w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 items-center justify-center">
               <Gift className="w-4 h-4" />
             </span>
             <span className="text-sm font-medium tracking-wide">待领取奖励</span>
           </div>
-          <div className="text-4xl sm:text-5xl font-extrabold mb-3 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(251,191,36,0.25)]">
-            {fmt(data.referralClaimable)} <span className="text-2xl text-amber-300/80">USDT</span>
+          <div className="text-4xl sm:text-5xl font-extrabold mb-3 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(251,191,36,0.25)]">
+            {fmt(data.referralClaimable)} <span className="text-2xl text-amber-700/90 dark:text-amber-700 dark:text-amber-300/80">USDT</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
             <Clock className="w-4 h-4" />
@@ -133,7 +133,7 @@ export function RewardsTab() {
         </div>
       </Card>
 
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <h3 className="font-bold mb-3">最近事件（最近 5000 区块）</h3>
         {events.length === 0 ? (
           <div className="text-sm text-muted-foreground text-center py-6">暂无记录</div>
@@ -142,16 +142,16 @@ export function RewardsTab() {
             {events.map((e, i) => (
               <div
                 key={`${e.hash}-${i}`}
-                className="flex items-center gap-3 p-2 rounded bg-white/5 text-xs"
+                className="flex items-center gap-3 p-2 rounded bg-foreground/5 text-xs"
               >
                 <Badge
                   variant="outline"
                   className={
                     e.type === "已领取"
-                      ? "border-emerald-400/40 text-emerald-400"
+                      ? "border-emerald-400/40 text-emerald-600 dark:text-emerald-400"
                       : e.type.startsWith("动态")
-                      ? "border-purple-400/40 text-purple-400"
-                      : "border-amber-400/40 text-amber-400"
+                      ? "border-purple-400/40 text-purple-600 dark:text-purple-400"
+                      : "border-amber-400/40 text-amber-600 dark:text-amber-400"
                   }
                 >
                   {e.type}

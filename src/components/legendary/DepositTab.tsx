@@ -248,7 +248,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
                 await refetch();
               }}
               variant="outline"
-              className="h-12 text-base font-semibold border-amber-400/40 text-amber-300 hover:bg-amber-400/10"
+              className="h-12 text-base font-semibold border-amber-400/40 text-amber-700 dark:text-amber-300 hover:bg-amber-400/10"
             >
               {busy === "approve"
                 ? "授权中..."
@@ -271,7 +271,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
           <p className="text-xs text-muted-foreground text-center">
             已授权额度：{fmtAllowance(data.allowance)} USDT
             {needApprove && amountWei > 0n && (
-              <span className="text-amber-400"> · 需先授权再存款</span>
+              <span className="text-amber-600 dark:text-amber-400"> · 需先授权再存款</span>
             )}
           </p>
         </CardContent>
@@ -310,7 +310,7 @@ function MiniStat({
           {icon}
           <span>{label}</span>
         </div>
-        <div className={`text-base sm:text-xl font-bold ${accent ? "text-amber-400" : "text-foreground"}`}>
+        <div className={`text-base sm:text-xl font-bold ${accent ? "text-amber-600 dark:text-amber-400" : "text-foreground"}`}>
           {value}
         </div>
         {sub && <div className="text-[11px] text-muted-foreground">{sub}</div>}

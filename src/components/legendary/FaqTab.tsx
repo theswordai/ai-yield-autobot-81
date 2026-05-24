@@ -58,7 +58,7 @@ export function FaqTab() {
         </AlertDescription>
       </Alert>
 
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <Accordion type="single" collapsible>
           {FAQ.map((item, i) => (
             <AccordionItem key={i} value={`item-${i}`}>

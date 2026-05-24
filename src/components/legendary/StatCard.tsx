@@ -20,29 +20,29 @@ const TONES: Record<NonNullable<StatCardProps["tone"]>, {
   amber: {
     ring: "hover:border-amber-400/40",
     iconWrap: "bg-gradient-to-br from-amber-400/20 to-yellow-600/10 border-amber-400/30",
-    iconColor: "text-amber-400",
-    value: "bg-gradient-to-r from-amber-200 to-yellow-400 bg-clip-text text-transparent",
+    iconColor: "text-amber-600 dark:text-amber-400",
+    value: "bg-gradient-to-r from-amber-600 to-yellow-700 dark:from-amber-200 dark:to-yellow-400 bg-clip-text text-transparent",
     glow: "from-amber-400/10",
   },
   emerald: {
     ring: "hover:border-emerald-400/40",
     iconWrap: "bg-gradient-to-br from-emerald-400/20 to-teal-600/10 border-emerald-400/30",
-    iconColor: "text-emerald-400",
-    value: "bg-gradient-to-r from-emerald-200 to-teal-400 bg-clip-text text-transparent",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
+    value: "bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-200 dark:to-teal-400 bg-clip-text text-transparent",
     glow: "from-emerald-400/10",
   },
   primary: {
     ring: "hover:border-primary/40",
     iconWrap: "bg-gradient-to-br from-primary/20 to-primary/5 border-primary/30",
     iconColor: "text-primary",
-    value: "bg-gradient-to-r from-primary to-amber-400 bg-clip-text text-transparent",
+    value: "bg-gradient-to-r from-primary to-amber-600 dark:to-amber-400 bg-clip-text text-transparent",
     glow: "from-primary/10",
   },
   destructive: {
     ring: "hover:border-rose-400/40",
     iconWrap: "bg-gradient-to-br from-rose-400/20 to-rose-700/10 border-rose-400/30",
-    iconColor: "text-rose-400",
-    value: "bg-gradient-to-r from-rose-200 to-rose-400 bg-clip-text text-transparent",
+    iconColor: "text-rose-600 dark:text-rose-400",
+    value: "bg-gradient-to-r from-rose-600 to-rose-700 dark:from-rose-200 dark:to-rose-400 bg-clip-text text-transparent",
     glow: "from-rose-400/10",
   },
 };
@@ -51,7 +51,7 @@ export function StatCard({ icon: Icon, label, value, sub, tone = "amber" }: Stat
   const t = TONES[tone];
   return (
     <Card
-      className={`group relative overflow-hidden p-4 bg-white/5 backdrop-blur-xl border border-white/10 ${t.ring} transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-12px_rgba(251,191,36,0.25)] animate-fade-in`}
+      className={`group relative overflow-hidden p-4 bg-foreground/5 backdrop-blur-xl border border-foreground/15 ${t.ring} transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-12px_rgba(251,191,36,0.25)] animate-fade-in`}
     >
       {/* glow blob */}
       <div
