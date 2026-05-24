@@ -322,6 +322,7 @@ async function doRefetch(
         usdvBalance,
         fdaoBalance,
       };
+      sharedAccount = account;
     } finally {
       sharedLoading = false;
       inflight = null;
