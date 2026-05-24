@@ -10,7 +10,7 @@ import { AlertCircle, Layers } from "lucide-react";
 import { useLegendaryDashboard, fmt, LegendaryPosition } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { useWeb3 } from "@/hooks/useWeb3";
-import { POOL2_APR_BPS, aprBpsToApyPct } from "@/config/legendary";
+
 
 const LOCK_SEC = 365 * 24 * 3600;
 
@@ -50,7 +50,6 @@ export function Pool2Tab() {
 
   const amountNum = Number(amount || "0");
   const tooLow = amountNum > 0 && amountNum < 200;
-  const apy = aprBpsToApyPct(POOL2_APR_BPS);
 
   if (!account) {
     return (
@@ -74,16 +73,6 @@ export function Pool2Tab() {
         <p className="text-sm text-muted-foreground mb-4">
           从一池仓位的未领利息中扣除作为本金，进入二池，锁仓 365 天。最低 200 USDT。
         </p>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 rounded-lg bg-foreground/5 border border-foreground/15">
-            <div className="text-xs text-muted-foreground">APR</div>
-            <div className="text-xl font-bold text-amber-600 dark:text-amber-400">{(POOL2_APR_BPS / 100).toFixed(0)}%</div>
-          </div>
-          <div className="p-3 rounded-lg bg-foreground/5 border border-foreground/15">
-            <div className="text-xs text-muted-foreground">日复利 APY</div>
-            <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{apy.toFixed(0)}%</div>
-          </div>
-        </div>
       </Card>
 
       {/* 选择一池仓位 */}
