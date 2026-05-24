@@ -163,10 +163,6 @@ export function RewardsTab() {
                 领取 USDV / FDAO
               </Button>
 
-              <p className="text-xs text-muted-foreground mt-3 leading-relaxed">
-                领 USDT 利息、到期取息、复投到二池时，会按比例累计 USDV 和 FDAO；
-                升到 V1~V6 后首次领取代币时，还可获得等级一次性奖励。
-              </p>
             </div>
           </Card>
         );
