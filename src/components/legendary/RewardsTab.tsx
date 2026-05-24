@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatUnits } from "ethers";
 import { Gift, Clock, RefreshCw, ExternalLink } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
-import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
+import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { CLAIM_COOLDOWN_SEC } from "@/config/legendary";
 import {
@@ -15,18 +15,14 @@ import {
   type ClaimRecord,
 } from "@/lib/legendaryClaimHistory";
 
-
 export function RewardsTab() {
   const { account, connect } = useWeb3();
-  const { read } = useLegendaryContracts();
   const { data, refetch } = useLegendaryDashboard();
   const { claimRewards, busy } = useLegendaryActions(refetch);
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
   const [claims, setClaims] = useState<ClaimRecord[] | null>(null);
   const [loadingClaims, setLoadingClaims] = useState(false);
   const [claimsError, setClaimsError] = useState<string | null>(null);
-
-  
 
   useEffect(() => {
     const t = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
@@ -58,7 +54,6 @@ export function RewardsTab() {
       setLoadingClaims(false);
     }
   };
-
 
   if (!account) {
     return (
