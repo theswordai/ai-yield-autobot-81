@@ -32,15 +32,33 @@ const MobileBottomNav = () => {
 
   // Primary slots — always visible in the bottom bar
   const primaryItems = [
-    { id: "launch",  label: "启航",  labelEn: "Launch",  icon: Rocket,     path: `/${language}` },
-    { id: "charity", label: "善举",  labelEn: "Charity", icon: Heart,      path: `/${language}/invest` },
-    { id: "flexible", label: "自由资本", labelEn: "Flexible", icon: Wallet,    path: `/${language}/flexible` },
-    { id: "swap",    label: "兑换",  labelEn: "Swap",    icon: Coins,      path: `/${language}/usdv?tab=dex` },
-    { id: "asset",   label: "资产", labelEn: "Asset", icon: BarChart3, path: `/${language}/asset-dashboard` },
+    { id: "launch",    label: "启航",     labelEn: "Launch",    icon: Rocket,   path: `/${language}` },
+    { id: "invest",    label: "财富管理", labelEn: "Wealth",    icon: Gem,      path: `/${language}/invest` },
+    { id: "swap",      label: "USDV",     labelEn: "USDV",      icon: Coins,    path: `/${language}/usdv?tab=dex` },
+    { id: "futuredao", label: "FutureDAO", labelEn: "FutureDAO", icon: FileText, path: `/${language}/whitepaper` },
+    { id: "genesis",   label: "创世资本", labelEn: "Genesis",   icon: Heart,    path: `/${language}/stake` },
   ];
 
   // Secondary slots — surfaced via "More" drawer
   const moreItems = [
+    {
+      id: "flexible",
+      label: "自由资本",
+      labelEn: "Flexible",
+      desc: "灵活存取 · 随时赎回",
+      descEn: "Flexible deposits",
+      icon: Wallet,
+      path: `/${language}/flexible`,
+    },
+    {
+      id: "asset",
+      label: "资产",
+      labelEn: "Asset",
+      desc: "资产看板 · 收益概览",
+      descEn: "Asset dashboard",
+      icon: BarChart3,
+      path: `/${language}/asset-dashboard`,
+    },
     {
       id: "legendary",
       label: "增值资本",
@@ -69,15 +87,6 @@ const MobileBottomNav = () => {
       path: `/${language}/referral`,
     },
     {
-      id: "whitepaper",
-      label: "白皮书",
-      labelEn: "Whitepaper",
-      desc: "协议机制 · 风控披露",
-      descEn: "Protocol & risk disclosure",
-      icon: FileText,
-      path: `/${language}/whitepaper`,
-    },
-    {
       id: "faq",
       label: "100问",
       labelEn: "100 FAQ",
@@ -87,6 +96,7 @@ const MobileBottomNav = () => {
       path: "__faq__",
     },
   ];
+
 
   const isActive = (path: string) => {
     const cleanPath = path.split("?")[0];
