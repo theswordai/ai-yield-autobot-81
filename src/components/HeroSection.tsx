@@ -179,11 +179,17 @@ export function HeroSection() {
           <div className="flex flex-row flex-nowrap gap-2 sm:gap-3 justify-center mb-4 md:mb-10">
             <Button 
               size="lg" 
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow transition-all duration-300 px-4 sm:px-8 py-3 text-sm sm:text-base font-semibold whitespace-nowrap"
-              onClick={() => navigate(`/${currentLang}/invest`)}
+              variant="outline"
+              className="border-border/60 hover:border-primary/40 hover:bg-primary/5 px-4 sm:px-8 py-3 text-sm sm:text-base whitespace-nowrap"
+              onClick={() => {
+                setShowDetails(true);
+                setTimeout(() => {
+                  document.getElementById('strategy-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+              }}
             >
+              <Shield className="w-4 h-4 mr-2" />
               {t("invest.charityButtonName")}
-              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
             <Button 
               size="lg" 
