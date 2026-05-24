@@ -289,6 +289,14 @@ async function doRefetch(
         frozen,
         earlyPenaltyBps,
         positions,
+        pendingUsdv,
+        pendingFdao,
+        previewUsdvInterest,
+        previewUsdvLevel,
+        previewFdaoInterest,
+        previewFdaoLevel,
+        usdvBalance,
+        fdaoBalance,
       };
     } finally {
       sharedLoading = false;
