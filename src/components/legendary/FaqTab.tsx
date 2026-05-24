@@ -6,11 +6,11 @@ import { AlertTriangle } from "lucide-react";
 const FAQ = [
   {
     q: "锁仓期是多久？可以提前取出吗？",
-    a: "一池、二池均锁 365 天。可以提前赎回（earlyWithdraw），但会扣除 50% 本金作为罚金，已计利息照付。",
+    a: "CLASS-A、CLASS-B均锁 365 天。可以提前赎回（earlyWithdraw），但会扣除 50% 本金作为罚金，已计利息照付。",
   },
   {
-    q: "一池和二池有什么区别？",
-    a: "一池：直接用钱包 USDT 存入，基础 APR 260%，每 5,000 USDT 加 3%，最高 +30%。二池：仅能用一池/二池产生的「未领利息」复投进入，APR 360%，钱包 USDT 不能直接进二池。两池最低均为 200 USDT。",
+    q: "CLASS-A和CLASS-B有什么区别？",
+    a: "CLASS-A：直接用钱包 USDT 存入，基础 APR 260%，每 5,000 USDT 加 3%，最高 +30%。CLASS-B：仅能用CLASS-A/CLASS-B产生的「未领利息」复投进入，APR 360%，钱包 USDT 不能直接进CLASS-B。两池最低均为 200 USDT。",
   },
   {
     q: "怎样才能拿到推荐奖？",

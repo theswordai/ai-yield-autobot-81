@@ -88,7 +88,7 @@ export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void
           icon={Wallet}
           label="我的总锁仓本金"
           value={`${fmt(totalPrincipal)} USDT`}
-          sub={`一池 ${fmt(data.pool1Principal)} · 二池 ${fmt(data.pool2Principal)}`}
+          sub={`CLASS-A ${fmt(data.pool1Principal)} · CLASS-B ${fmt(data.pool2Principal)}`}
           tone="amber"
         />
         <StatCard
@@ -157,7 +157,7 @@ export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void
                             : "border-emerald-400/40 text-emerald-600 dark:text-emerald-400"
                         }
                       >
-                        {p.poolType === 1 ? "一池" : "二池"}
+                        {p.poolType === 1 ? "CLASS-A" : "CLASS-B"}
                       </Badge>
                       <span className="text-xs text-muted-foreground">#{p.id.toString()}</span>
                     </div>
