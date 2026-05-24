@@ -288,6 +288,51 @@ export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void
         </DialogContent>
       </Dialog>
 
+      {/* 收益领取选择 */}
+      <Dialog open={!!claimTarget} onOpenChange={(o) => !o && setClaimTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>收益领取</DialogTitle>
+            <DialogDescription>
+              当前可领利息：
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                {claimTarget ? fmt(claimTarget.pending) : "0"} USDT
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 py-2">
+            <Button
+              className="w-full h-12 bg-gradient-to-r from-amber-500 to-yellow-600 font-semibold"
+              disabled={
+                busy !== null ||
+                !claimTarget ||
+                claimTarget.pending < 200n * 10n ** 18n
+              }
+              onClick={() => {
+                setClaimTarget(null);
+                onSwitchToPool2?.();
+              }}
+            >
+              切换到二池复投（需 ≥ 200 USDT）
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full h-12 border-white/20 font-semibold"
+              disabled={busy !== null || !claimTarget}
+              onClick={async () => {
+                if (claimTarget) {
+                  const id = claimTarget.id;
+                  setClaimTarget(null);
+                  await claimInterest([id]);
+                }
+              }}
+            >
+              直接领取
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
     </div>
   );
 }
