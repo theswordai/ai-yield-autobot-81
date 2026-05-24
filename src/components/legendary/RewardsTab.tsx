@@ -87,7 +87,7 @@ export function RewardsTab() {
 
   if (!account) {
     return (
-      <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center">
+      <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center">
         <p className="text-muted-foreground mb-4">连接钱包查看你的奖励</p>
         <Button onClick={() => connect()} className="bg-gradient-to-r from-amber-500 to-yellow-600">
           连接钱包
@@ -133,7 +133,7 @@ export function RewardsTab() {
         </div>
       </Card>
 
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <h3 className="font-bold mb-3">最近事件（最近 5000 区块）</h3>
         {events.length === 0 ? (
           <div className="text-sm text-muted-foreground text-center py-6">暂无记录</div>
@@ -142,7 +142,7 @@ export function RewardsTab() {
             {events.map((e, i) => (
               <div
                 key={`${e.hash}-${i}`}
-                className="flex items-center gap-3 p-2 rounded bg-white/5 text-xs"
+                className="flex items-center gap-3 p-2 rounded bg-foreground/5 text-xs"
               >
                 <Badge
                   variant="outline"

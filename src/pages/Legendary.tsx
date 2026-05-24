@@ -67,7 +67,7 @@ export default function Legendary() {
         </div>
 
         {account && (
-          <Card className="mb-6 relative overflow-hidden p-3 sm:p-4 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-xl border-white/10 animate-fade-in">
+          <Card className="mb-6 relative overflow-hidden p-3 sm:p-4 bg-gradient-to-br from-white/[0.07] to-white/[0.02] backdrop-blur-xl border-foreground/15 animate-fade-in">
             <div className="pointer-events-none absolute -top-16 right-0 w-48 h-48 rounded-full bg-amber-400/10 blur-3xl" />
             <div className="relative grid grid-cols-2 gap-3 sm:gap-4">
               <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export default function Legendary() {
         )}
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-1 h-auto bg-white/5 backdrop-blur-xl border border-white/10 p-1 rounded-xl">
+          <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-1 h-auto bg-foreground/5 backdrop-blur-xl border border-foreground/15 p-1 rounded-xl">
             {[
               { v: "deposit", icon: Wallet, label: "一池存款" },
               { v: "positions", icon: ListChecks, label: "我的仓位" },

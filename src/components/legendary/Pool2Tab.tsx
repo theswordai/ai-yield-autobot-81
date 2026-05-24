@@ -54,7 +54,7 @@ export function Pool2Tab() {
 
   if (!account) {
     return (
-      <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center">
+      <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center">
         <p className="text-muted-foreground mb-4">请先连接钱包再进行复投</p>
         <Button onClick={() => connect()} className="bg-gradient-to-r from-amber-500 to-yellow-600">
           连接钱包
@@ -66,7 +66,7 @@ export function Pool2Tab() {
   return (
     <div className="space-y-4">
       {/* 说明卡 */}
-      <Card className="p-6 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-6 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <div className="flex items-center gap-2 mb-2">
           <Layers className="w-5 h-5 text-emerald-400" />
           <h3 className="text-lg font-bold">二池复投（APR 360%）</h3>
@@ -75,11 +75,11 @@ export function Pool2Tab() {
           从一池仓位的未领利息中扣除作为本金，进入二池，锁仓 365 天。最低 200 USDT。
         </p>
         <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+          <div className="p-3 rounded-lg bg-foreground/5 border border-foreground/15">
             <div className="text-xs text-muted-foreground">APR</div>
             <div className="text-xl font-bold text-amber-400">{(POOL2_APR_BPS / 100).toFixed(0)}%</div>
           </div>
-          <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+          <div className="p-3 rounded-lg bg-foreground/5 border border-foreground/15">
             <div className="text-xs text-muted-foreground">日复利 APY</div>
             <div className="text-xl font-bold text-emerald-400">{apy.toFixed(0)}%</div>
           </div>
@@ -87,7 +87,7 @@ export function Pool2Tab() {
       </Card>
 
       {/* 选择一池仓位 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <div className="flex items-center justify-between mb-3">
           <div className="text-sm font-semibold">选择一池仓位的利息作为资金</div>
           <div className="text-xs text-muted-foreground">
@@ -103,7 +103,7 @@ export function Pool2Tab() {
             {pool1Active.map((p) => (
               <div
                 key={p.id.toString()}
-                className="flex items-center gap-3 p-2 rounded border border-white/5 bg-white/[0.02]"
+                className="flex items-center gap-3 p-2 rounded border border-foreground/10 bg-foreground/[0.04]"
               >
                 <Checkbox
                   checked={selected.has(p.id.toString())}
@@ -119,7 +119,7 @@ export function Pool2Tab() {
       </Card>
 
       {/* 输入复投金额 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10 space-y-3">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15 space-y-3">
         <div>
           <Label className="flex justify-between text-xs text-muted-foreground mb-1.5">
             <span>复投金额 (USDT)</span>
@@ -157,7 +157,7 @@ export function Pool2Tab() {
       </Card>
 
       {/* 已有二池仓位 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <div className="text-sm font-semibold mb-3">我的二池仓位（{pool2Active.length}）</div>
         {pool2Active.length === 0 ? (
           <div className="text-center text-sm text-muted-foreground py-6">暂无二池仓位</div>
@@ -168,7 +168,7 @@ export function Pool2Tab() {
               return (
                 <div
                   key={p.id.toString()}
-                  className="p-3 rounded-lg border border-white/10 bg-white/[0.02]"
+                  className="p-3 rounded-lg border border-foreground/15 bg-foreground/[0.04]"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="outline" className="border-emerald-400/40 text-emerald-400">
@@ -196,7 +196,7 @@ export function Pool2Tab() {
                       <div className="font-semibold">{timeLeft(p.startTime)}</div>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-white/5 flex flex-wrap gap-2 justify-end">
+                  <div className="mt-3 pt-3 border-t border-foreground/10 flex flex-wrap gap-2 justify-end">
                     <Button
                       size="sm"
                       variant="outline"

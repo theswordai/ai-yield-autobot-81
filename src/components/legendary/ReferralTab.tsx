@@ -86,7 +86,7 @@ export function ReferralTab() {
 
   if (!account) {
     return (
-      <Card className="p-8 bg-white/5 backdrop-blur-xl border-white/10 text-center">
+      <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center">
         <p className="text-muted-foreground mb-4">连接钱包查看团队与邀请数据</p>
         <Button onClick={() => connect()} className="bg-gradient-to-r from-amber-500 to-yellow-600">
           连接钱包
@@ -102,7 +102,7 @@ export function ReferralTab() {
 
 
       {/* 邀请链接 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <h3 className="font-bold mb-3">我的邀请链接</h3>
         <div className="flex gap-2">
           <Input value={myLink} readOnly className="font-mono text-xs" />
@@ -113,7 +113,7 @@ export function ReferralTab() {
       </Card>
 
       {/* 团队总览 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <h3 className="font-bold mb-3">团队总览</h3>
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
@@ -128,7 +128,7 @@ export function ReferralTab() {
       </Card>
 
       {/* 直推列表 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <h3 className="font-bold mb-3">我的直推（{directs.length}）</h3>
         {directs.length === 0 ? (
           <div className="text-sm text-muted-foreground text-center py-6">暂无直推</div>
@@ -138,7 +138,7 @@ export function ReferralTab() {
               {directs.slice(0, page * PAGE_SIZE).map((d) => (
                 <div
                   key={d.addr}
-                  className="flex items-center gap-3 p-2 rounded bg-white/5 text-xs"
+                  className="flex items-center gap-3 p-2 rounded bg-foreground/5 text-xs"
                 >
                   <span className="font-mono">
                     {d.addr.slice(0, 6)}...{d.addr.slice(-4)}

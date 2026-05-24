@@ -51,7 +51,7 @@ export function StatCard({ icon: Icon, label, value, sub, tone = "amber" }: Stat
   const t = TONES[tone];
   return (
     <Card
-      className={`group relative overflow-hidden p-4 bg-white/5 backdrop-blur-xl border border-white/10 ${t.ring} transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-12px_rgba(251,191,36,0.25)] animate-fade-in`}
+      className={`group relative overflow-hidden p-4 bg-foreground/5 backdrop-blur-xl border border-foreground/15 ${t.ring} transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-12px_rgba(251,191,36,0.25)] animate-fade-in`}
     >
       {/* glow blob */}
       <div
