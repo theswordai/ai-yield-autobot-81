@@ -39,6 +39,7 @@ export type LegendaryDashboard = {
   allowance: bigint;
   paused: boolean;
   frozen: boolean;
+  earlyPenaltyBps: number;
   positions: LegendaryPosition[];
 };
 
@@ -59,6 +60,7 @@ const EMPTY_DASHBOARD: LegendaryDashboard = {
   allowance: 0n,
   paused: false,
   frozen: false,
+  earlyPenaltyBps: 5000,
   positions: [],
 };
 
