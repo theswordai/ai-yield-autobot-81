@@ -721,7 +721,7 @@
     "description": "Perform USDT on-chain staking here, quickly complete Approve, Deposit, and view positions and rewards.",
     "header": "Charity Investment Center",
     "subtitle": "USDT On-Chain Staking · One-Stop Smart Investment Hub",
-    "charityButtonName": "Charity Injection",
+    "charityButtonName": "Strategy Details",
     "strategyButtonName": "Explore Strategy Details"
   },
   "user": {
