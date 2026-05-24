@@ -1,0 +1,1 @@
+CREATE POLICY "anyone read reads" ON public.announcement_reads FOR SELECT USING (true);
