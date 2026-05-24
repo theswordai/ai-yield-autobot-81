@@ -18,7 +18,7 @@ import {
 export function RewardsTab() {
   const { account, connect } = useWeb3();
   const { data, refetch } = useLegendaryDashboard();
-  const { claimRewards, busy } = useLegendaryActions(refetch);
+  const { claimRewards, claimTokenRewards, busy } = useLegendaryActions(refetch);
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
   const [claims, setClaims] = useState<ClaimRecord[] | null>(null);
   const [loadingClaims, setLoadingClaims] = useState(false);
