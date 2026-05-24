@@ -68,7 +68,7 @@ export function Pool2Tab() {
       <Card className="p-6 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <div className="flex items-center gap-2 mb-2">
           <Layers className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-          <h3 className="text-lg font-bold">二池复投（APR 360%）</h3>
+          <h3 className="text-lg font-bold">CLASS-B（APR 360%）</h3>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
           从一池仓位的未领利息中扣除作为本金，进入二池，锁仓 365 天。最低 200 USDT。
@@ -85,7 +85,7 @@ export function Pool2Tab() {
         </div>
         {pool1Active.length === 0 ? (
           <div className="text-center text-sm text-muted-foreground py-6">
-            暂无一池活跃仓位，请先去"一池存款"
+            暂无一池活跃仓位，请先去"CLASS-A"
           </div>
         ) : (
           <div className="space-y-2">
