@@ -45,7 +45,7 @@ export function ClaimYieldDialog({
           >
             <div className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
-              <span className="text-lg font-semibold">活期</span>
+              <span className="text-lg font-semibold">自由资本</span>
             </div>
             <span className="text-sm opacity-90">年化 50%</span>
           </Button>

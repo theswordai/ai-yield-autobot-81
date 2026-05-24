@@ -53,7 +53,7 @@ export function FaqTab() {
       <Alert variant="destructive">
         <AlertTriangle className="h-4 w-4" />
         <AlertDescription className="text-sm">
-          风险提示：传奇锁仓为高收益高风险产品，提前赎回扣除 50% 本金，锁仓期 365
+          风险提示：增值资本为高收益高风险产品，提前赎回扣除 50% 本金，锁仓期 365
           天。合约暂停或账户冻结时无法操作，请理性参与。
         </AlertDescription>
       </Alert>

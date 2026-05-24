@@ -62,7 +62,7 @@ export function AppSidebar() {
       href: `${langPrefix}/predict`,
     },
     {
-      title: language === "zh" ? "传奇锁仓" : "Legendary",
+      title: language === "zh" ? "增值资本" : "Legendary",
       icon: Gem,
       href: `${langPrefix}/legendary`,
     },

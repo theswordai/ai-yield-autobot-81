@@ -127,11 +127,11 @@ export default function Flexible() {
   return (
     <>
       <Helmet>
-        <title>{isZh ? "活期理财 · USD.online" : "Flexible Pool · USD.online"}</title>
+        <title>{isZh ? "自由资本 · USD.online" : "Flexible Pool · USD.online"}</title>
         <meta
           name="description"
           content={isZh
-            ? "USD.online 活期理财池，连接 BNB 智能链，灵活存取，10 代返佣。"
+            ? "USD.online 自由资本池，连接 BNB 智能链，灵活存取，10 代返佣。"
             : "USD.online Flexible Pool on BNB Smart Chain — flexible deposit/withdraw, 10-generation commission."}
         />
       </Helmet>
@@ -152,7 +152,7 @@ export default function Flexible() {
           {/* Header */}
           <header className="text-center space-y-2">
             <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              {isZh ? "活期理财池" : "Flexible Pool"}
+              {isZh ? "自由资本池" : "Flexible Pool"}
             </h1>
             <p className="text-sm text-muted-foreground">
               {isZh
@@ -175,7 +175,7 @@ export default function Flexible() {
               <CardContent className="flex flex-col items-center justify-center py-12 gap-4">
                 <Wallet className="w-12 h-12 text-muted-foreground" />
                 <p className="text-muted-foreground text-sm">
-                  {isZh ? "请连接钱包以使用活期理财" : "Connect wallet to access Flexible Pool"}
+                  {isZh ? "请连接钱包以使用自由资本" : "Connect wallet to access Flexible Pool"}
                 </p>
                 <Button onClick={connect} className="bg-gradient-to-r from-primary to-accent">
                   {isZh ? "连接钱包" : "Connect Wallet"}
@@ -231,7 +231,7 @@ export default function Flexible() {
                 />
                 <StatCard
                   icon={<Coins className="w-4 h-4" />}
-                  label={isZh ? "我的活期本金" : "My Principal"}
+                  label={isZh ? "我的自由资本本金" : "My Principal"}
                   value={`${formatUSDT(data.myPrincipal)}`}
                   sub="USDT"
                 />
@@ -308,7 +308,7 @@ export default function Flexible() {
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Lock className="w-4 h-4" />
-                    {isZh ? "活期存款" : "Deposit"}
+                    {isZh ? "自由资本存款" : "Deposit"}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">

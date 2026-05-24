@@ -34,7 +34,7 @@ const MobileBottomNav = () => {
   const primaryItems = [
     { id: "launch",  label: "启航",  labelEn: "Launch",  icon: Rocket,     path: `/${language}` },
     { id: "charity", label: "善举",  labelEn: "Charity", icon: Heart,      path: `/${language}/invest` },
-    { id: "flexible", label: "活期", labelEn: "Flexible", icon: Wallet,    path: `/${language}/flexible` },
+    { id: "flexible", label: "自由资本", labelEn: "Flexible", icon: Wallet,    path: `/${language}/flexible` },
     { id: "swap",    label: "兑换",  labelEn: "Swap",    icon: Coins,      path: `/${language}/usdv?tab=dex` },
     { id: "asset",   label: "资产", labelEn: "Asset", icon: BarChart3, path: `/${language}/asset-dashboard` },
   ];
@@ -43,7 +43,7 @@ const MobileBottomNav = () => {
   const moreItems = [
     {
       id: "legendary",
-      label: "传奇锁仓",
+      label: "增值资本",
       labelEn: "Legendary",
       desc: "365天锁仓 · APR 260%起",
       descEn: "365-day lock · 260%+ APR",
