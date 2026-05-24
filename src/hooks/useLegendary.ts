@@ -158,6 +158,11 @@ async function doRefetch(
         allowance,
         frozen,
         posIdsFromCall,
+        pendingUsdv,
+        pendingFdao,
+        previewTok,
+        usdvBalance,
+        fdaoBalance,
       ] = await Promise.all([
         safe(read.staking.referralClaimable(account) as Promise<bigint>, 0n),
         safe(read.staking.lastClaimAt(account) as Promise<bigint>, 0n),
@@ -183,7 +188,20 @@ async function doRefetch(
             return [];
           }
         })(),
+        safe(read.staking.pendingUsdv(account) as Promise<bigint>, 0n),
+        safe(read.staking.pendingFdao(account) as Promise<bigint>, 0n),
+        safe(
+          read.staking.previewTokenRewards(account) as Promise<[bigint, bigint, bigint, bigint]>,
+          [0n, 0n, 0n, 0n] as [bigint, bigint, bigint, bigint]
+        ),
+        safe(read.usdv.balanceOf(account) as Promise<bigint>, 0n),
+        safe(read.fdao.balanceOf(account) as Promise<bigint>, 0n),
       ]);
+
+      const previewUsdvInterest = (previewTok as any)?.[0] ?? 0n;
+      const previewUsdvLevel = (previewTok as any)?.[1] ?? 0n;
+      const previewFdaoInterest = (previewTok as any)?.[2] ?? 0n;
+      const previewFdaoLevel = (previewTok as any)?.[3] ?? 0n;
 
       // Fallback: scan Deposited events to recover posIds the call may have missed
       const posIds: bigint[] = [...posIdsFromCall];
