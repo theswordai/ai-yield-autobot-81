@@ -227,6 +227,59 @@ export function RewardsTab() {
           </div>
         )}
       </Card>
+
+      {/* 历史领取记录 */}
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-bold flex items-center gap-2">
+            <History className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            历史领取记录
+          </h3>
+          <div className="text-xs text-muted-foreground">
+            累计：
+            <span className="font-bold text-emerald-600 dark:text-emerald-400 ml-1">
+              {Number(formatUnits(claimTotal, 18)).toFixed(4)} USDT
+            </span>
+          </div>
+        </div>
+        {historyLoading && claimHistory.length === 0 ? (
+          <div className="text-sm text-muted-foreground text-center py-6">加载中…</div>
+        ) : claimHistory.length === 0 ? (
+          <div className="text-sm text-muted-foreground text-center py-6">暂无领取记录</div>
+        ) : (
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+            {claimHistory.map((e, i) => (
+              <div
+                key={`${e.hash}-${i}`}
+                className="flex items-center gap-3 p-2 rounded bg-foreground/5 text-xs"
+              >
+                <Badge
+                  variant="outline"
+                  className="border-emerald-400/40 text-emerald-600 dark:text-emerald-400"
+                >
+                  领取
+                </Badge>
+                <span className="text-muted-foreground">
+                  {e.ts
+                    ? new Date(e.ts * 1000).toLocaleString()
+                    : `区块 #${e.block}`}
+                </span>
+                <a
+                  href={`https://bscscan.com/tx/${e.hash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-mono text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+                >
+                  {e.hash.slice(0, 8)}…
+                </a>
+                <span className="ml-auto font-semibold text-emerald-600 dark:text-emerald-400">
+                  +{Number(formatUnits(e.amount, 18)).toFixed(4)} USDT
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
     </div>
   );
 }
