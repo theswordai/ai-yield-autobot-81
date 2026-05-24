@@ -126,15 +126,6 @@ export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void
           <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? "animate-spin" : ""}`} />
           刷新
         </Button>
-        <Button
-          size="sm"
-          disabled={selectedIds.length === 0 || busy !== null}
-          onClick={() => claimInterest(selectedIds)}
-          variant="outline"
-          className="border-white/20"
-        >
-          批量领利息
-        </Button>
       </Card>
 
 
