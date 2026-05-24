@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "@/hooks/useI18n";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Navbar } from "@/components/Navbar";
@@ -15,7 +16,7 @@ import { MockUSDT_ABI } from "@/abis/MockUSDT";
 import { LockStaking_ABI } from "@/abis/LockStaking";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown } from "lucide-react";
+import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown, Crown, TrendingUp, ArrowRight } from "lucide-react";
 import { PositionsList } from "@/components/PositionsList";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
@@ -27,7 +28,8 @@ export default function Stake({
 }: {
   embedded?: boolean;
 }) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const navigate = useNavigate();
   const {
     account,
     signer,
@@ -514,19 +516,46 @@ export default function Stake({
             </span>
           </Title>
           
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-              <Shield className="w-3 h-3 mr-1" />
-              {t("staking.contractSafeguard")}
-            </Badge>
-            <Badge variant="secondary" className="bg-accent/10 text-accent border-accent/20">
-              <Users className="w-3 h-3 mr-1" />
-              {t("staking.transparentOnChain")}
-            </Badge>
-            <Badge variant="secondary" className="bg-secondary/10 text-secondary border-secondary/20">
-              <Gift className="w-3 h-3 mr-1" />
-              {t("staking.communityDriven")}
-            </Badge>
+          <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 mt-6 max-w-xl mx-auto">
+            {/* 增值资本入口 */}
+            <button
+              onClick={() => navigate(`/${language}/legendary`)}
+              className="group relative flex-1 rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-yellow-600/5 to-transparent backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-amber-400/60 hover:shadow-[0_8px_30px_-8px_rgba(251,191,36,0.35)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
+            >
+              <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-amber-400/15 blur-2xl" />
+              <div className="relative flex items-center gap-4">
+                <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/25 to-yellow-600/15 border border-amber-300/40 flex items-center justify-center shadow-[0_0_20px_-4px_rgba(251,191,36,0.4)]">
+                  <Crown className="w-6 h-6 text-amber-600 dark:text-amber-300" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-400 bg-clip-text text-transparent">
+                    增值资本
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">CLASS-A / CLASS-B 质押引擎</p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-amber-500/70 group-hover:text-amber-500 group-hover:translate-x-1 transition-all shrink-0" />
+              </div>
+            </button>
+
+            {/* 自有资本入口 */}
+            <button
+              onClick={() => navigate(`/${language}/trade`)}
+              className="group relative flex-1 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-primary/50 hover:shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.25)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
+            >
+              <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-primary/10 blur-2xl" />
+              <div className="relative flex items-center gap-4">
+                <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30 flex items-center justify-center shadow-[0_0_20px_-4px_hsl(var(--primary)/0.3)]">
+                  <TrendingUp className="w-6 h-6 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                    自有资本
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">AI 资产管理策略</p>
+                </div>
+                <ArrowRight className="w-5 h-5 text-primary/60 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+              </div>
+            </button>
           </div>
         </div>
 
