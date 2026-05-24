@@ -24,6 +24,9 @@ export function RewardsTab() {
   const { claimRewards, busy } = useLegendaryActions(refetch);
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
   const [events, setEvents] = useState<Evt[]>([]);
+  const [claimHistory, setClaimHistory] = useState<{ hash: string; block: number; amount: bigint; ts?: number }[]>([]);
+  const [claimTotal, setClaimTotal] = useState<bigint>(0n);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
