@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatUnits } from "ethers";
 import { Gift, Clock, RefreshCw, ExternalLink } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
-import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
+import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { CLAIM_COOLDOWN_SEC } from "@/config/legendary";
 import {
@@ -15,26 +15,14 @@ import {
   type ClaimRecord,
 } from "@/lib/legendaryClaimHistory";
 
-type Evt = {
-  hash: string;
-  block: number;
-  type: string;
-  from?: string;
-  amount: bigint;
-};
-
 export function RewardsTab() {
   const { account, connect } = useWeb3();
-  const { read } = useLegendaryContracts();
   const { data, refetch } = useLegendaryDashboard();
   const { claimRewards, busy } = useLegendaryActions(refetch);
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
-  const [events, setEvents] = useState<Evt[]>([]);
   const [claims, setClaims] = useState<ClaimRecord[] | null>(null);
   const [loadingClaims, setLoadingClaims] = useState(false);
   const [claimsError, setClaimsError] = useState<string | null>(null);
-
-  
 
   useEffect(() => {
     const t = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
@@ -66,51 +54,6 @@ export function RewardsTab() {
       setLoadingClaims(false);
     }
   };
-
-  // Commission events only (Referral + Dynamic) — fast 5000-block scan
-  useEffect(() => {
-    (async () => {
-      if (!read || !account) return;
-      try {
-        const provider = (read.staking as any).runner?.provider;
-        if (!provider) return;
-        const latest = await provider.getBlockNumber();
-        const fromBlock = Math.max(0, latest - 5000);
-        const [refLogs, dynLogs] = await Promise.all([
-          read.staking
-            .queryFilter(read.staking.filters.ReferralAccrued(null, account), fromBlock, latest)
-            .catch(() => []),
-          read.staking
-            .queryFilter(read.staking.filters.DynamicAccrued(null, account), fromBlock, latest)
-            .catch(() => []),
-        ]);
-        const evs: Evt[] = [];
-        for (const l of refLogs as any[]) {
-          const lvl = Number(l.args?.level ?? 0);
-          evs.push({
-            hash: l.transactionHash,
-            block: l.blockNumber,
-            type: lvl === 1 ? "直推" : "间推",
-            from: l.args?.from,
-            amount: l.args?.amount ?? 0n,
-          });
-        }
-        for (const l of dynLogs as any[]) {
-          evs.push({
-            hash: l.transactionHash,
-            block: l.blockNumber,
-            type: `动态 V${Number(l.args?.vLevel ?? 0)}`,
-            from: l.args?.from,
-            amount: l.args?.amount ?? 0n,
-          });
-        }
-        evs.sort((a, b) => b.block - a.block);
-        setEvents(evs.slice(0, 30));
-      } catch {
-        setEvents([]);
-      }
-    })();
-  }, [read, account, data.referralClaimable]);
 
   if (!account) {
     return (
@@ -234,41 +177,6 @@ export function RewardsTab() {
         )}
       </Card>
 
-      {/* 最近佣金事件 */}
-      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
-        <h3 className="font-bold mb-3">最近佣金事件（最近 5000 区块）</h3>
-        {events.length === 0 ? (
-          <div className="text-sm text-muted-foreground text-center py-6">暂无记录</div>
-        ) : (
-          <div className="space-y-2 max-h-96 overflow-y-auto">
-            {events.map((e, i) => (
-              <div
-                key={`${e.hash}-${i}`}
-                className="flex items-center gap-3 p-2 rounded bg-foreground/5 text-xs"
-              >
-                <Badge
-                  variant="outline"
-                  className={
-                    e.type.startsWith("动态")
-                      ? "border-purple-400/40 text-purple-600 dark:text-purple-400"
-                      : "border-amber-400/40 text-amber-600 dark:text-amber-400"
-                  }
-                >
-                  {e.type}
-                </Badge>
-                {e.from && (
-                  <span className="font-mono text-muted-foreground">
-                    来自 {e.from.slice(0, 6)}...{e.from.slice(-4)}
-                  </span>
-                )}
-                <span className="ml-auto font-semibold">
-                  +{Number(formatUnits(e.amount, 18)).toFixed(4)} USDT
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </Card>
     </div>
   );
 }
