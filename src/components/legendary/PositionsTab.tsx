@@ -211,25 +211,57 @@ export function PositionsTab() {
           <DialogHeader>
             <DialogTitle>确认提前赎回</DialogTitle>
             <DialogDescription>
-              将扣除 <span className="text-destructive font-bold">50% 本金</span>{" "}
+              将扣除{" "}
+              <span className="text-destructive font-bold">
+                {((data.earlyPenaltyBps || 5000) / 100).toFixed(data.earlyPenaltyBps % 100 === 0 ? 0 : 2)}% 本金
+              </span>{" "}
               作为罚金，已计利息照付。此操作不可撤销。
             </DialogDescription>
           </DialogHeader>
-          {earlyTarget && (
-            <div className="text-sm space-y-1">
-              <div>本金：{fmt(earlyTarget.principal)} USDT</div>
-              <div>
-                返还本金：
-                <span className="text-amber-400">
-                  {fmt(earlyTarget.principal / 2n)} USDT
-                </span>
+          {earlyTarget && (() => {
+            const bps = BigInt(data.earlyPenaltyBps || 5000);
+            const penalty = (earlyTarget.principal * bps) / 10000n;
+            const returned = earlyTarget.principal - penalty;
+            const MIN_REF = 200n * 10n ** 18n;
+            let newSelf = data.selfStake - earlyTarget.principal;
+            if (newSelf < 0n) newSelf = 0n;
+            // recompute level by frontend LEVELS table
+            let newLevel = 0;
+            for (const L of LEVELS) {
+              const selfMin = L.self * 10n ** 18n;
+              const teamMin = L.team * 10n ** 18n;
+              if (newSelf >= selfMin && data.teamPerf >= teamMin) newLevel = L.v;
+            }
+            const levelDown = newLevel < data.level;
+            const losesRef = newSelf < MIN_REF;
+            return (
+              <div className="text-sm space-y-1">
+                <div>本金：{fmt(earlyTarget.principal)} USDT</div>
+                <div>
+                  返还本金：
+                  <span className="text-amber-400"> {fmt(returned)} USDT</span>
+                </div>
+                <div>
+                  罚金：
+                  <span className="text-destructive"> {fmt(penalty)} USDT</span>
+                </div>
+                <div>
+                  返还利息：
+                  <span className="text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
+                </div>
+                {levelDown && (
+                  <div className="mt-2 p-2 rounded bg-destructive/10 border border-destructive/30 text-destructive text-xs">
+                    ⚠️ 赎回后等级将从 V{data.level} 下降到 V{newLevel}，影响下次动态分红分桶比例
+                  </div>
+                )}
+                {losesRef && (
+                  <div className="mt-2 p-2 rounded bg-destructive/10 border border-destructive/30 text-destructive text-xs">
+                    ⚠️ 赎回后您的自投将跌破 200 USDT，失去拿直推/间推奖资格
+                  </div>
+                )}
               </div>
-              <div>
-                返还利息：
-                <span className="text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
-              </div>
-            </div>
-          )}
+            );
+          })()}
           <DialogFooter>
             <Button variant="outline" onClick={() => setEarlyTarget(null)}>
               取消
