@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { WalletConnector } from "@/components/WalletConnector";
 import { useI18n } from "@/hooks/useI18n";
 import { useTheme } from "@/hooks/useTheme";
+import futureDaoLogo from "@/assets/futuredao-logo.png";
 
 
 export function Navbar() {
@@ -51,19 +52,29 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`text-sm font-medium transition-colors duration-200 hover:text-primary ${
-                  isActive(item.href) 
-                    ? "text-primary" 
-                    : "text-muted-foreground"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isPredict = item.href === `${langPrefix}/predict`;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`flex items-center gap-2 text-sm font-medium transition-colors duration-200 hover:text-primary ${
+                    isActive(item.href)
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {isPredict && (
+                    <img
+                      src={futureDaoLogo}
+                      alt="FutureDAO"
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                  )}
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Wallet Connector + Theme Toggle + X Link */}
