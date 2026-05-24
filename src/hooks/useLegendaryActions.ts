@@ -151,7 +151,7 @@ export function useLegendaryActions(onDone?: () => void) {
       return run(
         "compound",
         () => write.staking.compoundToPool2(posIds, amountWei),
-        "复投到二池成功"
+        "复投到CLASS-B成功"
       );
     },
     [write, run]

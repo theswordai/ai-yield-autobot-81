@@ -71,21 +71,21 @@ export function Pool2Tab() {
           <h3 className="text-lg font-bold">CLASS-B（APR 360%）</h3>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          从一池仓位的未领利息中扣除作为本金，进入二池，锁仓 365 天。最低 200 USDT。
+          从CLASS-A仓位的未领利息中扣除作为本金，进入CLASS-B，锁仓 365 天。最低 200 USDT。
         </p>
       </Card>
 
-      {/* 选择一池仓位 */}
+      {/* 选择CLASS-A仓位 */}
       <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <div className="flex items-center justify-between mb-3">
-          <div className="text-sm font-semibold">选择一池仓位的利息作为资金</div>
+          <div className="text-sm font-semibold">选择CLASS-A仓位的利息作为资金</div>
           <div className="text-xs text-muted-foreground">
             已选 {selectedIds.length} · 合计利息 {fmt(selectedPending)} USDT
           </div>
         </div>
         {pool1Active.length === 0 ? (
           <div className="text-center text-sm text-muted-foreground py-6">
-            暂无一池活跃仓位，请先去"CLASS-A"
+            暂无CLASS-A活跃仓位，请先去"CLASS-A"
           </div>
         ) : (
           <div className="space-y-2">
@@ -141,15 +141,15 @@ export function Pool2Tab() {
           }}
           className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 h-12 text-base font-semibold"
         >
-          {busy === "compound" ? "复投中..." : "确认复投到二池"}
+          {busy === "compound" ? "复投中..." : "确认复投到CLASS-B"}
         </Button>
       </Card>
 
-      {/* 已有二池仓位 */}
+      {/* 已有CLASS-B仓位 */}
       <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
-        <div className="text-sm font-semibold mb-3">我的二池仓位（{pool2Active.length}）</div>
+        <div className="text-sm font-semibold mb-3">我的CLASS-B仓位（{pool2Active.length}）</div>
         {pool2Active.length === 0 ? (
-          <div className="text-center text-sm text-muted-foreground py-6">暂无二池仓位</div>
+          <div className="text-center text-sm text-muted-foreground py-6">暂无CLASS-B仓位</div>
         ) : (
           <div className="space-y-3">
             {pool2Active.map((p) => {
@@ -161,7 +161,7 @@ export function Pool2Tab() {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="outline" className="border-emerald-400/40 text-emerald-600 dark:text-emerald-400">
-                      二池
+                      CLASS-B
                     </Badge>
                     <span className="text-xs text-muted-foreground">#{p.id.toString()}</span>
                   </div>
