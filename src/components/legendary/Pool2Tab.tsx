@@ -50,7 +50,6 @@ export function Pool2Tab() {
 
   const amountNum = Number(amount || "0");
   const tooLow = amountNum > 0 && amountNum < 200;
-  const apy = aprBpsToApyPct(POOL2_APR_BPS);
 
   if (!account) {
     return (
