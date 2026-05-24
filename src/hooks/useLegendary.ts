@@ -129,7 +129,7 @@ async function doRefetch(
         usdtBalance,
         allowance,
         frozen,
-        posIds,
+        posIdsFromCall,
       ] = await Promise.all([
         safe(read.staking.referralClaimable(account) as Promise<bigint>, 0n),
         safe(read.staking.lastClaimAt(account) as Promise<bigint>, 0n),
@@ -146,8 +146,37 @@ async function doRefetch(
           0n
         ),
         safe(read.staking.frozen(account) as Promise<boolean>, false),
-        safe(read.staking.getUserPositions(account) as Promise<bigint[]>, []),
+        (async (): Promise<bigint[]> => {
+          try {
+            const r = (await read.staking.getUserPositions(account)) as bigint[];
+            return r ?? [];
+          } catch (e) {
+            console.warn("[legendary] getUserPositions failed, fallback to events", e);
+            return [];
+          }
+        })(),
       ]);
+
+      // Fallback: scan Deposited events to recover posIds the call may have missed
+      const posIds: bigint[] = [...posIdsFromCall];
+      try {
+        const provider =
+          (read.staking as any).runner?.provider ?? (read.staking as any).provider;
+        const latest: number = await provider.getBlockNumber();
+        const fromBlock = Math.max(0, latest - 50_000);
+        const filter = read.staking.filters.Deposited(account);
+        const logs = await read.staking.queryFilter(filter, fromBlock, latest);
+        const seen = new Set(posIds.map((x) => x.toString()));
+        for (const lg of logs) {
+          const id = (lg as any).args?.posId as bigint | undefined;
+          if (id !== undefined && !seen.has(id.toString())) {
+            seen.add(id.toString());
+            posIds.push(id);
+          }
+        }
+      } catch (e) {
+        console.warn("[legendary] Deposited event scan failed", e);
+      }
 
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
