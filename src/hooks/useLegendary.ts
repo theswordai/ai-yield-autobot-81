@@ -245,15 +245,19 @@ async function doRefetch(
       }
 
       console.log("[legendary] posIds", posIds.map((x) => x.toString()));
+      const prevPosById = new Map(prev.positions.map((p) => [p.id.toString(), p]));
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
+          const prevPos = prevPosById.get(id.toString());
           const pos = await safe(read.staking.positions(id) as Promise<any>, null as any);
           const pending = await safe(
             read.staking.pendingInterest(id) as Promise<bigint>,
-            0n
+            prevPos?.pending ?? 0n
           );
-          console.log("[legendary] position", id.toString(), pos, "pending=", pending?.toString());
           if (!pos) {
+            // Reading this position failed — keep previous snapshot if we had it,
+            // rather than flashing the row to zero / withdrawn.
+            if (prevPos) return { ...prevPos, pending };
             return {
               id,
               user: account,
