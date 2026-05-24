@@ -78,22 +78,26 @@ export function PositionsTab() {
           label="我的总锁仓本金"
           value={`${fmt(totalPrincipal)} USDT`}
           sub={`一池 ${fmt(data.pool1Principal)} · 二池 ${fmt(data.pool2Principal)}`}
+          tone="amber"
         />
         <StatCard
           icon={TrendingUp}
           label="累计可领利息"
           value={`${fmt(data.totalPending)} USDT`}
+          tone="emerald"
         />
         <StatCard
           icon={Gift}
           label="可领奖励"
           value={`${fmt(data.referralClaimable)} USDT`}
+          tone="primary"
         />
         <StatCard
           icon={Crown}
           label="我的等级"
           value={data.level === 0 ? "V0" : `V${data.level}`}
           sub={`自投 ${fmt(data.selfStake, 0)} · 业绩 ${fmt(data.teamPerf, 0)}`}
+          tone="amber"
         />
       </div>
 

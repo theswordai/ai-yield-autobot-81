@@ -106,23 +106,31 @@ export function RewardsTab() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-6 bg-gradient-to-br from-amber-500/10 to-yellow-600/5 backdrop-blur-xl border-amber-400/20">
-        <div className="flex items-center gap-2 text-amber-400 mb-2">
-          <Gift className="w-5 h-5" />
-          <span className="text-sm">待领取奖励</span>
+      <Card className="relative overflow-hidden p-6 bg-gradient-to-br from-amber-500/15 via-yellow-600/8 to-transparent backdrop-blur-xl border-amber-400/30 animate-fade-in">
+        <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-amber-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-10 w-48 h-48 rounded-full bg-yellow-600/10 blur-3xl" />
+        <div className="relative">
+          <div className="flex items-center gap-2 text-amber-300 mb-2">
+            <span className="inline-flex w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 items-center justify-center">
+              <Gift className="w-4 h-4" />
+            </span>
+            <span className="text-sm font-medium tracking-wide">待领取奖励</span>
+          </div>
+          <div className="text-4xl sm:text-5xl font-extrabold mb-3 bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(251,191,36,0.25)]">
+            {fmt(data.referralClaimable)} <span className="text-2xl text-amber-300/80">USDT</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+            <Clock className="w-4 h-4" />
+            距下次可领：<span className="text-foreground font-semibold">{cd}</span>
+          </div>
+          <Button
+            disabled={!canClaim || busy !== null}
+            onClick={() => claimRewards()}
+            className="w-full md:w-auto bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 h-12 px-8 font-semibold shadow-[0_8px_30px_-8px_rgba(251,191,36,0.6)] transition-all hover:scale-[1.02]"
+          >
+            一键领取奖励
+          </Button>
         </div>
-        <div className="text-4xl font-bold mb-3">{fmt(data.referralClaimable)} USDT</div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          <Clock className="w-4 h-4" />
-          距下次可领：<span className="text-foreground font-semibold">{cd}</span>
-        </div>
-        <Button
-          disabled={!canClaim || busy !== null}
-          onClick={() => claimRewards()}
-          className="w-full md:w-auto bg-gradient-to-r from-amber-500 to-yellow-600 h-12 px-8"
-        >
-          一键领取奖励
-        </Button>
       </Card>
 
       <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
