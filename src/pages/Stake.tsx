@@ -526,45 +526,6 @@ export default function Stake({
           </button>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 mb-8 max-w-xl mx-auto px-2">
-          {/* 增值资本入口 */}
-          <button
-            onClick={() => navigate(`/${language}/legendary`)}
-            className="group relative flex-1 rounded-2xl border border-teal-800 bg-teal-700 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-teal-600 hover:shadow-[0_8px_30px_-8px_rgba(15,118,110,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-          >
-            <div className="flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-teal-900 border border-teal-950 flex items-center justify-center">
-                <Coins className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-black">
-                  增值资本
-                </h3>
-                <p className="text-xs sm:text-sm text-teal-100 mt-1">CLASS-A / CLASS-B 质押引擎</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-teal-100 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
-            </div>
-          </button>
-
-          {/* 自由资本入口 */}
-          <button
-            onClick={() => navigate(`/${language}/flexible`)}
-            className="group relative flex-1 rounded-2xl border border-amber-600 bg-amber-500 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_8px_30px_-8px_rgba(245,158,11,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-          >
-            <div className="flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-amber-700 border border-amber-800 flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-black">
-                  自由资本
-                </h3>
-                <p className="text-xs sm:text-sm text-amber-100 mt-1">AI 资产管理策略</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-amber-100 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
-            </div>
-          </button>
-        </div>
 
         <div className="mb-8 text-center px-2">
           <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">
