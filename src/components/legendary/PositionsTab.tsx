@@ -42,8 +42,16 @@ export function PositionsTab() {
     useLegendaryActions(refetch);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [earlyTarget, setEarlyTarget] = useState<LegendaryPosition | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const active = data.positions.filter((p) => !p.withdrawn);
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setTimeout(() => setRefreshing(false), 400);
+    }
+  };
   const totalPrincipal = data.pool1Principal + data.pool2Principal;
 
   const toggle = (id: bigint) => {
