@@ -40,7 +40,7 @@ export default function Legendary() {
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent">
-                  传奇锁仓
+                  增值资本
                 </h1>
                 <span className="text-xs sm:text-sm font-semibold text-amber-700/90 dark:text-amber-700 dark:text-amber-300/80 tracking-[0.2em] uppercase">
                   Legendary Staking
