@@ -178,6 +178,7 @@ async function doRefetch(
         console.warn("[legendary] Deposited event scan failed", e);
       }
 
+      console.log("[legendary] posIds", posIds.map((x) => x.toString()));
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
           const pos = await safe(read.staking.positions(id) as Promise<any>, null as any);
@@ -185,6 +186,7 @@ async function doRefetch(
             read.staking.pendingInterest(id) as Promise<bigint>,
             0n
           );
+          console.log("[legendary] position", id.toString(), pos, "pending=", pending?.toString());
           if (!pos) {
             return {
               id,
@@ -198,15 +200,16 @@ async function doRefetch(
               pending: 0n,
             };
           }
+          // tuple: (user, principal, startTime, lastAccrueTime, aprBps, accruedClaimable, poolType, withdrawn)
           return {
             id,
             user: pos.user ?? pos[0],
-            poolType: Number(pos.poolType ?? pos[1]),
-            principal: pos.principal ?? pos[2],
-            aprBps: pos.aprBps ?? pos[3],
-            startTime: pos.startTime ?? pos[4],
-            lastInterestClaimAt: pos.lastInterestClaimAt ?? pos[5],
-            withdrawn: pos.withdrawn ?? pos[6],
+            principal: pos.principal ?? pos[1],
+            startTime: pos.startTime ?? pos[2],
+            lastInterestClaimAt: pos.lastAccrueTime ?? pos[3],
+            aprBps: pos.aprBps ?? pos[4],
+            poolType: Number(pos.poolType ?? pos[6]),
+            withdrawn: pos.withdrawn ?? pos[7],
             pending,
           };
         })
