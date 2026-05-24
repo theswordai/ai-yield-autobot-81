@@ -508,40 +508,40 @@ export default function Stake({
           {/* 增值资本入口 */}
           <button
             onClick={() => navigate(`/${language}/legendary`)}
-            className="group relative flex-1 rounded-2xl border border-amber-400/40 bg-gradient-to-br from-amber-500/30 via-yellow-500/15 to-amber-600/5 backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-amber-400/80 hover:shadow-[0_8px_30px_-8px_rgba(251,191,36,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
+            className="group relative flex-1 rounded-2xl border border-green-600 bg-green-500 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-green-400 hover:shadow-[0_8px_30px_-8px_rgba(34,197,94,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
           >
-            <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-amber-400/25 blur-2xl" />
+            <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-green-300 blur-2xl" />
             <div className="relative flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/40 to-yellow-600/25 border border-amber-300/50 flex items-center justify-center shadow-[0_0_20px_-4px_rgba(251,191,36,0.5)]">
-                <Crown className="w-6 h-6 text-amber-600 dark:text-amber-300" />
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-green-700 border border-green-800 flex items-center justify-center">
+                <Crown className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-400 bg-clip-text text-transparent">
+                <h3 className="text-lg sm:text-xl font-bold text-black">
                   增值资本
                 </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">CLASS-A / CLASS-B 质押引擎</p>
+                <p className="text-xs sm:text-sm text-green-900 mt-1">CLASS-A / CLASS-B 质押引擎</p>
               </div>
-              <ArrowRight className="w-5 h-5 text-amber-500/70 group-hover:text-amber-500 group-hover:translate-x-1 transition-all shrink-0" />
+              <ArrowRight className="w-5 h-5 text-green-900/70 group-hover:text-black group-hover:translate-x-1 transition-all shrink-0" />
             </div>
           </button>
 
-          {/* 自有资本入口 */}
+          {/* 自由资本入口 */}
           <button
             onClick={() => navigate(`/${language}/trade`)}
-            className="group relative flex-1 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/25 via-primary/15 to-primary/5 backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-primary/70 hover:shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.35)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
+            className="group relative flex-1 rounded-2xl border border-yellow-500 bg-yellow-400 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-yellow-300 hover:shadow-[0_8px_30px_-8px_rgba(250,204,21,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
           >
-            <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-primary/20 blur-2xl" />
+            <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-yellow-200 blur-2xl" />
             <div className="relative flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/15 border border-primary/40 flex items-center justify-center shadow-[0_0_20px_-4px_hsl(var(--primary)/0.4)]">
-                <TrendingUp className="w-6 h-6 text-primary" />
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-yellow-600 border border-yellow-700 flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                  自有资本
+                <h3 className="text-lg sm:text-xl font-bold text-black">
+                  自由资本
                 </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">AI 资产管理策略</p>
+                <p className="text-xs sm:text-sm text-yellow-900 mt-1">AI 资产管理策略</p>
               </div>
-              <ArrowRight className="w-5 h-5 text-primary/60 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+              <ArrowRight className="w-5 h-5 text-yellow-900/70 group-hover:text-black group-hover:translate-x-1 transition-all shrink-0" />
             </div>
           </button>
         </div>
