@@ -217,6 +217,7 @@ async function doRefetch(
 
       // Fallback: scan Deposited events to recover posIds the call may have missed
       const posIds: bigint[] = [...posIdsFromCall];
+      let eventScanOk = false;
       try {
         const provider =
           (read.staking as any).runner?.provider ?? (read.staking as any).provider;
@@ -232,8 +233,15 @@ async function doRefetch(
             posIds.push(id);
           }
         }
+        eventScanOk = true;
       } catch (e) {
         console.warn("[legendary] Deposited event scan failed", e);
+      }
+
+      // If both sources came back empty due to RPC errors, merge in previous posIds
+      // so we don't briefly flash to zero positions.
+      if (posIds.length === 0 && (!posIdsCallOk || !eventScanOk) && prev.positions.length > 0) {
+        for (const p of prev.positions) posIds.push(p.id);
       }
 
       console.log("[legendary] posIds", posIds.map((x) => x.toString()));
