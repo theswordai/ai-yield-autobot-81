@@ -117,6 +117,16 @@ export function PositionsTab() {
         </div>
         <Button
           size="sm"
+          variant="outline"
+          className="border-white/20"
+          disabled={refreshing}
+          onClick={handleRefresh}
+        >
+          <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? "animate-spin" : ""}`} />
+          刷新
+        </Button>
+        <Button
+          size="sm"
           disabled={selectedIds.length === 0 || busy !== null}
           onClick={() => claimInterest(selectedIds)}
           variant="outline"
