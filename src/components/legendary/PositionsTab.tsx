@@ -273,16 +273,6 @@ export function PositionsTab() {
                   返还利息：
                   <span className="text-emerald-600 dark:text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
                 </div>
-                {levelDown && (
-                  <div className="mt-2 p-2 rounded bg-destructive/10 border border-destructive/30 text-destructive text-xs">
-                    ⚠️ 赎回后等级将从 V{data.level} 下降到 V{newLevel}，影响下次动态分红分桶比例
-                  </div>
-                )}
-                {losesRef && (
-                  <div className="mt-2 p-2 rounded bg-destructive/10 border border-destructive/30 text-destructive text-xs">
-                    ⚠️ 赎回后您的自投将跌破 200 USDT，失去拿直推/间推奖资格
-                  </div>
-                )}
               </div>
             );
           })()}
