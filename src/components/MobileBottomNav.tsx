@@ -32,11 +32,11 @@ const MobileBottomNav = () => {
 
   // Primary slots — always visible in the bottom bar
   const primaryItems = [
-    { id: "launch",    label: "启航",     labelEn: "Launch",    icon: Rocket,   path: `/${language}` },
-    { id: "invest",    label: "财富管理", labelEn: "Wealth",    icon: Gem,      path: `/${language}/invest` },
-    { id: "swap",      label: "USDV",     labelEn: "USDV",      icon: Coins,    path: `/${language}/usdv?tab=dex` },
-    { id: "futuredao", label: "FutureDAO", labelEn: "FutureDAO", icon: FileText, path: `/${language}/whitepaper` },
-    { id: "genesis",   label: "创世资本", labelEn: "Genesis",   icon: Heart,    path: `/${language}/stake` },
+    { id: "launch",    label: "启航",     labelEn: "Launch",    icon: Rocket,     path: `/${language}` },
+    { id: "invest",    label: "财富管理", labelEn: "Wealth",    icon: Gem,        path: `/${language}/invest` },
+    { id: "swap",      label: "USDV",     labelEn: "USDV",      icon: Coins,      path: `/${language}/usdv?tab=dex` },
+    { id: "futuredao", label: "FutureDAO", labelEn: "FutureDAO", icon: TrendingUp, path: `/${language}/predict` },
+    { id: "genesis",   label: "创世资本", labelEn: "Genesis",   icon: Heart,      path: `/${language}/stake` },
   ];
 
   // Secondary slots — surfaced via "More" drawer
@@ -69,13 +69,13 @@ const MobileBottomNav = () => {
       path: `/${language}/legendary`,
     },
     {
-      id: "predict",
-      label: "预测",
-      labelEn: "Predict",
-      desc: "预测市场 · Polymarket",
-      descEn: "Prediction markets",
-      icon: TrendingUp,
-      path: `/${language}/predict`,
+      id: "whitepaper",
+      label: "和谐财富引擎",
+      labelEn: "Harmony Engine",
+      desc: "和谐财富引擎",
+      descEn: "Harmony Wealth Engine",
+      icon: FileText,
+      path: `/${language}/whitepaper`,
     },
     {
       id: "vip",
