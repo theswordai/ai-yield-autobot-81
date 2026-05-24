@@ -16,6 +16,7 @@ import { StatCard } from "@/components/legendary/StatCard";
 import { useLegendaryDashboard, fmt, LegendaryPosition } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { useWeb3 } from "@/hooks/useWeb3";
+import { LEVELS } from "@/config/legendary";
 
 
 const LOCK_SEC = 365 * 24 * 3600;
@@ -42,7 +43,7 @@ export function PositionsTab() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [earlyTarget, setEarlyTarget] = useState<LegendaryPosition | null>(null);
 
-  const active = data.positions.filter((p) => !p.withdrawn && p.poolType === 1);
+  const active = data.positions.filter((p) => !p.withdrawn);
   const totalPrincipal = data.pool1Principal + data.pool2Principal;
 
   const toggle = (id: bigint) => {
@@ -98,7 +99,7 @@ export function PositionsTab() {
 
       <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10 flex flex-wrap gap-2 items-center">
         <div className="text-sm text-muted-foreground mr-auto">
-          共 {active.length} 个一池活跃仓位 · 已选 {selectedIds.length}
+          共 {active.length} 个活跃仓位 · 已选 {selectedIds.length}
         </div>
         <Button
           size="sm"
