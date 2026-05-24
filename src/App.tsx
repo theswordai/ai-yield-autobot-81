@@ -96,7 +96,10 @@ const App = () => (
           <Route path="/dashboard" element={<Navigate to="/zh/user" replace />} />
           <Route path="/referral" element={<Navigate to="/zh/referral" replace />} />
           <Route path="/trade" element={<Navigate to="/zh/invest" replace />} />
-          <Route path="/stake" element={<Navigate to="/zh/invest" replace />} />
+          <Route path="/zh/stake" element={<Stake />} />
+          <Route path="/en/stake" element={<Stake />} />
+          <Route path="/stake" element={<Navigate to="/zh/stake" replace />} />
+
 
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
