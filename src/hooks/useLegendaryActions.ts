@@ -162,6 +162,15 @@ export function useLegendaryActions(onDone?: () => void) {
     return run("claimRewards", () => write.staking.claimRewards(), "奖励已领取");
   }, [write, run]);
 
+  const claimTokenRewards = useCallback(() => {
+    if (!write) return;
+    return run(
+      "claimTokenRewards",
+      () => write.staking.claimTokenRewards(),
+      "USDV / FDAO 已到账"
+    );
+  }, [write, run]);
+
   const bind = useCallback(
     async (inviter: string) => {
       if (!write) return;
