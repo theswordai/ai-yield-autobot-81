@@ -245,6 +245,7 @@ async function doRefetch(
         allowance,
         paused,
         frozen,
+        earlyPenaltyBps,
         positions,
       };
     } finally {
