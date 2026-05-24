@@ -205,6 +205,7 @@ export function useLegendaryActions(onDone?: () => void) {
     earlyWithdraw,
     compoundToPool2,
     claimRewards,
+    claimTokenRewards,
     bind,
   };
 }
