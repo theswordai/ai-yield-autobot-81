@@ -88,6 +88,61 @@ export function RewardsTab() {
     })();
   }, [read, account, data.referralClaimable]);
 
+  // 历史领取记录：分块扫描更长区间（约 ~30 天 @ 3s 出块 ≈ 864k；这里扫描 30 万区块）
+  useEffect(() => {
+    (async () => {
+      if (!read || !account) return;
+      setHistoryLoading(true);
+      try {
+        const provider = (read.staking as any).runner?.provider;
+        if (!provider) {
+          setHistoryLoading(false);
+          return;
+        }
+        const latest: number = await provider.getBlockNumber();
+        const TOTAL = 300_000;
+        const CHUNK = 4_900; // 多数 BSC RPC 限制 5000
+        const earliest = Math.max(0, latest - TOTAL);
+        const all: { hash: string; block: number; amount: bigint }[] = [];
+        for (let to = latest; to >= earliest; to -= CHUNK + 1) {
+          const from = Math.max(earliest, to - CHUNK);
+          try {
+            const logs = await read.staking.queryFilter(
+              read.staking.filters.RewardsClaimed(account),
+              from,
+              to
+            );
+            for (const l of logs as any[]) {
+              all.push({
+                hash: l.transactionHash,
+                block: l.blockNumber,
+                amount: l.args?.amount ?? 0n,
+              });
+            }
+          } catch {
+            // ignore chunk errors
+          }
+          if (from === earliest) break;
+        }
+        all.sort((a, b) => b.block - a.block);
+        // 取最近 30 条 fetch 区块时间戳
+        const top = all.slice(0, 30);
+        await Promise.all(
+          top.map(async (e) => {
+            try {
+              const b = await provider.getBlock(e.block);
+              (e as any).ts = Number(b?.timestamp ?? 0);
+            } catch {}
+          })
+        );
+        setClaimHistory(top);
+        setClaimTotal(all.reduce((s, e) => s + e.amount, 0n));
+      } finally {
+        setHistoryLoading(false);
+      }
+    })();
+  }, [read, account, data.lastClaimAt]);
+
   if (!account) {
     return (
       <Card className="p-8 bg-foreground/5 backdrop-blur-xl border-foreground/15 text-center">
