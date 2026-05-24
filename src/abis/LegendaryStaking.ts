@@ -46,4 +46,8 @@ export const LegendaryStaking_ABI = [
   "event ReferralAccrued(address indexed from, address indexed to, uint8 level, uint256 amount)",
   "event DynamicAccrued(address indexed from, address indexed to, uint8 vLevel, uint256 amount)",
   "event RewardsClaimed(address indexed user, uint256 amount)",
+  "event UsdvAccrued(address indexed user, uint256 usdtInterest, uint256 usdvAmount)",
+  "event FdaoAccrued(address indexed user, uint256 usdtInterest, uint256 fdaoAmount)",
+  "event UsdvClaimed(address indexed user, uint256 fromInterest, uint256 fromLevel, uint8 levelFrom, uint8 levelTo)",
+  "event FdaoClaimed(address indexed user, uint256 fromInterest, uint256 fromLevel, uint8 levelFrom, uint8 levelTo)",
 ] as const;
