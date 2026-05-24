@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Wallet, Gift, Crown } from "lucide-react";
+import { TrendingUp, Wallet, Gift, Crown, RefreshCw } from "lucide-react";
 import { StatCard } from "@/components/legendary/StatCard";
 import { useLegendaryDashboard, fmt, LegendaryPosition } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
@@ -42,6 +42,16 @@ export function PositionsTab() {
     useLegendaryActions(refetch);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [earlyTarget, setEarlyTarget] = useState<LegendaryPosition | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await refetch();
+    } finally {
+      setTimeout(() => setRefreshing(false), 400);
+    }
+  };
 
   const active = data.positions.filter((p) => !p.withdrawn);
   const totalPrincipal = data.pool1Principal + data.pool2Principal;
@@ -105,6 +115,16 @@ export function PositionsTab() {
         <div className="text-sm text-muted-foreground mr-auto">
           共 {active.length} 个活跃仓位 · 已选 {selectedIds.length}
         </div>
+        <Button
+          size="sm"
+          variant="outline"
+          className="border-white/20"
+          disabled={refreshing}
+          onClick={handleRefresh}
+        >
+          <RefreshCw className={`h-4 w-4 mr-1 ${refreshing ? "animate-spin" : ""}`} />
+          刷新
+        </Button>
         <Button
           size="sm"
           disabled={selectedIds.length === 0 || busy !== null}
