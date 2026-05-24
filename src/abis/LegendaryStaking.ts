@@ -6,6 +6,7 @@ export const LegendaryStaking_ABI = [
   "function withdraw(uint256 posId)",
   "function earlyWithdraw(uint256 posId)",
   "function claimRewards()",
+  "function claimTokenRewards() returns (uint256 usdvOut, uint256 fdaoOut)",
   // read
   "function positions(uint256 id) view returns (address user, uint256 principal, uint256 startTime, uint256 lastAccrueTime, uint256 aprBps, uint256 accruedClaimable, uint8 poolType, bool withdrawn)",
   "function getUserPositions(address user) view returns (uint256[])",
