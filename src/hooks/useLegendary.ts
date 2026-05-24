@@ -43,7 +43,17 @@ export type LegendaryDashboard = {
   frozen: boolean;
   earlyPenaltyBps: number;
   positions: LegendaryPosition[];
+  pendingUsdv: bigint;
+  pendingFdao: bigint;
+  previewUsdvInterest: bigint;
+  previewUsdvLevel: bigint;
+  previewFdaoInterest: bigint;
+  previewFdaoLevel: bigint;
+  usdvBalance: bigint;
+  fdaoBalance: bigint;
 };
+
+// placeholder to keep diff context
 
 const EMPTY_DASHBOARD: LegendaryDashboard = {
   pool1Principal: 0n,
