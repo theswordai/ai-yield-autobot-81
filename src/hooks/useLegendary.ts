@@ -118,6 +118,7 @@ const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
 
 // ---------- Shared singleton state ----------
 let sharedData: LegendaryDashboard = EMPTY_DASHBOARD;
+let sharedAccount: string | null = null;
 let sharedLoading = false;
 let inflight: Promise<void> | null = null;
 const listeners = new Set<() => void>();
@@ -134,18 +135,24 @@ async function doRefetch(
   inflight = (async () => {
     try {
       const [totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBpsRaw] = await Promise.all([
-        safe(read.staking.totalPool1Principal() as Promise<bigint>, 0n),
-        safe(read.staking.totalPool2Principal() as Promise<bigint>, 0n),
-        safe(read.staking.currentDayInflow() as Promise<bigint>, 0n),
-        safe(read.staking.paused() as Promise<boolean>, false),
-        safe(read.staking.earlyPenaltyBps() as Promise<bigint>, 5000n),
+        safe(read.staking.totalPool1Principal() as Promise<bigint>, sharedData.totalPool1),
+        safe(read.staking.totalPool2Principal() as Promise<bigint>, sharedData.totalPool2),
+        safe(read.staking.currentDayInflow() as Promise<bigint>, sharedData.currentDayInflow),
+        safe(read.staking.paused() as Promise<boolean>, sharedData.paused),
+        safe(read.staking.earlyPenaltyBps() as Promise<bigint>, BigInt(sharedData.earlyPenaltyBps)),
       ]);
       const earlyPenaltyBps = Number(earlyPenaltyBpsRaw) || 5000;
 
       if (!account) {
         sharedData = { ...EMPTY_DASHBOARD, totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBps };
+        sharedAccount = null;
         return;
       }
+
+      // Use previous values as fallbacks when the same account is connected,
+      // so transient RPC failures don't flash UI back to 0.
+      const sameAcc = sharedAccount && sharedAccount.toLowerCase() === account.toLowerCase();
+      const prev = sameAcc ? sharedData : EMPTY_DASHBOARD;
 
       const [
         referralClaimable,
@@ -157,45 +164,47 @@ async function doRefetch(
         usdtBalance,
         allowance,
         frozen,
-        posIdsFromCall,
+        posIdsResult,
         pendingUsdv,
         pendingFdao,
         previewTok,
         usdvBalance,
         fdaoBalance,
       ] = await Promise.all([
-        safe(read.staking.referralClaimable(account) as Promise<bigint>, 0n),
-        safe(read.staking.lastClaimAt(account) as Promise<bigint>, 0n),
-        safe(read.referral.getLevel(account) as Promise<bigint>, 0n),
-        safe(read.referral.selfStake(account) as Promise<bigint>, 0n),
-        safe(read.referral.teamPerf(account) as Promise<bigint>, 0n),
-        safe(
-          read.referral.inviterOf(account) as Promise<string>,
-          "0x0000000000000000000000000000000000000000"
-        ),
-        safe(read.usdt.balanceOf(account) as Promise<bigint>, 0n),
+        safe(read.staking.referralClaimable(account) as Promise<bigint>, prev.referralClaimable),
+        safe(read.staking.lastClaimAt(account) as Promise<bigint>, prev.lastClaimAt),
+        safe(read.referral.getLevel(account) as Promise<bigint>, BigInt(prev.level)),
+        safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake),
+        safe(read.referral.teamPerf(account) as Promise<bigint>, prev.teamPerf),
+        safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter),
+        safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
         safe(
           read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
-          0n
+          prev.allowance
         ),
-        safe(read.staking.frozen(account) as Promise<boolean>, false),
-        (async (): Promise<bigint[]> => {
+        safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
+        (async (): Promise<{ ids: bigint[]; ok: boolean }> => {
           try {
             const r = (await read.staking.getUserPositions(account)) as bigint[];
-            return r ?? [];
+            return { ids: r ?? [], ok: true };
           } catch (e) {
             console.warn("[legendary] getUserPositions failed, fallback to events", e);
-            return [];
+            return { ids: [], ok: false };
           }
         })(),
-        safe(read.staking.pendingUsdv(account) as Promise<bigint>, 0n),
-        safe(read.staking.pendingFdao(account) as Promise<bigint>, 0n),
+        safe(read.staking.pendingUsdv(account) as Promise<bigint>, prev.pendingUsdv),
+        safe(read.staking.pendingFdao(account) as Promise<bigint>, prev.pendingFdao),
         safe(
           read.staking.previewTokenRewards(account) as Promise<[bigint, bigint, bigint, bigint]>,
-          [0n, 0n, 0n, 0n] as [bigint, bigint, bigint, bigint]
+          [
+            prev.previewUsdvInterest,
+            prev.previewUsdvLevel,
+            prev.previewFdaoInterest,
+            prev.previewFdaoLevel,
+          ] as [bigint, bigint, bigint, bigint]
         ),
-        safe(read.usdv.balanceOf(account) as Promise<bigint>, 0n),
-        safe(read.fdao.balanceOf(account) as Promise<bigint>, 0n),
+        safe(read.usdv.balanceOf(account) as Promise<bigint>, prev.usdvBalance),
+        safe(read.fdao.balanceOf(account) as Promise<bigint>, prev.fdaoBalance),
       ]);
 
       const previewUsdvInterest = (previewTok as any)?.[0] ?? 0n;
@@ -203,8 +212,12 @@ async function doRefetch(
       const previewFdaoInterest = (previewTok as any)?.[2] ?? 0n;
       const previewFdaoLevel = (previewTok as any)?.[3] ?? 0n;
 
+      const posIdsFromCall = posIdsResult.ids;
+      const posIdsCallOk = posIdsResult.ok;
+
       // Fallback: scan Deposited events to recover posIds the call may have missed
       const posIds: bigint[] = [...posIdsFromCall];
+      let eventScanOk = false;
       try {
         const provider =
           (read.staking as any).runner?.provider ?? (read.staking as any).provider;
@@ -220,20 +233,31 @@ async function doRefetch(
             posIds.push(id);
           }
         }
+        eventScanOk = true;
       } catch (e) {
         console.warn("[legendary] Deposited event scan failed", e);
       }
 
+      // If both sources came back empty due to RPC errors, merge in previous posIds
+      // so we don't briefly flash to zero positions.
+      if (posIds.length === 0 && (!posIdsCallOk || !eventScanOk) && prev.positions.length > 0) {
+        for (const p of prev.positions) posIds.push(p.id);
+      }
+
       console.log("[legendary] posIds", posIds.map((x) => x.toString()));
+      const prevPosById = new Map(prev.positions.map((p) => [p.id.toString(), p]));
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
+          const prevPos = prevPosById.get(id.toString());
           const pos = await safe(read.staking.positions(id) as Promise<any>, null as any);
           const pending = await safe(
             read.staking.pendingInterest(id) as Promise<bigint>,
-            0n
+            prevPos?.pending ?? 0n
           );
-          console.log("[legendary] position", id.toString(), pos, "pending=", pending?.toString());
           if (!pos) {
+            // Reading this position failed — keep previous snapshot if we had it,
+            // rather than flashing the row to zero / withdrawn.
+            if (prevPos) return { ...prevPos, pending };
             return {
               id,
               user: account,
@@ -298,6 +322,7 @@ async function doRefetch(
         usdvBalance,
         fdaoBalance,
       };
+      sharedAccount = account;
     } finally {
       sharedLoading = false;
       inflight = null;
