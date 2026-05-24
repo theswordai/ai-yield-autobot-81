@@ -93,7 +93,7 @@ export default function Legendary() {
               { v: "positions", icon: ListChecks, label: "我的仓位" },
               { v: "pool2", icon: Layers, label: "二池复投" },
               { v: "referral", icon: Users, label: "邀请团队" },
-              { v: "rewards", icon: Gift, label: "奖励" },
+              { v: "rewards", icon: Gift, label: "佣金与分红" },
             ].map(({ v, icon: Icon, label }) => (
               <TabsTrigger
                 key={v}
