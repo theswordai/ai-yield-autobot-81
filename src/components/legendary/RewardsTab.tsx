@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatUnits } from "ethers";
-import { Gift, Clock } from "lucide-react";
+import { Gift, Clock, History } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
@@ -24,6 +24,9 @@ export function RewardsTab() {
   const { claimRewards, busy } = useLegendaryActions(refetch);
   const [now, setNow] = useState(Math.floor(Date.now() / 1000));
   const [events, setEvents] = useState<Evt[]>([]);
+  const [claimHistory, setClaimHistory] = useState<{ hash: string; block: number; amount: bigint; ts?: number }[]>([]);
+  const [claimTotal, setClaimTotal] = useState<bigint>(0n);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
@@ -84,6 +87,61 @@ export function RewardsTab() {
       }
     })();
   }, [read, account, data.referralClaimable]);
+
+  // 历史领取记录：分块扫描更长区间（约 ~30 天 @ 3s 出块 ≈ 864k；这里扫描 30 万区块）
+  useEffect(() => {
+    (async () => {
+      if (!read || !account) return;
+      setHistoryLoading(true);
+      try {
+        const provider = (read.staking as any).runner?.provider;
+        if (!provider) {
+          setHistoryLoading(false);
+          return;
+        }
+        const latest: number = await provider.getBlockNumber();
+        const TOTAL = 300_000;
+        const CHUNK = 4_900; // 多数 BSC RPC 限制 5000
+        const earliest = Math.max(0, latest - TOTAL);
+        const all: { hash: string; block: number; amount: bigint }[] = [];
+        for (let to = latest; to >= earliest; to -= CHUNK + 1) {
+          const from = Math.max(earliest, to - CHUNK);
+          try {
+            const logs = await read.staking.queryFilter(
+              read.staking.filters.RewardsClaimed(account),
+              from,
+              to
+            );
+            for (const l of logs as any[]) {
+              all.push({
+                hash: l.transactionHash,
+                block: l.blockNumber,
+                amount: l.args?.amount ?? 0n,
+              });
+            }
+          } catch {
+            // ignore chunk errors
+          }
+          if (from === earliest) break;
+        }
+        all.sort((a, b) => b.block - a.block);
+        // 取最近 30 条 fetch 区块时间戳
+        const top = all.slice(0, 30);
+        await Promise.all(
+          top.map(async (e) => {
+            try {
+              const b = await provider.getBlock(e.block);
+              (e as any).ts = Number(b?.timestamp ?? 0);
+            } catch {}
+          })
+        );
+        setClaimHistory(top);
+        setClaimTotal(all.reduce((s, e) => s + e.amount, 0n));
+      } finally {
+        setHistoryLoading(false);
+      }
+    })();
+  }, [read, account, data.lastClaimAt]);
 
   if (!account) {
     return (
@@ -162,6 +220,59 @@ export function RewardsTab() {
                   </span>
                 )}
                 <span className="ml-auto font-semibold">
+                  +{Number(formatUnits(e.amount, 18)).toFixed(4)} USDT
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
+
+      {/* 历史领取记录 */}
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-bold flex items-center gap-2">
+            <History className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            历史领取记录
+          </h3>
+          <div className="text-xs text-muted-foreground">
+            累计：
+            <span className="font-bold text-emerald-600 dark:text-emerald-400 ml-1">
+              {Number(formatUnits(claimTotal, 18)).toFixed(4)} USDT
+            </span>
+          </div>
+        </div>
+        {historyLoading && claimHistory.length === 0 ? (
+          <div className="text-sm text-muted-foreground text-center py-6">加载中…</div>
+        ) : claimHistory.length === 0 ? (
+          <div className="text-sm text-muted-foreground text-center py-6">暂无领取记录</div>
+        ) : (
+          <div className="space-y-2 max-h-96 overflow-y-auto">
+            {claimHistory.map((e, i) => (
+              <div
+                key={`${e.hash}-${i}`}
+                className="flex items-center gap-3 p-2 rounded bg-foreground/5 text-xs"
+              >
+                <Badge
+                  variant="outline"
+                  className="border-emerald-400/40 text-emerald-600 dark:text-emerald-400"
+                >
+                  领取
+                </Badge>
+                <span className="text-muted-foreground">
+                  {e.ts
+                    ? new Date(e.ts * 1000).toLocaleString()
+                    : `区块 #${e.block}`}
+                </span>
+                <a
+                  href={`https://bscscan.com/tx/${e.hash}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-mono text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+                >
+                  {e.hash.slice(0, 8)}…
+                </a>
+                <span className="ml-auto font-semibold text-emerald-600 dark:text-emerald-400">
                   +{Number(formatUnits(e.amount, 18)).toFixed(4)} USDT
                 </span>
               </div>

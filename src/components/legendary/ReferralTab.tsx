@@ -115,7 +115,13 @@ export function ReferralTab() {
       {/* 团队总览 */}
       <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <h3 className="font-bold mb-3">团队总览</h3>
-        <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-3 gap-3 text-sm">
+          <div>
+            <div className="text-xs text-muted-foreground">我的等级</div>
+            <div className="font-bold text-amber-600 dark:text-amber-400">
+              {data.level > 0 ? `V${data.level}` : "—"}
+            </div>
+          </div>
           <div>
             <div className="text-xs text-muted-foreground">自投 selfStake</div>
             <div className="font-bold text-amber-600 dark:text-amber-400">{fmt(data.selfStake, 0)} USDT</div>
