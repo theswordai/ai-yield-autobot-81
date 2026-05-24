@@ -503,460 +503,125 @@ export default function Stake({
   };
   return <PageWrapper>
       {!embedded && <Navbar />}
-      <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl`}>
-        <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 mb-8 max-w-xl mx-auto px-2">
-          {/* 增值资本入口 */}
+      <main className={`container mx-auto px-4 ${topPad} pb-16 max-w-5xl`}>
+        {/* Hero */}
+        <div className="text-center mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-md text-xs sm:text-sm text-primary mb-4">
+            <Shield className="w-3.5 h-3.5" />
+            {language === 'zh' ? '善举 · 财富共生' : 'Charity · Wealth Symbiosis'}
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-3 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-[shimmer_3s_linear_infinite] bg-clip-text text-transparent">
+            {language === 'zh' ? '选择你的资本之道' : 'Choose Your Capital Path'}
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+            {language === 'zh'
+              ? '两种策略，同一份和谐。从稳健质押到灵活智能管理，自由切换。'
+              : 'Two strategies, one harmony — from secure staking to flexible AI management.'}
+          </p>
+        </div>
+
+        {/* Two Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto">
+          {/* 增值资本 */}
           <button
             onClick={() => navigate(`/${language}/legendary`)}
-            className="group relative flex-1 rounded-2xl border border-teal-800 bg-teal-700 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-teal-600 hover:shadow-[0_8px_30px_-8px_rgba(15,118,110,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="group relative overflow-hidden rounded-3xl border border-primary/25 bg-card/40 backdrop-blur-[12px] p-6 sm:p-8 text-left transition-all duration-500 hover:border-primary/60 hover:shadow-[0_20px_60px_-20px_hsl(var(--primary)/0.55)] hover:-translate-y-1"
           >
-            <div className="flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-teal-900 border border-teal-950 flex items-center justify-center">
-                <Coins className="w-6 h-6 text-white" />
+            {/* gradient wash */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-accent/5 opacity-80" />
+            {/* grid overlay */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage:
+                  'linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)',
+                backgroundSize: '60px 60px',
+              }}
+            />
+            {/* glow */}
+            <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-primary/20 blur-3xl group-hover:bg-primary/35 transition-colors duration-500" />
+
+            <div className="relative">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/30 to-primary/10 border border-primary/40 flex items-center justify-center backdrop-blur-md">
+                  <Coins className="w-7 h-7 text-primary" />
+                </div>
+                <Badge variant="outline" className="border-primary/40 text-primary bg-primary/10">
+                  CLASS-A · B
+                </Badge>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-black">
-                  增值资本
-                </h3>
-                <p className="text-xs sm:text-sm text-teal-100 mt-1">CLASS-A / CLASS-B 质押引擎</p>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 tracking-tight">
+                {language === 'zh' ? '增值资本' : 'Growth Capital'}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                {language === 'zh'
+                  ? '锁仓质押引擎，复利累积，长期稳健的财富增值路径。'
+                  : 'Locked staking engine with daily compounding for steady long-term growth.'}
+              </p>
+              <div className="flex items-center justify-between pt-4 border-t border-primary/15">
+                <div>
+                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5">
+                    {language === 'zh' ? '复利年化' : 'Compound APY'}
+                  </div>
+                  <div className="text-xl font-bold text-primary">Up to 280%</div>
+                </div>
+                <div className="flex items-center gap-1.5 text-primary group-hover:gap-3 transition-all">
+                  <span className="text-sm font-medium">{language === 'zh' ? '进入' : 'Enter'}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
-              <ArrowRight className="w-5 h-5 text-teal-100 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
             </div>
           </button>
 
-          {/* 自由资本入口 */}
+          {/* 自由资本 */}
           <button
             onClick={() => navigate(`/${language}/flexible`)}
-            className="group relative flex-1 rounded-2xl border border-amber-600 bg-amber-500 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-amber-400 hover:shadow-[0_8px_30px_-8px_rgba(245,158,11,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="group relative overflow-hidden rounded-3xl border border-accent/25 bg-card/40 backdrop-blur-[12px] p-6 sm:p-8 text-left transition-all duration-500 hover:border-accent/60 hover:shadow-[0_20px_60px_-20px_hsl(var(--accent)/0.55)] hover:-translate-y-1"
           >
-            <div className="flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-amber-700 border border-amber-800 flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/15 via-transparent to-primary/5 opacity-80" />
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.04]"
+              style={{
+                backgroundImage:
+                  'linear-gradient(hsl(var(--accent)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--accent)) 1px, transparent 1px)',
+                backgroundSize: '60px 60px',
+              }}
+            />
+            <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-accent/20 blur-3xl group-hover:bg-accent/35 transition-colors duration-500" />
+
+            <div className="relative">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent/30 to-accent/10 border border-accent/40 flex items-center justify-center backdrop-blur-md">
+                  <TrendingUp className="w-7 h-7 text-accent" />
+                </div>
+                <Badge variant="outline" className="border-accent/40 text-accent bg-accent/10">
+                  FLEXIBLE
+                </Badge>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-black">
-                  自由资本
-                </h3>
-                <p className="text-xs sm:text-sm text-amber-100 mt-1">AI 资产管理策略</p>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 tracking-tight">
+                {language === 'zh' ? '自由资本' : 'Flexible Capital'}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                {language === 'zh'
+                  ? 'AI 智能资产管理策略，随时存取，灵活配置，把握每一次行情。'
+                  : 'AI-driven asset strategies — deposit and withdraw anytime, capture every market move.'}
+              </p>
+              <div className="flex items-center justify-between pt-4 border-t border-accent/15">
+                <div>
+                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5">
+                    {language === 'zh' ? '灵活年化' : 'Flexible APY'}
+                  </div>
+                  <div className="text-xl font-bold text-accent">Up to 120%</div>
+                </div>
+                <div className="flex items-center gap-1.5 text-accent group-hover:gap-3 transition-all">
+                  <span className="text-sm font-medium">{language === 'zh' ? '进入' : 'Enter'}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
-              <ArrowRight className="w-5 h-5 text-amber-100 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0" />
             </div>
           </button>
-        </div>
-
-        <div className="mb-8 text-center px-2">
-          <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">
-            <span className="block mb-1">{t("staking.heroTitleLine1")}</span>
-            <span className="block text-xl sm:text-3xl font-medium text-muted-foreground mb-1">{t("staking.heroTitleLine2")}</span>
-            <span className="block text-base sm:text-xl font-normal relative">
-              <span className="inline-block bg-gradient-to-r from-accent via-primary to-accent bg-[length:200%_auto] animate-[shimmer_2.5s_linear_infinite] bg-clip-text text-transparent">
-                {t("staking.heroTitleLine3")}
-              </span>
-              <span className="inline-block w-0.5 h-4 sm:h-5 bg-primary ml-0.5 align-middle animate-[blink_1s_step-end_infinite]" />
-            </span>
-          </Title>
-        </div>
-
-        <Card className="mb-6 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
-          <CardContent className="py-3 px-4">
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <div className="flex items-center gap-1.5 shrink-0">
-                <Wallet className="w-4 h-4 text-primary" />
-                <span className="text-xs text-muted-foreground">{t("staking.walletStatus")}</span>
-              </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">{t("staking.walletAddress")}:</span>
-                <span className="font-mono text-xs">{short(account) || t("staking.notConnected")}</span>
-              </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">{t("staking.network")}:</span>
-                <span className="text-xs font-semibold">{chainId ?? "-"}</span>
-              </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">{t("staking.usdtBalance")}:</span>
-                <span className="text-xs font-semibold">${Number(formatUnits(balance, USDT_DECIMALS)).toFixed(2)}</span>
-              </div>
-              <div className="h-4 w-px bg-border hidden sm:block" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">{t("staking.allowance")}:</span>
-                <span className="text-xs font-semibold">${Number(formatUnits(allowance, USDT_DECIMALS)).toFixed(2)}</span>
-              </div>
-              {!account && (
-                <Button size="sm" className="ml-auto bg-gradient-primary hover:bg-gradient-primary/90 h-7 text-xs px-3" onClick={connect}>
-                  <Wallet className="w-3 h-3 mr-1" />
-                  {t("staking.connectWallet")}
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 投资数据可视化 */}
-        {amountNum > 0 && <Collapsible className="mb-8">
-          <CollapsibleTrigger className="w-full flex items-center justify-between group">
-            <h3 className="text-xl font-semibold flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-primary" />
-              {t("staking.investmentAnalysis")}
-            </h3>
-            <ChevronDown className="w-5 h-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-          </CollapsibleTrigger>
-          <CollapsibleContent className="mt-4">
-            <InvestmentDashboard principalAfterFee={principalAfterFee} aprPercent={aprPercent} expectedEarnings={expectedEarnings} lockDays={lockDays} lockChoice={lockChoice} />
-          </CollapsibleContent>
-        </Collapsible>}
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* 投资设置 */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-primary/20">
-              <CardHeader className="p-4 pb-2">
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <Lock className="w-4 h-4 text-primary" />
-                  {t("staking.charityInvestmentConfig")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4 p-4 pt-2">
-                <div className="space-y-2">
-                  <Label htmlFor="amount" className="text-sm font-medium">{t("staking.investAmountLabel")}</Label>
-                  <div className="relative flex items-center bg-muted/40 rounded-lg border border-border/50 p-1">
-                    <Input 
-                      id="amount" 
-                      type="number" 
-                      min={"0"} 
-                      value={amount} 
-                      onChange={e => setAmount(e.target.value)} 
-                      placeholder="0.00" 
-                      className="text-lg font-mono font-bold h-11 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/40" 
-                    />
-                    <div className="flex items-center gap-2 pr-2 shrink-0">
-                      <span className="text-primary font-bold text-sm">USDT</span>
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        size="sm" 
-                        className="h-7 px-2 text-[11px] font-bold bg-muted/60 border-border/60 hover:bg-muted"
-                        onClick={() => setAmount(formatUnits(balance, USDT_DECIMALS))}
-                      >
-                        MAX
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground px-1">
-                    <span>Balance: {Number(formatUnits(balance, USDT_DECIMALS)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT</span>
-                    <span>Min: 200 USDT</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">{t("staking.lockPeriodLabel")}</Label>
-                  <RadioGroup value={lockChoice} onValueChange={(v: any) => setLockChoice(v)} className="grid grid-cols-1 gap-2">
-                    <label htmlFor="l0" className="flex items-center justify-between p-3 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                      <div className="flex items-center gap-2.5">
-                        <RadioGroupItem id="l0" value="0" />
-                        <div>
-                          <div className="font-semibold text-sm">{t("staking.ninetyDaysLock")}</div>
-                          <div className="text-xs text-muted-foreground">
-                            APR: 50% | APY: 64.82% <span className="text-accent">({t("staking.compound")})</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Badge variant="outline" className="text-[10px]">{t("staking.shortTerm")}</Badge>
-                    </label>
-                    <label htmlFor="l1" className="flex items-center justify-between p-3 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                      <div className="flex items-center gap-2.5">
-                        <RadioGroupItem id="l1" value="1" />
-                        <div>
-                          <div className="font-semibold text-sm">{t("staking.oneEightyDaysLock")}</div>
-                          <div className="text-xs text-muted-foreground">
-                            APR: 120% | APY: 231.36% <span className="text-accent">({t("staking.compound")})</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Badge variant="outline" className="text-[10px]">{t("staking.mediumTerm")}</Badge>
-                    </label>
-                    <label htmlFor="l2" className="flex items-center justify-between p-3 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors">
-                      <div className="flex items-center gap-2.5">
-                        <RadioGroupItem id="l2" value="2" />
-                        <div>
-                          <div className="font-semibold text-sm">{t("staking.threeSixtyFiveDaysLock")}</div>
-                          <div className="text-xs text-muted-foreground">
-                            APR: 280% | APY: 1526.99% <span className="text-accent font-semibold">({t("staking.compound")} 🚀)</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Badge variant="outline" className="bg-primary/10 text-primary text-[10px]">{t("staking.longTerm")}</Badge>
-                    </label>
-                  </RadioGroup>
-                </div>
-
-                {/* 邀请关系 */}
-                <div id="inviter-section" className="space-y-3">
-                  <Label className="text-base font-medium flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    {t("staking.referralRelation")}
-                  </Label>
-                  {boundInviter && boundInviter !== ZERO ? <div className="flex items-center justify-between p-4 bg-accent/5 border border-accent/20 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-accent rounded-full"></div>
-                        <span className="text-sm">{t("staking.boundSuperior")}<span className="font-mono">0x…{boundInviter.slice(-4)}</span></span>
-                      </div>
-                      <Badge variant="secondary" className="bg-accent/10 text-accent">{t("staking.bound")}</Badge>
-                    </div> : <div className="space-y-3">
-                      <Input value={inviterCode} onChange={e => setInviterCode(e.target.value)} placeholder={t("staking.enterInviterCode")} className="h-11" />
-                      <Button variant="outline" disabled={!account || loading.bind} onClick={async () => {
-                    const input = inviterCode.trim();
-                    const stored = (localStorage.getItem('inviter') || '').toLowerCase();
-                    let addr: string | null = null;
-                    if (/^0x[a-fA-F0-9]{40}$/.test(input)) addr = input.toLowerCase();else {
-                      try {
-                        if (/^[A-Za-z0-9_-]{10,}$/.test(input)) {
-                          const d = decodeAddress(input);
-                          if (/^0x[a-fA-F0-9]{40}$/.test(d)) addr = d.toLowerCase();
-                        }
-                      } catch {}
-                      if (!addr && /^[a-fA-F0-9]{8}$/.test(input)) {
-                        if (stored && stored.endsWith(input.toLowerCase())) addr = stored;
-                      }
-                    }
-                    if (!addr) {
-                      toast.warning(t("staking.cannotConfirmInviter"));
-                      return;
-                    }
-                    try {
-                      if (!registryWrite || !signer) throw new Error(t("staking.connectWalletFirst"));
-                      if (chainId !== TARGET_CHAIN) {
-                        toast.warning(t("staking.switchToBSCToOperate"));
-                        return;
-                      }
-                      setLoading(s => ({
-                        ...s,
-                        bind: true
-                      }));
-                      const tx = await (registryWrite as any).bind(addr);
-                      toast.info(t("staking.submitting") + " " + tx.hash);
-                      await tx.wait();
-                      toast.success(t("staking.bindingSuccess"));
-                      localStorage.setItem('inviter', addr);
-                      setBoundInviter(addr);
-                    } catch (e: any) {
-                      toast.error(e?.shortMessage || e?.message || t("staking.bindingFailed"));
-                    } finally {
-                      setLoading(s => ({
-                        ...s,
-                        bind: false
-                      }));
-                    }
-                      }} className={`w-full electric-button ${(!boundInviter || boundInviter === ZERO) ? 'animate-breathing-glow' : ''}`}>
-                        <Users className="w-4 h-4 mr-2" />
-                        {t("staking.bindInviter")}
-                      </Button>
-                      <p className="text-sm text-slate-50 font-medium">{t("staking.enterInviterAddress")}</p>
-                    </div>}
-                </div>
-
-                <div className="flex gap-4 pt-4">
-                  <Button className="flex-1 bg-gradient-primary hover:bg-gradient-primary/90 h-12" disabled={!account || loading.approve} onClick={onApprove}>
-                    {loading.approve ? t("staking.approvingButton") : t("staking.approveButton")}
-                  </Button>
-                  <Button className="flex-1 h-12 text-white animate-breathing-blue animate-marquee-bg bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-[length:200%_100%] hover:from-blue-700 hover:via-blue-600 hover:to-blue-700" disabled={!account || loading.deposit || needApprove} onClick={onDeposit}>
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    {loading.deposit ? t("staking.investingButton") : t("staking.startInvestButton")}
-                  </Button>
-                </div>
-                {needApprove && <p className="text-xs text-muted-foreground text-center">
-                    {t("staking.approveFirst")}
-                  </p>}
-
-                {/* 财富与善意的分配机制 */}
-                <Card className="mt-6 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/10">
-                  <Collapsible>
-                    <CollapsibleTrigger asChild>
-                      <CardHeader className="cursor-pointer hover:bg-muted/20 transition-colors">
-                        <CardTitle className="flex items-center justify-between text-base">
-                          <span>{t("wealthDistribution.title")}</span>
-                          <ChevronDown className="w-4 h-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                        </CardTitle>
-                      </CardHeader>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <CardContent className="space-y-4 pt-0">
-                        <div className="space-y-3 text-sm">
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-primary">{t("wealthDistribution.managementFees")}</h4>
-                            <p className="text-muted-foreground">{t("wealthDistribution.managementFeesDesc")}</p>
-                            <ul className="space-y-1 ml-4">
-                              <li>{t("wealthDistribution.managementFee")}</li>
-                              <li>{t("wealthDistribution.handlingFee")}</li>
-                            </ul>
-                            <p className="font-medium text-accent">{t("wealthDistribution.totalFee")}</p>
-                            <p className="text-muted-foreground">{t("wealthDistribution.feeUsage")}</p>
-                          </div>
-
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-primary">{t("wealthDistribution.profitLocking")}</h4>
-                            <p className="text-muted-foreground">{t("wealthDistribution.profitLockingDesc")}</p>
-                            <ul className="space-y-1 ml-4">
-                              <li>{t("wealthDistribution.lock90Days")}</li>
-                              <li>{t("wealthDistribution.lock180Days")}</li>
-                              <li>{t("wealthDistribution.lock365Days")}</li>
-                            </ul>
-                          </div>
-
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-primary">{t("wealthDistribution.profitDistribution")}</h4>
-                            <p className="text-muted-foreground">{t("wealthDistribution.profitDistributionDesc")}</p>
-                            <div className="space-y-3">
-                              <div>
-                                <p className="font-medium text-accent">{t("wealthDistribution.charity50")}</p>
-                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.charityDesc")}</p>
-                              </div>
-                              <div>
-                                <p className="font-medium">{t("wealthDistribution.tech10")}</p>
-                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.techDesc")}</p>
-                              </div>
-                              <div>
-                                <p className="font-medium">{t("wealthDistribution.market10")}</p>
-                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.marketDesc")}</p>
-                              </div>
-                              <div>
-                                <p className="font-medium">{t("wealthDistribution.team10")}</p>
-                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.teamDesc")}</p>
-                              </div>
-                              <div>
-                                <p className="font-medium">{t("wealthDistribution.treasury20")}</p>
-                                <p className="text-muted-foreground ml-4">{t("wealthDistribution.treasuryDesc")}</p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="space-y-2">
-                            <h4 className="font-semibold text-primary">{t("wealthDistribution.strategicValue")}</h4>
-                            <p className="text-muted-foreground">{t("wealthDistribution.strategicValueDesc")}</p>
-                            <ul className="space-y-1 ml-4">
-                              <li>{t("wealthDistribution.forInvestors")}</li>
-                              <li>{t("wealthDistribution.forSociety")}</li>
-                              <li>{t("wealthDistribution.forPlatform")}</li>
-                            </ul>
-                          </div>
-
-                          <div className="border-t pt-3 mt-4">
-                            <p className="font-semibold text-primary">{t("wealthDistribution.summary")}</p>
-                            <p className="text-muted-foreground font-medium">{t("wealthDistribution.summaryText")}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </Card>
-              </CardContent>
-            </Card>
-
-            {/* 我的仓位 */}
-            <Card className="bg-gradient-to-br from-card/90 to-card/70 backdrop-blur border-accent/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-accent" />
-                  {t("staking.myPositions")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <PositionsList account={account} lock={lock as any} chainId={chainId} targetChain={TARGET_CHAIN} usdtDecimals={USDT_DECIMALS} />
-              </CardContent>
-            </Card>
-
-            {/* 幸运5分钟 Jackpot - 移动端显示在我的仓位下方 */}
-            <a
-              href="https://usdonline.xyz/hourdraw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lg:hidden group block rounded-xl overflow-hidden border border-accent/20 bg-gradient-to-br from-card/90 to-card/70 backdrop-blur shadow-lg hover:shadow-accent/30 hover:border-accent/40 transition-all duration-300"
-              aria-label="幸运5分钟 - Lucky 5Min Jackpot"
-            >
-              <img
-                src={lucky5MinBanner}
-                alt="幸运5分钟 Jackpot - 每5分钟开奖一次 Chainlink VRF"
-                className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500"
-                loading="lazy"
-              />
-            </a>
-          </div>
-
-          {/* 侧边栏 */}
-          <div className="space-y-6">
-            {/* 奖励金库 */}
-            <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Gift className="w-5 h-5 text-accent" />
-                  {t("staking.lightUpRewards")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">{t("staking.claimableRewards")}</span>
-                    <span className="font-mono font-semibold">{formatUnits(vaultPending ?? 0n, USDT_DECIMALS)} USDT</span>
-                  </div>
-                   <div className="flex justify-between">
-                     <span className="text-sm text-muted-foreground">{t("staking.lightedHeartRewards")}</span>
-                     <span className="font-mono text-xs">
-                       {isSpecialAddress ? "4,050.00" : formatUnits(totalClaimedRewards ?? 0n, USDT_DECIMALS)} USDT
-                     </span>
-                   </div>
-                </div>
-                <Button className="w-full bg-accent hover:bg-accent/90" disabled={!account || loading.vaultClaim || vaultPending === 0n} onClick={onVaultClaim}>
-                  <Gift className="w-4 h-4 mr-2" />
-                  {loading.vaultClaim ? t("staking.claimingButton") : t("staking.claimRewardsButton")}
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* 我的邀请地址 */}
-            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Share2 className="w-5 h-5 text-primary" />
-                  {t("staking.myInviteAddress")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {!account ? <div className="text-sm text-muted-foreground text-center py-4">
-                    {t("staking.connectWalletToView")}
-                  </div> : <>
-                     <div className="space-y-2">
-                       <label className="text-sm font-medium">{t("staking.invitationAddress")}</label>
-                       <div className="flex gap-2">
-                         <Input value={referralCode} readOnly className="font-mono text-xs" />
-                         <Button onClick={copyReferralCode} variant="outline" size="icon">
-                           <Copy className="w-4 h-4" />
-                         </Button>
-                       </div>
-                     </div>
-                  </>}
-              </CardContent>
-            </Card>
-
-            {/* 幸运5分钟 Jackpot - 桌面端显示在邀请地址下方 */}
-            <a
-              href="https://usdonline.xyz/hourdraw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden lg:block group rounded-xl overflow-hidden border border-accent/20 bg-gradient-to-br from-card/90 to-card/70 backdrop-blur shadow-lg hover:shadow-accent/30 hover:border-accent/40 transition-all duration-300"
-              aria-label="幸运5分钟 - Lucky 5Min Jackpot"
-            >
-              <img
-                src={lucky5MinBanner}
-                alt="幸运5分钟 Jackpot - 每5分钟开奖一次 Chainlink VRF"
-                className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500"
-                loading="lazy"
-              />
-            </a>
-
-          </div>
         </div>
       </main>
     </PageWrapper>;
+
 }
