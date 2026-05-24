@@ -109,7 +109,7 @@ export default function Legendary() {
             <DepositTab onDone={() => setTab("positions")} />
           </TabsContent>
           <TabsContent value="positions" className="mt-6 animate-fade-in">
-            <PositionsTab />
+            <PositionsTab onSwitchToPool2={() => setTab("pool2")} />
           </TabsContent>
           <TabsContent value="pool2" className="mt-6 animate-fade-in">
             <Pool2Tab />
