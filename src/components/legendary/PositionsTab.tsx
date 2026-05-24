@@ -52,6 +52,9 @@ export function PositionsTab() {
       setTimeout(() => setRefreshing(false), 400);
     }
   };
+
+  const active = data.positions.filter((p) => !p.withdrawn);
+  const totalPrincipal = data.pool1Principal + data.pool2Principal;
   const totalPrincipal = data.pool1Principal + data.pool2Principal;
 
   const toggle = (id: bigint) => {
