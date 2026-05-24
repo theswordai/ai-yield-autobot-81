@@ -89,9 +89,9 @@ export default function Legendary() {
         <Tabs value={tab} onValueChange={setTab} className="w-full">
           <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-1 h-auto bg-foreground/5 backdrop-blur-xl border border-foreground/15 p-1 rounded-xl">
             {[
-              { v: "deposit", icon: Wallet, label: "一池存款" },
+              { v: "deposit", icon: Wallet, label: "CLASS-A" },
               { v: "positions", icon: ListChecks, label: "我的仓位" },
-              { v: "pool2", icon: Layers, label: "二池复投" },
+              { v: "pool2", icon: Layers, label: "CLASS-B" },
               { v: "referral", icon: Users, label: "邀请团队" },
               { v: "rewards", icon: Gift, label: "佣金与分红" },
             ].map(({ v, icon: Icon, label }) => (

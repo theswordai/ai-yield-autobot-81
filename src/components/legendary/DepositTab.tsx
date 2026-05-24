@@ -191,7 +191,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <Lock className="w-4 h-4" />
-            一池存款（锁仓 365 天）
+            CLASS-A（锁仓 365 天）
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">

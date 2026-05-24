@@ -313,7 +313,7 @@ export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void
                 onSwitchToPool2?.();
               }}
             >
-              切换到二池复投（需 ≥ 200 USDT）
+              切换到 CLASS-B（需 ≥ 200 USDT）
             </Button>
             <Button
               variant="outline"
