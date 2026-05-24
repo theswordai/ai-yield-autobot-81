@@ -86,7 +86,7 @@ export function RewardsTab() {
             <span className="inline-flex w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 items-center justify-center">
               <Gift className="w-4 h-4" />
             </span>
-            <span className="text-sm font-medium tracking-wide">待领取奖励</span>
+            <span className="text-sm font-medium tracking-wide">领取奖励</span>
           </div>
           <div className="text-4xl sm:text-5xl font-extrabold mb-3 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(251,191,36,0.25)]">
             {fmt(data.referralClaimable)} <span className="text-2xl text-amber-700/90 dark:text-amber-300/80">USDT</span>
