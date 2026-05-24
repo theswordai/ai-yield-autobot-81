@@ -109,15 +109,17 @@ async function doRefetch(
   notify();
   inflight = (async () => {
     try {
-      const [totalPool1, totalPool2, currentDayInflow, paused] = await Promise.all([
+      const [totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBpsRaw] = await Promise.all([
         safe(read.staking.totalPool1Principal() as Promise<bigint>, 0n),
         safe(read.staking.totalPool2Principal() as Promise<bigint>, 0n),
         safe(read.staking.currentDayInflow() as Promise<bigint>, 0n),
         safe(read.staking.paused() as Promise<boolean>, false),
+        safe(read.staking.earlyPenaltyBps() as Promise<bigint>, 5000n),
       ]);
+      const earlyPenaltyBps = Number(earlyPenaltyBpsRaw) || 5000;
 
       if (!account) {
-        sharedData = { ...EMPTY_DASHBOARD, totalPool1, totalPool2, currentDayInflow, paused };
+        sharedData = { ...EMPTY_DASHBOARD, totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBps };
         return;
       }
 
