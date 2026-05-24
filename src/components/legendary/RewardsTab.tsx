@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatUnits } from "ethers";
-import { Gift, Clock } from "lucide-react";
+import { Gift, Clock, History } from "lucide-react";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
