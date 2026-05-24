@@ -195,9 +195,9 @@ export function PositionsTab({ onSwitchToPool2 }: { onSwitchToPool2?: () => void
                   variant="outline"
                   className="border-white/20"
                   disabled={busy !== null || p.pending === 0n}
-                  onClick={() => claimInterest([p.id])}
+                  onClick={() => setClaimTarget(p)}
                 >
-                  领利息
+                  收益领取
                 </Button>
                 <Button
                   size="sm"
