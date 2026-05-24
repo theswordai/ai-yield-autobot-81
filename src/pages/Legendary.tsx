@@ -52,16 +52,6 @@ export default function Legendary() {
                   <Sparkles className="w-3 h-3 mr-1" /> BSC · 365D
                 </Badge>
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                链上 365 天复利锁仓 · 一池 APR 260% 起 · 二池复投 APR 360%
-              </p>
-
-              {/* highlight pills */}
-              <div className="mt-3 flex flex-wrap gap-2">
-                <Pill icon={<Layers className="w-3 h-3" />} label="一池" value="APR 260%+" tone="amber" />
-                <Pill icon={<Layers className="w-3 h-3" />} label="二池复投" value="APR 360%" tone="emerald" />
-                <Pill icon={<ShieldCheck className="w-3 h-3" />} label="合约审计" value="链上透明" tone="primary" />
-              </div>
             </div>
           </div>
         </div>
