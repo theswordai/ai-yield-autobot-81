@@ -118,6 +118,7 @@ const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
 
 // ---------- Shared singleton state ----------
 let sharedData: LegendaryDashboard = EMPTY_DASHBOARD;
+let sharedAccount: string | null = null;
 let sharedLoading = false;
 let inflight: Promise<void> | null = null;
 const listeners = new Set<() => void>();
