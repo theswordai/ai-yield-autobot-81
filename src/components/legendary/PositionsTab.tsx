@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Wallet, Gift, Crown } from "lucide-react";
+import { TrendingUp, Wallet, Gift, Crown, RefreshCw } from "lucide-react";
 import { StatCard } from "@/components/legendary/StatCard";
 import { useLegendaryDashboard, fmt, LegendaryPosition } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
