@@ -10,7 +10,7 @@ import { AlertCircle, Layers } from "lucide-react";
 import { useLegendaryDashboard, fmt, LegendaryPosition } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { useWeb3 } from "@/hooks/useWeb3";
-import { POOL2_APR_BPS } from "@/config/legendary";
+
 
 const LOCK_SEC = 365 * 24 * 3600;
 
