@@ -90,45 +90,7 @@ export function ReferralTab() {
 
   return (
     <div className="space-y-4">
-      {/* 我的上线 */}
-      <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
-        <h3 className="font-bold mb-3 flex items-center gap-2">
-          <Users className="w-4 h-4" /> 我的上线
-        </h3>
-        {bound ? (
-          <div className="text-sm">
-            <span className="text-muted-foreground">已绑定：</span>
-            <span className="font-mono">{data.inviter}</span>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                绑定一次后不可修改。上线需自投 ≥ 200 USDT 才能为你贡献奖励。
-              </AlertDescription>
-            </Alert>
-            <div>
-              <Label className="text-xs text-muted-foreground">上线钱包地址</Label>
-              <div className="flex gap-2 mt-1">
-                <Input
-                  placeholder="0x..."
-                  value={inviterInput}
-                  onChange={(e) => setInviterInput(e.target.value)}
-                  className="font-mono text-sm"
-                />
-                <Button
-                  disabled={!inviterInput || busy !== null}
-                  onClick={() => bind(inviterInput.trim())}
-                  className="bg-gradient-to-r from-amber-500 to-yellow-600"
-                >
-                  绑定
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-      </Card>
+
 
       {/* 邀请链接 */}
       <Card className="p-4 bg-white/5 backdrop-blur-xl border-white/10">
