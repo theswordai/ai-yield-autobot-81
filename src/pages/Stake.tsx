@@ -504,6 +504,48 @@ export default function Stake({
   return <PageWrapper>
       {!embedded && <Navbar />}
       <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl`}>
+        <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 mb-8 max-w-xl mx-auto px-2">
+          {/* 增值资本入口 */}
+          <button
+            onClick={() => navigate(`/${language}/legendary`)}
+            className="group relative flex-1 rounded-2xl border border-amber-400/40 bg-gradient-to-br from-amber-500/30 via-yellow-500/15 to-amber-600/5 backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-amber-400/80 hover:shadow-[0_8px_30px_-8px_rgba(251,191,36,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
+          >
+            <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-amber-400/25 blur-2xl" />
+            <div className="relative flex items-center gap-4">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/40 to-yellow-600/25 border border-amber-300/50 flex items-center justify-center shadow-[0_0_20px_-4px_rgba(251,191,36,0.5)]">
+                <Crown className="w-6 h-6 text-amber-600 dark:text-amber-300" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-400 bg-clip-text text-transparent">
+                  增值资本
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">CLASS-A / CLASS-B 质押引擎</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-amber-500/70 group-hover:text-amber-500 group-hover:translate-x-1 transition-all shrink-0" />
+            </div>
+          </button>
+
+          {/* 自有资本入口 */}
+          <button
+            onClick={() => navigate(`/${language}/trade`)}
+            className="group relative flex-1 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/25 via-primary/15 to-primary/5 backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-primary/70 hover:shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.35)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
+          >
+            <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-primary/20 blur-2xl" />
+            <div className="relative flex items-center gap-4">
+              <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-primary/15 border border-primary/40 flex items-center justify-center shadow-[0_0_20px_-4px_hsl(var(--primary)/0.4)]">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                  自有资本
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">AI 资产管理策略</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-primary/60 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+            </div>
+          </button>
+        </div>
+
         <div className="mb-8 text-center px-2">
           <Title className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-snug">
             <span className="block mb-1">{t("staking.heroTitleLine1")}</span>
@@ -515,48 +557,6 @@ export default function Stake({
               <span className="inline-block w-0.5 h-4 sm:h-5 bg-primary ml-0.5 align-middle animate-[blink_1s_step-end_infinite]" />
             </span>
           </Title>
-          
-          <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 mt-6 max-w-xl mx-auto">
-            {/* 增值资本入口 */}
-            <button
-              onClick={() => navigate(`/${language}/legendary`)}
-              className="group relative flex-1 rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-yellow-600/5 to-transparent backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-amber-400/60 hover:shadow-[0_8px_30px_-8px_rgba(251,191,36,0.35)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
-            >
-              <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-amber-400/15 blur-2xl" />
-              <div className="relative flex items-center gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400/25 to-yellow-600/15 border border-amber-300/40 flex items-center justify-center shadow-[0_0_20px_-4px_rgba(251,191,36,0.4)]">
-                  <Crown className="w-6 h-6 text-amber-600 dark:text-amber-300" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-400 bg-clip-text text-transparent">
-                    增值资本
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">CLASS-A / CLASS-B 质押引擎</p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-amber-500/70 group-hover:text-amber-500 group-hover:translate-x-1 transition-all shrink-0" />
-              </div>
-            </button>
-
-            {/* 自有资本入口 */}
-            <button
-              onClick={() => navigate(`/${language}/trade`)}
-              className="group relative flex-1 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent backdrop-blur-sm p-5 sm:p-6 text-left transition-all duration-300 hover:border-primary/50 hover:shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.25)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
-            >
-              <div className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full bg-primary/10 blur-2xl" />
-              <div className="relative flex items-center gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/30 flex items-center justify-center shadow-[0_0_20px_-4px_hsl(var(--primary)/0.3)]">
-                  <TrendingUp className="w-6 h-6 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl font-bold text-foreground">
-                    自有资本
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">AI 资产管理策略</p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-primary/60 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
-              </div>
-            </button>
-          </div>
         </div>
 
         <Card className="mb-6 bg-gradient-to-r from-card/80 to-card/60 backdrop-blur-sm border-primary/20">
