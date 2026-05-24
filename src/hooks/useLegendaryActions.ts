@@ -24,6 +24,7 @@ const REVERT_MAP: Record<string, string> = {
   "use withdraw": "仓位已到期，请使用「到期取本金」",
   "zero": "参数错误",
   "nothing": "暂无可领取金额",
+  "nothing or unavailable": "暂无可领代币或合约未配置",
 };
 
 function parseRevert(err: any): string {
