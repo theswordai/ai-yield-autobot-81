@@ -19,6 +19,8 @@ type DirectInfo = {
   teamPerf: bigint;
 };
 
+const PAGE_SIZE = 20;
+
 export function ReferralTab() {
   const { account, connect } = useWeb3();
   const { read } = useLegendaryContracts();
@@ -27,6 +29,7 @@ export function ReferralTab() {
   const [inviterInput, setInviterInput] = useState("");
   const [copied, setCopied] = useState(false);
   const [directs, setDirects] = useState<DirectInfo[]>([]);
+  const [page, setPage] = useState(1);
 
   // 从 URL ?ref=
   useEffect(() => {
@@ -40,11 +43,15 @@ export function ReferralTab() {
   // 加载直推列表详情
   useEffect(() => {
     (async () => {
-      if (!read || !account) return setDirects([]);
+      if (!read || !account) {
+        setDirects([]);
+        setPage(1);
+        return;
+      }
       try {
         const list: string[] = await read.referral.getDirects(account);
         const infos = await Promise.all(
-          list.slice(0, 50).map(async (addr) => {
+          list.map(async (addr) => {
             const [ss, tp] = await Promise.all([
               read.referral.selfStake(addr).catch(() => 0n),
               read.referral.teamPerf(addr).catch(() => 0n),
@@ -53,8 +60,10 @@ export function ReferralTab() {
           })
         );
         setDirects(infos);
+        setPage(1);
       } catch {
         setDirects([]);
+        setPage(1);
       }
     })();
   }, [read, account, data]);
