@@ -4,11 +4,13 @@ import { useWeb3 } from "./useWeb3";
 import { LegendaryStaking_ABI } from "@/abis/LegendaryStaking";
 import { LegendaryReferral_ABI } from "@/abis/LegendaryReferral";
 import { MockUSDT_ABI } from "@/abis/MockUSDT";
+import { USDV_ABI } from "@/abis/USDV";
+import { FutureDao_ABI } from "@/abis/FutureDao";
 import {
   LEGENDARY_STAKING_ADDRESS,
   LEGENDARY_REFERRAL_ADDRESS,
 } from "@/config/legendary";
-import { USDT_ADDRESS } from "@/config/contracts";
+import { USDT_ADDRESS, USDV_ADDRESS, FDAO_ADDRESS } from "@/config/contracts";
 
 export type LegendaryPosition = {
   id: bigint;
