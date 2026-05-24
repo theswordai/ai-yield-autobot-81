@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
+import futureDaoLogo from "@/assets/futuredao-logo.png";
 import {
   Drawer,
   DrawerContent,
@@ -125,6 +126,7 @@ const MobileBottomNav = () => {
           {primaryItems.map((item) => {
             const active = isActive(item.path);
             const Icon = item.icon;
+            const isFutureDao = item.id === "futuredao";
             return (
               <button
                 key={item.id}
@@ -133,7 +135,15 @@ const MobileBottomNav = () => {
                   active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Icon className={`w-5 h-5 mb-1 ${active ? "text-primary" : ""}`} />
+                {isFutureDao ? (
+                  <img
+                    src={futureDaoLogo}
+                    alt="FutureDAO"
+                    className="w-5 h-5 mb-1 rounded-full object-cover"
+                  />
+                ) : (
+                  <Icon className={`w-5 h-5 mb-1 ${active ? "text-primary" : ""}`} />
+                )}
                 <span className={`text-xs font-medium ${active ? "text-primary" : ""}`}>
                   {language === "zh" ? item.label : item.labelEn}
                 </span>
