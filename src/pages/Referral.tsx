@@ -640,54 +640,6 @@ export default function Referral({
               </CardContent>
             </Card>
 
-            {/* Reward Structure */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  {t('referral.rewardMechanism')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {rewardTiers.map((tier, index) => (
-                  <div key={index} className={`p-4 border rounded-lg hover:bg-muted/20 transition-colors ${tier.bgColor}`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-lg">
-                          {tier.icon}
-                        </div>
-                        <div>
-                          <div className="font-semibold">{tier.level}</div>
-                          <div className="text-sm text-muted-foreground">{tier.requirement}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 mb-2">
-                      <div className="text-center p-2 bg-muted/30 rounded">
-                        <div className="text-xs text-muted-foreground">{t('referral.directReward')}</div>
-                        <div className="font-bold text-accent">{tier.directReward}</div>
-                      </div>
-                      <div className="text-center p-2 bg-muted/30 rounded">
-                        <div className="text-xs text-muted-foreground">{t('referral.indirectShare')}</div>
-                        <div className="font-bold text-primary">{tier.indirectReward}</div>
-                      </div>
-                    </div>
-                    <div className="text-xs text-muted-foreground">{tier.description}</div>
-                  </div>
-                ))}
-                
-                <div className="bg-muted/20 p-4 rounded-lg">
-                  <h5 className="font-semibold mb-2">{t('referral.levelExplanation')}</h5>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• {t('referral.levelNote1')}</li>
-                    <li>• {t('referral.levelNote2')}</li>
-                    <li>• {t('referral.levelNote3')}</li>
-                    <li>• {t('referral.levelNote4')}</li>
-                    <li>• {t('referral.levelNote5')}</li>
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Leaderboard */}
             <Card>
