@@ -118,7 +118,7 @@ export function ReferralTab() {
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
             <div className="text-xs text-muted-foreground">自投 selfStake</div>
-            <div className="font-bold text-amber-400">{fmt(data.selfStake, 0)} USDT</div>
+            <div className="font-bold text-amber-600 dark:text-amber-400">{fmt(data.selfStake, 0)} USDT</div>
           </div>
           <div>
             <div className="text-xs text-muted-foreground">团队业绩 teamPerf</div>

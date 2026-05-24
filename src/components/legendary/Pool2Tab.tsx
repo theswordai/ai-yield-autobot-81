@@ -68,7 +68,7 @@ export function Pool2Tab() {
       {/* 说明卡 */}
       <Card className="p-6 bg-foreground/5 backdrop-blur-xl border-foreground/15">
         <div className="flex items-center gap-2 mb-2">
-          <Layers className="w-5 h-5 text-emerald-400" />
+          <Layers className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           <h3 className="text-lg font-bold">二池复投（APR 360%）</h3>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
@@ -77,11 +77,11 @@ export function Pool2Tab() {
         <div className="grid grid-cols-2 gap-3">
           <div className="p-3 rounded-lg bg-foreground/5 border border-foreground/15">
             <div className="text-xs text-muted-foreground">APR</div>
-            <div className="text-xl font-bold text-amber-400">{(POOL2_APR_BPS / 100).toFixed(0)}%</div>
+            <div className="text-xl font-bold text-amber-600 dark:text-amber-400">{(POOL2_APR_BPS / 100).toFixed(0)}%</div>
           </div>
           <div className="p-3 rounded-lg bg-foreground/5 border border-foreground/15">
             <div className="text-xs text-muted-foreground">日复利 APY</div>
-            <div className="text-xl font-bold text-emerald-400">{apy.toFixed(0)}%</div>
+            <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{apy.toFixed(0)}%</div>
           </div>
         </div>
       </Card>
@@ -111,7 +111,7 @@ export function Pool2Tab() {
                 />
                 <div className="text-xs text-muted-foreground">#{p.id.toString()}</div>
                 <div className="text-sm flex-1">本金 {fmt(p.principal)}</div>
-                <div className="text-sm text-emerald-400">利息 {fmt(p.pending)}</div>
+                <div className="text-sm text-emerald-600 dark:text-emerald-400">利息 {fmt(p.pending)}</div>
               </div>
             ))}
           </div>
@@ -171,7 +171,7 @@ export function Pool2Tab() {
                   className="p-3 rounded-lg border border-foreground/15 bg-foreground/[0.04]"
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className="border-emerald-400/40 text-emerald-400">
+                    <Badge variant="outline" className="border-emerald-400/40 text-emerald-600 dark:text-emerald-400">
                       二池
                     </Badge>
                     <span className="text-xs text-muted-foreground">#{p.id.toString()}</span>
@@ -183,13 +183,13 @@ export function Pool2Tab() {
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">APR</div>
-                      <div className="font-semibold text-amber-400">
+                      <div className="font-semibold text-amber-600 dark:text-amber-400">
                         {(Number(p.aprBps) / 100).toFixed(2)}%
                       </div>
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">已计利息</div>
-                      <div className="font-semibold text-emerald-400">{fmt(p.pending)}</div>
+                      <div className="font-semibold text-emerald-600 dark:text-emerald-400">{fmt(p.pending)}</div>
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">到期剩余</div>

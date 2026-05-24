@@ -39,15 +39,15 @@ export default function Legendary() {
 
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 dark:from-amber-200 dark:via-yellow-300 dark:to-amber-500 bg-clip-text text-transparent">
                   传奇锁仓
                 </h1>
-                <span className="text-xs sm:text-sm font-semibold text-amber-300/80 tracking-[0.2em] uppercase">
+                <span className="text-xs sm:text-sm font-semibold text-amber-700/90 dark:text-amber-700 dark:text-amber-300/80 tracking-[0.2em] uppercase">
                   Legendary Staking
                 </span>
                 <Badge
                   variant="outline"
-                  className="border-amber-400/40 text-amber-300 bg-amber-400/10 ml-auto sm:ml-2"
+                  className="border-amber-400/40 text-amber-700 dark:text-amber-300 bg-amber-400/10 ml-auto sm:ml-2"
                 >
                   <Sparkles className="w-3 h-3 mr-1" /> BSC · 365D
                 </Badge>
@@ -72,22 +72,22 @@ export default function Legendary() {
             <div className="relative grid grid-cols-2 gap-3 sm:gap-4">
               <div className="flex items-center gap-3">
                 <span className="inline-flex w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400/20 to-yellow-600/10 border border-amber-400/30 items-center justify-center">
-                  <Wallet className="w-4 h-4 text-amber-400" />
+                  <Wallet className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 </span>
                 <div>
                   <p className="text-[11px] sm:text-xs text-muted-foreground">USDT 余额</p>
-                  <p className="text-sm sm:text-lg font-bold bg-gradient-to-r from-amber-200 to-yellow-400 bg-clip-text text-transparent">
+                  <p className="text-sm sm:text-lg font-bold bg-gradient-to-r from-amber-600 to-yellow-700 dark:from-amber-200 dark:to-yellow-400 bg-clip-text text-transparent">
                     {fmt(data.usdtBalance)} <span className="text-[10px] text-muted-foreground font-medium">USDT</span>
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <span className="inline-flex w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400/20 to-teal-600/10 border border-emerald-400/30 items-center justify-center">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 </span>
                 <div>
                   <p className="text-[11px] sm:text-xs text-muted-foreground">已授权额度</p>
-                  <p className="text-sm sm:text-lg font-bold bg-gradient-to-r from-emerald-200 to-teal-400 bg-clip-text text-transparent">
+                  <p className="text-sm sm:text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-200 dark:to-teal-400 bg-clip-text text-transparent">
                     {fmtAllowance(data.allowance)} <span className="text-[10px] text-muted-foreground font-medium">USDT</span>
                   </p>
                 </div>
@@ -145,8 +145,8 @@ function Pill({
   tone: "amber" | "emerald" | "primary";
 }) {
   const map = {
-    amber: "border-amber-400/30 bg-amber-400/10 text-amber-300",
-    emerald: "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+    amber: "border-amber-400/30 bg-amber-400/10 text-amber-700 dark:text-amber-300",
+    emerald: "border-emerald-400/30 bg-emerald-400/10 text-emerald-700 dark:text-emerald-300",
     primary: "border-primary/30 bg-primary/10 text-primary",
   };
   return (

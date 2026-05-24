@@ -141,8 +141,8 @@ export function PositionsTab() {
                         variant="outline"
                         className={
                           p.poolType === 1
-                            ? "border-amber-400/40 text-amber-400"
-                            : "border-emerald-400/40 text-emerald-400"
+                            ? "border-amber-400/40 text-amber-600 dark:text-amber-400"
+                            : "border-emerald-400/40 text-emerald-600 dark:text-emerald-400"
                         }
                       >
                         {p.poolType === 1 ? "一池" : "二池"}
@@ -159,13 +159,13 @@ export function PositionsTab() {
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">APR</div>
-                    <div className="font-semibold text-amber-400">
+                    <div className="font-semibold text-amber-600 dark:text-amber-400">
                       {(Number(p.aprBps) / 100).toFixed(2)}%
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">已计利息</div>
-                    <div className="font-semibold text-emerald-400">{fmt(p.pending)}</div>
+                    <div className="font-semibold text-emerald-600 dark:text-emerald-400">{fmt(p.pending)}</div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">到期剩余</div>
@@ -243,7 +243,7 @@ export function PositionsTab() {
                 <div>本金：{fmt(earlyTarget.principal)} USDT</div>
                 <div>
                   返还本金：
-                  <span className="text-amber-400"> {fmt(returned)} USDT</span>
+                  <span className="text-amber-600 dark:text-amber-400"> {fmt(returned)} USDT</span>
                 </div>
                 <div>
                   罚金：
@@ -251,7 +251,7 @@ export function PositionsTab() {
                 </div>
                 <div>
                   返还利息：
-                  <span className="text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">{fmt(earlyTarget.pending)} USDT</span>
                 </div>
                 {levelDown && (
                   <div className="mt-2 p-2 rounded bg-destructive/10 border border-destructive/30 text-destructive text-xs">
