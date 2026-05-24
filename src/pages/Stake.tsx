@@ -28,7 +28,8 @@ export default function Stake({
 }: {
   embedded?: boolean;
 }) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const navigate = useNavigate();
   const {
     account,
     signer,
