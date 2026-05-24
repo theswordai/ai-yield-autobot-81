@@ -526,7 +526,7 @@ export default function Stake({
 
           {/* 自由资本入口 */}
           <button
-            onClick={() => navigate(`/${language}/trade`)}
+            onClick={() => navigate(`/${language}/flexible`)}
             className="group relative flex-1 rounded-2xl border border-yellow-500 bg-yellow-400 p-5 sm:p-6 text-left transition-all duration-300 hover:bg-yellow-300 hover:shadow-[0_8px_30px_-8px_rgba(250,204,21,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             <div className="flex items-center gap-4">
