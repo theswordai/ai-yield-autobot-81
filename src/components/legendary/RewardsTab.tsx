@@ -9,7 +9,7 @@ import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLe
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { CLAIM_COOLDOWN_SEC } from "@/config/legendary";
 import {
-  fetchClaimHistoryViaApi,
+  fetchClaimHistory,
   readClaimCache,
   writeClaimCache,
   type ClaimRecord,
@@ -34,7 +34,7 @@ export function RewardsTab() {
   const [loadingClaims, setLoadingClaims] = useState(false);
   const [claimsError, setClaimsError] = useState<string | null>(null);
 
-  const apiKey = (import.meta.env.VITE_ETHERSCAN_API_KEY as string | undefined) || "";
+  
 
   useEffect(() => {
     const t = setInterval(() => setNow(Math.floor(Date.now() / 1000)), 1000);
@@ -57,10 +57,7 @@ export function RewardsTab() {
     setLoadingClaims(true);
     setClaimsError(null);
     try {
-      if (!apiKey) {
-        throw new Error("未配置 API Key，请在环境变量填写 VITE_ETHERSCAN_API_KEY");
-      }
-      const records = await fetchClaimHistoryViaApi(account, apiKey);
+      const records = await fetchClaimHistory(account);
       setClaims(records);
       writeClaimCache(account, records);
     } catch (e: any) {
@@ -199,11 +196,6 @@ export function RewardsTab() {
           </div>
         )}
 
-        {!apiKey && !claimsError && (
-          <div className="text-xs text-muted-foreground mb-3">
-            未配置 API Key，请在环境变量填写 VITE_ETHERSCAN_API_KEY
-          </div>
-        )}
 
         {claims === null ? (
           <div className="text-sm text-muted-foreground text-center py-6">
