@@ -425,8 +425,8 @@
   },
   "nav": {
     "home": "Launch",
-    "charity": "Charity",
-    "invest": "Genesis",
+    "charity": "Genesis",
+    "invest": "Charity",
     "swap": "USDV",
     "fundManagement": "Fund Management",
     "bluePoints": "USDV",
