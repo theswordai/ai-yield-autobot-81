@@ -74,6 +74,14 @@ const EMPTY_DASHBOARD: LegendaryDashboard = {
   frozen: false,
   earlyPenaltyBps: 5000,
   positions: [],
+  pendingUsdv: 0n,
+  pendingFdao: 0n,
+  previewUsdvInterest: 0n,
+  previewUsdvLevel: 0n,
+  previewFdaoInterest: 0n,
+  previewFdaoLevel: 0n,
+  usdvBalance: 0n,
+  fdaoBalance: 0n,
 };
 
 export function useLegendaryContracts() {
@@ -84,12 +92,16 @@ export function useLegendaryContracts() {
       staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, provider),
       referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, provider),
       usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, provider),
+      usdv: new Contract(USDV_ADDRESS, USDV_ABI, provider),
+      fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, provider),
     };
     const write = signer
       ? {
           staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, signer),
           referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, signer),
           usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, signer),
+          usdv: new Contract(USDV_ADDRESS, USDV_ABI, signer),
+          fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, signer),
         }
       : null;
     return { read, write };
