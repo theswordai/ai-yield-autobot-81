@@ -20,9 +20,9 @@ export function Navbar() {
     { name: t("nav.home"), href: `${langPrefix}` },
     { name: t("nav.invest"), href: `${langPrefix}/invest` },
     { name: t("nav.swap"), href: `${langPrefix}/usdv?tab=dex` },
-    { name: t("nav.whitepaper"), href: `${langPrefix}/whitepaper` },
-    { name: t("nav.charity"), href: `${langPrefix}/stake` },
     { name: t("nav.predict"), href: `${langPrefix}/predict` },
+    { name: t("nav.charity"), href: `${langPrefix}/stake` },
+    { name: t("nav.whitepaper"), href: `${langPrefix}/whitepaper` },
   ];
 
   const isActive = (path: string) => {
