@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Crown, Wallet, ListChecks, Users, Gift, Layers, Sparkles, ShieldCheck } from "lucide-react";
+import goldBarsLogo from "@/assets/gold-bars-logo.png";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Navbar } from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
@@ -32,8 +33,8 @@ export default function Legendary() {
           <div className="relative flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="relative shrink-0">
               <span className="absolute inset-0 rounded-2xl bg-amber-400/40 blur-xl animate-pulse" />
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-300 to-yellow-600 border border-amber-200/60 flex items-center justify-center shadow-[0_0_30px_-5px_rgba(251,191,36,0.6)]">
-                <Crown className="w-7 h-7 sm:w-8 sm:h-8 text-background drop-shadow" />
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-amber-300/30 to-yellow-600/20 border border-amber-200/60 flex items-center justify-center shadow-[0_0_30px_-5px_rgba(251,191,36,0.6)]">
+                <img src={goldBarsLogo} alt="增值资本" width={512} height={512} loading="lazy" className="w-10 h-10 sm:w-12 sm:h-12 object-contain drop-shadow" />
               </div>
             </div>
 
