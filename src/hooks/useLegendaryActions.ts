@@ -7,16 +7,23 @@ import { LEGENDARY_STAKING_ADDRESS } from "@/config/legendary";
 
 const REVERT_MAP: Record<string, string> = {
   "below min": "金额低于最低门槛",
-  "not authorized": "请先绑定上线后再操作",
+  "not authorized": "系统暂未就绪，请联系客服",
   frozen: "账户已被冻结",
   paused: "合约已暂停",
   "already bound": "已绑定过上线",
-  "self bind": "不能绑定自己为上线",
-  "inviter below min": "上线自投不足 200 USDT",
-  "cooldown": "未到下一次领取时间",
   "not matured": "锁仓未到期",
-  "pool2 only compound": "二池仅支持复投进入",
   "insufficient interest": "未领利息不足",
+  "bad inviter": "上线地址无效（不能为空或自己）",
+  "inviter not qualified": "上线自投不足 200 USDT，无法绑定",
+  "circular": "检测到循环邀请，绑定被拒绝",
+  "transferfrom failed": "USDT 余额或授权额度不足",
+  "transfer failed": "合约偿付额度不足，请联系客服",
+  "insufficient liquidity": "合约偿付额度不足，请联系客服",
+  "reentrancy": "操作冲突，请稍后重试",
+  "already": "该仓位已被处理",
+  "use withdraw": "仓位已到期，请使用「到期取本金」",
+  "zero": "参数错误",
+  "nothing": "暂无可领取金额",
 };
 
 function parseRevert(err: any): string {

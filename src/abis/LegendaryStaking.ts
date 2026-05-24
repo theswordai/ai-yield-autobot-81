@@ -25,6 +25,7 @@ export const LegendaryStaking_ABI = [
   "function minDeposit() view returns (uint256)",
   "function minStakeForReferral() view returns (uint256)",
   "function lockDuration() view returns (uint256)",
+  "function earlyPenaltyBps() view returns (uint256)",
   // events
   "event Deposited(address indexed user, uint256 indexed posId, uint8 poolType, uint256 amount, uint256 aprBps)",
   "event InterestClaimed(address indexed user, uint256 amount)",

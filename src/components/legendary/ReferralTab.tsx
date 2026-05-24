@@ -19,6 +19,8 @@ type DirectInfo = {
   teamPerf: bigint;
 };
 
+const PAGE_SIZE = 20;
+
 export function ReferralTab() {
   const { account, connect } = useWeb3();
   const { read } = useLegendaryContracts();
@@ -27,6 +29,7 @@ export function ReferralTab() {
   const [inviterInput, setInviterInput] = useState("");
   const [copied, setCopied] = useState(false);
   const [directs, setDirects] = useState<DirectInfo[]>([]);
+  const [page, setPage] = useState(1);
 
   // 从 URL ?ref=
   useEffect(() => {
@@ -40,11 +43,15 @@ export function ReferralTab() {
   // 加载直推列表详情
   useEffect(() => {
     (async () => {
-      if (!read || !account) return setDirects([]);
+      if (!read || !account) {
+        setDirects([]);
+        setPage(1);
+        return;
+      }
       try {
         const list: string[] = await read.referral.getDirects(account);
         const infos = await Promise.all(
-          list.slice(0, 50).map(async (addr) => {
+          list.map(async (addr) => {
             const [ss, tp] = await Promise.all([
               read.referral.selfStake(addr).catch(() => 0n),
               read.referral.teamPerf(addr).catch(() => 0n),
@@ -53,8 +60,10 @@ export function ReferralTab() {
           })
         );
         setDirects(infos);
+        setPage(1);
       } catch {
         setDirects([]);
+        setPage(1);
       }
     })();
   }, [read, account, data]);
@@ -124,21 +133,35 @@ export function ReferralTab() {
         {directs.length === 0 ? (
           <div className="text-sm text-muted-foreground text-center py-6">暂无直推</div>
         ) : (
-          <div className="space-y-2">
-            {directs.map((d) => (
-              <div
-                key={d.addr}
-                className="flex items-center gap-3 p-2 rounded bg-white/5 text-xs"
-              >
-                <span className="font-mono">
-                  {d.addr.slice(0, 6)}...{d.addr.slice(-4)}
-                </span>
-                <span className="ml-auto text-muted-foreground">
-                  自投 {fmt(d.selfStake, 1)} · 业绩 {fmt(d.teamPerf, 1)}
-                </span>
+          <>
+            <div className="space-y-2">
+              {directs.slice(0, page * PAGE_SIZE).map((d) => (
+                <div
+                  key={d.addr}
+                  className="flex items-center gap-3 p-2 rounded bg-white/5 text-xs"
+                >
+                  <span className="font-mono">
+                    {d.addr.slice(0, 6)}...{d.addr.slice(-4)}
+                  </span>
+                  <span className="ml-auto text-muted-foreground">
+                    自投 {fmt(d.selfStake, 1)} · 业绩 {fmt(d.teamPerf, 1)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {page * PAGE_SIZE < directs.length && (
+              <div className="mt-3 text-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-white/20"
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  加载更多（{Math.min(page * PAGE_SIZE, directs.length)}/{directs.length}）
+                </Button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </Card>
 
