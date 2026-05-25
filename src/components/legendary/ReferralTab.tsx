@@ -266,6 +266,152 @@ export function ReferralTab() {
         )}
       </Card>
 
+      {/* 我的网络树 */}
+      <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
+        <div className="flex items-center gap-2 mb-2">
+          <Network className="w-4 h-4 text-amber-500" />
+          <h3 className="font-bold">我的网络树</h3>
+        </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          显示当前钱包地址下的全部下级（递归到底），仅在点击查询时加载，不自动刷新。
+        </p>
+
+        {!tree && !treeLoading && (
+          <Button
+            onClick={loadNetworkTree}
+            className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-background"
+          >
+            <Network className="w-4 h-4 mr-2" />
+            查询我的网络树
+          </Button>
+        )}
+
+        {treeLoading && (
+          <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            已加载 {treeProgress} 个地址…
+          </div>
+        )}
+
+        {tree && !treeLoading && (
+          <>
+            <div className="grid grid-cols-3 gap-2 mb-3 text-xs">
+              <div className="rounded bg-foreground/5 p-2">
+                <div className="text-muted-foreground">总人数</div>
+                <div className="font-bold">{tree.totalCount}</div>
+              </div>
+              <div className="rounded bg-foreground/5 p-2">
+                <div className="text-muted-foreground">最大深度</div>
+                <div className="font-bold">{tree.maxDepth}</div>
+              </div>
+              <div className="rounded bg-foreground/5 p-2">
+                <div className="text-muted-foreground">团队自投合计</div>
+                <div className="font-bold text-amber-600 dark:text-amber-400">
+                  {fmt(tree.totalSelfStake, 0)}
+                </div>
+              </div>
+            </div>
+
+            {tree.truncated && (
+              <Alert className="mb-3 border-amber-400/40 bg-amber-400/10">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription className="text-xs">
+                  已达节点上限（{MAX_NODES}），部分深层下级未展示。
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <div className="max-h-[480px] overflow-auto rounded border border-foreground/10 bg-background/40 p-2">
+              <TreeRow addr={tree.root} depth={0} nodes={tree.nodes} isRoot />
+            </div>
+
+            <div className="mt-3 text-center">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-white/20"
+                onClick={loadNetworkTree}
+              >
+                重新查询
+              </Button>
+            </div>
+          </>
+        )}
+      </Card>
+
     </div>
   );
 }
+
+function TreeRow({
+  addr,
+  depth,
+  nodes,
+  isRoot = false,
+}: {
+  addr: string;
+  depth: number;
+  nodes: Map<string, { selfStake: bigint; children: string[]; level: number }>;
+  isRoot?: boolean;
+}) {
+  const [open, setOpen] = useState(true);
+  const node = nodes.get(addr.toLowerCase());
+  if (!node) return null;
+  const children = node.children.filter((c) => nodes.has(c.toLowerCase()));
+  const hasChildren = children.length > 0;
+
+  const copyAddr = async () => {
+    try {
+      await navigator.clipboard.writeText(addr);
+      toast.success("地址已复制");
+    } catch {
+      // silent
+    }
+  };
+
+  return (
+    <div className="text-xs" style={{ paddingLeft: depth === 0 ? 0 : 12 }}>
+      <div
+        className={`flex items-center gap-2 py-1.5 px-1 rounded hover:bg-foreground/5 border-l ${
+          depth === 0 ? "border-transparent" : "border-foreground/10"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => hasChildren && setOpen((v) => !v)}
+          className="w-4 h-4 inline-flex items-center justify-center text-muted-foreground shrink-0"
+        >
+          {hasChildren ? (
+            open ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />
+          ) : (
+            <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+          )}
+        </button>
+        <span className="font-mono text-[10px] text-muted-foreground shrink-0">
+          L{node.level}
+        </span>
+        <button
+          type="button"
+          onClick={copyAddr}
+          className="font-mono hover:text-amber-500 transition-colors shrink-0"
+          title={isRoot ? `${addr}（我）` : addr}
+        >
+          {addr.slice(0, 6)}...{addr.slice(-4)}
+          {isRoot && <span className="ml-1 text-amber-500">（我）</span>}
+        </button>
+        <span className="ml-auto text-muted-foreground whitespace-nowrap">
+          自投 <span className="text-foreground font-semibold">{fmt(node.selfStake, 1)}</span>
+          {hasChildren && <span className="ml-2">· 直推 {children.length}</span>}
+        </span>
+      </div>
+      {hasChildren && open && (
+        <div>
+          {children.map((c) => (
+            <TreeRow key={c} addr={c} depth={depth + 1} nodes={nodes} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
