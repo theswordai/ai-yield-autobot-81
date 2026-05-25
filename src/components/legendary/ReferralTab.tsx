@@ -31,6 +31,107 @@ export function ReferralTab() {
   const [directs, setDirects] = useState<DirectInfo[]>([]);
   const [page, setPage] = useState(1);
 
+  // 网络树（手动查询，不自动刷新）
+  type TreeNodeData = { selfStake: bigint; children: string[]; level: number };
+  type NetworkTree = {
+    root: string;
+    nodes: Map<string, TreeNodeData>;
+    totalCount: number;
+    maxDepth: number;
+    totalSelfStake: bigint;
+    truncated: boolean;
+  };
+  const [tree, setTree] = useState<NetworkTree | null>(null);
+  const [treeLoading, setTreeLoading] = useState(false);
+  const [treeProgress, setTreeProgress] = useState(0);
+
+  const MAX_NODES = 1000;
+  const MAX_DEPTH = 10;
+  const BATCH = 10;
+
+  const loadNetworkTree = async () => {
+    if (!read || !account) return;
+    setTreeLoading(true);
+    setTreeProgress(0);
+    setTree(null);
+    try {
+      const nodes = new Map<string, TreeNodeData>();
+      const visited = new Set<string>([account.toLowerCase()]);
+      // 根节点
+      const rootSelf = await read.referral.selfStake(account).catch(() => 0n);
+      const rootChildren: string[] = await read.referral.getDirects(account).catch(() => []);
+      nodes.set(account.toLowerCase(), { selfStake: rootSelf, children: rootChildren, level: 0 });
+      setTreeProgress(1);
+
+      let frontier: { addr: string; level: number }[] = rootChildren
+        .filter((c) => {
+          const k = c.toLowerCase();
+          if (visited.has(k)) return false;
+          visited.add(k);
+          return true;
+        })
+        .map((c) => ({ addr: c, level: 1 }));
+
+      let truncated = false;
+      let maxDepth = rootChildren.length > 0 ? 1 : 0;
+      let totalSelfStake = rootSelf;
+
+      while (frontier.length > 0) {
+        const nextFrontier: { addr: string; level: number }[] = [];
+        for (let i = 0; i < frontier.length; i += BATCH) {
+          const batch = frontier.slice(i, i + BATCH);
+          const results = await Promise.all(
+            batch.map(async ({ addr, level }) => {
+              const [s, ch] = await Promise.all([
+                read.referral.selfStake(addr).catch(() => 0n),
+                level < MAX_DEPTH
+                  ? read.referral.getDirects(addr).catch(() => [] as string[])
+                  : Promise.resolve([] as string[]),
+              ]);
+              return { addr, level, selfStake: s, children: ch };
+            })
+          );
+          for (const r of results) {
+            if (nodes.size >= MAX_NODES) {
+              truncated = true;
+              break;
+            }
+            nodes.set(r.addr.toLowerCase(), {
+              selfStake: r.selfStake,
+              children: r.children,
+              level: r.level,
+            });
+            totalSelfStake += r.selfStake;
+            if (r.level > maxDepth) maxDepth = r.level;
+            for (const c of r.children) {
+              const k = c.toLowerCase();
+              if (visited.has(k)) continue;
+              visited.add(k);
+              nextFrontier.push({ addr: c, level: r.level + 1 });
+            }
+          }
+          setTreeProgress(nodes.size);
+          if (truncated) break;
+        }
+        if (truncated) break;
+        frontier = nextFrontier;
+      }
+
+      setTree({
+        root: account,
+        nodes,
+        totalCount: nodes.size - 1, // 不计根节点
+        maxDepth,
+        totalSelfStake: totalSelfStake - rootSelf,
+        truncated,
+      });
+    } catch {
+      toast.error("查询失败，请稍后重试");
+    } finally {
+      setTreeLoading(false);
+    }
+  };
+
   // 从 URL ?ref=
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
