@@ -83,12 +83,12 @@ export function ReferralTab() {
           const results = await Promise.all(
             batch.map(async ({ addr, level }) => {
               const [s, ch] = await Promise.all([
-                read.referral.selfStake(addr).catch(() => 0n),
+                read.referral.selfStake(addr).then((v: any) => BigInt(v ?? 0)).catch(() => 0n),
                 level < MAX_DEPTH
                   ? read.referral.getDirects(addr).catch(() => [] as string[])
                   : Promise.resolve([] as string[]),
               ]);
-              return { addr, level, selfStake: s, children: ch };
+              return { addr, level, selfStake: s as bigint, children: ch as string[] };
             })
           );
           for (const r of results) {
