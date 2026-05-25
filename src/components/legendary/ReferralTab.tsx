@@ -58,7 +58,7 @@ export function ReferralTab() {
       const nodes = new Map<string, TreeNodeData>();
       const visited = new Set<string>([account.toLowerCase()]);
       // 根节点
-      const rootSelf = await read.referral.selfStake(account).catch(() => 0n);
+      const rootSelf: bigint = await read.referral.selfStake(account).then((v: any) => BigInt(v ?? 0)).catch(() => 0n);
       const rootChildren: string[] = await read.referral.getDirects(account).catch(() => []);
       nodes.set(account.toLowerCase(), { selfStake: rootSelf, children: rootChildren, level: 0 });
       setTreeProgress(1);
@@ -74,7 +74,7 @@ export function ReferralTab() {
 
       let truncated = false;
       let maxDepth = rootChildren.length > 0 ? 1 : 0;
-      let totalSelfStake = rootSelf;
+      let totalSelfStake: bigint = rootSelf;
 
       while (frontier.length > 0) {
         const nextFrontier: { addr: string; level: number }[] = [];
