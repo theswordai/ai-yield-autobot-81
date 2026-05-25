@@ -1,89 +1,74 @@
-# 增值资本 V2 升级方案
+## 目标
 
-USDT 锁仓/推荐/动态分红逻辑保持不变，新增 USDV + FDAO 代币奖励体系。两套奖励完全分离。
+在 `增值资本 → 邀请团队` 标签页底部新增一个「我的网络树」模块，按用户点击查询时才递归读取该地址下的全部下级（深度到底），并显示每个下级地址的 selfStake 自投本金。默认折叠/不显示数据，绝不自动刷新。
 
-## 1. 地址与配置更新
+## UI 设计
 
-**`src/config/legendary.ts`**
-- `LEGENDARY_STAKING_ADDRESS` → `0x56d49C2c3E550a52b784432b92598058720B205b`
-- `LEGENDARY_REFERRAL_ADDRESS` 保持 `0x991d90cbbBd2bDE04e7906D160A6B36CEA56D2cF`
-- 新增 `FDAO_ADDRESS = 0xB14473F60bb1073235ca9a96CE2da43BfD274811`
+在 `src/components/legendary/ReferralTab.tsx`「我的直推」卡片下新增一张玻璃拟态卡片：
 
-**`src/config/contracts.ts`**
-- `USDV_ADDRESS` 已是 `0x14B26...`，保持
-- 新增导出 `FDAO_ADDRESS`
+- 标题：`我的网络树`
+- 副标题/提示：`显示当前钱包地址下的全部下级（递归到底），仅在点击查询时加载，不自动刷新`
+- 主操作：`查询我的网络树` 按钮（金色渐变，与现有按钮风格一致）
+- 状态：
+  - 未查询过 → 仅显示按钮 + 提示
+  - 加载中 → 按钮 disabled，显示已加载节点数 `已加载 N 个地址…`
+  - 完成 → 显示树 + 顶部统计行：`总人数 X · 最大深度 Y · 团队自投合计 Z USDT` + `重新查询` 按钮
+- 树渲染：可折叠树形结构（缩进 + 左侧竖线），每行：
+  ```
+  L{level}  0xabcd...1234   自投 1,234 USDT   直推 N
+  ```
+  - 每个节点默认展开，点击可折叠子树（复用 `lucide-react` 的 `ChevronRight/Down`，无需新增依赖）
+  - 单元格点击复制地址（toast 提示）
+- 安全上限：最多 1000 个节点 / 最大深度 10，达上限时显示提示 `已达节点上限，部分深层下级未展示`，防止极端情况下浏览器卡死
 
-**`src/lib/legendaryClaimHistory.ts` / Etherscan edge function**
-- 因为引用 `LEGENDARY_STAKING_ADDRESS` 常量，自动跟随更新，无需改代码
+## 数据获取逻辑
 
-## 2. ABI 文件
+新增一个内部函数 `loadNetworkTree(root: string)`，BFS 遍历：
 
-**`src/abis/LegendaryStaking.ts`** — 在现有 ABI 基础上追加：
+1. 初始队列：`[{ addr: root, level: 0 }]`
+2. 每轮取出一批地址，用 `Promise.all` 并发调用：
+   - `read.referral.getDirects(addr)` → 子地址数组
+   - `read.referral.selfStake(addr)` → bigint
+3. 为控制 RPC 压力，每批最多并发 10 个地址；批与批之间不加 sleep
+4. 达到节点上限或队列空时结束
+5. 返回 `Map<addr, { selfStake, children: string[], level }>` + 根地址
+
+存放在 `useState`，**不挂任何 useEffect 自动刷新**。Tab 切换、`data` 变更都不重置已加载结果。
+
+## 类型 / 抽象
+
+```ts
+type TreeNode = {
+  addr: string;
+  level: number;
+  selfStake: bigint;
+  children: string[]; // 直推地址
+};
+type NetworkTree = {
+  root: string;
+  nodes: Map<string, TreeNode>;
+  totalCount: number;
+  maxDepth: number;
+  totalSelfStake: bigint;
+  truncated: boolean;
+};
 ```
-// 写
-"function claimTokenRewards() returns (uint256, uint256)"
-// 读
-"function pendingUsdv(address) view returns (uint256)"
-"function pendingFdao(address) view returns (uint256)"
-"function previewTokenRewards(address) view returns (uint256, uint256, uint256, uint256)"
-"function usdvPerInterestBps() view returns (uint256)"
-"function fdaoPerInterestBps() view returns (uint256)"
-"function maxUsdvLevelReached(address) view returns (uint8)"
-"function maxFdaoLevelReached(address) view returns (uint8)"
-"function getLevelBonusUsdv() view returns (uint256[7])"
-"function getLevelBonusFdao() view returns (uint256[7])"
-"function usdv() view returns (address)"
-"function futureDao() view returns (address)"
-// 事件
-"event UsdvAccrued(address indexed user, uint256 usdtInterest, uint256 usdvAmount)"
-"event FdaoAccrued(address indexed user, uint256 usdtInterest, uint256 fdaoAmount)"
-"event UsdvClaimed(address indexed user, uint256 fromInterest, uint256 fromLevel, uint8 levelFrom, uint8 levelTo)"
-"event FdaoClaimed(address indexed user, uint256 fromInterest, uint256 fromLevel, uint8 levelFrom, uint8 levelTo)"
-```
 
-**新建 `src/abis/FutureDao.ts`**：标准 ERC20 + `MAX_SUPPLY()`
+渲染用一个递归小组件 `<TreeRow node addr depth />`，内部用本地 state 控制展开/折叠。
 
-## 3. Hook 改造
+## 错误处理
 
-**`src/hooks/useLegendary.ts`**
-- `useLegendaryContracts` 增加 `usdv` 和 `fdao` Contract（读 + 写）
-- `LegendaryDashboard` 类型新增字段：
-  - `pendingUsdv: bigint`、`pendingFdao: bigint`
-  - `previewUsdvInterest`、`previewUsdvLevel`、`previewFdaoInterest`、`previewFdaoLevel`
-  - `usdvBalance`、`fdaoBalance`
-- `doRefetch` 并行追加：`pendingUsdv`、`pendingFdao`、`previewTokenRewards`、`usdv.balanceOf`、`fdao.balanceOf`
-- 全部用 `safe(...)` 包，未配置时 fallback 0
+遵守项目「Silent fallbacks」约定：单个地址 RPC 报错时该节点 selfStake 记为 0n、children 记为空数组，整体继续进行；整体抛错则 toast `查询失败，请稍后重试` 并恢复按钮。
 
-**`src/hooks/useLegendaryActions.ts`**
-- 新增 `claimTokenRewards()` action，成功后 `onDone` 自动 refetch
-- `REVERT_MAP` 追加：`"nothing or unavailable"` → `"暂无可领代币或合约未配置"`
-- 现有 `claimInterest`、`withdraw`、`earlyWithdraw`、`compoundToPool2` 成功回调本就触发 refetch，会自动刷新 pending 代币奖励，无需额外改动
+## 涉及文件
 
-## 4. UI 改动
+- 修改：`src/components/legendary/ReferralTab.tsx`（新增卡片 + 加载逻辑 + 树渲染子组件，全部写在同文件内，体量可控）
 
-**`src/components/legendary/RewardsTab.tsx`**
-在「领取奖励（USDT 佣金）」卡片下方新增「代币奖励」卡片：
-- 两列展示 USDV / FDAO：利息累计部分、等级一次性部分、合计
-- 显示当前 V 等级、钱包 USDV 余额、钱包 FDAO 余额
-- 按钮「领取 USDV / FDAO」→ `claimTokenRewards()`，合计为 0 时 disabled
-- 底部小字说明：领息/到期/复投按比例累计 USDV+FDAO；V1~V6 首次领取额外等级奖励
+不改动合约 / ABI / hooks，复用现有 `useLegendaryContracts().read.referral` 的 `getDirects` 与 `selfStake`。
 
-**`src/components/legendary/StatCard.tsx` / `Legendary.tsx`** （可选）
-在 Dashboard 增加「待领 USDV」「待领 FDAO」两个 StatCard。
+## 验证
 
-## 5. 不动的部分
-
-- 1 池 deposit、2 池 compoundToPool2、仓位列表、APR 计算
-- bind/teamPerf/getLevel/直推列表
-- USDT 佣金 `claimRewards` + 24h 倒计时
-- ReferralRegistry 地址与调用
-- Etherscan `RewardsClaimed` 查询逻辑（仅 staking 地址常量变更）
-
-## 验收清单
-
-- 新地址下存款、仓位、佣金行为与旧版一致
-- 领利息后 `pendingUsdv` / `pendingFdao` 上升
-- `previewTokenRewards` 与链上读值一致
-- `claimTokenRewards` 后 USDV/FDAO 到账钱包，pending 清零
-- `claimRewards` 仍只领 USDT 佣金，两者互不影响
-- Referral 仍走 `0x991d...`
+- TypeScript 编译通过
+- 手动点击按钮 → 显示加载状态 → 出现树
+- 不点按钮时切回该 Tab，不发生任何 RPC 请求
+- 折叠/展开、复制地址、节点上限提示均正常
