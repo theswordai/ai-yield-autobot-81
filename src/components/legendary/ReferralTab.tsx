@@ -122,7 +122,7 @@ export function ReferralTab() {
         nodes,
         totalCount: nodes.size - 1, // 不计根节点
         maxDepth,
-        totalSelfStake: totalSelfStake - rootSelf,
+        totalSelfStake: (totalSelfStake - rootSelf) as bigint,
         truncated,
       });
     } catch {
