@@ -290,7 +290,10 @@ async function doRefetch(
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
           const prevPos = prevPosById.get(id.toString());
-          const pos = await safe(read.staking.positions(id) as Promise<any>, null as any);
+          const pos = await safe(
+            read.staking.positions(id) as Promise<LegendaryPositionTuple>,
+            null as unknown as LegendaryPositionTuple
+          );
           const pending = await safe(
             read.staking.pendingInterest(id) as Promise<bigint>,
             prevPos?.pending ?? 0n
