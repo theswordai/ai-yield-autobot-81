@@ -147,7 +147,28 @@ let inflight: Promise<void> | null = null;
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((fn) => fn());
 
-async function doRefetch(
+// Module-level handles set by LegendaryDashboardProvider so the shared refetch()
+// returned by useLegendaryDashboard() always has the latest read client + account.
+let currentRead: ReturnType<typeof useLegendaryContracts>["read"] | null = null;
+let currentAccount: string | null = null;
+export function _setLegendaryContext(
+  read: ReturnType<typeof useLegendaryContracts>["read"] | null,
+  account: string | null
+) {
+  currentRead = read;
+  currentAccount = account;
+}
+export function _resetLegendaryShared() {
+  sharedData = { ...EMPTY_DASHBOARD };
+  sharedAccount = null;
+  notify();
+}
+export function _refetchLegendary() {
+  if (!currentRead) return Promise.resolve();
+  return doRefetch(currentRead, currentAccount);
+}
+
+export async function doRefetch(
   read: ReturnType<typeof useLegendaryContracts>["read"],
   account: string | null
 ) {
@@ -157,6 +178,35 @@ async function doRefetch(
   notify();
   inflight = (async () => {
     try {
+      // Use previous values as fallbacks when the same account is connected,
+      // so transient RPC failures don't flash UI back to 0.
+      const sameAcc =
+        !!account && sharedAccount && sharedAccount.toLowerCase() === account.toLowerCase();
+      const prev = sameAcc ? sharedData : sharedData; // keep prev even on first load to avoid 0-flash
+
+      // ---------- Phase 1: account-specific balances (fast path) ----------
+      // Fetch USDT balance / allowance / frozen FIRST and patch immediately so the
+      // header USDT figure shows up without waiting for global pool stats.
+      if (account) {
+        const [fastUsdtBalance, fastAllowance, fastFrozen] = await Promise.all([
+          safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
+          safe(
+            read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
+            prev.allowance
+          ),
+          safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
+        ]);
+        sharedData = {
+          ...prev,
+          usdtBalance: fastUsdtBalance,
+          allowance: fastAllowance,
+          frozen: fastFrozen,
+        };
+        sharedAccount = account;
+        notify();
+      }
+
+      // ---------- Phase 2: global pool state ----------
       const [totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBpsRaw] = await Promise.all([
         safe(read.staking.totalPool1Principal() as Promise<bigint>, sharedData.totalPool1),
         safe(read.staking.totalPool2Principal() as Promise<bigint>, sharedData.totalPool2),
@@ -167,26 +217,19 @@ async function doRefetch(
       const earlyPenaltyBps = Number(earlyPenaltyBpsRaw) || 5000;
 
       if (!account) {
-        sharedData = { ...EMPTY_DASHBOARD, totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBps };
-        sharedAccount = null;
+        // No account connected — only refresh global pool stats; do NOT clear
+        // per-account fields here (Provider handles disconnect resets).
+        sharedData = { ...sharedData, totalPool1, totalPool2, currentDayInflow, paused, earlyPenaltyBps };
+        notify();
         return;
       }
 
-      // Use previous values as fallbacks when the same account is connected,
-      // so transient RPC failures don't flash UI back to 0.
-      const sameAcc = sharedAccount && sharedAccount.toLowerCase() === account.toLowerCase();
-      const prev = sameAcc ? sharedData : EMPTY_DASHBOARD;
-
-      const [fastUsdtBalance, fastAllowance] = await Promise.all([
-        safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
-        safe(
-          read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
-          prev.allowance
-        ),
-      ]);
+      // Reuse fast-path values already in sharedData
+      const fastUsdtBalance = sharedData.usdtBalance;
+      const fastAllowance = sharedData.allowance;
 
       sharedData = {
-        ...prev,
+        ...sharedData,
         totalPool1,
         totalPool2,
         currentDayInflow,
@@ -376,9 +419,10 @@ async function doRefetch(
   return inflight;
 }
 
+// Subscribe-only hook. Does NOT trigger refetches or intervals — the
+// LegendaryDashboardProvider mounted once on the Legendary page handles all
+// automatic refetching. Child tabs simply read from the shared singleton.
 export function useLegendaryDashboard() {
-  const { account, chainId } = useWeb3();
-  const { read } = useLegendaryContracts();
   const [, force] = useState(0);
 
   useEffect(() => {
@@ -390,27 +434,8 @@ export function useLegendaryDashboard() {
   }, []);
 
   const refetch = useCallback(async () => {
-    await doRefetch(read, account);
-  }, [read, account]);
-
-  // Reset cached account snapshot when the connected account changes so old
-  // values do not leak into the new account's view before the first refetch.
-  useEffect(() => {
-    if (!account) return;
-    if (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase()) {
-      sharedData = { ...EMPTY_DASHBOARD };
-      sharedAccount = account.toLowerCase();
-      notify();
-    }
-  }, [account]);
-
-  // Force refetch on account or chain change. Reads use BSC public RPC so the
-  // wallet chain only matters for resetting the user-specific view.
-  useEffect(() => {
-    refetch();
-    const t = setInterval(refetch, 30_000);
-    return () => clearInterval(t);
-  }, [refetch, chainId]);
+    await _refetchLegendary();
+  }, []);
 
   return { data: sharedData, loading: sharedLoading, refetch };
 }

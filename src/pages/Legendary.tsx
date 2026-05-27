@@ -12,10 +12,19 @@ import { Pool2Tab } from "@/components/legendary/Pool2Tab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
 import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
+import { LegendaryDashboardProvider } from "@/hooks/LegendaryDashboardProvider";
 import { useWeb3 } from "@/hooks/useWeb3";
 
 
 export default function Legendary() {
+  return (
+    <LegendaryDashboardProvider>
+      <LegendaryPageContent />
+    </LegendaryDashboardProvider>
+  );
+}
+
+function LegendaryPageContent() {
   const [tab, setTab] = useState("deposit");
   const { account } = useWeb3();
   const { data } = useLegendaryDashboard();
@@ -106,19 +115,39 @@ export default function Legendary() {
             ))}
           </TabsList>
 
-          <TabsContent value="deposit" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="deposit"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <DepositTab onDone={() => setTab("positions")} />
           </TabsContent>
-          <TabsContent value="positions" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="positions"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <PositionsTab onSwitchToPool2={() => setTab("pool2")} />
           </TabsContent>
-          <TabsContent value="pool2" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="pool2"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <Pool2Tab />
           </TabsContent>
-          <TabsContent value="referral" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="referral"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <ReferralTab />
           </TabsContent>
-          <TabsContent value="rewards" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="rewards"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <RewardsTab />
           </TabsContent>
         </Tabs>
