@@ -336,7 +336,7 @@ async function doRefetch(
 }
 
 export function useLegendaryDashboard() {
-  const { account } = useWeb3();
+  const { account, chainId } = useWeb3();
   const { read } = useLegendaryContracts();
   const [, force] = useState(0);
 
@@ -352,11 +352,23 @@ export function useLegendaryDashboard() {
     await doRefetch(read, account);
   }, [read, account]);
 
+  // Reset cached account snapshot when the connected account changes so old
+  // values do not leak into the new account's view before the first refetch.
+  useEffect(() => {
+    if (!account || (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase())) {
+      sharedData = { ...EMPTY_DASHBOARD };
+      sharedAccount = account ? account.toLowerCase() : null;
+      notify();
+    }
+  }, [account]);
+
+  // Force refetch on account or chain change. Reads use BSC public RPC so the
+  // wallet chain only matters for resetting the user-specific view.
   useEffect(() => {
     refetch();
     const t = setInterval(refetch, 30_000);
     return () => clearInterval(t);
-  }, [refetch]);
+  }, [refetch, chainId]);
 
   return { data: sharedData, loading: sharedLoading, refetch };
 }
