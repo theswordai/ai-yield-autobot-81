@@ -54,6 +54,26 @@ export type LegendaryDashboard = {
   fdaoBalance: bigint;
 };
 
+type ProviderLike = { getBlockNumber: () => Promise<number> };
+type ContractWithProvider = Contract & { provider?: ProviderLike };
+type DepositedLog = { args?: { posId?: bigint } };
+type LegendaryPositionTuple = {
+  user?: string;
+  principal?: bigint;
+  startTime?: bigint;
+  lastAccrueTime?: bigint;
+  aprBps?: bigint;
+  poolType?: bigint | number;
+  withdrawn?: boolean;
+  0?: string;
+  1?: bigint;
+  2?: bigint;
+  3?: bigint;
+  4?: bigint;
+  6?: bigint | number;
+  7?: boolean;
+};
+
 // placeholder to keep diff context
 
 const EMPTY_DASHBOARD: LegendaryDashboard = {
