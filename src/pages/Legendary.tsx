@@ -12,10 +12,19 @@ import { Pool2Tab } from "@/components/legendary/Pool2Tab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
 import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
+import { LegendaryDashboardProvider } from "@/hooks/LegendaryDashboardProvider";
 import { useWeb3 } from "@/hooks/useWeb3";
 
 
 export default function Legendary() {
+  return (
+    <LegendaryDashboardProvider>
+      <LegendaryPageContent />
+    </LegendaryDashboardProvider>
+  );
+}
+
+function LegendaryPageContent() {
   const [tab, setTab] = useState("deposit");
   const { account } = useWeb3();
   const { data } = useLegendaryDashboard();
