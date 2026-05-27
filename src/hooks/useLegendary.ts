@@ -54,6 +54,26 @@ export type LegendaryDashboard = {
   fdaoBalance: bigint;
 };
 
+type ProviderLike = { getBlockNumber: () => Promise<number> };
+type ContractWithProvider = Contract & { provider?: ProviderLike };
+type DepositedLog = { args?: { posId?: bigint } };
+type LegendaryPositionTuple = {
+  user?: string;
+  principal?: bigint;
+  startTime?: bigint;
+  lastAccrueTime?: bigint;
+  aprBps?: bigint;
+  poolType?: bigint | number;
+  withdrawn?: boolean;
+  0?: string;
+  1?: bigint;
+  2?: bigint;
+  3?: bigint;
+  4?: bigint;
+  6?: bigint | number;
+  7?: boolean;
+};
+
 // placeholder to keep diff context
 
 const EMPTY_DASHBOARD: LegendaryDashboard = {
@@ -157,6 +177,27 @@ async function doRefetch(
       const sameAcc = sharedAccount && sharedAccount.toLowerCase() === account.toLowerCase();
       const prev = sameAcc ? sharedData : EMPTY_DASHBOARD;
 
+      const [fastUsdtBalance, fastAllowance] = await Promise.all([
+        safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
+        safe(
+          read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
+          prev.allowance
+        ),
+      ]);
+
+      sharedData = {
+        ...prev,
+        totalPool1,
+        totalPool2,
+        currentDayInflow,
+        paused,
+        earlyPenaltyBps,
+        usdtBalance: fastUsdtBalance,
+        allowance: fastAllowance,
+      };
+      sharedAccount = account;
+      notify();
+
       const [
         referralClaimable,
         lastClaimAt,
@@ -164,8 +205,6 @@ async function doRefetch(
         selfStake,
         teamPerf,
         inviter,
-        usdtBalance,
-        allowance,
         frozen,
         posIdsResult,
         pendingUsdv,
@@ -180,11 +219,6 @@ async function doRefetch(
         safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake),
         safe(read.referral.teamPerf(account) as Promise<bigint>, prev.teamPerf),
         safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter),
-        safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
-        safe(
-          read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
-          prev.allowance
-        ),
         safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
         (async (): Promise<{ ids: bigint[]; ok: boolean }> => {
           try {
@@ -210,10 +244,12 @@ async function doRefetch(
         safe(read.fdao.balanceOf(account) as Promise<bigint>, prev.fdaoBalance),
       ]);
 
-      const previewUsdvInterest = (previewTok as any)?.[0] ?? 0n;
-      const previewUsdvLevel = (previewTok as any)?.[1] ?? 0n;
-      const previewFdaoInterest = (previewTok as any)?.[2] ?? 0n;
-      const previewFdaoLevel = (previewTok as any)?.[3] ?? 0n;
+      const [
+        previewUsdvInterest,
+        previewUsdvLevel,
+        previewFdaoInterest,
+        previewFdaoLevel,
+      ] = previewTok;
 
       const posIdsFromCall = posIdsResult.ids;
       const posIdsCallOk = posIdsResult.ok;
@@ -224,15 +260,14 @@ async function doRefetch(
       let eventScanOk = posIdsCallOk;
       if (!posIdsCallOk) {
         try {
-          const provider =
-            (read.staking as any).runner?.provider ?? (read.staking as any).provider;
+          const provider = (read.staking as ContractWithProvider).provider;
           const latest: number = await provider.getBlockNumber();
           const fromBlock = Math.max(0, latest - 50_000);
           const filter = read.staking.filters.Deposited(account);
           const logs = await read.staking.queryFilter(filter, fromBlock, latest);
           const seen = new Set(posIds.map((x) => x.toString()));
-          for (const lg of logs) {
-            const id = (lg as any).args?.posId as bigint | undefined;
+          for (const lg of logs as DepositedLog[]) {
+            const id = lg.args?.posId;
             if (id !== undefined && !seen.has(id.toString())) {
               seen.add(id.toString());
               posIds.push(id);
@@ -255,7 +290,10 @@ async function doRefetch(
       const positions: LegendaryPosition[] = await Promise.all(
         posIds.map(async (id) => {
           const prevPos = prevPosById.get(id.toString());
-          const pos = await safe(read.staking.positions(id) as Promise<any>, null as any);
+          const pos = await safe(
+            read.staking.positions(id) as Promise<LegendaryPositionTuple>,
+            null as unknown as LegendaryPositionTuple
+          );
           const pending = await safe(
             read.staking.pendingInterest(id) as Promise<bigint>,
             prevPos?.pending ?? 0n
@@ -313,8 +351,8 @@ async function doRefetch(
         totalPool1,
         totalPool2,
         currentDayInflow,
-        usdtBalance,
-        allowance,
+        usdtBalance: fastUsdtBalance,
+        allowance: fastAllowance,
         paused,
         frozen,
         earlyPenaltyBps,
@@ -358,9 +396,10 @@ export function useLegendaryDashboard() {
   // Reset cached account snapshot when the connected account changes so old
   // values do not leak into the new account's view before the first refetch.
   useEffect(() => {
-    if (!account || (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase())) {
+    if (!account) return;
+    if (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase()) {
       sharedData = { ...EMPTY_DASHBOARD };
-      sharedAccount = account ? account.toLowerCase() : null;
+      sharedAccount = account.toLowerCase();
       notify();
     }
   }, [account]);
