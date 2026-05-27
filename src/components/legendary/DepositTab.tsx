@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
-  AlertTriangle, Check, Copy, Info, Lock, TrendingUp, Users, Wallet,
+  AlertTriangle, Check, Copy, Info, Lock, RefreshCw, TrendingUp, Users, Wallet,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
