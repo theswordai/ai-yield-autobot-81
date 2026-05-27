@@ -218,27 +218,30 @@ async function doRefetch(
       const posIdsFromCall = posIdsResult.ids;
       const posIdsCallOk = posIdsResult.ok;
 
-      // Fallback: scan Deposited events to recover posIds the call may have missed
+      // Fallback: only scan Deposited events when the primary call failed.
+      // Normal path skips this entirely to keep refresh fast on public RPCs.
       const posIds: bigint[] = [...posIdsFromCall];
-      let eventScanOk = false;
-      try {
-        const provider =
-          (read.staking as any).runner?.provider ?? (read.staking as any).provider;
-        const latest: number = await provider.getBlockNumber();
-        const fromBlock = Math.max(0, latest - 50_000);
-        const filter = read.staking.filters.Deposited(account);
-        const logs = await read.staking.queryFilter(filter, fromBlock, latest);
-        const seen = new Set(posIds.map((x) => x.toString()));
-        for (const lg of logs) {
-          const id = (lg as any).args?.posId as bigint | undefined;
-          if (id !== undefined && !seen.has(id.toString())) {
-            seen.add(id.toString());
-            posIds.push(id);
+      let eventScanOk = posIdsCallOk;
+      if (!posIdsCallOk) {
+        try {
+          const provider =
+            (read.staking as any).runner?.provider ?? (read.staking as any).provider;
+          const latest: number = await provider.getBlockNumber();
+          const fromBlock = Math.max(0, latest - 50_000);
+          const filter = read.staking.filters.Deposited(account);
+          const logs = await read.staking.queryFilter(filter, fromBlock, latest);
+          const seen = new Set(posIds.map((x) => x.toString()));
+          for (const lg of logs) {
+            const id = (lg as any).args?.posId as bigint | undefined;
+            if (id !== undefined && !seen.has(id.toString())) {
+              seen.add(id.toString());
+              posIds.push(id);
+            }
           }
+          eventScanOk = true;
+        } catch (e) {
+          console.warn("[legendary] Deposited event scan failed", e);
         }
-        eventScanOk = true;
-      } catch (e) {
-        console.warn("[legendary] Deposited event scan failed", e);
       }
 
       // If both sources came back empty due to RPC errors, merge in previous posIds
