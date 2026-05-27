@@ -115,19 +115,39 @@ function LegendaryPageContent() {
             ))}
           </TabsList>
 
-          <TabsContent value="deposit" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="deposit"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <DepositTab onDone={() => setTab("positions")} />
           </TabsContent>
-          <TabsContent value="positions" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="positions"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <PositionsTab onSwitchToPool2={() => setTab("pool2")} />
           </TabsContent>
-          <TabsContent value="pool2" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="pool2"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <Pool2Tab />
           </TabsContent>
-          <TabsContent value="referral" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="referral"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <ReferralTab />
           </TabsContent>
-          <TabsContent value="rewards" className="mt-6 animate-fade-in">
+          <TabsContent
+            value="rewards"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
             <RewardsTab />
           </TabsContent>
         </Tabs>
