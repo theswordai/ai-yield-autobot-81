@@ -244,10 +244,12 @@ async function doRefetch(
         safe(read.fdao.balanceOf(account) as Promise<bigint>, prev.fdaoBalance),
       ]);
 
-      const previewUsdvInterest = (previewTok as any)?.[0] ?? 0n;
-      const previewUsdvLevel = (previewTok as any)?.[1] ?? 0n;
-      const previewFdaoInterest = (previewTok as any)?.[2] ?? 0n;
-      const previewFdaoLevel = (previewTok as any)?.[3] ?? 0n;
+      const [
+        previewUsdvInterest,
+        previewUsdvLevel,
+        previewFdaoInterest,
+        previewFdaoLevel,
+      ] = previewTok;
 
       const posIdsFromCall = posIdsResult.ids;
       const posIdsCallOk = posIdsResult.ok;
@@ -258,15 +260,14 @@ async function doRefetch(
       let eventScanOk = posIdsCallOk;
       if (!posIdsCallOk) {
         try {
-          const provider =
-            (read.staking as any).runner?.provider ?? (read.staking as any).provider;
+          const provider = (read.staking as ContractWithProvider).provider;
           const latest: number = await provider.getBlockNumber();
           const fromBlock = Math.max(0, latest - 50_000);
           const filter = read.staking.filters.Deposited(account);
           const logs = await read.staking.queryFilter(filter, fromBlock, latest);
           const seen = new Set(posIds.map((x) => x.toString()));
-          for (const lg of logs) {
-            const id = (lg as any).args?.posId as bigint | undefined;
+          for (const lg of logs as DepositedLog[]) {
+            const id = lg.args?.posId;
             if (id !== undefined && !seen.has(id.toString())) {
               seen.add(id.toString());
               posIds.push(id);
