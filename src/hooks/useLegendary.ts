@@ -419,9 +419,10 @@ export async function doRefetch(
   return inflight;
 }
 
+// Subscribe-only hook. Does NOT trigger refetches or intervals — the
+// LegendaryDashboardProvider mounted once on the Legendary page handles all
+// automatic refetching. Child tabs simply read from the shared singleton.
 export function useLegendaryDashboard() {
-  const { account, chainId } = useWeb3();
-  const { read } = useLegendaryContracts();
   const [, force] = useState(0);
 
   useEffect(() => {
@@ -433,27 +434,8 @@ export function useLegendaryDashboard() {
   }, []);
 
   const refetch = useCallback(async () => {
-    await doRefetch(read, account);
-  }, [read, account]);
-
-  // Reset cached account snapshot when the connected account changes so old
-  // values do not leak into the new account's view before the first refetch.
-  useEffect(() => {
-    if (!account) return;
-    if (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase()) {
-      sharedData = { ...EMPTY_DASHBOARD };
-      sharedAccount = account.toLowerCase();
-      notify();
-    }
-  }, [account]);
-
-  // Force refetch on account or chain change. Reads use BSC public RPC so the
-  // wallet chain only matters for resetting the user-specific view.
-  useEffect(() => {
-    refetch();
-    const t = setInterval(refetch, 30_000);
-    return () => clearInterval(t);
-  }, [refetch, chainId]);
+    await _refetchLegendary();
+  }, []);
 
   return { data: sharedData, loading: sharedLoading, refetch };
 }
