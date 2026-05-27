@@ -86,15 +86,17 @@ const EMPTY_DASHBOARD: LegendaryDashboard = {
 };
 
 export function useLegendaryContracts() {
-  const { provider, signer } = useWeb3();
+  const { signer } = useWeb3();
   return useMemo(() => {
-    if (!provider) return { read: null, write: null };
+    // Reads always go through the BSC public-RPC fallback provider so wallet
+    // RPC instability never silently zeroes the UI.
+    const readProvider = getReadProvider();
     const read = {
-      staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, provider),
-      referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, provider),
-      usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, provider),
-      usdv: new Contract(USDV_ADDRESS, USDV_ABI, provider),
-      fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, provider),
+      staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, readProvider),
+      referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, readProvider),
+      usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, readProvider),
+      usdv: new Contract(USDV_ADDRESS, USDV_ABI, readProvider),
+      fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, readProvider),
     };
     const write = signer
       ? {
@@ -106,7 +108,7 @@ export function useLegendaryContracts() {
         }
       : null;
     return { read, write };
-  }, [provider, signer]);
+  }, [signer]);
 }
 
 const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
