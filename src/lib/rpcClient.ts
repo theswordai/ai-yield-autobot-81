@@ -199,3 +199,79 @@ export class FallbackRpcClient {
 
 // 单例实例
 export const rpcClient = new FallbackRpcClient();
+// ---------- Shared read-only provider with automatic fallback ----------
+// Used by all Legendary read paths so wallet RPC instability never reaches the UI.
+
+const BSC_READ_ENDPOINTS = [
+  "https://bsc-dataseed.binance.org/",
+  "https://bsc-dataseed1.defibit.io/",
+  "https://bsc-dataseed1.ninicoin.io/",
+  "https://bsc-dataseed2.binance.org/",
+  "https://bsc-dataseed3.binance.org/",
+];
+
+const isTransientRpcError = (err: any): boolean => {
+  const msg = (err?.message || "").toString();
+  const code = err?.code;
+  return (
+    code === "UNKNOWN_ERROR" ||
+    code === "NETWORK_ERROR" ||
+    code === "TIMEOUT" ||
+    code === "SERVER_ERROR" ||
+    msg.includes("Internal JSON-RPC error") ||
+    msg.includes("empty reader set") ||
+    msg.includes("pebble: not found") ||
+    msg.includes("failed to fetch") ||
+    msg.includes("Failed to fetch") ||
+    msg.includes("missing response") ||
+    msg.includes("missing trie node") ||
+    msg.includes("could not coalesce")
+  );
+};
+
+class FallbackReadProvider extends JsonRpcProvider {
+  private endpoints: string[];
+  private idx = 0;
+  private pool: JsonRpcProvider[];
+
+  constructor(endpoints: string[]) {
+    // initialize with the first endpoint; we override _send to multiplex
+    super(endpoints[0], 56, { staticNetwork: true, batchMaxCount: 1 });
+    this.endpoints = endpoints;
+    this.pool = endpoints.map((u) => new JsonRpcProvider(u, 56, { staticNetwork: true, batchMaxCount: 1 }));
+  }
+
+  async send(method: string, params: any[]): Promise<any> {
+    let lastErr: any = null;
+    const n = this.pool.length;
+    for (let i = 0; i < n; i++) {
+      const providerIndex = (this.idx + i) % n;
+      const p = this.pool[providerIndex];
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const res = await p.send(method, params);
+          this.idx = providerIndex; // remember healthy endpoint
+          return res;
+        } catch (err: any) {
+          lastErr = err;
+          if (!isTransientRpcError(err)) {
+            // non-transient (likely contract revert) — bubble up immediately
+            throw err;
+          }
+          if (attempt === 0) {
+            await new Promise((r) => setTimeout(r, 250));
+          }
+        }
+      }
+    }
+    throw lastErr ?? new Error("All BSC read RPC endpoints failed");
+  }
+}
+
+let _readProvider: FallbackReadProvider | null = null;
+export function getReadProvider(): FallbackReadProvider {
+  if (!_readProvider) {
+    _readProvider = new FallbackReadProvider(BSC_READ_ENDPOINTS);
+  }
+  return _readProvider;
+}
