@@ -10,7 +10,8 @@ import {
   LEGENDARY_STAKING_ADDRESS,
   LEGENDARY_REFERRAL_ADDRESS,
 } from "@/config/legendary";
-import { USDT_ADDRESS, USDV_ADDRESS, FDAO_ADDRESS } from "@/config/contracts";
+import { USDT_ADDRESS, USDV_ADDRESS, FDAO_ADDRESS, TARGET_CHAIN } from "@/config/contracts";
+import { getReadProvider } from "@/lib/rpcClient";
 
 export type LegendaryPosition = {
   id: bigint;
@@ -85,15 +86,17 @@ const EMPTY_DASHBOARD: LegendaryDashboard = {
 };
 
 export function useLegendaryContracts() {
-  const { provider, signer } = useWeb3();
+  const { signer } = useWeb3();
   return useMemo(() => {
-    if (!provider) return { read: null, write: null };
+    // Reads always go through the BSC public-RPC fallback provider so wallet
+    // RPC instability never silently zeroes the UI.
+    const readProvider = getReadProvider();
     const read = {
-      staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, provider),
-      referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, provider),
-      usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, provider),
-      usdv: new Contract(USDV_ADDRESS, USDV_ABI, provider),
-      fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, provider),
+      staking: new Contract(LEGENDARY_STAKING_ADDRESS, LegendaryStaking_ABI, readProvider),
+      referral: new Contract(LEGENDARY_REFERRAL_ADDRESS, LegendaryReferral_ABI, readProvider),
+      usdt: new Contract(USDT_ADDRESS, MockUSDT_ABI, readProvider),
+      usdv: new Contract(USDV_ADDRESS, USDV_ABI, readProvider),
+      fdao: new Contract(FDAO_ADDRESS, FutureDao_ABI, readProvider),
     };
     const write = signer
       ? {
@@ -105,7 +108,7 @@ export function useLegendaryContracts() {
         }
       : null;
     return { read, write };
-  }, [provider, signer]);
+  }, [signer]);
 }
 
 const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
@@ -333,7 +336,7 @@ async function doRefetch(
 }
 
 export function useLegendaryDashboard() {
-  const { account } = useWeb3();
+  const { account, chainId } = useWeb3();
   const { read } = useLegendaryContracts();
   const [, force] = useState(0);
 
@@ -349,11 +352,23 @@ export function useLegendaryDashboard() {
     await doRefetch(read, account);
   }, [read, account]);
 
+  // Reset cached account snapshot when the connected account changes so old
+  // values do not leak into the new account's view before the first refetch.
+  useEffect(() => {
+    if (!account || (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase())) {
+      sharedData = { ...EMPTY_DASHBOARD };
+      sharedAccount = account ? account.toLowerCase() : null;
+      notify();
+    }
+  }, [account]);
+
+  // Force refetch on account or chain change. Reads use BSC public RPC so the
+  // wallet chain only matters for resetting the user-specific view.
   useEffect(() => {
     refetch();
     const t = setInterval(refetch, 30_000);
     return () => clearInterval(t);
-  }, [refetch]);
+  }, [refetch, chainId]);
 
   return { data: sharedData, loading: sharedLoading, refetch };
 }

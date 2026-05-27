@@ -1,74 +1,72 @@
+# 增值资本（Legendary）读链路改造
+
 ## 目标
 
-在 `增值资本 → 邀请团队` 标签页底部新增一个「我的网络树」模块，按用户点击查询时才递归读取该地址下的全部下级（深度到底），并显示每个下级地址的 selfStake 自投本金。默认折叠/不显示数据，绝不自动刷新。
+- 把"读"全部从钱包内置 EIP-1193 provider 切到 BSC 公共 RPC（多端点降级），避免钱包 RPC 抖动导致的静默吞错和 0 数据闪烁。
+- 在 chainId / account 变化时，可靠地清缓存 + 强制重新拉取。
+- 写交易（approve / deposit / claim …）仍走 `signer`（钱包），不动。
 
-## UI 设计
+## 范围
 
-在 `src/components/legendary/ReferralTab.tsx`「我的直推」卡片下新增一张玻璃拟态卡片：
+只改读路径，不动业务/UI 文案/合约 ABI。涉及文件：
 
-- 标题：`我的网络树`
-- 副标题/提示：`显示当前钱包地址下的全部下级（递归到底），仅在点击查询时加载，不自动刷新`
-- 主操作：`查询我的网络树` 按钮（金色渐变，与现有按钮风格一致）
-- 状态：
-  - 未查询过 → 仅显示按钮 + 提示
-  - 加载中 → 按钮 disabled，显示已加载节点数 `已加载 N 个地址…`
-  - 完成 → 显示树 + 顶部统计行：`总人数 X · 最大深度 Y · 团队自投合计 Z USDT` + `重新查询` 按钮
-- 树渲染：可折叠树形结构（缩进 + 左侧竖线），每行：
-  ```
-  L{level}  0xabcd...1234   自投 1,234 USDT   直推 N
-  ```
-  - 每个节点默认展开，点击可折叠子树（复用 `lucide-react` 的 `ChevronRight/Down`，无需新增依赖）
-  - 单元格点击复制地址（toast 提示）
-- 安全上限：最多 1000 个节点 / 最大深度 10，达上限时显示提示 `已达节点上限，部分深层下级未展示`，防止极端情况下浏览器卡死
+- `src/lib/rpcClient.ts`（已有降级逻辑，扩展导出一个共享只读 `JsonRpcProvider`）
+- `src/hooks/useLegendary.ts`（`useLegendaryContracts` 的 `read` 改为基于共享只读 provider）
+- `src/hooks/useWeb3.ts`（确保 `chainId` 变化时下游能感知；不改 signer 逻辑）
+- `src/components/legendary/ReferralTab.tsx`（网络树读取沿用同一 `read.referral`，自动受益，无需再改）
 
-## 数据获取逻辑
+## 设计
 
-新增一个内部函数 `loadNetworkTree(root: string)`，BFS 遍历：
+### 1. 共享只读 provider（`src/lib/rpcClient.ts`）
 
-1. 初始队列：`[{ addr: root, level: 0 }]`
-2. 每轮取出一批地址，用 `Promise.all` 并发调用：
-   - `read.referral.getDirects(addr)` → 子地址数组
-   - `read.referral.selfStake(addr)` → bigint
-3. 为控制 RPC 压力，每批最多并发 10 个地址；批与批之间不加 sleep
-4. 达到节点上限或队列空时结束
-5. 返回 `Map<addr, { selfStake, children: string[], level }>` + 根地址
+新增一个轻量 `FallbackProvider` 风格封装（沿用现有 `FallbackRpcClient` 的端点列表）：
 
-存放在 `useState`，**不挂任何 useEffect 自动刷新**。Tab 切换、`data` 变更都不重置已加载结果。
-
-## 类型 / 抽象
-
-```ts
-type TreeNode = {
-  addr: string;
-  level: number;
-  selfStake: bigint;
-  children: string[]; // 直推地址
-};
-type NetworkTree = {
-  root: string;
-  nodes: Map<string, TreeNode>;
-  totalCount: number;
-  maxDepth: number;
-  totalSelfStake: bigint;
-  truncated: boolean;
-};
+```text
+endpoints = [
+  https://bsc-dataseed.binance.org/
+  https://bsc-dataseed1.defibit.io/
+  https://bsc-dataseed1.ninicoin.io/
+]
 ```
 
-渲染用一个递归小组件 `<TreeRow node addr depth />`，内部用本地 state 控制展开/折叠。
+导出：
 
-## 错误处理
+- `getReadProvider(): JsonRpcProvider` — 单例，初始化为第一个健康端点。
+- 调用失败（`UNKNOWN_ERROR` / `Internal JSON-RPC error` / `empty reader set` / `pebble: not found` / 超时）时，自动切换到下一个端点并重试（指数退避 300/900/2100ms，每端点 3 次，全部失败再抛错）。
+- 通过 `ethers.FallbackProvider` 或在 `JsonRpcProvider` 外包一层 Proxy 拦截 `send` 调用实现，二选一以最小改动为准。
 
-遵守项目「Silent fallbacks」约定：单个地址 RPC 报错时该节点 selfStake 记为 0n、children 记为空数组，整体继续进行；整体抛错则 toast `查询失败，请稍后重试` 并恢复按钮。
+### 2. `useLegendaryContracts` 改造
 
-## 涉及文件
+- `read` 实例的 provider 一律使用 `getReadProvider()`（不依赖 `useWeb3().provider`）。
+- `write` 仍使用钱包 `signer`。
+- 依赖数组改成 `[signer]`（read 是单例，不需要随钱包 provider 变化重建）。
 
-- 修改：`src/components/legendary/ReferralTab.tsx`（新增卡片 + 加载逻辑 + 树渲染子组件，全部写在同文件内，体量可控）
+### 3. 换链 / 换账户强制刷新
 
-不改动合约 / ABI / hooks，复用现有 `useLegendaryContracts().read.referral` 的 `getDirects` 与 `selfStake`。
+`useLegendaryDashboard` 当前 `useEffect` 依赖 `[refetch]`，而 `refetch` 依赖 `[read, account]`。改造后：
 
-## 验证
+- 把 `chainId` 也纳入刷新触发器：
+  ```text
+  useEffect(() => { refetch(); }, [account, chainId, refetch]);
+  ```
+- 当 `chainId !== 56` 时跳过拉取并清空 `sharedData` 到 `EMPTY_DASHBOARD`（避免显示其它链的旧值）。
+- 当 `account` 变化时，重置 `sharedAccount` 并立刻拉一次。
 
-- TypeScript 编译通过
-- 手动点击按钮 → 显示加载状态 → 出现树
-- 不点按钮时切回该 Tab，不发生任何 RPC 请求
-- 折叠/展开、复制地址、节点上限提示均正常
+### 4. 错误处理
+
+- 单点 `safe()` 包装继续保留，但 fallback 来源变成"公共 RPC 已穷尽后才静默回退到上一次值"，而不是"钱包抖动一次就回退"。
+- 关键调用（`getUserPositions`、`Deposited` 事件扫描）失败时，仍按现有逻辑沿用上一次缓存的 positions，避免闪 0。
+
+## 不动的部分
+
+- 写交易、approve、bind inviter 等仍走 `signer`。
+- UI 文案、CLASS-A/CLASS-B、网络树、收益公式、APY 显示策略全部不变。
+- 不引入新的依赖包。
+
+## 验收
+
+1. 钱包未连接 / 错链时：CLASS-A、CLASS-B 总盘子等公共数据仍能正常显示（来自公共 RPC）。
+2. 钱包切换到 ETH 主网再切回 BSC：仓位 / 余额 / 团队数据自动刷新，不需要手动刷新页面。
+3. 切换钱包账户：旧账户数据立刻被新账户覆盖，不残留。
+4. 故意拔网 / 单个 RPC 端点 503：日志显示切换到下一端点，UI 不报错、不闪 0。
+5. `bunx tsc --noEmit` 通过。
