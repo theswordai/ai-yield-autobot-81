@@ -157,6 +157,27 @@ async function doRefetch(
       const sameAcc = sharedAccount && sharedAccount.toLowerCase() === account.toLowerCase();
       const prev = sameAcc ? sharedData : EMPTY_DASHBOARD;
 
+      const [fastUsdtBalance, fastAllowance] = await Promise.all([
+        safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
+        safe(
+          read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
+          prev.allowance
+        ),
+      ]);
+
+      sharedData = {
+        ...prev,
+        totalPool1,
+        totalPool2,
+        currentDayInflow,
+        paused,
+        earlyPenaltyBps,
+        usdtBalance: fastUsdtBalance,
+        allowance: fastAllowance,
+      };
+      sharedAccount = account;
+      notify();
+
       const [
         referralClaimable,
         lastClaimAt,
@@ -164,8 +185,6 @@ async function doRefetch(
         selfStake,
         teamPerf,
         inviter,
-        usdtBalance,
-        allowance,
         frozen,
         posIdsResult,
         pendingUsdv,
@@ -180,11 +199,6 @@ async function doRefetch(
         safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake),
         safe(read.referral.teamPerf(account) as Promise<bigint>, prev.teamPerf),
         safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter),
-        safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
-        safe(
-          read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
-          prev.allowance
-        ),
         safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
         (async (): Promise<{ ids: bigint[]; ok: boolean }> => {
           try {
@@ -313,8 +327,8 @@ async function doRefetch(
         totalPool1,
         totalPool2,
         currentDayInflow,
-        usdtBalance,
-        allowance,
+        usdtBalance: fastUsdtBalance,
+        allowance: fastAllowance,
         paused,
         frozen,
         earlyPenaltyBps,
