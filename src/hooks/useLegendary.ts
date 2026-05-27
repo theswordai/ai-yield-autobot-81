@@ -372,9 +372,10 @@ export function useLegendaryDashboard() {
   // Reset cached account snapshot when the connected account changes so old
   // values do not leak into the new account's view before the first refetch.
   useEffect(() => {
-    if (!account || (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase())) {
+    if (!account) return;
+    if (sharedAccount && sharedAccount.toLowerCase() !== account.toLowerCase()) {
       sharedData = { ...EMPTY_DASHBOARD };
-      sharedAccount = account ? account.toLowerCase() : null;
+      sharedAccount = account.toLowerCase();
       notify();
     }
   }, [account]);
