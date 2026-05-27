@@ -10,7 +10,8 @@ import {
   LEGENDARY_STAKING_ADDRESS,
   LEGENDARY_REFERRAL_ADDRESS,
 } from "@/config/legendary";
-import { USDT_ADDRESS, USDV_ADDRESS, FDAO_ADDRESS } from "@/config/contracts";
+import { USDT_ADDRESS, USDV_ADDRESS, FDAO_ADDRESS, TARGET_CHAIN } from "@/config/contracts";
+import { getReadProvider } from "@/lib/rpcClient";
 
 export type LegendaryPosition = {
   id: bigint;
