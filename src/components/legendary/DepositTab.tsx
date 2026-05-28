@@ -27,6 +27,18 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const [amount, setAmount] = useState("");
   const [inviterInput, setInviterInput] = useState("");
   const [copied, setCopied] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefreshBalance = async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    try {
+      await refetch();
+      toast.success("余额已刷新");
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // 预填邀请人（URL ?ref= / ?inviter= 或 localStorage）
   useEffect(() => {
@@ -206,9 +218,20 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
           )}
 
           <div>
-            <Label className="flex justify-between text-xs text-muted-foreground mb-1.5">
+            <Label className="flex justify-between items-center text-xs text-muted-foreground mb-1.5">
               <span>存入金额 (USDT)</span>
-              <span>钱包余额：{fmt(data.usdtBalance)}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <span>钱包余额：{fmt(data.usdtBalance)}</span>
+                <button
+                  type="button"
+                  onClick={onRefreshBalance}
+                  disabled={refreshing}
+                  className="inline-flex items-center justify-center w-5 h-5 rounded hover:bg-muted/50 transition-colors disabled:opacity-50"
+                  title="刷新余额"
+                >
+                  <RefreshCw className={`w-3 h-3 ${refreshing ? "animate-spin" : ""}`} />
+                </button>
+              </span>
             </Label>
             <div className="flex gap-2">
               <Input
@@ -230,6 +253,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
               </Button>
             </div>
           </div>
+
 
           {tooLow && <p className="text-xs text-destructive">最低存款 200 USDT</p>}
           {overBalance && !tooLow && <p className="text-xs text-destructive">余额不足</p>}
