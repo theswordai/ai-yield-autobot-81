@@ -144,6 +144,7 @@ let sharedData: LegendaryDashboard = EMPTY_DASHBOARD;
 let sharedAccount: string | null = null;
 let sharedLoading = false;
 let inflight: Promise<void> | null = null;
+let inflightAccount: string | null = null;
 const listeners = new Set<() => void>();
 const notify = () => listeners.forEach((fn) => fn());
 
@@ -155,8 +156,16 @@ export function _setLegendaryContext(
   read: ReturnType<typeof useLegendaryContracts>["read"] | null,
   account: string | null
 ) {
+  const accountChanged =
+    (currentAccount || "").toLowerCase() !== (account || "").toLowerCase();
   currentRead = read;
   currentAccount = account;
+  // When the account becomes available (or changes) after a refetch already
+  // started with a stale account, immediately kick off a fresh refetch so the
+  // user doesn't have to wait for the 30s interval.
+  if (accountChanged && read) {
+    _refetchLegendary();
+  }
 }
 export function _resetLegendaryShared() {
   sharedData = { ...EMPTY_DASHBOARD };
@@ -173,7 +182,16 @@ export async function doRefetch(
   account: string | null
 ) {
   if (!read) return;
-  if (inflight) return inflight;
+  if (inflight) {
+    // Dedupe only when the in-flight fetch is for the same account. If the
+    // account just became available, queue a follow-up immediately after the
+    // current request completes — don't wait for the 30s interval.
+    const sameAcc =
+      (inflightAccount || "").toLowerCase() === (account || "").toLowerCase();
+    if (sameAcc) return inflight;
+    return inflight.then(() => doRefetch(read, account));
+  }
+  inflightAccount = account;
   sharedLoading = true;
   notify();
   inflight = (async () => {
@@ -413,6 +431,7 @@ export async function doRefetch(
     } finally {
       sharedLoading = false;
       inflight = null;
+      inflightAccount = null;
       notify();
     }
   })();
