@@ -431,6 +431,7 @@ export async function doRefetch(
     } finally {
       sharedLoading = false;
       inflight = null;
+      inflightAccount = null;
       notify();
     }
   })();
