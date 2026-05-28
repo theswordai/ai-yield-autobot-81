@@ -27,6 +27,18 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const [amount, setAmount] = useState("");
   const [inviterInput, setInviterInput] = useState("");
   const [copied, setCopied] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefreshBalance = async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    try {
+      await refetch();
+      toast.success("余额已刷新");
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   // 预填邀请人（URL ?ref= / ?inviter= 或 localStorage）
   useEffect(() => {
