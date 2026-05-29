@@ -28,7 +28,10 @@ export function ClaimYieldDialog({
   onClaim,
   loading = false,
 }: ClaimYieldDialogProps) {
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang?: string }>();
   return (
+
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
