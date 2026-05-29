@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -6,9 +7,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, DollarSign } from "lucide-react";
+import { TrendingUp, DollarSign, Crown } from "lucide-react";
 
 interface ClaimYieldDialogProps {
+
   open: boolean;
   onOpenChange: (open: boolean) => void;
   yieldAmount: string;
@@ -26,7 +28,10 @@ export function ClaimYieldDialog({
   onClaim,
   loading = false,
 }: ClaimYieldDialogProps) {
+  const navigate = useNavigate();
+  const { lang } = useParams<{ lang?: string }>();
   return (
+
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -37,6 +42,22 @@ export function ClaimYieldDialog({
         </DialogHeader>
 
         <div className="space-y-3 mt-4">
+          <Button
+            onClick={() => {
+              onOpenChange(false);
+              const prefix = lang === 'en' ? '/en' : '/zh';
+              navigate(`${prefix}/legendary`);
+            }}
+            disabled={loading}
+            className="w-full h-auto py-4 flex flex-col items-center gap-1 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white"
+          >
+            <div className="flex items-center gap-2">
+              <Crown className="w-5 h-5" />
+              <span className="text-lg font-semibold">增值资本</span>
+            </div>
+            <span className="text-sm opacity-90">APY: 260% - 3500%</span>
+          </Button>
+
           <Button
             onClick={onReinvest}
             disabled={loading}
@@ -49,6 +70,7 @@ export function ClaimYieldDialog({
             </div>
             <span className="text-sm opacity-90">年化 50%</span>
           </Button>
+
 
           <Button
             onClick={onClaim}
