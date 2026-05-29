@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -6,9 +7,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, DollarSign } from "lucide-react";
+import { TrendingUp, DollarSign, Crown } from "lucide-react";
 
 interface ClaimYieldDialogProps {
+
   open: boolean;
   onOpenChange: (open: boolean) => void;
   yieldAmount: string;
