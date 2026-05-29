@@ -40,6 +40,22 @@ export function ClaimYieldDialog({
 
         <div className="space-y-3 mt-4">
           <Button
+            onClick={() => {
+              onOpenChange(false);
+              const prefix = lang === 'en' ? '/en' : '/zh';
+              navigate(`${prefix}/legendary`);
+            }}
+            disabled={loading}
+            className="w-full h-auto py-4 flex flex-col items-center gap-1 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white"
+          >
+            <div className="flex items-center gap-2">
+              <Crown className="w-5 h-5" />
+              <span className="text-lg font-semibold">增值资本</span>
+            </div>
+            <span className="text-sm opacity-90">APY: 260% - 3500%</span>
+          </Button>
+
+          <Button
             onClick={onReinvest}
             disabled={loading}
             className="w-full h-auto py-4 flex flex-col items-center gap-1"
@@ -51,6 +67,7 @@ export function ClaimYieldDialog({
             </div>
             <span className="text-sm opacity-90">年化 50%</span>
           </Button>
+
 
           <Button
             onClick={onClaim}
