@@ -75,12 +75,21 @@ export function useWeb3() {
         }
       }
     };
-    const handleChainChanged = async (_: string) => {
+    const handleChainChanged = async (hex: string) => {
       try {
-        const n = await p.getNetwork();
-        setChainId(Number(n.chainId));
+        const newCid = typeof hex === "string" ? parseInt(hex, 16) : Number(hex);
+        setChainId(newCid);
+        if (newCid !== 56) {
+          try {
+            await (injected as any).request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x38" }],
+            });
+          } catch {}
+        }
       } catch {}
     };
+
 
     (injected as any)?.on?.("accountsChanged", handleAccountsChanged as any);
     (injected as any)?.on?.("chainChanged", handleChainChanged as any);
