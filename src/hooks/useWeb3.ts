@@ -30,9 +30,30 @@ export function useWeb3() {
         try {
           const n = await p.getNetwork();
           if (Number(n.chainId) !== 56) {
-            try { await ensureBSCStatic(injected); } catch {}
+            try {
+              await (injected as any).request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: "0x38" }],
+              });
+            } catch (err: any) {
+              if (err?.code === 4902) {
+                try {
+                  await (injected as any).request({
+                    method: "wallet_addEthereumChain",
+                    params: [{
+                      chainId: "0x38",
+                      chainName: "BNB Smart Chain",
+                      nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                      rpcUrls: ["https://bsc-dataseed.binance.org/"],
+                      blockExplorerUrls: ["https://bscscan.com/"],
+                    }],
+                  });
+                } catch {}
+              }
+            }
           }
         } catch {}
+
       }
     });
 
