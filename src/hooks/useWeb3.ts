@@ -27,10 +27,38 @@ export function useWeb3() {
         setAccount(accs[0]);
         const s = await p.getSigner();
         setSigner(s);
+        try {
+          const n = await p.getNetwork();
+          if (Number(n.chainId) !== 56) {
+            try {
+              await (injected as any).request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: "0x38" }],
+              });
+            } catch (err: any) {
+              if (err?.code === 4902) {
+                try {
+                  await (injected as any).request({
+                    method: "wallet_addEthereumChain",
+                    params: [{
+                      chainId: "0x38",
+                      chainName: "BNB Smart Chain",
+                      nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                      rpcUrls: ["https://bsc-dataseed.binance.org/"],
+                      blockExplorerUrls: ["https://bscscan.com/"],
+                    }],
+                  });
+                } catch {}
+              }
+            }
+          }
+        } catch {}
+
       }
     });
 
     p.getNetwork().then((n) => setChainId(Number(n.chainId))).catch(() => {});
+
 
     const handleAccountsChanged = async (accs: string[]) => {
       const next = accs?.[0] ?? null;
@@ -47,12 +75,21 @@ export function useWeb3() {
         }
       }
     };
-    const handleChainChanged = async (_: string) => {
+    const handleChainChanged = async (hex: string) => {
       try {
-        const n = await p.getNetwork();
-        setChainId(Number(n.chainId));
+        const newCid = typeof hex === "string" ? parseInt(hex, 16) : Number(hex);
+        setChainId(newCid);
+        if (newCid !== 56) {
+          try {
+            await (injected as any).request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x38" }],
+            });
+          } catch {}
+        }
       } catch {}
     };
+
 
     (injected as any)?.on?.("accountsChanged", handleAccountsChanged as any);
     (injected as any)?.on?.("chainChanged", handleChainChanged as any);
@@ -70,7 +107,7 @@ export function useWeb3() {
         params: [{ chainId: "0x38" }],
       });
     } catch (err: any) {
-      if (err.code === 4902) {
+      if (err?.code === 4902 || err?.data?.originalError?.code === 4902) {
         await eip.request({
           method: "wallet_addEthereumChain",
           params: [{
@@ -81,9 +118,17 @@ export function useWeb3() {
             blockExplorerUrls: ["https://bscscan.com/"],
           }],
         });
+        // retry switch after add
+        await eip.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }],
+        });
+      } else {
+        throw err;
       }
     }
   }, []);
+
 
   const connect = useCallback(async () => {
     const eip = activeEip1193Ref.current || window.ethereum;
@@ -144,14 +189,23 @@ export function useWeb3() {
         }
       }
     };
-    const handleChainChanged = async (_: string) => {
+    const handleChainChanged = async (hex: string) => {
       try {
-        const n2 = await p.getNetwork();
+        const newCid = typeof hex === "string" ? parseInt(hex, 16) : Number(hex);
+        setChainId(newCid);
+        if (newCid !== 56) {
+          try { await ensureBSC(extProvider); } catch {}
+        }
+        const p2 = new BrowserProvider(extProvider);
+        setProvider(p2);
+        try { setSigner(await p2.getSigner()); } catch {}
+        const n2 = await p2.getNetwork();
         setChainId(Number(n2.chainId));
       } catch {}
     };
     (extProvider as any)?.on?.("accountsChanged", handleAccountsChanged as any);
     (extProvider as any)?.on?.("chainChanged", handleChainChanged as any);
+
   }, [ensureBSC]);
 
   const disconnect = useCallback(() => {

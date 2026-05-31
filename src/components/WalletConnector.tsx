@@ -27,9 +27,15 @@ export function WalletConnector() {
       setOpen(false);
       toast.success(t('wallet.connected'));
     } catch (e: any) {
-      toast.error(e?.shortMessage || e?.message || t('wallet.connectFailed'));
+      const msg = e?.shortMessage || e?.message || "";
+      if (e?.code === 4001 || /reject|denied/i.test(msg)) {
+        toast.error("请在钱包中切换到 BNB Smart Chain (BSC)");
+      } else {
+        toast.error(msg || t('wallet.connectFailed'));
+      }
     }
   };
+
 
   const items = useMemo(() => providers, [providers]);
 
