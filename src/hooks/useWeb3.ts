@@ -27,10 +27,17 @@ export function useWeb3() {
         setAccount(accs[0]);
         const s = await p.getSigner();
         setSigner(s);
+        try {
+          const n = await p.getNetwork();
+          if (Number(n.chainId) !== 56) {
+            try { await ensureBSCStatic(injected); } catch {}
+          }
+        } catch {}
       }
     });
 
     p.getNetwork().then((n) => setChainId(Number(n.chainId))).catch(() => {});
+
 
     const handleAccountsChanged = async (accs: string[]) => {
       const next = accs?.[0] ?? null;
