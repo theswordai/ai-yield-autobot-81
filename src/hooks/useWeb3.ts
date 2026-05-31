@@ -152,14 +152,23 @@ export function useWeb3() {
         }
       }
     };
-    const handleChainChanged = async (_: string) => {
+    const handleChainChanged = async (hex: string) => {
       try {
-        const n2 = await p.getNetwork();
+        const newCid = typeof hex === "string" ? parseInt(hex, 16) : Number(hex);
+        setChainId(newCid);
+        if (newCid !== 56) {
+          try { await ensureBSC(extProvider); } catch {}
+        }
+        const p2 = new BrowserProvider(extProvider);
+        setProvider(p2);
+        try { setSigner(await p2.getSigner()); } catch {}
+        const n2 = await p2.getNetwork();
         setChainId(Number(n2.chainId));
       } catch {}
     };
     (extProvider as any)?.on?.("accountsChanged", handleAccountsChanged as any);
     (extProvider as any)?.on?.("chainChanged", handleChainChanged as any);
+
   }, [ensureBSC]);
 
   const disconnect = useCallback(() => {
