@@ -70,7 +70,7 @@ export function useWeb3() {
         params: [{ chainId: "0x38" }],
       });
     } catch (err: any) {
-      if (err.code === 4902) {
+      if (err?.code === 4902 || err?.data?.originalError?.code === 4902) {
         await eip.request({
           method: "wallet_addEthereumChain",
           params: [{
@@ -81,9 +81,17 @@ export function useWeb3() {
             blockExplorerUrls: ["https://bscscan.com/"],
           }],
         });
+        // retry switch after add
+        await eip.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }],
+        });
+      } else {
+        throw err;
       }
     }
   }, []);
+
 
   const connect = useCallback(async () => {
     const eip = activeEip1193Ref.current || window.ethereum;
