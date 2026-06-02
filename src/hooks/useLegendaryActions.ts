@@ -47,7 +47,7 @@ function parseRevert(err: any): string {
 
 export function useLegendaryActions(onDone?: () => void) {
   const { account } = useWeb3();
-  const { write } = useLegendaryContracts();
+  const { write, read } = useLegendaryContracts();
   const [busy, setBusy] = useState<string | null>(null);
 
   const ensure = useCallback(() => {
