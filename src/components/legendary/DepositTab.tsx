@@ -13,6 +13,7 @@ import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { calcPool1AprBps, aprBpsToApyPct } from "@/config/legendary";
 import { useWeb3 } from "@/hooks/useWeb3";
+import { useInviterReadback } from "@/hooks/useInviterReadback";
 
 const ZERO = "0x0000000000000000000000000000000000000000";
 const short = (a: string) => (a && a !== ZERO ? `${a.slice(0, 6)}…${a.slice(-4)}` : "—");
