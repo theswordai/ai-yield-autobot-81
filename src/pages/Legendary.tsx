@@ -11,6 +11,7 @@ import { PositionsTab } from "@/components/legendary/PositionsTab";
 import { Pool2Tab } from "@/components/legendary/Pool2Tab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
+import { ChainSwitchBanner } from "@/components/legendary/ChainSwitchBanner";
 import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { LegendaryDashboardProvider } from "@/hooks/LegendaryDashboardProvider";
 import { useWeb3 } from "@/hooks/useWeb3";
@@ -33,6 +34,7 @@ function LegendaryPageContent() {
     <PageWrapper>
       <Navbar />
       <div className="container mx-auto px-4 pt-20 sm:pt-24 pb-32 md:pb-12 max-w-6xl">
+        <ChainSwitchBanner />
         {/* === Hero header === */}
         <div className="relative mb-6 overflow-hidden rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-500/10 via-yellow-600/5 to-transparent backdrop-blur-xl p-5 sm:p-6 animate-fade-in">
           {/* decorative glows */}
