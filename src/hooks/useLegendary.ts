@@ -435,6 +435,9 @@ export async function doRefetch(
         fdaoBalance,
       };
       sharedAccount = account;
+      // Mark degraded if Phase-1 had ≥2 failures OR ≥2 of the key Phase-2 reads failed.
+      const degraded = phase1Failures >= 2 || phase2KeyFailures >= 2;
+      sharedRpcDegraded = degraded;
     } finally {
       sharedLoading = false;
       inflight = null;
