@@ -74,7 +74,8 @@ type LegendaryPositionTuple = {
   7?: boolean;
 };
 
-// placeholder to keep diff context
+const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
+
 
 const EMPTY_DASHBOARD: LegendaryDashboard = {
   pool1Principal: 0n,
