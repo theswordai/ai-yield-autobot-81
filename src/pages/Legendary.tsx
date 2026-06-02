@@ -12,6 +12,7 @@ import { Pool2Tab } from "@/components/legendary/Pool2Tab";
 import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
 import { ChainSwitchBanner } from "@/components/legendary/ChainSwitchBanner";
+import { RpcDegradedBanner } from "@/components/legendary/RpcDegradedBanner";
 import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { LegendaryDashboardProvider } from "@/hooks/LegendaryDashboardProvider";
 import { useWeb3 } from "@/hooks/useWeb3";
