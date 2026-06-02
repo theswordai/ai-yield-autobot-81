@@ -63,7 +63,12 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const needApprove = amountWei > 0n && data.allowance < amountWei;
   const tooLow = amountWei > 0n && amountWei < 200n * 10n ** 18n;
   const overBalance = amountWei > data.usdtBalance;
-  const notBound = !data.inviter || data.inviter.toLowerCase() === ZERO;
+  const readbackInviter = useInviterReadback(account);
+  const effectiveInviter =
+    data.inviter && data.inviter.toLowerCase() !== ZERO
+      ? data.inviter
+      : readbackInviter || data.inviter;
+  const notBound = !effectiveInviter || effectiveInviter.toLowerCase() === ZERO;
   const baseInvalid =
     !account || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
   const approveDisabled = baseInvalid || busy !== null || !needApprove;
