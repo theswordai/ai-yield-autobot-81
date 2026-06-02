@@ -179,6 +179,20 @@ export function _resetLegendaryShared() {
   sharedRpcDegraded = false;
   notify();
 }
+// Wallet-only reset: clears chain-dependent wallet fields but preserves
+// inviter / selfStake / teamPerf which are read via the public-RPC fallback
+// and stay valid regardless of which network the wallet is currently on.
+export function _resetLegendaryWalletOnly() {
+  sharedData = {
+    ...sharedData,
+    usdtBalance: 0n,
+    allowance: 0n,
+    frozen: false,
+    usdvBalance: 0n,
+    fdaoBalance: 0n,
+  };
+  notify();
+}
 export function _refetchLegendary() {
   if (!currentRead) return Promise.resolve();
   return doRefetch(currentRead, currentAccount);
