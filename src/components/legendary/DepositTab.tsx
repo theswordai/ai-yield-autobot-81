@@ -19,7 +19,7 @@ const short = (a: string) => (a && a !== ZERO ? `${a.slice(0, 6)}…${a.slice(-4
 
 export function DepositTab({ onDone }: { onDone: () => void }) {
   const { account, connect } = useWeb3();
-  const { data, refetch } = useLegendaryDashboard();
+  const { data, refetch, rpcDegraded } = useLegendaryDashboard();
   const { deposit, approve, bind, busy } = useLegendaryActions(() => {
     refetch();
   });
