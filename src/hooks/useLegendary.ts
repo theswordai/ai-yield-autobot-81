@@ -131,10 +131,15 @@ export function useLegendaryContracts() {
   }, [signer]);
 }
 
-const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
+const safe = async <T,>(
+  p: Promise<T>,
+  fallback: T,
+  onErr?: () => void
+): Promise<T> => {
   try {
     return await p;
   } catch {
+    onErr?.();
     return fallback;
   }
 };
@@ -143,6 +148,7 @@ const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
 let sharedData: LegendaryDashboard = EMPTY_DASHBOARD;
 let sharedAccount: string | null = null;
 let sharedLoading = false;
+let sharedRpcDegraded = false;
 let inflight: Promise<void> | null = null;
 let inflightAccount: string | null = null;
 const listeners = new Set<() => void>();
