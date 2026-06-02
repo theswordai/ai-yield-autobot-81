@@ -74,7 +74,8 @@ type LegendaryPositionTuple = {
   7?: boolean;
 };
 
-// placeholder to keep diff context
+const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
+
 
 const EMPTY_DASHBOARD: LegendaryDashboard = {
   pool1Principal: 0n,
@@ -177,6 +178,20 @@ export function _resetLegendaryShared() {
   sharedData = { ...EMPTY_DASHBOARD };
   sharedAccount = null;
   sharedRpcDegraded = false;
+  notify();
+}
+// Wallet-only reset: clears chain-dependent wallet fields but preserves
+// inviter / selfStake / teamPerf which are read via the public-RPC fallback
+// and stay valid regardless of which network the wallet is currently on.
+export function _resetLegendaryWalletOnly() {
+  sharedData = {
+    ...sharedData,
+    usdtBalance: 0n,
+    allowance: 0n,
+    frozen: false,
+    usdvBalance: 0n,
+    fdaoBalance: 0n,
+  };
   notify();
 }
 export function _refetchLegendary() {
@@ -416,7 +431,12 @@ export async function doRefetch(
         level: Number(levelRaw),
         selfStake,
         teamPerf,
-        inviter,
+        inviter:
+          inviter && inviter.toLowerCase() !== ZERO_ADDR
+            ? inviter
+            : prev.inviter && prev.inviter.toLowerCase() !== ZERO_ADDR
+            ? prev.inviter
+            : inviter,
         totalPool1,
         totalPool2,
         currentDayInflow,

@@ -4,6 +4,7 @@ import {
   useLegendaryContracts,
   _setLegendaryContext,
   _resetLegendaryShared,
+  _resetLegendaryWalletOnly,
   _refetchLegendary,
 } from "@/hooks/useLegendary";
 import { TARGET_CHAIN } from "@/config/contracts";
@@ -23,13 +24,17 @@ export function LegendaryDashboardProvider({ children }: { children: ReactNode }
     _setLegendaryContext(read, account);
   }, [read, account]);
 
-  // Only clear shared data when the account is truly disconnected, or the
-  // wallet is on a chain we know is wrong. While chainId === null (wallet
-  // still booting) we keep the cached values to avoid the USDT/0 flash.
+  // Only fully clear shared data when the account is truly disconnected.
+  // On wrong-chain, we keep public-RPC-derived fields (inviter, selfStake,
+  // teamPerf, positions) and only clear wallet-chain-dependent fields like
+  // USDT balance / allowance — they belong to whatever network the wallet
+  // is currently on and would be misleading.
   useEffect(() => {
     const wrongChain = chainId !== null && chainId !== undefined && chainId !== TARGET_CHAIN;
-    if (!account || wrongChain) {
+    if (!account) {
       _resetLegendaryShared();
+    } else if (wrongChain) {
+      _resetLegendaryWalletOnly();
     }
   }, [account, chainId]);
 

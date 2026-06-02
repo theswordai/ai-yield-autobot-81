@@ -13,6 +13,7 @@ import { useLegendaryDashboard, fmt, fmtAllowance } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { calcPool1AprBps, aprBpsToApyPct } from "@/config/legendary";
 import { useWeb3 } from "@/hooks/useWeb3";
+import { useInviterReadback } from "@/hooks/useInviterReadback";
 
 const ZERO = "0x0000000000000000000000000000000000000000";
 const short = (a: string) => (a && a !== ZERO ? `${a.slice(0, 6)}…${a.slice(-4)}` : "—");
@@ -62,7 +63,12 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
   const needApprove = amountWei > 0n && data.allowance < amountWei;
   const tooLow = amountWei > 0n && amountWei < 200n * 10n ** 18n;
   const overBalance = amountWei > data.usdtBalance;
-  const notBound = !data.inviter || data.inviter.toLowerCase() === ZERO;
+  const readbackInviter = useInviterReadback(account);
+  const effectiveInviter =
+    data.inviter && data.inviter.toLowerCase() !== ZERO
+      ? data.inviter
+      : readbackInviter || data.inviter;
+  const notBound = !effectiveInviter || effectiveInviter.toLowerCase() === ZERO;
   const baseInvalid =
     !account || data.paused || data.frozen || amountWei <= 0n || tooLow || overBalance;
   const approveDisabled = baseInvalid || busy !== null || !needApprove;
@@ -157,7 +163,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {rpcDegraded ? (
+          {rpcDegraded && notBound ? (
             <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/40 text-xs text-amber-700 dark:text-amber-300">
               <AlertTriangle className="w-4 h-4 shrink-0" />
               <span>网络异常，无法校验是否已绑定上级，请点击顶部「重新读取」后再试。</span>
@@ -166,7 +172,7 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/50">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">已绑定上线</p>
-                <span className="font-mono text-sm">{short(data.inviter)}</span>
+                <span className="font-mono text-sm">{short(effectiveInviter)}</span>
               </div>
               <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/30">
                 <Check className="w-3 h-3 mr-1" />
