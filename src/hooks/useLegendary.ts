@@ -284,9 +284,9 @@ export async function doRefetch(
         safe(read.staking.referralClaimable(account) as Promise<bigint>, prev.referralClaimable),
         safe(read.staking.lastClaimAt(account) as Promise<bigint>, prev.lastClaimAt),
         safe(read.referral.getLevel(account) as Promise<bigint>, BigInt(prev.level)),
-        safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake),
+        safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake, () => phase2KeyFailures++),
         safe(read.referral.teamPerf(account) as Promise<bigint>, prev.teamPerf),
-        safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter),
+        safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter, () => phase2KeyFailures++),
         safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
         (async (): Promise<{ ids: bigint[]; ok: boolean }> => {
           try {
