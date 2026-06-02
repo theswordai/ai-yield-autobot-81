@@ -201,6 +201,8 @@ export async function doRefetch(
   sharedLoading = true;
   notify();
   inflight = (async () => {
+    let phase1Failures = 0;
+    let phase2KeyFailures = 0;
     try {
       // Use previous values as fallbacks when the same account is connected,
       // so transient RPC failures don't flash UI back to 0.
@@ -209,16 +211,15 @@ export async function doRefetch(
       const prev = sameAcc ? sharedData : sharedData; // keep prev even on first load to avoid 0-flash
 
       // ---------- Phase 1: account-specific balances (fast path) ----------
-      // Fetch USDT balance / allowance / frozen FIRST and patch immediately so the
-      // header USDT figure shows up without waiting for global pool stats.
       if (account) {
         const [fastUsdtBalance, fastAllowance, fastFrozen] = await Promise.all([
-          safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
+          safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance, () => phase1Failures++),
           safe(
             read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
-            prev.allowance
+            prev.allowance,
+            () => phase1Failures++
           ),
-          safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
+          safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen, () => phase1Failures++),
         ]);
         sharedData = {
           ...prev,
