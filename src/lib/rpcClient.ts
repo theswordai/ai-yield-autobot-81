@@ -254,13 +254,18 @@ class FallbackReadProvider extends JsonRpcProvider {
     // ones don't gate the user-visible reads. First success wins.
     if (HOT_METHODS.has(method) && this.pool.length >= 2) {
       const top = this.pool.slice(0, Math.min(3, this.pool.length));
-      const racers = top.map(async (p, i) => {
-        const res = await p.send(method, params);
-        this.idx = i;
-        return res;
-      });
       try {
-        return await Promise.any(racers);
+        const res = await new Promise<any>((resolve, reject) => {
+          let remaining = top.length;
+          let lastErr: any = null;
+          top.forEach((p, i) => {
+            p.send(method, params).then(
+              (r) => { this.idx = i; resolve(r); },
+              (err) => { lastErr = err; if (--remaining === 0) reject(lastErr); }
+            );
+          });
+        });
+        return res;
       } catch {
         // all top racers failed — fall through to sequential walk
       }
