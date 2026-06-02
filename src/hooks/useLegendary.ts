@@ -466,7 +466,7 @@ export function useLegendaryDashboard() {
     await _refetchLegendary();
   }, []);
 
-  return { data: sharedData, loading: sharedLoading, refetch };
+  return { data: sharedData, loading: sharedLoading, rpcDegraded: sharedRpcDegraded, refetch };
 }
 
 
