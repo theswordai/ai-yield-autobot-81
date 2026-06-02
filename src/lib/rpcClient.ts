@@ -11,8 +11,9 @@ export class FallbackRpcClient {
   private currentProviderIndex = 0;
 
   constructor() {
-    // 定义RPC端点配置
+    // 定义RPC端点配置（Alchemy优先）
     this.configs = [
+      { url: "https://bnb-mainnet.g.alchemy.com/v2/YFuWwBnQcwfFDGh6r62_c", name: "Alchemy" },
       { url: "https://bsc-dataseed.binance.org/", name: "Binance" },
       { url: "https://bsc-dataseed1.defibit.io/", name: "DeFiBit" },
       { url: "https://bsc-dataseed1.ninicoin.io/", name: "NiniCoin" },
@@ -203,6 +204,7 @@ export const rpcClient = new FallbackRpcClient();
 // Used by all Legendary read paths so wallet RPC instability never reaches the UI.
 
 const BSC_READ_ENDPOINTS = [
+  "https://bnb-mainnet.g.alchemy.com/v2/YFuWwBnQcwfFDGh6r62_c",
   "https://bsc.publicnode.com",
   "https://binance.llamarpc.com",
   "https://1rpc.io/bnb",
