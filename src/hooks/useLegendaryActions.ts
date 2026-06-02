@@ -184,9 +184,36 @@ export function useLegendaryActions(onDone?: () => void) {
         toast.error("不能绑定自己为上线");
         return;
       }
+      // 预检查：避免发出必然 revert 的交易，并绕开部分钱包在
+      // estimateGas 阶段吞掉 revert reason 导致只显示"交易失败"的问题。
+      if (read && account) {
+        try {
+          const current: string = await read.referral.inviterOf(account);
+          if (current && current !== ZERO_ADDR) {
+            toast.error(
+              `您已绑定过上线（${current.slice(0, 6)}…${current.slice(-4)}），无法重复绑定`
+            );
+            return;
+          }
+        } catch {
+          // 读取失败不阻塞，让链上自行判定
+        }
+        try {
+          const [invSelf, minStake] = await Promise.all([
+            read.referral.selfStake(inviter) as Promise<bigint>,
+            read.referral.minBindStake() as Promise<bigint>,
+          ]);
+          if (BigInt(invSelf ?? 0n) < BigInt(minStake ?? 0n)) {
+            toast.error("上线自投不足 200 USDT，暂时无法绑定");
+            return;
+          }
+        } catch {
+          // 同上
+        }
+      }
       return run("bind", () => write.referral.bind(inviter), "上线绑定成功");
     },
-    [write, account, run]
+    [write, read, account, run]
   );
 
   const approve = useCallback(async () => {
