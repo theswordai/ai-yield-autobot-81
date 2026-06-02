@@ -3,6 +3,8 @@ import { MaxUint256, isAddress, parseUnits } from "ethers";
 import { toast } from "sonner";
 import { useWeb3 } from "./useWeb3";
 import { useLegendaryContracts } from "./useLegendary";
+
+const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
 import { LEGENDARY_STAKING_ADDRESS } from "@/config/legendary";
 
 const REVERT_MAP: Record<string, string> = {
