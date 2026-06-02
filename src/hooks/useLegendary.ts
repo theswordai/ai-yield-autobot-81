@@ -308,7 +308,7 @@ export async function doRefetch(
             prev.previewFdaoLevel,
           ] as [bigint, bigint, bigint, bigint]
         ),
-        safe(read.usdv.balanceOf(account) as Promise<bigint>, prev.usdvBalance),
+        safe(read.usdv.balanceOf(account) as Promise<bigint>, prev.usdvBalance, () => phase2KeyFailures++),
         safe(read.fdao.balanceOf(account) as Promise<bigint>, prev.fdaoBalance),
       ]);
 
