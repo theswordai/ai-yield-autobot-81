@@ -431,7 +431,12 @@ export async function doRefetch(
         level: Number(levelRaw),
         selfStake,
         teamPerf,
-        inviter,
+        inviter:
+          inviter && inviter.toLowerCase() !== ZERO_ADDR
+            ? inviter
+            : prev.inviter && prev.inviter.toLowerCase() !== ZERO_ADDR
+            ? prev.inviter
+            : inviter,
         totalPool1,
         totalPool2,
         currentDayInflow,
