@@ -5,6 +5,8 @@ import { useWeb3 } from "./useWeb3";
 import { useLegendaryContracts } from "./useLegendary";
 import { LEGENDARY_STAKING_ADDRESS } from "@/config/legendary";
 
+const ZERO_ADDR = "0x0000000000000000000000000000000000000000";
+
 const REVERT_MAP: Record<string, string> = {
   "below min": "金额低于最低门槛",
   "not authorized": "系统暂未就绪，请联系客服",
@@ -45,7 +47,7 @@ function parseRevert(err: any): string {
 
 export function useLegendaryActions(onDone?: () => void) {
   const { account } = useWeb3();
-  const { write } = useLegendaryContracts();
+  const { write, read } = useLegendaryContracts();
   const [busy, setBusy] = useState<string | null>(null);
 
   const ensure = useCallback(() => {
@@ -182,9 +184,36 @@ export function useLegendaryActions(onDone?: () => void) {
         toast.error("不能绑定自己为上线");
         return;
       }
+      // 预检查：避免发出必然 revert 的交易，并绕开部分钱包在
+      // estimateGas 阶段吞掉 revert reason 导致只显示"交易失败"的问题。
+      if (read && account) {
+        try {
+          const current: string = await read.referral.inviterOf(account);
+          if (current && current !== ZERO_ADDR) {
+            toast.error(
+              `您已绑定过上线（${current.slice(0, 6)}…${current.slice(-4)}），无法重复绑定`
+            );
+            return;
+          }
+        } catch {
+          // 读取失败不阻塞，让链上自行判定
+        }
+        try {
+          const [invSelf, minStake] = await Promise.all([
+            read.referral.selfStake(inviter) as Promise<bigint>,
+            read.referral.minBindStake() as Promise<bigint>,
+          ]);
+          if (BigInt(invSelf ?? 0n) < BigInt(minStake ?? 0n)) {
+            toast.error("上线自投不足 200 USDT，暂时无法绑定");
+            return;
+          }
+        } catch {
+          // 同上
+        }
+      }
       return run("bind", () => write.referral.bind(inviter), "上线绑定成功");
     },
-    [write, account, run]
+    [write, read, account, run]
   );
 
   const approve = useCallback(async () => {
