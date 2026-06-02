@@ -4,6 +4,7 @@ import {
   useLegendaryContracts,
   _setLegendaryContext,
   _resetLegendaryShared,
+  _resetLegendaryWalletOnly,
   _refetchLegendary,
 } from "@/hooks/useLegendary";
 import { TARGET_CHAIN } from "@/config/contracts";
