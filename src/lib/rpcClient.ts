@@ -203,12 +203,18 @@ export const rpcClient = new FallbackRpcClient();
 // Used by all Legendary read paths so wallet RPC instability never reaches the UI.
 
 const BSC_READ_ENDPOINTS = [
+  "https://bsc.publicnode.com",
+  "https://binance.llamarpc.com",
+  "https://1rpc.io/bnb",
+  "https://bsc.drpc.org",
   "https://bsc-dataseed.binance.org/",
   "https://bsc-dataseed1.defibit.io/",
   "https://bsc-dataseed1.ninicoin.io/",
   "https://bsc-dataseed2.binance.org/",
   "https://bsc-dataseed3.binance.org/",
 ];
+
+const HOT_METHODS = new Set(["eth_call", "eth_chainId", "eth_blockNumber", "eth_getBalance"]);
 
 const isTransientRpcError = (err: any): boolean => {
   const msg = (err?.message || "").toString();
@@ -225,7 +231,10 @@ const isTransientRpcError = (err: any): boolean => {
     msg.includes("Failed to fetch") ||
     msg.includes("missing response") ||
     msg.includes("missing trie node") ||
-    msg.includes("could not coalesce")
+    msg.includes("could not coalesce") ||
+    msg.includes("NetworkError") ||
+    msg.includes("Load failed") ||
+    msg.includes("ERR_")
   );
 };
 
@@ -235,13 +244,33 @@ class FallbackReadProvider extends JsonRpcProvider {
   private pool: JsonRpcProvider[];
 
   constructor(endpoints: string[]) {
-    // initialize with the first endpoint; we override _send to multiplex
     super(endpoints[0], 56, { staticNetwork: true, batchMaxCount: 1 });
     this.endpoints = endpoints;
     this.pool = endpoints.map((u) => new JsonRpcProvider(u, 56, { staticNetwork: true, batchMaxCount: 1 }));
   }
 
   async send(method: string, params: any[]): Promise<any> {
+    // Hot path: race the top 3 endpoints in parallel so the slowest/blocked
+    // ones don't gate the user-visible reads. First success wins.
+    if (HOT_METHODS.has(method) && this.pool.length >= 2) {
+      const top = this.pool.slice(0, Math.min(3, this.pool.length));
+      try {
+        const res = await new Promise<any>((resolve, reject) => {
+          let remaining = top.length;
+          let lastErr: any = null;
+          top.forEach((p, i) => {
+            p.send(method, params).then(
+              (r) => { this.idx = i; resolve(r); },
+              (err) => { lastErr = err; if (--remaining === 0) reject(lastErr); }
+            );
+          });
+        });
+        return res;
+      } catch {
+        // all top racers failed — fall through to sequential walk
+      }
+    }
+
     let lastErr: any = null;
     const n = this.pool.length;
     for (let i = 0; i < n; i++) {
@@ -250,12 +279,11 @@ class FallbackReadProvider extends JsonRpcProvider {
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
           const res = await p.send(method, params);
-          this.idx = providerIndex; // remember healthy endpoint
+          this.idx = providerIndex;
           return res;
         } catch (err: any) {
           lastErr = err;
           if (!isTransientRpcError(err)) {
-            // non-transient (likely contract revert) — bubble up immediately
             throw err;
           }
           if (attempt === 0) {
@@ -263,6 +291,9 @@ class FallbackReadProvider extends JsonRpcProvider {
           }
         }
       }
+    }
+    if (typeof window !== "undefined") {
+      try { window.dispatchEvent(new CustomEvent("legendary:rpc-down")); } catch {}
     }
     throw lastErr ?? new Error("All BSC read RPC endpoints failed");
   }

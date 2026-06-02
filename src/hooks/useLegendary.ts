@@ -131,10 +131,15 @@ export function useLegendaryContracts() {
   }, [signer]);
 }
 
-const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
+const safe = async <T,>(
+  p: Promise<T>,
+  fallback: T,
+  onErr?: () => void
+): Promise<T> => {
   try {
     return await p;
   } catch {
+    onErr?.();
     return fallback;
   }
 };
@@ -143,6 +148,7 @@ const safe = async <T,>(p: Promise<T>, fallback: T): Promise<T> => {
 let sharedData: LegendaryDashboard = EMPTY_DASHBOARD;
 let sharedAccount: string | null = null;
 let sharedLoading = false;
+let sharedRpcDegraded = false;
 let inflight: Promise<void> | null = null;
 let inflightAccount: string | null = null;
 const listeners = new Set<() => void>();
@@ -170,6 +176,7 @@ export function _setLegendaryContext(
 export function _resetLegendaryShared() {
   sharedData = { ...EMPTY_DASHBOARD };
   sharedAccount = null;
+  sharedRpcDegraded = false;
   notify();
 }
 export function _refetchLegendary() {
@@ -195,6 +202,8 @@ export async function doRefetch(
   sharedLoading = true;
   notify();
   inflight = (async () => {
+    let phase1Failures = 0;
+    let phase2KeyFailures = 0;
     try {
       // Use previous values as fallbacks when the same account is connected,
       // so transient RPC failures don't flash UI back to 0.
@@ -203,16 +212,15 @@ export async function doRefetch(
       const prev = sameAcc ? sharedData : sharedData; // keep prev even on first load to avoid 0-flash
 
       // ---------- Phase 1: account-specific balances (fast path) ----------
-      // Fetch USDT balance / allowance / frozen FIRST and patch immediately so the
-      // header USDT figure shows up without waiting for global pool stats.
       if (account) {
         const [fastUsdtBalance, fastAllowance, fastFrozen] = await Promise.all([
-          safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance),
+          safe(read.usdt.balanceOf(account) as Promise<bigint>, prev.usdtBalance, () => phase1Failures++),
           safe(
             read.usdt.allowance(account, LEGENDARY_STAKING_ADDRESS) as Promise<bigint>,
-            prev.allowance
+            prev.allowance,
+            () => phase1Failures++
           ),
-          safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
+          safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen, () => phase1Failures++),
         ]);
         sharedData = {
           ...prev,
@@ -277,9 +285,9 @@ export async function doRefetch(
         safe(read.staking.referralClaimable(account) as Promise<bigint>, prev.referralClaimable),
         safe(read.staking.lastClaimAt(account) as Promise<bigint>, prev.lastClaimAt),
         safe(read.referral.getLevel(account) as Promise<bigint>, BigInt(prev.level)),
-        safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake),
+        safe(read.referral.selfStake(account) as Promise<bigint>, prev.selfStake, () => phase2KeyFailures++),
         safe(read.referral.teamPerf(account) as Promise<bigint>, prev.teamPerf),
-        safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter),
+        safe(read.referral.inviterOf(account) as Promise<string>, prev.inviter, () => phase2KeyFailures++),
         safe(read.staking.frozen(account) as Promise<boolean>, prev.frozen),
         (async (): Promise<{ ids: bigint[]; ok: boolean }> => {
           try {
@@ -301,7 +309,7 @@ export async function doRefetch(
             prev.previewFdaoLevel,
           ] as [bigint, bigint, bigint, bigint]
         ),
-        safe(read.usdv.balanceOf(account) as Promise<bigint>, prev.usdvBalance),
+        safe(read.usdv.balanceOf(account) as Promise<bigint>, prev.usdvBalance, () => phase2KeyFailures++),
         safe(read.fdao.balanceOf(account) as Promise<bigint>, prev.fdaoBalance),
       ]);
 
@@ -428,6 +436,9 @@ export async function doRefetch(
         fdaoBalance,
       };
       sharedAccount = account;
+      // Mark degraded if Phase-1 had ≥2 failures OR ≥2 of the key Phase-2 reads failed.
+      const degraded = phase1Failures >= 2 || phase2KeyFailures >= 2;
+      sharedRpcDegraded = degraded;
     } finally {
       sharedLoading = false;
       inflight = null;
@@ -456,7 +467,7 @@ export function useLegendaryDashboard() {
     await _refetchLegendary();
   }, []);
 
-  return { data: sharedData, loading: sharedLoading, refetch };
+  return { data: sharedData, loading: sharedLoading, rpcDegraded: sharedRpcDegraded, refetch };
 }
 
 

@@ -24,7 +24,7 @@ const PAGE_SIZE = 20;
 export function ReferralTab() {
   const { account, connect } = useWeb3();
   const { read } = useLegendaryContracts();
-  const { data, refetch } = useLegendaryDashboard();
+  const { data, refetch, rpcDegraded } = useLegendaryDashboard();
   const { bind, busy } = useLegendaryActions(refetch);
   const [inviterInput, setInviterInput] = useState("");
   const [copied, setCopied] = useState(false);
