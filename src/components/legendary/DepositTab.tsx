@@ -157,7 +157,12 @@ export function DepositTab({ onDone }: { onDone: () => void }) {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {!notBound ? (
+          {rpcDegraded ? (
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/40 text-xs text-amber-700 dark:text-amber-300">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>网络异常，无法校验是否已绑定上级，请点击顶部「重新读取」后再试。</span>
+            </div>
+          ) : !notBound ? (
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/50">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">已绑定上线</p>
