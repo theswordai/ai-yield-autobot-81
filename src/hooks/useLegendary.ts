@@ -176,6 +176,7 @@ export function _setLegendaryContext(
 export function _resetLegendaryShared() {
   sharedData = { ...EMPTY_DASHBOARD };
   sharedAccount = null;
+  sharedRpcDegraded = false;
   notify();
 }
 export function _refetchLegendary() {
