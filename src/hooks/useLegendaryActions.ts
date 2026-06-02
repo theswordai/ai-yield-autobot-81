@@ -187,19 +187,25 @@ export function useLegendaryActions(onDone?: () => void) {
         toast.error("不能绑定自己为上线");
         return;
       }
-      // 预检查：避免发出必然 revert 的交易，并绕开部分钱包在
-      // estimateGas 阶段吞掉 revert reason 导致只显示"交易失败"的问题。
+      // 预检查：避免发出必然 revert 的交易。读失败时直接拦截，不要发交易，
+      // 因为部分钱包会在 estimateGas 阶段吞掉 revert reason，看起来像"点了没反应"。
       if (read && account) {
+        let inviterReadOk = false;
         try {
           const current: string = await read.referral.inviterOf(account);
-          if (current && current !== ZERO_ADDR) {
+          inviterReadOk = true;
+          if (current && current.toLowerCase() !== ZERO_ADDR) {
             toast.error(
               `您已绑定过上线（${current.slice(0, 6)}…${current.slice(-4)}），无法重复绑定`
             );
             return;
           }
         } catch {
-          // 读取失败不阻塞，让链上自行判定
+          // fallthrough to network-error branch below
+        }
+        if (!inviterReadOk) {
+          toast.error("网络异常，无法校验绑定状态，请检查网络或稍后重试");
+          return;
         }
         try {
           const [invSelf, minStake] = await Promise.all([
@@ -211,7 +217,7 @@ export function useLegendaryActions(onDone?: () => void) {
             return;
           }
         } catch {
-          // 同上
+          // 上线 selfStake 读取失败不强阻塞，让链上自行判定
         }
       }
       return run("bind", () => write.referral.bind(inviter), "上线绑定成功");
