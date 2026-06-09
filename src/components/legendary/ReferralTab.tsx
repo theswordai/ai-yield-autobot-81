@@ -4,8 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Copy, Check, AlertCircle, Users, ChevronRight, ChevronDown, Network, Loader2 } from "lucide-react";
+import { Copy, Check, Users } from "lucide-react";
 import { toast } from "sonner";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { useLegendaryContracts, useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
@@ -24,7 +23,7 @@ const PAGE_SIZE = 20;
 export function ReferralTab() {
   const { account, connect } = useWeb3();
   const { read } = useLegendaryContracts();
-  const { data, refetch, rpcDegraded } = useLegendaryDashboard();
+  const { data, refetch } = useLegendaryDashboard();
   const { bind, busy } = useLegendaryActions(refetch);
   const [inviterInput, setInviterInput] = useState("");
   const [copied, setCopied] = useState(false);
