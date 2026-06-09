@@ -4,19 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Dashboard from "./Dashboard";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
-import { useStakingData } from "@/hooks/useStakingData";
-import { useWeb3 } from "@/hooks/useWeb3";
 export default function UserCenter() {
   const { t } = useI18n();
-  const { account } = useWeb3();
-  const { data: stakingData, loading } = useStakingData();
-
-  // Check if user has staking positions to access VIP features
-  const hasPositions = !loading && stakingData && (
-    stakingData.activePositions.length > 0 ||
-    account?.toLowerCase() === "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6".toLowerCase() ||
-    account?.toLowerCase() === "0x20E916206A2903A4993F639a9D073aE910B15D7c".toLowerCase()
-  );
 
   return <PageWrapper>
       <Helmet>
