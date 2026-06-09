@@ -2,24 +2,11 @@ import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Dashboard from "./Dashboard";
-import Referral from "./Referral";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
-import { useStakingData } from "@/hooks/useStakingData";
-import { useWeb3 } from "@/hooks/useWeb3";
 export default function UserCenter() {
-  const { t, language } = useI18n();
-  const isEnglish = language === 'en';
-  const { account } = useWeb3();
-  const { data: stakingData, loading, refreshData } = useStakingData();
-  
-  // Check if user has staking positions to access VIP features
-  const hasPositions = !loading && stakingData && (
-    stakingData.activePositions.length > 0 ||
-    account?.toLowerCase() === "0x6eD00D95766Bdf20c2FffcdBEC34a69A8c5B7eE6".toLowerCase() ||
-    account?.toLowerCase() === "0x20E916206A2903A4993F639a9D073aE910B15D7c".toLowerCase()
-  );
-  
+  const { t } = useI18n();
+
   return <PageWrapper>
       <Helmet>
         <title>{t("user.title")}</title>
@@ -33,21 +20,13 @@ export default function UserCenter() {
           <p className="text-sm sm:text-base text-muted-foreground">{t("user.subtitle")}</p>
         </header>
         <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className={`grid w-full max-w-md mx-auto h-9 sm:h-10 ${isEnglish ? 'grid-cols-1' : 'grid-cols-2'}`}>
+          <TabsList className="grid w-full max-w-md mx-auto h-9 sm:h-10 grid-cols-1">
             <TabsTrigger value="dashboard" className="text-xs sm:text-sm">{t("user.tab.dashboard")}</TabsTrigger>
-            {!isEnglish && (
-              <TabsTrigger value="referral" className="text-xs sm:text-sm">{t("user.tab.referral")}</TabsTrigger>
-            )}
           </TabsList>
           <div className="mt-4 sm:mt-6">
             <TabsContent value="dashboard">
               <Dashboard embedded />
             </TabsContent>
-            {!isEnglish && (
-              <TabsContent value="referral">
-                <Referral embedded onRefresh={refreshData} />
-              </TabsContent>
-            )}
           </div>
         </Tabs>
       </main>
