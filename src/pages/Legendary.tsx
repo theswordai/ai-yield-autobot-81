@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Crown, Wallet, ListChecks, Gift, Layers, Sparkles, ShieldCheck } from "lucide-react";
+import { Crown, Wallet, ListChecks, Users, Gift, Layers, Sparkles, ShieldCheck } from "lucide-react";
 import goldBarsLogo from "@/assets/gold-bars-logo.png";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Navbar } from "@/components/Navbar";
@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { DepositTab } from "@/components/legendary/DepositTab";
 import { PositionsTab } from "@/components/legendary/PositionsTab";
 import { Pool2Tab } from "@/components/legendary/Pool2Tab";
-
+import { ReferralTab } from "@/components/legendary/ReferralTab";
 import { RewardsTab } from "@/components/legendary/RewardsTab";
 import { ChainSwitchBanner } from "@/components/legendary/ChainSwitchBanner";
 import { RpcDegradedBanner } from "@/components/legendary/RpcDegradedBanner";
@@ -101,11 +101,12 @@ function LegendaryPageContent() {
         )}
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-1 h-auto bg-foreground/5 backdrop-blur-xl border border-foreground/15 p-1 rounded-xl">
+          <TabsList className="grid grid-cols-3 md:grid-cols-5 gap-1 h-auto bg-foreground/5 backdrop-blur-xl border border-foreground/15 p-1 rounded-xl">
             {[
               { v: "deposit", icon: Wallet, label: "CLASS-A" },
               { v: "positions", icon: ListChecks, label: "我的仓位" },
               { v: "pool2", icon: Layers, label: "CLASS-B" },
+              { v: "referral", icon: Users, label: "邀请团队" },
               { v: "rewards", icon: Gift, label: "佣金与分红" },
             ].map(({ v, icon: Icon, label }) => (
               <TabsTrigger
@@ -138,6 +139,13 @@ function LegendaryPageContent() {
             className="mt-6 animate-fade-in data-[state=inactive]:hidden"
           >
             <Pool2Tab />
+          </TabsContent>
+          <TabsContent
+            value="referral"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
+            <ReferralTab />
           </TabsContent>
           <TabsContent
             value="rewards"
