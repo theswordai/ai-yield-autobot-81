@@ -427,20 +427,11 @@ export default function Referral({
       )}
       <div className={`${embedded ? 'pt-6' : 'pt-20'} pb-10`}>
         <div className="container mx-auto px-4">
-          <div className="mb-8 flex items-center justify-between">
-            <div>
-              <Title className="text-3xl font-bold mb-2">{t('referral.title')}</Title>
-              <p className="text-muted-foreground">{t('referral.subtitle')}</p>
-            </div>
-            <Button 
-              variant="outline" 
-              onClick={() => window.open('https://usdonline.xyz', '_blank')}
-              className="flex items-center gap-2"
-            >
-              <Trophy className="w-4 h-4" />
-              {t('referral.queryButton')}
-            </Button>
+          <div className="mb-8">
+            <Title className="text-3xl font-bold mb-2">{t('referral.title')}</Title>
+            <p className="text-muted-foreground">{t('referral.subtitle')}</p>
           </div>
+
 
           {/* Bind status */}
           <div className="mb-6">
