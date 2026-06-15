@@ -25,6 +25,7 @@ import Legendary from "./pages/Legendary";
 import Admin from "./pages/Admin";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
+import CampaignPopup from "./components/CampaignPopup";
 import { AppLayout } from "./components/AppLayout";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+        <CampaignPopup />
         <FAQCustomerService />
         <MobileBottomNav />
         <AppLayout>
