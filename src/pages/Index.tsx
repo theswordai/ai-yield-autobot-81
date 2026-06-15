@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { PageWrapper } from "@/components/PageWrapper";
 import { HeroSection } from "@/components/HeroSection";
-import { CampaignShowcase } from "@/components/CampaignShowcase";
 import { Helmet } from "react-helmet-async";
 import { useI18n } from "@/hooks/useI18n";
 
@@ -35,7 +34,6 @@ const Index = () => {
       </Helmet>
       <Navbar />
       <HeroSection />
-      <CampaignShowcase />
     </PageWrapper>
   );
 };
