@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, Sparkles, Gift, Star } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
-import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
-import conferenceAsset from "@/assets/campaign-conference.png.asset.json";
 
 export function NewsAnnouncement() {
   const { t, language } = useI18n();
@@ -74,49 +72,6 @@ export function NewsAnnouncement() {
 
   return (
     <div className="rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm p-6">
-      {/* ===== Activity Campaign Images (mobile-first swipe) ===== */}
-      <div className="relative mb-5 -mx-2">
-        {/* Decorative stars */}
-        <Star className="pointer-events-none absolute -top-1 left-2 h-3.5 w-3.5 text-yellow-300 fill-yellow-300 animate-pulse z-10" />
-        <Star className="pointer-events-none absolute top-1/2 -right-1 h-3 w-3 text-pink-300 fill-pink-300 animate-pulse z-10" style={{ animationDelay: "0.6s" }} />
-        {/* Gift sway */}
-        <div className="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-          <Gift className="h-5 w-5 text-yellow-300 drop-shadow-[0_0_6px_rgba(255,215,0,0.8)] animate-bounce" />
-        </div>
-
-        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-2 pb-1 scrollbar-hide">
-          {[
-            { url: ferrariAsset.url, alt: "USD.ONLINE 增值资本团队业绩", label: "活动一" },
-            { url: conferenceAsset.url, alt: "USD.ONLINE 全球大会", label: "活动二" },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className="relative flex-shrink-0 w-[78%] snap-center rounded-xl overflow-hidden ring-1 ring-yellow-300/40 shadow-[0_0_20px_rgba(255,215,0,0.2)]"
-            >
-              <img
-                src={s.url}
-                alt={s.alt}
-                className="w-full h-auto block select-none"
-                draggable={false}
-              />
-              {/* Label badge */}
-              <div className="absolute top-2 left-2 z-10">
-                <div className="px-2.5 py-1 rounded-full bg-gradient-to-r from-red-600 via-rose-500 to-amber-500 text-white text-xs font-bold tracking-wider shadow-md border border-yellow-200/60 flex items-center gap-1">
-                  <Sparkles className="h-3 w-3" />
-                  <span>{s.label}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Dot indicators */}
-        <div className="flex justify-center gap-1.5 mt-2">
-          <span className="h-1.5 w-4 rounded-full bg-yellow-300/80" />
-          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-        </div>
-      </div>
-
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-2xl font-bold text-foreground tracking-wide">NEWS</h3>
