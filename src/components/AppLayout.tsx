@@ -4,6 +4,7 @@ import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { AnnouncementPopup } from "@/components/AnnouncementPopup";
 import { MessageCenter } from "@/components/MessageCenter";
 import { ChatRoom } from "@/components/ChatRoom";
+import { CampaignShowcase } from "@/components/CampaignShowcase";
 
 function SidebarToggleButton() {
   const { state } = useSidebar();
@@ -41,6 +42,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <AnnouncementPopup />
         <MessageCenter />
         <ChatRoom />
+        <CampaignShowcase />
       </div>
     </SidebarProvider>
   );
