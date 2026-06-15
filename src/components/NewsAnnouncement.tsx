@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { ChevronDown, ChevronUp, Sparkles, Gift, Star } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
 import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
 import conferenceAsset from "@/assets/campaign-conference.png.asset.json";
