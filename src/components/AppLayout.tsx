@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sid
 import { AppSidebar } from "@/components/AppSidebar";
 import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { AnnouncementPopup } from "@/components/AnnouncementPopup";
+import { PromoPopup } from "@/components/PromoPopup";
 import { MessageCenter } from "@/components/MessageCenter";
 import { ChatRoom } from "@/components/ChatRoom";
 
@@ -39,6 +40,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <main className="flex-1">{children}</main>
         </div>
         <AnnouncementPopup />
+        <PromoPopup />
         <MessageCenter />
         <ChatRoom />
       </div>
