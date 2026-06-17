@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { X, ChevronLeft, ChevronRight, Gift, Sparkles, Star } from "lucide-react";
 import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
-import conferenceAsset from "@/assets/campaign-conference.png.asset.json";
+import conferenceAsset from "@/assets/campaign-conference-new.png.asset.json";
 import useEmblaCarousel from "embla-carousel-react";
 
 const SLIDES = [
