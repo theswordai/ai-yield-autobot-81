@@ -194,11 +194,11 @@ export default function Fireworks() {
         }
 
         ctx.beginPath();
-        ctx.globalAlpha = Math.min(1, lifeRatio * 1.4);
+        ctx.globalAlpha = Math.min(0.75, lifeRatio * 1.1);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = 10;
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.shadowBlur = 6;
+        ctx.arc(p.x, p.y, p.size * 0.85, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
