@@ -105,10 +105,9 @@ export default function Fireworks() {
     let nextLaunch = 0;
     let running = true;
 
-    // initial burst
-    launch(W() * 0.3, H() * 0.3);
-    launch(W() * 0.7, H() * 0.35);
-    setTimeout(() => launch(W() * 0.5, H() * 0.25), 300);
+    // initial burst (fewer, placed away from center popup)
+    launch(W() * 0.15, H() * 0.2);
+    setTimeout(() => launch(W() * 0.85, H() * 0.18), 400);
 
     const frame = (now: number) => {
       if (!running) return;
@@ -117,16 +116,18 @@ export default function Fireworks() {
 
       // fade trail
       ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      ctx.fillStyle = "rgba(0,0,0,0.22)";
       ctx.fillRect(0, 0, W(), H());
       ctx.globalCompositeOperation = "lighter";
 
-      // schedule launches
+      // schedule launches (much less frequent, only 1 at a time, avoid center)
       nextLaunch -= dt * 16.6667;
       if (nextLaunch <= 0) {
-        const n = 1 + ((Math.random() * 2) | 0);
-        for (let i = 0; i < n; i++) setTimeout(() => launch(), i * 120);
-        nextLaunch = rand(450, 900);
+        setTimeout(() => {
+          const side = Math.random() < 0.5 ? rand(W() * 0.05, W() * 0.25) : rand(W() * 0.75, W() * 0.95);
+          launch(side, rand(H() * 0.12, H() * 0.35));
+        }, 200);
+        nextLaunch = rand(1400, 2600);
       }
 
       // rockets
