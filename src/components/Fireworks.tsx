@@ -80,21 +80,21 @@ export default function Fireworks() {
     };
 
     const explode = (x: number, y: number, color: string) => {
-      const count = 60 + ((Math.random() * 40) | 0);
-      const ring = Math.random() < 0.35;
+      const count = 22 + ((Math.random() * 18) | 0);
+      const ring = Math.random() < 0.2;
       for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i) / count + rand(-0.05, 0.05);
-        const speed = ring ? rand(3.2, 4.0) : rand(1.2, 4.5);
-        const c = Math.random() < 0.25 ? pick(COLORS) : color;
+        const angle = (Math.PI * 2 * i) / count + rand(-0.08, 0.08);
+        const speed = ring ? rand(2.2, 3.0) : rand(0.8, 3.2);
+        const c = Math.random() < 0.2 ? pick(COLORS) : color;
         particles.push({
           x,
           y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: 0,
-          maxLife: rand(60, 95),
+          maxLife: rand(45, 75),
           color: c,
-          size: rand(1.6, 2.8),
+          size: rand(1.2, 2.2),
           trail: [],
         });
       }
@@ -105,10 +105,9 @@ export default function Fireworks() {
     let nextLaunch = 0;
     let running = true;
 
-    // initial burst
-    launch(W() * 0.3, H() * 0.3);
-    launch(W() * 0.7, H() * 0.35);
-    setTimeout(() => launch(W() * 0.5, H() * 0.25), 300);
+    // initial burst (fewer, placed away from center popup)
+    launch(W() * 0.15, H() * 0.2);
+    setTimeout(() => launch(W() * 0.85, H() * 0.18), 400);
 
     const frame = (now: number) => {
       if (!running) return;
@@ -117,16 +116,18 @@ export default function Fireworks() {
 
       // fade trail
       ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      ctx.fillStyle = "rgba(0,0,0,0.22)";
       ctx.fillRect(0, 0, W(), H());
       ctx.globalCompositeOperation = "lighter";
 
-      // schedule launches
+      // schedule launches (much less frequent, only 1 at a time, avoid center)
       nextLaunch -= dt * 16.6667;
       if (nextLaunch <= 0) {
-        const n = 1 + ((Math.random() * 2) | 0);
-        for (let i = 0; i < n; i++) setTimeout(() => launch(), i * 120);
-        nextLaunch = rand(450, 900);
+        setTimeout(() => {
+          const side = Math.random() < 0.5 ? rand(W() * 0.05, W() * 0.25) : rand(W() * 0.75, W() * 0.95);
+          launch(side, rand(H() * 0.12, H() * 0.35));
+        }, 200);
+        nextLaunch = rand(1400, 2600);
       }
 
       // rockets
@@ -153,8 +154,8 @@ export default function Fireworks() {
         ctx.beginPath();
         ctx.fillStyle = "#fff";
         ctx.shadowColor = r.color;
-        ctx.shadowBlur = 12;
-        ctx.arc(r.x, r.y, 2.4, 0, Math.PI * 2);
+        ctx.shadowBlur = 6;
+        ctx.arc(r.x, r.y, 1.8, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
@@ -193,11 +194,11 @@ export default function Fireworks() {
         }
 
         ctx.beginPath();
-        ctx.globalAlpha = Math.min(1, lifeRatio * 1.4);
+        ctx.globalAlpha = Math.min(0.75, lifeRatio * 1.1);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = 10;
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.shadowBlur = 6;
+        ctx.arc(p.x, p.y, p.size * 0.85, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -216,7 +217,7 @@ export default function Fireworks() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-[9998]"
+      className="pointer-events-none fixed inset-0 z-[9998] opacity-70"
       aria-hidden="true"
     />
   );
