@@ -217,7 +217,7 @@ export default function Fireworks() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-[9998]"
+      className="pointer-events-none fixed inset-0 z-[9998] opacity-70"
       aria-hidden="true"
     />
   );
