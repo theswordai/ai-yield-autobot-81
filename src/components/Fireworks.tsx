@@ -80,21 +80,21 @@ export default function Fireworks() {
     };
 
     const explode = (x: number, y: number, color: string) => {
-      const count = 60 + ((Math.random() * 40) | 0);
-      const ring = Math.random() < 0.35;
+      const count = 22 + ((Math.random() * 18) | 0);
+      const ring = Math.random() < 0.2;
       for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i) / count + rand(-0.05, 0.05);
-        const speed = ring ? rand(3.2, 4.0) : rand(1.2, 4.5);
-        const c = Math.random() < 0.25 ? pick(COLORS) : color;
+        const angle = (Math.PI * 2 * i) / count + rand(-0.08, 0.08);
+        const speed = ring ? rand(2.2, 3.0) : rand(0.8, 3.2);
+        const c = Math.random() < 0.2 ? pick(COLORS) : color;
         particles.push({
           x,
           y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           life: 0,
-          maxLife: rand(60, 95),
+          maxLife: rand(45, 75),
           color: c,
-          size: rand(1.6, 2.8),
+          size: rand(1.2, 2.2),
           trail: [],
         });
       }
