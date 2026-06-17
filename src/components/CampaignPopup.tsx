@@ -3,6 +3,7 @@ import { X, ChevronLeft, ChevronRight, Gift, Sparkles, Star } from "lucide-react
 import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
 import conferenceAsset from "@/assets/campaign-conference-new.png.asset.json";
 import useEmblaCarousel from "embla-carousel-react";
+import Fireworks from "./Fireworks";
 
 const SLIDES = [
   { url: ferrariAsset.url, alt: "USD.ONLINE 增值资本团队业绩", label: "活动一" },
@@ -82,6 +83,8 @@ export default function CampaignPopup() {
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 py-6 animate-fade-in"
       onClick={() => setOpen(false)}
     >
+      {/* Fullscreen fireworks */}
+      <Fireworks />
       {/* Inline keyframes for decoration */}
       <style>{`
         @keyframes confetti-float {
