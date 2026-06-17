@@ -154,8 +154,8 @@ export default function Fireworks() {
         ctx.beginPath();
         ctx.fillStyle = "#fff";
         ctx.shadowColor = r.color;
-        ctx.shadowBlur = 12;
-        ctx.arc(r.x, r.y, 2.4, 0, Math.PI * 2);
+        ctx.shadowBlur = 6;
+        ctx.arc(r.x, r.y, 1.8, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
