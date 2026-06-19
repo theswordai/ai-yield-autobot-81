@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
+import conferenceAsset from "@/assets/campaign-conference-new.png.asset.json";
 
 export function NewsAnnouncement() {
   const { t, language } = useI18n();
   const [expanded, setExpanded] = useState(false);
+  const [zoomImg, setZoomImg] = useState<string | null>(null);
+
+  const gallery = [
+    { url: ferrariAsset.url, alt: language === 'en' ? 'Campaign 1' : '活动一' },
+    { url: conferenceAsset.url, alt: language === 'en' ? 'Global Conference' : '全球大会' },
+  ];
 
   const announcements = [
     {
