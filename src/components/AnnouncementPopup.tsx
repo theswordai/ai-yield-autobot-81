@@ -78,13 +78,15 @@ export function AnnouncementPopup() {
         {/* Card */}
         <div className="relative overflow-hidden rounded-2xl ring-2 ring-yellow-300/60 shadow-[0_0_40px_rgba(255,215,0,0.35)] bg-background">
           <div className="px-5 pt-5 pb-3">
-            <h3 className="text-lg font-bold pr-8 break-words">{current.title}</h3>
+            <h3 className="text-lg font-bold pr-8 break-words text-yellow-300 drop-shadow-[0_0_6px_rgba(255,215,0,0.5)]">
+              {current.title}
+            </h3>
           </div>
           <div className="max-h-[60vh] overflow-y-auto px-5 pb-4 space-y-3">
             {current.image_url && (
               <img src={current.image_url} alt={current.title} className="w-full rounded-md" />
             )}
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap break-words">
+            <p className="text-sm text-yellow-100 whitespace-pre-wrap break-words">
               {current.content}
             </p>
           </div>
