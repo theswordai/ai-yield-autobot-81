@@ -24,30 +24,27 @@ export function AnnouncementsAdmin() {
       toast({ title: "请选择图片文件", variant: "destructive" });
       return;
     }
-    if (file.size > 10 * 1024 * 1024) {
-      toast({ title: "图片不能超过 10MB", variant: "destructive" });
+    if (file.size > 3 * 1024 * 1024) {
+      toast({ title: "图片不能超过 3MB", description: "请压缩后再上传", variant: "destructive" });
       return;
     }
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop() || "png";
-      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("announcement-images")
-        .upload(path, file, { contentType: file.type, upsert: false });
-      if (upErr) throw upErr;
-      const { data: signed, error: signErr } = await supabase.storage
-        .from("announcement-images")
-        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
-      if (signErr || !signed) throw signErr || new Error("签名失败");
-      setImageUrl(signed.signedUrl);
-      toast({ title: "图片已上传" });
+      const dataUrl: string = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(reader.error || new Error("读取失败"));
+        reader.readAsDataURL(file);
+      });
+      setImageUrl(dataUrl);
+      toast({ title: "图片已就绪" });
     } catch (e: any) {
       toast({ title: "上传失败", description: e?.message || String(e), variant: "destructive" });
     } finally {
       setUploading(false);
     }
   };
+
 
   const onDrop = (e: React.DragEvent) => {
     e.preventDefault();
