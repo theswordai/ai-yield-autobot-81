@@ -41,12 +41,8 @@ export default function Admin() {
         <Card className="p-6 space-y-4">
           <p className="text-sm text-muted-foreground">当前钱包 <span className="font-mono">{account}</span> 不是管理员。</p>
           <div className="border-t border-border pt-4 space-y-2">
-            <p className="text-xs text-muted-foreground">如果还没有任何管理员，可在此设置首位管理员（仅在管理员表为空时生效）：</p>
-            <div className="flex gap-2">
-              <Input placeholder="0x..." value={bootstrapAddr} onChange={(e) => setBootstrapAddr(e.target.value)} />
-              <Button onClick={bootstrap}>设为管理员</Button>
-            </div>
-            <Button variant="outline" size="sm" onClick={() => setBootstrapAddr(account)}>填入当前钱包地址</Button>
+            <p className="text-xs text-muted-foreground">如果还没有任何管理员，可用当前钱包签名设置为首位管理员（仅在管理员表为空时生效）：</p>
+            <Button onClick={bootstrap}>用当前钱包签名设为管理员</Button>
           </div>
         </Card>
       )}
