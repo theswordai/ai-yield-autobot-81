@@ -1,0 +1,2 @@
+CREATE POLICY "anyone read announcement images" ON storage.objects FOR SELECT USING (bucket_id = 'announcement-images');
+CREATE POLICY "anyone upload announcement images" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'announcement-images');
