@@ -89,6 +89,25 @@ export function NewsAnnouncement() {
         </span>
       </div>
 
+      {/* Campaign images thumbnails */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {gallery.map((img) => (
+          <button
+            key={img.url}
+            type="button"
+            onClick={() => setZoomImg(img.url)}
+            className="group relative overflow-hidden rounded-lg border border-primary/30 bg-card/60 hover:border-primary/60 transition-colors"
+          >
+            <img
+              src={img.url}
+              alt={img.alt}
+              loading="lazy"
+              className="w-full h-24 sm:h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </button>
+        ))}
+      </div>
+
       {/* Timeline items */}
       <div className="space-y-3">
         {visibleItems.map((announcement) => (
@@ -103,6 +122,7 @@ export function NewsAnnouncement() {
           </div>
         ))}
       </div>
+
 
       {/* Expand/Collapse */}
       {rest.length > 0 && (
