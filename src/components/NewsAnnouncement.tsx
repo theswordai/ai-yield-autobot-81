@@ -150,9 +150,14 @@ export function NewsAnnouncement() {
               key={announcement.id}
               className="relative pl-4 border-l-2 border-primary/60 rounded-r-lg bg-card/60 p-4 hover:bg-card/80 transition-colors"
             >
-              <p className="text-sm font-medium text-foreground leading-relaxed">
-                {language === 'en' ? announcement.titleEn : announcement.title}
-              </p>
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-sm font-medium text-foreground leading-relaxed flex-1">
+                  {language === 'en' ? announcement.titleEn : announcement.title}
+                </p>
+                <span className="shrink-0 px-2 py-0.5 text-[10px] font-semibold text-primary bg-primary/10 rounded border border-primary/20">
+                  {announcement.date}
+                </span>
+              </div>
               <button
                 onClick={() => toggleDetail(announcement.id)}
                 className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
@@ -170,8 +175,21 @@ export function NewsAnnouncement() {
                 )}
               </button>
               {isOpen && (
-                <div className="mt-3 text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
-                  {language === 'en' ? announcement.contentEn : announcement.content}
+                <div className="mt-3">
+                  <div className="flex items-center gap-3 text-[10px] text-muted-foreground mb-2">
+                    <span>
+                      {language === 'en' ? 'Published: ' : '发布时间: '}
+                      {announcement.date} {announcement.time}
+                    </span>
+                    <span className="w-px h-3 bg-border/50" />
+                    <span>
+                      {language === 'en' ? 'Source: ' : '来源: '}
+                      {language === 'en' ? announcement.sourceEn : announcement.source}
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
+                    {language === 'en' ? announcement.contentEn : announcement.content}
+                  </div>
                 </div>
               )}
             </div>
