@@ -220,6 +220,22 @@ export function HeroSection() {
         {/* ===== FEATURED PRICES ===== */}
         <FeaturedPrices />
         
+        {/* ===== ABOUT US VIDEO ===== */}
+        <div className="max-w-3xl mx-auto mb-10">
+          <div className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-5 shadow-card">
+            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase">About us</h2>
+            <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/hYFWCQ-rtcw"
+                title="About usd.online"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+
         {/* ===== NEWS + FEATURE CARDS SIDE BY SIDE ===== */}
         <div className="max-w-6xl mx-auto -mt-2 mb-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -241,22 +257,6 @@ export function HeroSection() {
                   <h3 className="text-base md:text-lg font-bold text-foreground">{card.title}</h3>
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* ===== ABOUT US VIDEO ===== */}
-        <div className="max-w-3xl mx-auto mb-10">
-          <div className="rounded-2xl border border-border/40 bg-card/60 backdrop-blur-sm p-5 shadow-card">
-            <h2 className="text-xl font-bold tracking-wide text-primary mb-4 text-left uppercase">About us</h2>
-            <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/hYFWCQ-rtcw"
-                title="About usd.online"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
             </div>
           </div>
         </div>
