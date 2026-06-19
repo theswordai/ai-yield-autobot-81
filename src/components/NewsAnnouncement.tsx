@@ -116,7 +116,7 @@ export function NewsAnnouncement() {
     <div className="rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-foreground tracking-wide">NEWS</h3>
+        <h3 className="text-xl font-bold text-foreground tracking-wide">NEWS</h3>
         <span className="px-3 py-1 text-xs font-bold tracking-wider border border-primary/50 text-primary rounded bg-primary/10">
           LIVE
         </span>
