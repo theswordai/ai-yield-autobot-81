@@ -91,6 +91,15 @@ export function NewsAnnouncement() {
   const rest = announcements.slice(1);
   const visibleItems = expanded ? announcements : [latest];
 
+  const toggleDetail = (id: number) => {
+    setDetailIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   return (
     <div className="rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm p-6">
       {/* Header */}
