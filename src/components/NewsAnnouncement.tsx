@@ -142,6 +142,20 @@ export function NewsAnnouncement() {
           )}
         </button>
       )}
+
+      {/* Zoom dialog */}
+      <Dialog open={!!zoomImg} onOpenChange={(o) => !o && setZoomImg(null)}>
+        <DialogContent className="max-w-[95vw] sm:max-w-4xl p-2 bg-background/95 border-primary/40">
+          {zoomImg && (
+            <img
+              src={zoomImg}
+              alt="zoom"
+              className="w-full h-auto max-h-[85vh] object-contain rounded"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
+
