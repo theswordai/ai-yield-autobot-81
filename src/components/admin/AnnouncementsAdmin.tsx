@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
-import { Trash2 } from "lucide-react";
+import { Trash2, Upload, X, Loader2 } from "lucide-react";
 import type { Announcement } from "@/hooks/useMessageCenter";
 
 export function AnnouncementsAdmin() {
@@ -15,6 +15,56 @@ export function AnnouncementsAdmin() {
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [priority, setPriority] = useState("0");
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "请选择图片文件", variant: "destructive" });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "图片不能超过 10MB", variant: "destructive" });
+      return;
+    }
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "png";
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("announcement-images")
+        .upload(path, file, { contentType: file.type, upsert: false });
+      if (upErr) throw upErr;
+      const { data: signed, error: signErr } = await supabase.storage
+        .from("announcement-images")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signErr || !signed) throw signErr || new Error("签名失败");
+      setImageUrl(signed.signedUrl);
+      toast({ title: "图片已上传" });
+    } catch (e: any) {
+      toast({ title: "上传失败", description: e?.message || String(e), variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) uploadImage(file);
+  };
+
+  const onPaste = (e: React.ClipboardEvent) => {
+    const file = Array.from(e.clipboardData.items)
+      .find((it) => it.type.startsWith("image/"))
+      ?.getAsFile();
+    if (file) {
+      e.preventDefault();
+      uploadImage(file);
+    }
+  };
 
   const load = async () => {
     const { data } = await supabase.from("announcements").select("*").order("created_at", { ascending: false });
@@ -46,17 +96,64 @@ export function AnnouncementsAdmin() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-4 space-y-3">
+      <Card className="p-4 space-y-3" onPaste={onPaste}>
         <h3 className="font-semibold">新建公告</h3>
         <Input placeholder="标题" value={title} onChange={(e) => setTitle(e.target.value)} />
         <Textarea placeholder="内容" rows={4} value={content} onChange={(e) => setContent(e.target.value)} />
-        <Input placeholder="图片链接（可选）" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={onDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={`relative rounded-lg border-2 border-dashed cursor-pointer transition-colors p-4 text-center ${
+            dragOver ? "border-primary bg-primary/5" : "border-muted-foreground/30 hover:border-primary/60"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f); e.target.value = ""; }}
+          />
+          {imageUrl ? (
+            <div className="relative">
+              <img src={imageUrl} alt="预览" className="max-h-48 mx-auto rounded" />
+              <Button
+                size="icon"
+                variant="destructive"
+                className="absolute top-1 right-1 h-7 w-7"
+                onClick={(e) => { e.stopPropagation(); setImageUrl(""); }}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          ) : uploading ? (
+            <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
+              <Loader2 className="w-4 h-4 animate-spin" /> 上传中…
+            </div>
+          ) : (
+            <div className="py-6 text-sm text-muted-foreground flex flex-col items-center gap-2">
+              <Upload className="w-6 h-6" />
+              <div>点击 / 拖拽 / 粘贴图片到此处</div>
+              <div className="text-xs">支持 PNG / JPG / GIF / WebP，最大 10MB</div>
+            </div>
+          )}
+        </div>
+        <Input
+          placeholder="或直接粘贴图片链接"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+        />
+
         <div className="flex items-center gap-2">
           <span className="text-sm">优先级：</span>
           <Input type="number" className="w-24" value={priority} onChange={(e) => setPriority(e.target.value)} />
         </div>
-        <Button onClick={create}>发布公告</Button>
+        <Button onClick={create} disabled={uploading}>发布公告</Button>
       </Card>
+
 
       <div className="space-y-2">
         {list.map((a) => (
