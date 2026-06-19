@@ -245,6 +245,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_read_announcement_ids: {
+        Args: { _wallet: string }
+        Returns: string[]
+      }
       is_admin_wallet: { Args: { _wallet: string }; Returns: boolean }
     }
     Enums: {
