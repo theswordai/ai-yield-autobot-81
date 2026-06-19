@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
-import conferenceAsset from "@/assets/campaign-conference-new.png.asset.json";
+import ferrariAsset from "@/assets/news-ferrari.png.asset.json";
+import conferenceAsset from "@/assets/news-conference.png.asset.json";
 
 export function NewsAnnouncement() {
   const { t, language } = useI18n();
