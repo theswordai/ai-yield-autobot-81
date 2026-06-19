@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import ferrariAsset from "@/assets/campaign-ferrari.png.asset.json";
+import conferenceAsset from "@/assets/campaign-conference-new.png.asset.json";
 
 export function NewsAnnouncement() {
   const { t, language } = useI18n();
   const [expanded, setExpanded] = useState(false);
+  const [zoomImg, setZoomImg] = useState<string | null>(null);
+
+  const gallery = [
+    { url: ferrariAsset.url, alt: language === 'en' ? 'Campaign 1' : '活动一' },
+    { url: conferenceAsset.url, alt: language === 'en' ? 'Global Conference' : '全球大会' },
+  ];
 
   const announcements = [
     {
@@ -80,6 +89,25 @@ export function NewsAnnouncement() {
         </span>
       </div>
 
+      {/* Campaign images thumbnails */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {gallery.map((img) => (
+          <button
+            key={img.url}
+            type="button"
+            onClick={() => setZoomImg(img.url)}
+            className="group relative overflow-hidden rounded-lg border border-primary/30 bg-card/60 hover:border-primary/60 transition-colors"
+          >
+            <img
+              src={img.url}
+              alt={img.alt}
+              loading="lazy"
+              className="w-full h-24 sm:h-32 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </button>
+        ))}
+      </div>
+
       {/* Timeline items */}
       <div className="space-y-3">
         {visibleItems.map((announcement) => (
@@ -94,6 +122,7 @@ export function NewsAnnouncement() {
           </div>
         ))}
       </div>
+
 
       {/* Expand/Collapse */}
       {rest.length > 0 && (
@@ -113,6 +142,20 @@ export function NewsAnnouncement() {
           )}
         </button>
       )}
+
+      {/* Zoom dialog */}
+      <Dialog open={!!zoomImg} onOpenChange={(o) => !o && setZoomImg(null)}>
+        <DialogContent className="max-w-[95vw] sm:max-w-4xl p-2 bg-background/95 border-primary/40">
+          {zoomImg && (
+            <img
+              src={zoomImg}
+              alt="zoom"
+              className="w-full h-auto max-h-[85vh] object-contain rounded"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
+
