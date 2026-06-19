@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
-import { Trash2 } from "lucide-react";
+import { Trash2, Upload, X, Loader2 } from "lucide-react";
 import type { Announcement } from "@/hooks/useMessageCenter";
 
 export function AnnouncementsAdmin() {
@@ -15,6 +15,56 @@ export function AnnouncementsAdmin() {
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [priority, setPriority] = useState("0");
+  const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const uploadImage = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "请选择图片文件", variant: "destructive" });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "图片不能超过 10MB", variant: "destructive" });
+      return;
+    }
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "png";
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("announcement-images")
+        .upload(path, file, { contentType: file.type, upsert: false });
+      if (upErr) throw upErr;
+      const { data: signed, error: signErr } = await supabase.storage
+        .from("announcement-images")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (signErr || !signed) throw signErr || new Error("签名失败");
+      setImageUrl(signed.signedUrl);
+      toast({ title: "图片已上传" });
+    } catch (e: any) {
+      toast({ title: "上传失败", description: e?.message || String(e), variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) uploadImage(file);
+  };
+
+  const onPaste = (e: React.ClipboardEvent) => {
+    const file = Array.from(e.clipboardData.items)
+      .find((it) => it.type.startsWith("image/"))
+      ?.getAsFile();
+    if (file) {
+      e.preventDefault();
+      uploadImage(file);
+    }
+  };
 
   const load = async () => {
     const { data } = await supabase.from("announcements").select("*").order("created_at", { ascending: false });
