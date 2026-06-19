@@ -96,17 +96,64 @@ export function AnnouncementsAdmin() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-4 space-y-3">
+      <Card className="p-4 space-y-3" onPaste={onPaste}>
         <h3 className="font-semibold">新建公告</h3>
         <Input placeholder="标题" value={title} onChange={(e) => setTitle(e.target.value)} />
         <Textarea placeholder="内容" rows={4} value={content} onChange={(e) => setContent(e.target.value)} />
-        <Input placeholder="图片链接（可选）" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={onDrop}
+          onClick={() => fileInputRef.current?.click()}
+          className={`relative rounded-lg border-2 border-dashed cursor-pointer transition-colors p-4 text-center ${
+            dragOver ? "border-primary bg-primary/5" : "border-muted-foreground/30 hover:border-primary/60"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadImage(f); e.target.value = ""; }}
+          />
+          {imageUrl ? (
+            <div className="relative">
+              <img src={imageUrl} alt="预览" className="max-h-48 mx-auto rounded" />
+              <Button
+                size="icon"
+                variant="destructive"
+                className="absolute top-1 right-1 h-7 w-7"
+                onClick={(e) => { e.stopPropagation(); setImageUrl(""); }}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          ) : uploading ? (
+            <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted-foreground">
+              <Loader2 className="w-4 h-4 animate-spin" /> 上传中…
+            </div>
+          ) : (
+            <div className="py-6 text-sm text-muted-foreground flex flex-col items-center gap-2">
+              <Upload className="w-6 h-6" />
+              <div>点击 / 拖拽 / 粘贴图片到此处</div>
+              <div className="text-xs">支持 PNG / JPG / GIF / WebP，最大 10MB</div>
+            </div>
+          )}
+        </div>
+        <Input
+          placeholder="或直接粘贴图片链接"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
+        />
+
         <div className="flex items-center gap-2">
           <span className="text-sm">优先级：</span>
           <Input type="number" className="w-24" value={priority} onChange={(e) => setPriority(e.target.value)} />
         </div>
-        <Button onClick={create}>发布公告</Button>
+        <Button onClick={create} disabled={uploading}>发布公告</Button>
       </Card>
+
 
       <div className="space-y-2">
         {list.map((a) => (
