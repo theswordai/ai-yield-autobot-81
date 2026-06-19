@@ -11,6 +11,7 @@ export function NewsAnnouncement() {
   const { t, language } = useI18n();
   const [expanded, setExpanded] = useState(false);
   const [zoomImg, setZoomImg] = useState<string | null>(null);
+  const [detailIds, setDetailIds] = useState<Set<number>>(new Set());
 
   const gallery = [
     { url: ferrariAsset.url, alt: language === 'en' ? 'Campaign 1' : '活动一' },
