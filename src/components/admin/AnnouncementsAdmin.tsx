@@ -72,24 +72,35 @@ export function AnnouncementsAdmin() {
 
   const create = async () => {
     if (!title.trim() || !content.trim()) { toast({ title: "请填写标题和内容" }); return; }
-    const { error } = await supabase.from("announcements").insert({
-      title, content, image_url: imageUrl || null, priority: parseInt(priority) || 0, is_active: true,
-    });
-    if (error) { toast({ title: "创建失败", description: error.message, variant: "destructive" }); return; }
-    setTitle(""); setContent(""); setImageUrl(""); setPriority("0");
-    toast({ title: "公告已创建" });
-    load();
+    try {
+      await callAdminAction("announcement.create", {
+        title, content, image_url: imageUrl || null, priority: parseInt(priority) || 0,
+      });
+      setTitle(""); setContent(""); setImageUrl(""); setPriority("0");
+      toast({ title: "公告已创建" });
+      load();
+    } catch (e: any) {
+      toast({ title: "创建失败", description: e?.message || String(e), variant: "destructive" });
+    }
   };
 
   const toggle = async (a: Announcement) => {
-    await supabase.from("announcements").update({ is_active: !a.is_active }).eq("id", a.id);
-    load();
+    try {
+      await callAdminAction("announcement.update", { id: a.id, fields: { is_active: !a.is_active } });
+      load();
+    } catch (e: any) {
+      toast({ title: "更新失败", description: e?.message || String(e), variant: "destructive" });
+    }
   };
 
   const remove = async (id: string) => {
     if (!confirm("确认删除？")) return;
-    await supabase.from("announcements").delete().eq("id", id);
-    load();
+    try {
+      await callAdminAction("announcement.delete", { id });
+      load();
+    } catch (e: any) {
+      toast({ title: "删除失败", description: e?.message || String(e), variant: "destructive" });
+    }
   };
 
   return (
