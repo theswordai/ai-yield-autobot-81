@@ -16,11 +16,9 @@ export function useIsAdmin() {
         return;
       }
       setLoading(true);
-      const { data } = await supabase
-        .from("admin_wallets")
-        .select("wallet_address")
-        .eq("wallet_address", account.toLowerCase())
-        .maybeSingle();
+      const { data } = await supabase.rpc("is_admin_wallet", {
+        _wallet: account.toLowerCase(),
+      });
       if (!cancelled) {
         setIsAdmin(!!data);
         setLoading(false);

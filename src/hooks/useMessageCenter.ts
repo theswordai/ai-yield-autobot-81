@@ -61,11 +61,8 @@ export function useMessageCenter() {
 
   const loadReads = useCallback(async () => {
     if (!wallet) { setReadIds(new Set()); return; }
-    const { data } = await supabase
-      .from("announcement_reads")
-      .select("announcement_id")
-      .eq("wallet_address", wallet);
-    setReadIds(new Set((data || []).map((r) => r.announcement_id)));
+    const { data } = await supabase.rpc("get_read_announcement_ids", { _wallet: wallet });
+    setReadIds(new Set((data || []) as string[]));
   }, [wallet]);
 
   const loadInbox = useCallback(async () => {
