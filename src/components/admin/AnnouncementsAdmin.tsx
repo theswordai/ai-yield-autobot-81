@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { Trash2, Upload, X, Loader2 } from "lucide-react";
 import type { Announcement } from "@/hooks/useMessageCenter";
+import { callAdminAction } from "@/lib/adminAction";
 
 export function AnnouncementsAdmin() {
   const [list, setList] = useState<Announcement[]>([]);
