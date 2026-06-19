@@ -11,6 +11,7 @@ export function NewsAnnouncement() {
   const { t, language } = useI18n();
   const [expanded, setExpanded] = useState(false);
   const [zoomImg, setZoomImg] = useState<string | null>(null);
+  const [detailIds, setDetailIds] = useState<Set<number>>(new Set());
 
   const gallery = [
     { url: ferrariAsset.url, alt: language === 'en' ? 'Campaign 1' : '活动一' },
@@ -90,6 +91,15 @@ export function NewsAnnouncement() {
   const rest = announcements.slice(1);
   const visibleItems = expanded ? announcements : [latest];
 
+  const toggleDetail = (id: number) => {
+    setDetailIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   return (
     <div className="rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm p-6">
       {/* Header */}
@@ -121,17 +131,40 @@ export function NewsAnnouncement() {
 
       {/* Timeline items */}
       <div className="space-y-3">
-        {visibleItems.map((announcement) => (
-          <div
-            key={announcement.id}
-            className="relative pl-4 border-l-2 border-primary/60 rounded-r-lg bg-card/60 p-4 hover:bg-card/80 transition-colors"
-          >
-          
-            <p className="text-sm font-medium text-foreground leading-relaxed">
-              {language === 'en' ? announcement.titleEn : announcement.title}
-            </p>
-          </div>
-        ))}
+        {visibleItems.map((announcement) => {
+          const isOpen = detailIds.has(announcement.id);
+          return (
+            <div
+              key={announcement.id}
+              className="relative pl-4 border-l-2 border-primary/60 rounded-r-lg bg-card/60 p-4 hover:bg-card/80 transition-colors"
+            >
+              <p className="text-sm font-medium text-foreground leading-relaxed">
+                {language === 'en' ? announcement.titleEn : announcement.title}
+              </p>
+              <button
+                onClick={() => toggleDetail(announcement.id)}
+                className="mt-2 flex items-center gap-1 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+              >
+                {isOpen ? (
+                  <>
+                    <ChevronUp className="w-3 h-3" />
+                    {language === 'en' ? 'Collapse' : '收起'}
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-3 h-3" />
+                    {language === 'en' ? 'View Details' : '查看详情'}
+                  </>
+                )}
+              </button>
+              {isOpen && (
+                <div className="mt-3 text-xs text-muted-foreground leading-relaxed whitespace-pre-line">
+                  {language === 'en' ? announcement.contentEn : announcement.content}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
 
