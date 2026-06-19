@@ -2,29 +2,26 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { useWeb3 } from "@/hooks/useWeb3";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { AnnouncementsAdmin } from "@/components/admin/AnnouncementsAdmin";
 import { InboxAdmin } from "@/components/admin/InboxAdmin";
 import { SupportAdmin } from "@/components/admin/SupportAdmin";
 import { ChatBotAdmin } from "@/components/admin/ChatBotAdmin";
+import { callAdminAction } from "@/lib/adminAction";
 
 export default function Admin() {
   const { isAdmin, loading, account } = useIsAdmin();
   const { connect } = useWeb3();
-  const [bootstrapAddr, setBootstrapAddr] = useState("");
 
   const bootstrap = async () => {
-    const addr = bootstrapAddr.trim().toLowerCase();
-    if (!/^0x[a-f0-9]{40}$/.test(addr)) { toast({ title: "请输入有效钱包地址" }); return; }
-    const { count } = await supabase.from("admin_wallets").select("*", { count: "exact", head: true });
-    if ((count || 0) > 0) { toast({ title: "已有管理员，无法通过此入口添加", variant: "destructive" }); return; }
-    const { error } = await supabase.from("admin_wallets").insert({ wallet_address: addr, note: "first admin" });
-    if (error) { toast({ title: "添加失败", description: error.message, variant: "destructive" }); return; }
-    toast({ title: "已添加为首位管理员，请刷新页面" });
+    try {
+      await callAdminAction("admin.bootstrap");
+      toast({ title: "已添加为首位管理员，请刷新页面" });
+    } catch (e: any) {
+      toast({ title: "操作失败", description: e?.message || String(e), variant: "destructive" });
+    }
   };
 
   return (
