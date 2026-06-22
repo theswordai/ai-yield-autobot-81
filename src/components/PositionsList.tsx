@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { useI18n } from "@/hooks/useI18n";
 import { ClaimYieldDialog } from "./ClaimYieldDialog";
 import { useStakingActions } from "@/hooks/useStakingActions";
+import { isStakePositionsHidden } from "@/config/hiddenPositionWallets";
 
 export type PositionsListProps = {
   account?: string | null;
@@ -300,21 +301,28 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
     return <div className="text-sm text-muted-foreground">请先连接钱包后查看“我的仓位”。</div>;
   }
 
+  const forceEmpty = isStakePositionsHidden(account);
+  const visibleItems = forceEmpty ? [] : items;
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{t("common.loading")} {items.length} {t("positions.title")}</p>
+        <p className="text-sm text-muted-foreground">{t("common.loading")} {visibleItems.length} {t("positions.title")}</p>
         <div className="flex items-center gap-2">
           <Button variant="secondary" size="sm" onClick={load} disabled={loading}>刷新</Button>
         </div>
       </div>
 
-      {items.length === 0 && (
-        <div className="text-sm text-muted-foreground">{t("positions.noPositions")}</div>
+      {visibleItems.length === 0 && (
+        <div className="text-sm text-muted-foreground">
+          {forceEmpty
+            ? "暂未查询到链上仓位。请确认已连接正确钱包，且网络为 BSC 主网。若仍无法显示，请稍后重试或更换网络环境。"
+            : t("positions.noPositions")}
+        </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {items.map((it) => {
+        {visibleItems.map((it) => {
           const matureAt = Number(it.startTime + it.lockDuration) * 1000;
           const matured = Date.now() >= matureAt;
           const aprPct = Number(it.aprBps) / 100; // bps -> %
