@@ -99,7 +99,10 @@ export function AnnouncementPopup() {
               {current.content}
             </p>
           </div>
-          <div className="flex justify-end px-5 pb-4">
+          <div className="flex flex-wrap justify-end gap-2 px-5 pb-4">
+            <Button variant="outline" size="sm" onClick={handleDismissAll}>
+              下次不再提醒
+            </Button>
             <Button onClick={handleClose}>我知道了</Button>
           </div>
         </div>
