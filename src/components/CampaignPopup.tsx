@@ -207,6 +207,16 @@ export default function CampaignPopup() {
             />
           ))}
         </div>
+
+        {/* Don't show again */}
+        <div className="flex justify-center mt-3">
+          <button
+            onClick={dismissForever}
+            className="text-xs text-white/80 hover:text-white underline underline-offset-2"
+          >
+            我知道了，下次不再提醒
+          </button>
+        </div>
       </div>
     </div>
   );
