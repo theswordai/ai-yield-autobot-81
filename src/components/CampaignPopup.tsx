@@ -59,12 +59,15 @@ function CornerSparkle({ className }: { className: string }) {
   );
 }
 
+const DISMISS_KEY = "campaign_popup_dismissed_v1";
+
 export default function CampaignPopup() {
   const [open, setOpen] = useState(false);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" });
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem(DISMISS_KEY) === "1") return;
     const t = setTimeout(() => setOpen(true), 400);
     return () => clearTimeout(t);
   }, []);
@@ -75,6 +78,11 @@ export default function CampaignPopup() {
     emblaApi.on("select", onSelect);
     onSelect();
   }, [emblaApi]);
+
+  const dismissForever = () => {
+    try { localStorage.setItem(DISMISS_KEY, "1"); } catch {}
+    setOpen(false);
+  };
 
   if (!open) return null;
 
