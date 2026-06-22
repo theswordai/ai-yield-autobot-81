@@ -20,6 +20,17 @@ export function AnnouncementPopup() {
     setClosed((prev) => new Set(prev).add(current.id));
   };
 
+  const handleDismissAll = async () => {
+    for (const a of queue) {
+      await markAnnouncementRead(a.id);
+    }
+    setClosed((prev) => {
+      const next = new Set(prev);
+      queue.forEach((a) => next.add(a.id));
+      return next;
+    });
+  };
+
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 py-6 animate-fade-in"
