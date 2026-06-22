@@ -20,6 +20,17 @@ export function AnnouncementPopup() {
     setClosed((prev) => new Set(prev).add(current.id));
   };
 
+  const handleDismissAll = async () => {
+    for (const a of queue) {
+      await markAnnouncementRead(a.id);
+    }
+    setClosed((prev) => {
+      const next = new Set(prev);
+      queue.forEach((a) => next.add(a.id));
+      return next;
+    });
+  };
+
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 py-6 animate-fade-in"
@@ -88,7 +99,10 @@ export function AnnouncementPopup() {
               {current.content}
             </p>
           </div>
-          <div className="flex justify-end px-5 pb-4">
+          <div className="flex flex-wrap justify-end gap-2 px-5 pb-4">
+            <Button variant="outline" size="sm" onClick={handleDismissAll}>
+              下次不再提醒
+            </Button>
             <Button onClick={handleClose}>我知道了</Button>
           </div>
         </div>
