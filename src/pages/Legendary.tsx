@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Crown, Wallet, ListChecks, Users, Gift, Layers, Sparkles, ShieldCheck } from "lucide-react";
+import { Crown, Wallet, ListChecks, Users, Gift, Layers, Sparkles, ShieldCheck, Vault } from "lucide-react";
+import { VaultTab } from "@/components/legendary/VaultTab";
 import goldBarsLogo from "@/assets/gold-bars-logo.png";
 import { PageWrapper } from "@/components/PageWrapper";
 import { Navbar } from "@/components/Navbar";
