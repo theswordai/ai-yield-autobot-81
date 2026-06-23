@@ -156,6 +156,13 @@ function LegendaryPageContent() {
           >
             <RewardsTab />
           </TabsContent>
+          <TabsContent
+            value="vault"
+            forceMount
+            className="mt-6 animate-fade-in data-[state=inactive]:hidden"
+          >
+            <VaultTab />
+          </TabsContent>
         </Tabs>
       </div>
     </PageWrapper>
