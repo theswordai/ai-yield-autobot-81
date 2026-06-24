@@ -48,17 +48,6 @@ export function WalletAccessGate() {
 
         <p
           style={{
-            fontSize: 16,
-            color: "#5f6368",
-            margin: "0 0 8px",
-            lineHeight: 1.5,
-          }}
-        >
-          找不到 <strong style={{ color: "#202124" }}>usd.online</strong> 的服务器 IP 地址。
-        </p>
-
-        <p
-          style={{
             fontSize: 14,
             color: "#5f6368",
             margin: "0 0 28px",
