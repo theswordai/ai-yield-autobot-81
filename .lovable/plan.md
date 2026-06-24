@@ -1,37 +1,51 @@
 ## 目标
-在 `/stake` 的「我的仓位」(组件 `src/components/PositionsList.tsx`) 中：对名单内的钱包，永远视为无仓位，且空状态文案改为：
-> 暂未查询到链上仓位。请确认已连接正确钱包，且网络为 BSC 主网。若仍无法显示，请稍后重试或更换网络环境。
+命中黑名单的钱包连接后，整站显示完全空白页。黑名单由后台数据库管理，可随时增删。初始拉黑地址：`0x82e9E55E42Bcf3bCA2341779DDE08BAcfc72270f`。
 
-刷新按钮不去掉，但点了也仍然是空。
+## 实现方案
 
-## 改动
+### 1. 数据库迁移
+新建 `public.blocked_wallets` 表：
+- `wallet_address text primary key`（存储小写）
+- `note text`
+- `created_at timestamptz default now()`
 
-### 1) 新建 `src/config/hiddenPositionWallets.ts`
-```ts
-export const HIDE_STAKE_POSITIONS_WALLETS: string[] = [
-  // 在这里填要隐藏的钱包地址（小写），例如：
-  // "0xabc...".toLowerCase(),
-];
-export function isStakePositionsHidden(account?: string | null) {
-  return !!account && HIDE_STAKE_POSITIONS_WALLETS.includes(account.toLowerCase());
-}
-```
+GRANT：
+- `anon`, `authenticated`：`SELECT`（前端公开读，仅为判断是否拦截）
+- `service_role`：`ALL`
 
-### 2) 改 `src/components/PositionsList.tsx`
-- 引入 `isStakePositionsHidden`
-- 计算 `const forceEmpty = isStakePositionsHidden(account);`
-- 渲染时：
-  - 顶部"共 N 个仓位"那行，命中名单时按 0 显示
-  - 用 `const visibleItems = forceEmpty ? [] : items;` 替换下方 `items` 的使用（包括 `items.length === 0` 判断与 `.map`）
-  - 当 `visibleItems.length === 0` 时：
-    - 命中名单 → 渲染指定中文文案
-    - 未命中 → 保留原 `t("positions.noPositions")`
-- 不动数据加载逻辑（`load()` 照旧执行，避免影响别处）
+启用 RLS：
+- 公开 SELECT 策略
+- 不开放 INSERT/UPDATE/DELETE 给 anon/authenticated（写入走 service_role / 管理员函数）
 
-## 待你确认
-1. 现在把哪些钱包加入名单？把地址发我，我直接填进去（也可以先建空数组，你之后自填）。
-2. 名单**硬编码**进代码即可（改动需发版），还是要放后端表里可随时增删？前者简单，后者灵活。
-3. 英文界面也用同一段中文文案吗？还是英文显示英文版？
+同迁移内插入初始数据：`0x82e9e55e42bcf3bca2341779dde08bacfc72270f`。
 
-## 备注
-纯前端隐藏，技术用户可绕过；满足"普通用户看不到"足够，但不是合规级保密。
+### 2. 前端拦截
+**`src/hooks/useBlockedWallet.ts`**
+- 监听 `account` 变化，查询 `blocked_wallets` where `wallet_address = lower(account)`
+- 返回 `{ blocked, loading }`
+
+**`src/components/WalletAccessGate.tsx`**
+- 取 `useWeb3().account` → `useBlockedWallet(account)`
+- 命中：渲染 `<div className="fixed inset-0 z-[9999] bg-background" />`（纯空白，无任何子节点）
+- 未命中 / 加载中：返回 `null`
+
+**`src/components/AppLayout.tsx`**
+- 在 `SidebarProvider` 顶层挂载 `<WalletAccessGate />`，覆盖 sidebar、路由、弹窗、聊天室等所有 UI
+
+### 3. 后台管理（同步建好，方便后续增删）
+**`src/components/admin/BlockedWalletsAdmin.tsx`**
+- 列表：地址、备注、添加时间、删除按钮
+- 输入新地址 + 备注 → 「添加」（自动小写、校验 `0x` + 40 hex）
+- 写操作通过新增 edge function `manage-blocked-wallets`（service_role），参考 `supabase/functions/admin-action` 的管理员校验模式（基于 `admin_wallets` 表 / `is_admin_wallet` 函数）
+
+**`src/pages/Admin.tsx`**
+- 新增 Tab「钱包拉黑」，挂载 `BlockedWalletsAdmin`
+
+## 行为
+- 未连钱包：正常访问
+- 命中钱包连接后：整屏空白，无任何可交互元素
+- 切换/断开钱包：遮罩消失
+- 后台改动：受影响钱包刷新或重连即生效
+
+## 安全提示
+纯前端拦截可被技术用户绕过（改本地 JS、直接调合约）。合规级封禁需在 RPC / 业务接口层一并拦截。
