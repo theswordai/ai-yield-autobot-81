@@ -68,7 +68,6 @@ export function BlockedWalletsAdmin() {
   return (
     <div className="space-y-4">
       <Card className="p-4 space-y-3">
-        <h3 className="font-semibold">新增拉黑地址</h3>
         <div className="flex flex-col md:flex-row gap-2">
           <Input
             placeholder="0x..."
@@ -85,13 +84,9 @@ export function BlockedWalletsAdmin() {
             {busy ? "提交中..." : "添加"}
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground">
-          被拉黑的钱包连接网站后将看到完全空白页。
-        </p>
       </Card>
 
       <Card className="p-4">
-        <h3 className="font-semibold mb-3">当前黑名单（{rows.length}）</h3>
         {loading ? (
           <p className="text-sm text-muted-foreground">加载中...</p>
         ) : rows.length === 0 ? (
