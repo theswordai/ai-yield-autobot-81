@@ -21,11 +21,25 @@ export function WalletConnector() {
 
   const short = (addr?: string | null) => (addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : "");
 
+  const isWalletBlocked = (addr?: string | null): boolean => {
+    if (!addr) return false;
+    try {
+      const raw = localStorage.getItem("blocked_wallets_cache");
+      if (!raw) return false;
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) && arr.map((s: string) => s.toLowerCase()).includes(addr.toLowerCase());
+    } catch {
+      return false;
+    }
+  };
+
   const handleSelect = async (prov: any) => {
     try {
-      await connectWith(prov);
+      const addr = await connectWith(prov);
       setOpen(false);
-      toast.success(t('wallet.connected'));
+      if (!isWalletBlocked(addr as any)) {
+        toast.success(t('wallet.connected'));
+      }
     } catch (e: any) {
       const msg = e?.shortMessage || e?.message || "";
       if (e?.code === 4001 || /reject|denied/i.test(msg)) {
