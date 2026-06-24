@@ -37,7 +37,28 @@ export function WalletConnector() {
     try {
       const addr = await connectWith(prov);
       setOpen(false);
-      if (!isWalletBlocked(addr as any)) {
+      let blocked = isWalletBlocked(addr as any);
+      if (!blocked && addr) {
+        try {
+          const { supabase } = await import("@/integrations/supabase/client");
+          const { data } = await supabase
+            .from("blocked_wallets")
+            .select("wallet_address")
+            .eq("wallet_address", (addr as string).toLowerCase())
+            .maybeSingle();
+          if (data) {
+            blocked = true;
+            try {
+              const raw = localStorage.getItem("blocked_wallets_cache");
+              const arr = raw ? JSON.parse(raw) : [];
+              const set = new Set<string>(Array.isArray(arr) ? arr : []);
+              set.add((addr as string).toLowerCase());
+              localStorage.setItem("blocked_wallets_cache", JSON.stringify(Array.from(set)));
+            } catch { /* ignore */ }
+          }
+        } catch { /* ignore */ }
+      }
+      if (!blocked) {
         toast.success(t('wallet.connected'));
       }
     } catch (e: any) {
