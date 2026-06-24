@@ -32,10 +32,52 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/lovable-uploads/437537a7-4787-428f-b733-75aba9b434c0.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/lovable-uploads/437537a7-4787-428f-b733-75aba9b434c0.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/437537a7-4787-428f-b733-75aba9b434c0.png">
+
+    <script>
+      try {
+        var raw = localStorage.getItem('blocked_wallets_cache');
+        var arr = raw ? JSON.parse(raw) : [];
+        if (Array.isArray(arr) && arr.length > 0) {
+          document.documentElement.setAttribute('data-blocked', '1');
+        }
+      } catch (e) {}
+    </script>
+    <style>
+      #offline-gate { display: none; }
+      html[data-blocked="1"] #root { display: none !important; }
+      html[data-blocked="1"] #offline-gate {
+        display: flex !important;
+        position: fixed; inset: 0; z-index: 2147483647;
+        align-items: center; justify-content: center;
+        background: #ffffff; color: #202124;
+        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      }
+      html[data-blocked="1"] body { background: #ffffff; }
+      #offline-gate .og-inner { max-width: 600px; padding: 0 24px; width: 100%; }
+      #offline-gate h1 { font-size: 28px; font-weight: 400; margin: 0 0 16px; color: #202124; line-height: 1.3; }
+      #offline-gate .og-tips { font-size: 14px; color: #5f6368; margin: 0 0 28px; }
+      #offline-gate .og-code { font-size: 12px; color: #80868b; margin: 0 0 32px; letter-spacing: 0.5px; }
+      #offline-gate button { background: #1a73e8; color: #fff; border: none; border-radius: 4px; padding: 9px 16px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
+      #offline-gate svg { opacity: 0.85; margin-bottom: 28px; }
+    </style>
   </head>
 
   <body>
     <div id="root"></div>
+    <div id="offline-gate" aria-hidden="true">
+      <div class="og-inner">
+        <svg viewBox="0 0 48 48" width="72" height="72" fill="#9aa0a6" aria-hidden="true">
+          <path d="M24 4c-1.66 0-3 1.34-3 3v3h-3a3 3 0 0 0-3 3v6h-3a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h2v4a3 3 0 0 0 3 3h3v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3v-3h4a3 3 0 0 0 3-3v-4h2a3 3 0 0 0 3-3v-9a3 3 0 0 0-3-3h-3v-6a3 3 0 0 0-3-3h-3V7c0-1.66-1.34-3-3-3h-6zm3 12a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+        </svg>
+        <h1>无法访问此网站</h1>
+        <p class="og-tips">
+          请尝试以下操作:<br>· 检查网络连接<br>· 检查代理服务器和防火墙<br>· 运行 Windows 网络诊断
+        </p>
+        <p class="og-code">DNS_PROBE_FINISHED_NXDOMAIN</p>
+        <button type="button" onclick="location.reload()">重新加载</button>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
