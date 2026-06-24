@@ -19,10 +19,25 @@ import { HelmetProvider } from 'react-helmet-async'
 
 console.log('Main.tsx loading - React available:', !!React);
 
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
-  </React.StrictMode>
-);
+// Hard block: if this device has ever connected a blocked wallet, do not mount React.
+function isDeviceBlocked(): boolean {
+  try {
+    const raw = localStorage.getItem('blocked_wallets_cache');
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) && arr.length > 0;
+  } catch {
+    return false;
+  }
+}
+
+if (isDeviceBlocked()) {
+  document.documentElement.setAttribute('data-blocked', '1');
+} else {
+  createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
+    </React.StrictMode>
+  );
+}

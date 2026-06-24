@@ -1,27 +1,53 @@
-## 问题
-拉黑钱包加载页面时会闪现半秒网站内容再黑屏，因为 `useBlockedWallet` 通过异步请求 Supabase 查询黑名单，期间 `blocked=false`,所以页面短暂可见。
+## 目标
+设备一旦用过被拉黑的钱包地址，之后**刷新或重新访问都直接显示 Chrome 断网页面**，React 应用完全不挂载，与钱包当前是否连接、是否切到其他地址、甚至是否注入钱包都无关。只有清浏览器数据才能恢复。
 
-## 解决方案
-在 `useBlockedWallet` 和 `WalletAccessGate` 增加本地缓存 + 同步初始化,做到"已知拉黑的钱包"在 React 首次渲染时就立刻黑屏,无任何闪烁。
+## 核心机制
+利用已有的 `localStorage.blocked_wallets_cache`（用户首次连接被拉黑时由 `useBlockedWallet` / `WalletConnector` 写入）。在 React 启动前，同步检查：
+- 缓存非空 → 永久断网页
+- 缓存为空 → 正常加载，由现有运行时 Gate 兜底首次拉黑场景
 
-### 修改 `src/hooks/useBlockedWallet.ts`
-1. 用 `localStorage` 缓存已确认拉黑的钱包地址列表(key: `blocked_wallets_cache`)。
-2. `useState` 初始化函数同步读取缓存:若当前 `account` 在缓存中,`blocked` 初始值直接为 `true`(首帧就是 true,无闪烁)。
-3. 异步请求 Supabase 后:
-   - 若返回拉黑 → 写入缓存,`setBlocked(true)`。
-   - 若返回未拉黑 → 从缓存移除该地址,`setBlocked(false)`(避免误锁正常用户)。
-4. 暴露 `loading` 状态(已存在)。
+## 实施
 
-### 修改 `src/components/WalletAccessGate.tsx`
-渲染条件改为:`blocked || (loading && cachedBlocked)`,即:
-- 已知拉黑(缓存命中) → 立刻黑屏,首帧就遮住。
-- 正常钱包 → 不闪黑屏(loading 期间不遮罩,因为缓存未命中)。
+### 1. `index.html` — 首屏同步拦截
+在 `<head>` 末尾加内联脚本（不依赖任何打包资源）：
 
-### 效果
-- 已拉黑钱包第二次进入网站:首帧即黑屏,完全无闪烁。
-- 首次拉黑后当前会话:Supabase 返回后才黑屏(仍有短暂可见,这是首次不可避免)。
-- 正常钱包:零影响,不会出现黑屏闪烁。
+```html
+<script>
+  try {
+    var raw = localStorage.getItem('blocked_wallets_cache');
+    var arr = raw ? JSON.parse(raw) : [];
+    if (Array.isArray(arr) && arr.length > 0) {
+      document.documentElement.setAttribute('data-blocked','1');
+    }
+  } catch(e){}
+</script>
+<style>
+  html[data-blocked="1"] #root { display:none !important; }
+  html[data-blocked="1"] #offline-gate { display:flex !important; }
+  #offline-gate { display:none; }
+</style>
+```
 
-### 不修改
-- 后端逻辑、RLS 策略、Admin 后台。
-- 仅前端展示层缓存,不影响安全性(真正的访问控制依然在 Supabase RLS / Edge Function)。
+在 `<body>` 里、`<div id="root">` 旁边新增静态 HTML `<div id="offline-gate">`，内容是 Chrome 风格断网页（与 `WalletAccessGate.tsx` 视觉一致：白底、灰色 dino SVG、"无法访问此网站"、操作建议、`DNS_PROBE_FINISHED_NXDOMAIN`、"重新加载"按钮 `onclick="location.reload()"`）。
+
+### 2. `src/main.tsx` — 兜底
+在 `createRoot(...).render(<App/>)` 之前再次同步检查 `blocked_wallets_cache`，命中则 `return`，根本不渲染 React。这样即便有人禁用内联 `<style>`，应用层也不会启动、不会发任何业务请求。
+
+### 3. 现有运行时 Gate 保留
+`WalletAccessGate.tsx` 仍处理**首次拉黑**（缓存还没写入）的场景：用户连接钱包 → `useBlockedWallet` 查 Supabase → 命中后写缓存并显示黑屏。下次刷新就进入 step 1 的永久断网路径。
+
+### 4. 不需要改动
+- `useBlockedWallet.ts`、`WalletConnector.tsx`：缓存写入逻辑已就绪。
+- Supabase RLS / Edge Function：真正的访问控制不变。
+
+## 效果矩阵
+
+| 场景 | 行为 |
+|---|---|
+| 全新设备，钱包未被拉黑 | 正常 |
+| 全新设备，首次连接被拉黑的钱包 | 运行时 Gate 黑屏，缓存写入 |
+| 之后任意刷新（含切换钱包、断开钱包、不装钱包） | index.html 同步命中 → 永久断网页 |
+| 清浏览器数据 | 缓存清空，恢复正常（这是用户主动操作） |
+
+## 风险提示
+这是前端体验层封锁，技术用户清 localStorage 即可绕过；链上/数据库级的真实拦截依然依赖 Supabase RLS 与合约层。
