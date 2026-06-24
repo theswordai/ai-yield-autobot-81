@@ -21,11 +21,46 @@ export function WalletConnector() {
 
   const short = (addr?: string | null) => (addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : "");
 
+  const isWalletBlocked = (addr?: string | null): boolean => {
+    if (!addr) return false;
+    try {
+      const raw = localStorage.getItem("blocked_wallets_cache");
+      if (!raw) return false;
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) && arr.map((s: string) => s.toLowerCase()).includes(addr.toLowerCase());
+    } catch {
+      return false;
+    }
+  };
+
   const handleSelect = async (prov: any) => {
     try {
-      await connectWith(prov);
+      const addr = await connectWith(prov);
       setOpen(false);
-      toast.success(t('wallet.connected'));
+      let blocked = isWalletBlocked(addr as any);
+      if (!blocked && addr) {
+        try {
+          const { supabase } = await import("@/integrations/supabase/client");
+          const { data } = await supabase
+            .from("blocked_wallets")
+            .select("wallet_address")
+            .eq("wallet_address", (addr as string).toLowerCase())
+            .maybeSingle();
+          if (data) {
+            blocked = true;
+            try {
+              const raw = localStorage.getItem("blocked_wallets_cache");
+              const arr = raw ? JSON.parse(raw) : [];
+              const set = new Set<string>(Array.isArray(arr) ? arr : []);
+              set.add((addr as string).toLowerCase());
+              localStorage.setItem("blocked_wallets_cache", JSON.stringify(Array.from(set)));
+            } catch { /* ignore */ }
+          }
+        } catch { /* ignore */ }
+      }
+      if (!blocked) {
+        toast.success(t('wallet.connected'));
+      }
     } catch (e: any) {
       const msg = e?.shortMessage || e?.message || "";
       if (e?.code === 4001 || /reject|denied/i.test(msg)) {

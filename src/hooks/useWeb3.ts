@@ -160,7 +160,8 @@ export function useWeb3() {
     const accs = await p.send("eth_requestAccounts", []);
     let s = await p.getSigner();
     setSigner(s);
-    setAccount(accs[0] ?? null);
+    const connectedAddr = accs[0] ?? null;
+    setAccount(connectedAddr);
     const n = await p.getNetwork();
     let cid = Number(n.chainId);
     setChainId(cid);
@@ -206,6 +207,7 @@ export function useWeb3() {
     (extProvider as any)?.on?.("accountsChanged", handleAccountsChanged as any);
     (extProvider as any)?.on?.("chainChanged", handleChainChanged as any);
 
+    return connectedAddr;
   }, [ensureBSC]);
 
   const disconnect = useCallback(() => {
