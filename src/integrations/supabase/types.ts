@@ -97,6 +97,24 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_wallets: {
+        Row: {
+          created_at: string
+          note: string | null
+          wallet_address: string
+        }
+        Insert: {
+          created_at?: string
+          note?: string | null
+          wallet_address: string
+        }
+        Update: {
+          created_at?: string
+          note?: string | null
+          wallet_address?: string
+        }
+        Relationships: []
+      }
       chat_bot_config: {
         Row: {
           enabled: boolean
