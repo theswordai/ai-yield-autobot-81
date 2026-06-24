@@ -58,9 +58,7 @@ export function WalletConnector() {
           }
         } catch { /* ignore */ }
       }
-      if (!blocked) {
-        toast.success(t('wallet.connected'));
-      }
+      // connected toast removed per request
     } catch (e: any) {
       const msg = e?.shortMessage || e?.message || "";
       if (e?.code === 4001 || /reject|denied/i.test(msg)) {
