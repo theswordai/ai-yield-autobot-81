@@ -2,9 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Contract, formatUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { USDT_ADDRESS, USDV_ADDRESS, USDV_DECIMALS, USDT_DECIMALS } from "@/config/contracts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, ArrowDown, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
@@ -172,26 +171,7 @@ export function DexSwap() {
   return (
     <div className="space-y-6">
       <Card className="hologram max-w-lg mx-auto border border-primary/20 shadow-[0_0_30px_hsl(var(--primary)/0.15)]">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 flex items-center justify-center">
-                <ArrowDown className="h-4 w-4 text-primary" />
-              </div>
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold">
-                固定比例兑换
-              </span>
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-xs">第 {round.toString()} 轮</Badge>
-              <Button variant="ghost" size="icon" onClick={fetchAll} disabled={loading} className="h-8 w-8 hover:bg-primary/10">
-                <RefreshCw className={`h-4 w-4 text-muted-foreground ${loading ? "animate-spin" : ""}`} />
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-6">
           {/* From */}
           <div className="p-4 bg-secondary/40 backdrop-blur-sm rounded-xl space-y-2 border border-border/30">
             <div className="flex justify-between items-center">
