@@ -4,8 +4,7 @@ import { useWeb3 } from "@/hooks/useWeb3";
 import { USDT_ADDRESS, USDV_ADDRESS, USDV_DECIMALS, USDT_DECIMALS } from "@/config/contracts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Loader2, ArrowDown, RefreshCw } from "lucide-react";
+import { Loader2, ArrowDown } from "lucide-react";
 import { toast } from "sonner";
 
 const SELL_ROUND_ADDRESS = "0x4b44b7c48b61cee977fec245bb79b5c4779a284c";
