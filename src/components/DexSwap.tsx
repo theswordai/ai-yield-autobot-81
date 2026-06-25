@@ -4,8 +4,7 @@ import { useWeb3 } from "@/hooks/useWeb3";
 import { USDT_ADDRESS, USDV_ADDRESS, USDV_DECIMALS, USDT_DECIMALS } from "@/config/contracts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Loader2, ArrowDown, RefreshCw } from "lucide-react";
+import { Loader2, ArrowDown } from "lucide-react";
 import { toast } from "sonner";
 
 const SELL_ROUND_ADDRESS = "0x4b44b7c48b61cee977fec245bb79b5c4779a284c";
@@ -214,27 +213,6 @@ export function DexSwap() {
                 <img src={`https://tokens.pancakeswap.finance/images/${USDT_ADDRESS}.png`} alt="USDT" className="h-5 w-5 rounded-full" />
                 <span className="font-semibold">USDT</span>
               </div>
-            </div>
-          </div>
-
-          {/* Info */}
-          <div className="p-3 bg-background/40 rounded-lg border border-border/30 text-xs space-y-1.5">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">固定价格</span>
-              <span className="font-medium">1 USDV = {priceDisplay} USDT</span>
-            </div>
-            <Separator className="my-1 bg-border/40" />
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">当前轮次</span>
-              <span className="font-medium">第 {round.toString()} 轮</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">兑换池 USDT 储备</span>
-              <span className="font-medium">{fmt(reserve, USDT_DECIMALS, 2)} USDT</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">每地址每轮限</span>
-              <span className="font-medium">1 次</span>
             </div>
           </div>
 
