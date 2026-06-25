@@ -217,27 +217,6 @@ export function DexSwap() {
             </div>
           </div>
 
-          {/* Info */}
-          <div className="p-3 bg-background/40 rounded-lg border border-border/30 text-xs space-y-1.5">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">固定价格</span>
-              <span className="font-medium">1 USDV = {priceDisplay} USDT</span>
-            </div>
-            <Separator className="my-1 bg-border/40" />
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">当前轮次</span>
-              <span className="font-medium">第 {round.toString()} 轮</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">兑换池 USDT 储备</span>
-              <span className="font-medium">{fmt(reserve, USDT_DECIMALS, 2)} USDT</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">每地址每轮限</span>
-              <span className="font-medium">1 次</span>
-            </div>
-          </div>
-
           {/* Status / action */}
           {!account ? (
             <Button disabled className="w-full h-12 text-base font-semibold">请先连接钱包</Button>
