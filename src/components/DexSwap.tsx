@@ -239,9 +239,6 @@ export function DexSwap() {
             </Button>
           )}
 
-          <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
-            固定价格兑换，无滑点 · 每地址每轮限兑换 1 次 · 需在白名单内
-          </p>
         </CardContent>
       </Card>
     </div>
