@@ -216,6 +216,13 @@ export function DexSwap() {
             </div>
           </div>
 
+          {/* Rate */}
+          <div className="text-center text-xs text-muted-foreground">
+            1 USDV ≈ {priceDisplay} USDT
+          </div>
+
+
+
           {/* Status / action */}
           {!account ? (
             <Button disabled className="w-full h-12 text-base font-semibold">请先连接钱包</Button>
