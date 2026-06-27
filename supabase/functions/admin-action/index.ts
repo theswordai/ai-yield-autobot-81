@@ -123,6 +123,15 @@ Deno.serve(async (req) => {
     return json({ ok: true });
   }
 
+  if (op === "blocked.list") {
+    const { data, error } = await supabase
+      .from("blocked_wallets")
+      .select("wallet_address, note, created_at")
+      .order("created_at", { ascending: false });
+    if (error) return json({ error: error.message }, 500);
+    return json({ ok: true, rows: data ?? [] });
+  }
+
   if (op === "blocked.add") {
     const Schema = z.object({
       wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
