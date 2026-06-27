@@ -1,33 +1,47 @@
-## 问题分析
-如果超级管理员地址硬编码在前端 `.ts` 文件里，任何能查看源代码的技术人员都能直接看到该地址，无法隐藏。
+## 方案 A：前端 + 边缘函数全部中性化
 
-## 安全方案：三层隐蔽
+目标：仓库里搜 `block / 拉黑 / 黑名单` 只剩数据库表名 `blocked_wallets` 一处（在边缘函数 `.from()` 里），其余代码看起来像通用"访问条目/私信收件人"管理。
 
-### 1. 前端零痕迹 —— 彻底移除常规入口
-- `src/pages/Admin.tsx` 中完全删除 "wallet" Tab 及其相关组件引用。
-- 普通管理员进入 `/admin` 后，看不到任何与"拉黑/封禁"相关的 UI，代码层面也没有明显的黑名单管理字样。
+## 命名映射
 
-### 2. 独立隐蔽路由 —— 入口与文件名均中性化
-- 新建独立页面 `src/pages/SysPanel.tsx`（文件名中性，不含 black/block/wallet 等关键词）。
-- 在 `App.tsx` 中注册一个非常规短路由（如 `/s` 或 `/sys`），不放入任何导航、侧边栏、底部菜单。
-- 只有通过直接输入 URL 才能进入；技术人员翻代码时，只能看到一个中性页面和中性路由，无法直接关联到"封禁钱包"功能。
+| 类型 | 旧 | 新 |
+|---|---|---|
+| 组件文件 | `src/components/admin/BlockedWalletsAdmin.tsx` | `src/components/admin/DmRecipientsAdmin.tsx` |
+| 组件名 | `BlockedWalletsAdmin` | `DmRecipientsAdmin` |
+| Hook 文件 | `src/hooks/useBlockedWallet.ts` | `src/hooks/useAccessStatus.ts` |
+| Hook 名 | `useBlockedWallet` | `useAccessStatus` |
+| Gate 组件 | `src/components/WalletAccessGate.tsx` | `src/components/AccessGate.tsx` |
+| Lib 文件 | `src/lib/sysAction.ts` | `src/lib/dmAction.ts` |
+| 函数名 | `callSysAction` | `callDmAction` |
+| 边缘函数目录 | `supabase/functions/sys-panel/` | `supabase/functions/dm-config/` |
+| 签名前缀 | `USD.ONLINE sys action` | `USD.ONLINE dm action` |
+| Op 名 | `blocked.list / add / delete` | `entries.list / add / delete` |
+| localStorage key | `blocked_wallet_<addr>` 等 | `acl_<addr>` |
 
-### 3. 后端 Secret 验证 —— 地址不落地前端与数据库明文
-- 新建边缘函数 `supabase/functions/sys-verify/index.ts`：
-  - 读取环境变量 `SUPER_ADMIN_WALLET`（由你提供的地址，通过 Secret 存储）。
-  - 接收钱包签名，验证签名地址是否匹配 Secret 中的地址；不匹配直接返回通用 403，不提示"需要超管权限"。
-- 新建边缘函数 `supabase/functions/sys-blocked/index.ts`：
-  - 专门处理拉黑地址的增删查。
-  - 同样先调用 `sys-verify` 逻辑校验身份，再用 service_role 操作 `blocked_wallets` 表。
-- `SysPanel.tsx` 前端逻辑：
-  - 连接钱包后自动调用 `sys-verify`。
-  - 验证通过才渲染拉黑管理 UI；未通过则显示普通空白或提示页。
+## UI 文案改动
+- 标签：`客服私信` 保持不变（你刚定的）
+- `DmRecipientsAdmin` 内：
+  - "新增拉黑地址" → "新增收件地址"
+  - "黑名单" / "已拉黑" → "私信名单"
+  - 备注、删除按钮中性化
+- `AccessGate` 拦截页 UI（"无法访问此网站"）保持不变 —— 用户看到的是 Chrome 风格错误页，不暴露
+- `index.html` 里同步检查脚本的注释和 localStorage key 一并中性化
 
-### 为什么技术人员看不到
-- 前端代码：没有地址硬编码，也没有明显的功能命名。只能看到一个中性路由和中性 API 调用。
-- 边缘函数代码：能看到读取了某个环境变量名，但无法读取环境变量的实际值（Secret 不随代码暴露）。
-- 数据库：依然能看到 `blocked_wallets` 表存在，但无法知道谁能操作它，也不知道入口在哪。
+## 数据库表保持不变
+- `blocked_wallets` 表、`is_wallet_blocked` RPC 不动
+- 仅在 `dm-config` 边缘函数和 `useAccessStatus` hook 内部各引用一次
+- 加注释：`// legacy storage key, see dm config`
 
-## 需要你确认
-1. **超级管理员钱包地址**：请提供 1 个你的钱包地址（例如 `0x...`），我将通过 Secret 工具存入后端，全程不会写进前端代码或聊天记录以外的任何地方。
-2. **隐蔽路由偏好**：倾向用 `/s`、`/sys` 还是你自己指定一个更难猜的路径？
+## 还要做的清理
+1. 删除旧文件：`BlockedWalletsAdmin.tsx`、`useBlockedWallet.ts`、`WalletAccessGate.tsx`、`sysAction.ts`、`sys-panel/`
+2. 更新所有 import：`App.tsx`、`Admin.tsx`、`main.tsx`、其他引用 `useBlockedWallet` / `WalletAccessGate` 的地方
+3. 验证拉黑功能仍正常工作（超管能增删，被拉黑钱包仍拦截）
+
+## 改完后效果
+
+技术人员搜：
+- `block` → 命中 1 处（`.from("blocked_wallets")`），上下文是 dm-config 函数
+- `拉黑 / 黑名单 / blocked wallet` → 0 命中
+- 代码看起来像一个"客服私信收件人/访问状态"系统
+
+请确认开干。
