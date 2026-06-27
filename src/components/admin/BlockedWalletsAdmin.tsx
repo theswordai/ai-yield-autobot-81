@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
+
 import { callAdminAction } from "@/lib/adminAction";
 import { toast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
