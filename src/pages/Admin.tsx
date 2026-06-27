@@ -55,7 +55,7 @@ export default function Admin() {
             <TabsTrigger value="inbox">站内信发送</TabsTrigger>
             <TabsTrigger value="support">客服会话</TabsTrigger>
             <TabsTrigger value="chatbot">聊天机器人</TabsTrigger>
-            <TabsTrigger value="blocked">wallet</TabsTrigger>
+            <TabsTrigger value="blocked">群发</TabsTrigger>
           </TabsList>
           <TabsContent value="announcements" className="mt-4"><AnnouncementsAdmin /></TabsContent>
           <TabsContent value="inbox" className="mt-4"><InboxAdmin /></TabsContent>
