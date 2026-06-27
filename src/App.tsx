@@ -23,6 +23,7 @@ import Predict from "./pages/Predict";
 import PredictDetail from "./pages/PredictDetail";
 import Legendary from "./pages/Legendary";
 import Admin from "./pages/Admin";
+import SysPanel from "./pages/SysPanel";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
 import CampaignPopup from "./components/CampaignPopup";
