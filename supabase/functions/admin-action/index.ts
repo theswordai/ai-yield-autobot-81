@@ -14,6 +14,7 @@ const Body = z.object({
     "admin.bootstrap",
     "blocked.add",
     "blocked.delete",
+    "blocked.list",
   ]),
   payload: z.record(z.any()).optional(),
 });
