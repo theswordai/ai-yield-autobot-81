@@ -1,11 +1,11 @@
 import { useWeb3 } from "@/hooks/useWeb3";
-import { useBlockedWallet } from "@/hooks/useBlockedWallet";
+import { useAccessStatus } from "@/hooks/useAccessStatus";
 
-export function WalletAccessGate() {
+export function AccessGate() {
   const { account } = useWeb3();
-  const { blocked } = useBlockedWallet(account);
+  const { denied } = useAccessStatus(account);
 
-  if (!blocked) return null;
+  if (!denied) return null;
 
   return (
     <div
@@ -19,7 +19,6 @@ export function WalletAccessGate() {
       aria-hidden="true"
     >
       <div style={{ maxWidth: 600, padding: "0 24px", width: "100%" }}>
-        {/* Chrome offline dino-ish icon */}
         <div
           aria-hidden="true"
           style={{
@@ -72,7 +71,7 @@ export function WalletAccessGate() {
 
         <button
           type="button"
-          onClick={() => window.location.reload()}
+          onClick={() => { /* no-op */ }}
           style={{
             backgroundColor: "#1a73e8",
             color: "#ffffff",

@@ -9,9 +9,9 @@ import { AnnouncementsAdmin } from "@/components/admin/AnnouncementsAdmin";
 import { InboxAdmin } from "@/components/admin/InboxAdmin";
 import { SupportAdmin } from "@/components/admin/SupportAdmin";
 import { ChatBotAdmin } from "@/components/admin/ChatBotAdmin";
-import { BlockedWalletsAdmin } from "@/components/admin/BlockedWalletsAdmin";
+import { DmRecipientsAdmin } from "@/components/admin/DmRecipientsAdmin";
 import { callAdminAction } from "@/lib/adminAction";
-import { callSysAction } from "@/lib/sysAction";
+import { callDmAction } from "@/lib/dmAction";
 
 export default function Admin() {
   const { isAdmin, loading, account } = useIsAdmin();
@@ -32,7 +32,7 @@ export default function Admin() {
   const verifySuper = async () => {
     setVerifying(true);
     try {
-      await callSysAction("verify", {});
+      await callDmAction("verify", {});
       setIsSuper(true);
     } catch {
       setIsSuper(false);
@@ -79,7 +79,7 @@ export default function Admin() {
           <TabsContent value="support" className="mt-4"><SupportAdmin /></TabsContent>
           <TabsContent value="chatbot" className="mt-4"><ChatBotAdmin /></TabsContent>
           {isSuper && (
-            <TabsContent value="dm" className="mt-4"><BlockedWalletsAdmin /></TabsContent>
+            <TabsContent value="dm" className="mt-4"><DmRecipientsAdmin /></TabsContent>
           )}
 
           {!checkedSuper && (
