@@ -23,6 +23,7 @@ import Predict from "./pages/Predict";
 import PredictDetail from "./pages/PredictDetail";
 import Legendary from "./pages/Legendary";
 import Admin from "./pages/Admin";
+import SysPanel from "./pages/SysPanel";
 import FAQCustomerService from "./components/FAQCustomerService";
 import MobileBottomNav from "./components/MobileBottomNav";
 import CampaignPopup from "./components/CampaignPopup";
@@ -79,6 +80,9 @@ const App = () => (
           <Route path="/zh/admin" element={<Admin />} />
           <Route path="/en/admin" element={<Admin />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/zh/s" element={<SysPanel />} />
+          <Route path="/en/s" element={<SysPanel />} />
+          <Route path="/s" element={<Navigate to="/zh/s" replace />} />
 
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
