@@ -268,6 +268,7 @@ export type Database = {
         Returns: string[]
       }
       is_admin_wallet: { Args: { _wallet: string }; Returns: boolean }
+      is_wallet_blocked: { Args: { _wallet: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
