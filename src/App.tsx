@@ -79,9 +79,7 @@ const App = () => (
           <Route path="/zh/admin" element={<Admin />} />
           <Route path="/en/admin" element={<Admin />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/zh/s" element={<SysPanel />} />
-          <Route path="/en/s" element={<SysPanel />} />
-          <Route path="/s" element={<Navigate to="/zh/s" replace />} />
+
 
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
