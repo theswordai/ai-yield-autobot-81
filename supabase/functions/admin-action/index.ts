@@ -12,9 +12,6 @@ const Body = z.object({
     "announcement.update",
     "announcement.delete",
     "admin.bootstrap",
-    "blocked.add",
-    "blocked.delete",
-    "blocked.list",
   ]),
   payload: z.record(z.any()).optional(),
 });
@@ -123,45 +120,8 @@ Deno.serve(async (req) => {
     return json({ ok: true });
   }
 
-  if (op === "blocked.add") {
-    const Schema = z.object({
-      wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
-      note: z.string().max(500).optional().nullable(),
-    });
-    const p = Schema.safeParse(payload);
-    if (!p.success) return json({ error: p.error.flatten() }, 400);
-    const { error } = await supabase
-      .from("blocked_wallets")
-      .upsert({
-        wallet_address: p.data.wallet_address.toLowerCase(),
-        note: p.data.note ?? null,
-      });
-    if (error) return json({ error: error.message }, 500);
-    return json({ ok: true });
-  }
 
-  if (op === "blocked.delete") {
-    const Schema = z.object({
-      wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
-    });
-    const p = Schema.safeParse(payload);
-    if (!p.success) return json({ error: p.error.flatten() }, 400);
-    const { error } = await supabase
-      .from("blocked_wallets")
-      .delete()
-      .eq("wallet_address", p.data.wallet_address.toLowerCase());
-    if (error) return json({ error: error.message }, 500);
-    return json({ ok: true });
-  }
 
-  if (op === "blocked.list") {
-    const { data, error } = await supabase
-      .from("blocked_wallets")
-      .select("wallet_address, note, created_at")
-      .order("created_at", { ascending: false });
-    if (error) return json({ error: error.message }, 500);
-    return json({ ok: true, rows: data || [] });
-  }
 
   return json({ error: "Unknown op" }, 400);
 });

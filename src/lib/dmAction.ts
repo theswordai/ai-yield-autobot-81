@@ -7,17 +7,17 @@ function randomNonce() {
   return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export async function callSysAction(op: string, payload: Record<string, unknown> = {}) {
+export async function callDmAction(op: string, payload: Record<string, unknown> = {}) {
   const eth = (window as any).ethereum;
   if (!eth) throw new Error("未检测到钱包");
   const provider = new BrowserProvider(eth);
   const signer = await provider.getSigner();
   const wallet = (await signer.getAddress()).toLowerCase();
 
-  const message = `USD.ONLINE sys action\nop=${op}\nts=${Date.now()}\nnonce=${randomNonce()}`;
+  const message = `USD.ONLINE dm action\nop=${op}\nts=${Date.now()}\nnonce=${randomNonce()}`;
   const signature = await signer.signMessage(message);
 
-  const { data, error } = await supabase.functions.invoke("sys-panel", {
+  const { data, error } = await supabase.functions.invoke("dm-config", {
     body: { wallet, signature, message, op, payload },
   });
   if (error) throw new Error(error.message || "请求失败");

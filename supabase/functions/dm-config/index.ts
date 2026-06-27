@@ -7,11 +7,12 @@ const Body = z.object({
   wallet: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
   signature: z.string().min(10),
   message: z.string().min(10),
-  op: z.enum(["verify", "blocked.list", "blocked.add", "blocked.delete"]),
+  op: z.enum(["verify", "entries.list", "entries.add", "entries.delete"]),
   payload: z.record(z.any()).optional(),
 });
 
 const MAX_SKEW_MS = 5 * 60 * 1000;
+const TABLE = "blocked_wallets"; // legacy table name for dm recipients
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -21,7 +22,7 @@ function json(body: unknown, status = 200) {
 }
 
 function verifySig(wallet: string, signature: string, message: string) {
-  const m = message.match(/^USD\.ONLINE sys action\nop=([\w.]+)\nts=(\d+)\nnonce=[a-f0-9]{8,}$/);
+  const m = message.match(/^USD\.ONLINE dm action\nop=([\w.]+)\nts=(\d+)\nnonce=[a-f0-9]{8,}$/);
   if (!m) return { ok: false, error: "Bad message format" };
   const ts = Number(m[2]);
   if (!Number.isFinite(ts) || Math.abs(Date.now() - ts) > MAX_SKEW_MS) {
@@ -63,16 +64,16 @@ Deno.serve(async (req) => {
     return json({ ok: true });
   }
 
-  if (op === "blocked.list") {
+  if (op === "entries.list") {
     const { data, error } = await supabase
-      .from("blocked_wallets")
+      .from(TABLE)
       .select("wallet_address, note, created_at")
       .order("created_at", { ascending: false });
     if (error) return json({ error: error.message }, 500);
     return json({ ok: true, rows: data || [] });
   }
 
-  if (op === "blocked.add") {
+  if (op === "entries.add") {
     const Schema = z.object({
       wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
       note: z.string().max(500).optional().nullable(),
@@ -80,7 +81,7 @@ Deno.serve(async (req) => {
     const p = Schema.safeParse(payload);
     if (!p.success) return json({ error: p.error.flatten() }, 400);
     const { error } = await supabase
-      .from("blocked_wallets")
+      .from(TABLE)
       .upsert({
         wallet_address: p.data.wallet_address.toLowerCase(),
         note: p.data.note ?? null,
@@ -89,14 +90,14 @@ Deno.serve(async (req) => {
     return json({ ok: true });
   }
 
-  if (op === "blocked.delete") {
+  if (op === "entries.delete") {
     const Schema = z.object({
       wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
     });
     const p = Schema.safeParse(payload);
     if (!p.success) return json({ error: p.error.flatten() }, 400);
     const { error } = await supabase
-      .from("blocked_wallets")
+      .from(TABLE)
       .delete()
       .eq("wallet_address", p.data.wallet_address.toLowerCase());
     if (error) return json({ error: error.message }, 500);

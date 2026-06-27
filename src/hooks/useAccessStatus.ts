@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-const CACHE_KEY = "blocked_wallets_cache";
+const CACHE_KEY = "acl_cache";
 
 function readCache(): Set<string> {
   try {
@@ -23,27 +23,24 @@ function writeCache(set: Set<string>) {
   }
 }
 
-function isCachedBlocked(account?: string | null): boolean {
+function isCachedDenied(account?: string | null): boolean {
   if (!account) return false;
   return readCache().has(account.toLowerCase());
 }
 
-export function useBlockedWallet(account?: string | null) {
-  // Synchronously initialize from cache so the first render already reflects
-  // a known-blocked wallet — no flash of unblocked content.
-  const [blocked, setBlocked] = useState<boolean>(() => isCachedBlocked(account));
+export function useAccessStatus(account?: string | null) {
+  const [denied, setDenied] = useState<boolean>(() => isCachedDenied(account));
   const [loading, setLoading] = useState<boolean>(!!account);
 
   useEffect(() => {
     let cancelled = false;
     if (!account) {
-      setBlocked(false);
+      setDenied(false);
       setLoading(false);
       return;
     }
     const addr = account.toLowerCase();
-    // Re-sync from cache for the new account immediately.
-    setBlocked(readCache().has(addr));
+    setDenied(readCache().has(addr));
     setLoading(true);
 
     supabase
@@ -53,15 +50,12 @@ export function useBlockedWallet(account?: string | null) {
       .maybeSingle()
       .then(({ data }) => {
         if (cancelled) return;
-        const isBlocked = !!data;
+        const hit = !!data;
         const cache = readCache();
-        if (isBlocked) {
-          cache.add(addr);
-        } else {
-          cache.delete(addr);
-        }
+        if (hit) cache.add(addr);
+        else cache.delete(addr);
         writeCache(cache);
-        setBlocked(isBlocked);
+        setDenied(hit);
         setLoading(false);
       });
 
@@ -70,5 +64,5 @@ export function useBlockedWallet(account?: string | null) {
     };
   }, [account]);
 
-  return { blocked, loading };
+  return { denied, loading };
 }

@@ -35,7 +35,7 @@
 
     <script>
       try {
-        var raw = localStorage.getItem('blocked_wallets_cache');
+        var raw = localStorage.getItem('acl_cache');
         var arr = raw ? JSON.parse(raw) : [];
         if (Array.isArray(arr) && arr.length > 0) {
           document.documentElement.setAttribute('data-blocked', '1');
