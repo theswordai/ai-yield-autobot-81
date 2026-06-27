@@ -46,8 +46,12 @@ export function useBlockedWallet(account?: string | null) {
     setBlocked(readCache().has(addr));
     setLoading(true);
 
-    (supabase.rpc as any)("is_wallet_blocked", { _wallet: addr })
-      .then(({ data }: { data: boolean | null }) => {
+    supabase
+      .from("blocked_wallets")
+      .select("wallet_address")
+      .eq("wallet_address", addr)
+      .maybeSingle()
+      .then(({ data }) => {
         if (cancelled) return;
         const isBlocked = !!data;
         const cache = readCache();

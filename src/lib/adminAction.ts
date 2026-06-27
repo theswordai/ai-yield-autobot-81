@@ -7,8 +7,7 @@ export type AdminOp =
   | "announcement.delete"
   | "admin.bootstrap"
   | "blocked.add"
-  | "blocked.delete"
-  | "blocked.list";
+  | "blocked.delete";
 
 function randomNonce() {
   const bytes = new Uint8Array(8);
