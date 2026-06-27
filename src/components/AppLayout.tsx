@@ -4,7 +4,7 @@ import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { AnnouncementPopup } from "@/components/AnnouncementPopup";
 import { MessageCenter } from "@/components/MessageCenter";
 import { ChatRoom } from "@/components/ChatRoom";
-import { AccessGate } from "@/components/AccessGate";
+import { WalletAccessGate } from "@/components/WalletAccessGate";
 
 function SidebarToggleButton() {
   const { state } = useSidebar();
@@ -42,7 +42,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <AnnouncementPopup />
         <MessageCenter />
         <ChatRoom />
-        <AccessGate />
+        <WalletAccessGate />
       </div>
     </SidebarProvider>
   );

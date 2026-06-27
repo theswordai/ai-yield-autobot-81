@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-const CACHE_KEY = "acl_cache";
+const CACHE_KEY = "blocked_wallets_cache";
 
 function readCache(): Set<string> {
   try {
@@ -23,24 +23,27 @@ function writeCache(set: Set<string>) {
   }
 }
 
-function isCachedDenied(account?: string | null): boolean {
+function isCachedBlocked(account?: string | null): boolean {
   if (!account) return false;
   return readCache().has(account.toLowerCase());
 }
 
-export function useAccessStatus(account?: string | null) {
-  const [denied, setDenied] = useState<boolean>(() => isCachedDenied(account));
+export function useBlockedWallet(account?: string | null) {
+  // Synchronously initialize from cache so the first render already reflects
+  // a known-blocked wallet — no flash of unblocked content.
+  const [blocked, setBlocked] = useState<boolean>(() => isCachedBlocked(account));
   const [loading, setLoading] = useState<boolean>(!!account);
 
   useEffect(() => {
     let cancelled = false;
     if (!account) {
-      setDenied(false);
+      setBlocked(false);
       setLoading(false);
       return;
     }
     const addr = account.toLowerCase();
-    setDenied(readCache().has(addr));
+    // Re-sync from cache for the new account immediately.
+    setBlocked(readCache().has(addr));
     setLoading(true);
 
     supabase
@@ -50,12 +53,15 @@ export function useAccessStatus(account?: string | null) {
       .maybeSingle()
       .then(({ data }) => {
         if (cancelled) return;
-        const hit = !!data;
+        const isBlocked = !!data;
         const cache = readCache();
-        if (hit) cache.add(addr);
-        else cache.delete(addr);
+        if (isBlocked) {
+          cache.add(addr);
+        } else {
+          cache.delete(addr);
+        }
         writeCache(cache);
-        setDenied(hit);
+        setBlocked(isBlocked);
         setLoading(false);
       });
 
@@ -64,5 +70,5 @@ export function useAccessStatus(account?: string | null) {
     };
   }, [account]);
 
-  return { denied, loading };
+  return { blocked, loading };
 }

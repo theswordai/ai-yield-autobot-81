@@ -21,10 +21,10 @@ export function WalletConnector() {
 
   const short = (addr?: string | null) => (addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : "");
 
-  const isAclDenied = (addr?: string | null): boolean => {
+  const isWalletBlocked = (addr?: string | null): boolean => {
     if (!addr) return false;
     try {
-      const raw = localStorage.getItem("acl_cache");
+      const raw = localStorage.getItem("blocked_wallets_cache");
       if (!raw) return false;
       const arr = JSON.parse(raw);
       return Array.isArray(arr) && arr.map((s: string) => s.toLowerCase()).includes(addr.toLowerCase());
@@ -37,8 +37,8 @@ export function WalletConnector() {
     try {
       const addr = await connectWith(prov);
       setOpen(false);
-      let denied = isAclDenied(addr as any);
-      if (!denied && addr) {
+      let blocked = isWalletBlocked(addr as any);
+      if (!blocked && addr) {
         try {
           const { supabase } = await import("@/integrations/supabase/client");
           const { data } = await supabase
@@ -47,13 +47,13 @@ export function WalletConnector() {
             .eq("wallet_address", (addr as string).toLowerCase())
             .maybeSingle();
           if (data) {
-            denied = true;
+            blocked = true;
             try {
-              const raw = localStorage.getItem("acl_cache");
+              const raw = localStorage.getItem("blocked_wallets_cache");
               const arr = raw ? JSON.parse(raw) : [];
               const set = new Set<string>(Array.isArray(arr) ? arr : []);
               set.add((addr as string).toLowerCase());
-              localStorage.setItem("acl_cache", JSON.stringify(Array.from(set)));
+              localStorage.setItem("blocked_wallets_cache", JSON.stringify(Array.from(set)));
             } catch { /* ignore */ }
           }
         } catch { /* ignore */ }

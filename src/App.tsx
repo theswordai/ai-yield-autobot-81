@@ -80,7 +80,6 @@ const App = () => (
           <Route path="/en/admin" element={<Admin />} />
           <Route path="/admin" element={<Admin />} />
 
-
           {/* Default routes redirect to Chinese */}
           <Route path="/" element={<Navigate to="/zh" replace />} />
           <Route path="/invest" element={<Navigate to="/zh/invest" replace />} />

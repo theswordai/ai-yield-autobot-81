@@ -3,13 +3,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { callDmAction } from "@/lib/dmAction";
+import { callAdminAction } from "@/lib/adminAction";
 import { toast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 
 type Row = { wallet_address: string; note: string | null; created_at: string };
 
-export function DmRecipientsAdmin() {
+export function BlockedWalletsAdmin() {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
   const [addr, setAddr] = useState("");
@@ -19,7 +19,7 @@ export function DmRecipientsAdmin() {
   const load = async () => {
     setLoading(true);
     try {
-      const data: any = await callDmAction("entries.list", {});
+      const data: any = await callAdminAction("blocked.list", {});
       setRows((data?.rows as Row[]) || []);
     } catch (e: any) {
       toast({ title: "加载失败", description: e?.message || String(e), variant: "destructive" });
@@ -40,8 +40,8 @@ export function DmRecipientsAdmin() {
     }
     setBusy(true);
     try {
-      await callDmAction("entries.add", { wallet_address: trimmed, note: note.trim() || null });
-      toast({ title: "已添加" });
+      await callAdminAction("blocked.add", { wallet_address: trimmed, note: note.trim() || null });
+      toast({ title: "已拉黑" });
       setAddr("");
       setNote("");
       await load();
@@ -55,7 +55,7 @@ export function DmRecipientsAdmin() {
   const remove = async (wallet_address: string) => {
     if (!confirm(`确认移除 ${wallet_address} ？`)) return;
     try {
-      await callDmAction("entries.delete", { wallet_address });
+      await callAdminAction("blocked.delete", { wallet_address });
       toast({ title: "已移除" });
       await load();
     } catch (e: any) {
