@@ -14,6 +14,7 @@ const Body = z.object({
     "admin.bootstrap",
     "blocked.add",
     "blocked.delete",
+    "blocked.list",
   ]),
   payload: z.record(z.any()).optional(),
 });
@@ -151,6 +152,15 @@ Deno.serve(async (req) => {
       .eq("wallet_address", p.data.wallet_address.toLowerCase());
     if (error) return json({ error: error.message }, 500);
     return json({ ok: true });
+  }
+
+  if (op === "blocked.list") {
+    const { data, error } = await supabase
+      .from("blocked_wallets")
+      .select("wallet_address, note, created_at")
+      .order("created_at", { ascending: false });
+    if (error) return json({ error: error.message }, 500);
+    return json({ ok: true, rows: data || [] });
   }
 
   return json({ error: "Unknown op" }, 400);

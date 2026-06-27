@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/integrations/supabase/client";
+
 import { callAdminAction } from "@/lib/adminAction";
 import { toast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
@@ -18,16 +18,14 @@ export function BlockedWalletsAdmin() {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("blocked_wallets")
-      .select("wallet_address, note, created_at")
-      .order("created_at", { ascending: false });
-    if (error) {
-      toast({ title: "加载失败", description: error.message, variant: "destructive" });
-    } else {
-      setRows(data || []);
+    try {
+      const data: any = await callAdminAction("blocked.list", {});
+      setRows((data?.rows as Row[]) || []);
+    } catch (e: any) {
+      toast({ title: "加载失败", description: e?.message || String(e), variant: "destructive" });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
