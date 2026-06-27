@@ -95,8 +95,9 @@ export function useMessageCenter() {
   // Realtime
   useEffect(() => {
     if (!wallet) return;
-    const ch = supabase.channel(`mc-${wallet}-${Math.random().toString(36).slice(2, 9)}`);
-    ch.on("postgres_changes", { event: "*", schema: "public", table: "inbox_messages", filter: `wallet_address=eq.${wallet}` }, loadInbox)
+    const ch = supabase
+      .channel(`mc-${wallet}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "inbox_messages", filter: `wallet_address=eq.${wallet}` }, loadInbox)
       .on("postgres_changes", { event: "*", schema: "public", table: "support_threads", filter: `wallet_address=eq.${wallet}` }, loadThread)
       .on("postgres_changes", { event: "*", schema: "public", table: "announcements" }, () => { loadAnnouncements(); })
       .subscribe();
