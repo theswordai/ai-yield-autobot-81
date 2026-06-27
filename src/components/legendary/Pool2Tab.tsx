@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { formatUnits, parseUnits } from "ethers";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,8 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, Layers } from "lucide-react";
-import { useLegendaryDashboard, fmt, LegendaryPosition } from "@/hooks/useLegendary";
+import { AlertCircle, Layers, Zap } from "lucide-react";
+import { useLegendaryDashboard, fmt } from "@/hooks/useLegendary";
 import { useLegendaryActions } from "@/hooks/useLegendaryActions";
 import { useWeb3 } from "@/hooks/useWeb3";
 
@@ -30,7 +31,10 @@ export function Pool2Tab() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [amount, setAmount] = useState("");
 
-  const pool1Active = data.positions.filter((p) => !p.withdrawn && p.poolType === 1);
+  // 允许 CLASS-A 与 CLASS-B 仓位的利息都作为复投资金来源
+  const eligibleActive = data.positions.filter(
+    (p) => !p.withdrawn && (p.poolType === 1 || p.poolType === 2)
+  );
   const pool2Active = data.positions.filter((p) => !p.withdrawn && p.poolType === 2);
 
   const toggle = (id: bigint) => {
@@ -42,14 +46,35 @@ export function Pool2Tab() {
   };
 
   const selectedPositions = useMemo(
-    () => pool1Active.filter((p) => selected.has(p.id.toString())),
-    [pool1Active, selected]
+    () => eligibleActive.filter((p) => selected.has(p.id.toString())),
+    [eligibleActive, selected]
   );
   const selectedIds = selectedPositions.map((p) => p.id);
   const selectedPending = selectedPositions.reduce((s, p) => s + p.pending, 0n);
 
+  let amountWei: bigint = 0n;
+  try {
+    amountWei = amount ? parseUnits(amount, 18) : 0n;
+  } catch {
+    amountWei = 0n;
+  }
   const amountNum = Number(amount || "0");
   const tooLow = amountNum > 0 && amountNum < 200;
+  const tooHigh = amountWei > selectedPending;
+
+  // 一键全选并最大复投：选中所有可用仓位，金额=所有未领利息向下取整到 USDT
+  const handleMaxCompound = () => {
+    setSelected(new Set(eligibleActive.map((p) => p.id.toString())));
+    const total = eligibleActive.reduce((s, p) => s + p.pending, 0n);
+    // 向下取整到整数 USDT（避免精度误差超过链上 pending 导致 revert）
+    const whole = total / 10n ** 18n;
+    setAmount(whole.toString());
+  };
+
+  const handleClear = () => {
+    setSelected(new Set());
+    setAmount("");
+  };
 
   if (!account) {
     return (
@@ -71,25 +96,44 @@ export function Pool2Tab() {
           <h3 className="text-lg font-bold">CLASS-B（APR 360%）</h3>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          从CLASS-A仓位的未领利息中扣除作为本金，进入CLASS-B，锁仓 365 天。最低 200 USDT。
+          从 CLASS-A / CLASS-B 仓位的未领利息中扣除作为本金，进入新的 CLASS-B 仓位，锁仓 365 天。最低 200 USDT。
         </p>
       </Card>
 
-      {/* 选择CLASS-A仓位 */}
+      {/* 选择利息来源仓位 */}
       <Card className="p-4 bg-foreground/5 backdrop-blur-xl border-foreground/15">
-        <div className="flex items-center justify-between mb-3">
-          <div className="text-sm font-semibold">选择CLASS-A仓位的利息作为资金</div>
-          <div className="text-xs text-muted-foreground">
-            已选 {selectedIds.length} · 合计利息 {fmt(selectedPending)} USDT
+        <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <div className="text-sm font-semibold">选择仓位的利息作为资金</div>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 px-2 text-xs border-amber-400/40 text-amber-600 dark:text-amber-400"
+              disabled={busy !== null || eligibleActive.length === 0}
+              onClick={handleMaxCompound}
+            >
+              <Zap className="w-3 h-3 mr-1" />
+              一键全选最大复投
+            </Button>
+            <button
+              type="button"
+              className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+              onClick={handleClear}
+            >
+              清空
+            </button>
           </div>
         </div>
-        {pool1Active.length === 0 ? (
+        <div className="text-xs text-muted-foreground mb-2">
+          已选 {selectedIds.length} · 合计利息 {fmt(selectedPending)} USDT
+        </div>
+        {eligibleActive.length === 0 ? (
           <div className="text-center text-sm text-muted-foreground py-6">
-            暂无CLASS-A活跃仓位，请先去"CLASS-A"
+            暂无活跃仓位，请先去「CLASS-A」存入
           </div>
         ) : (
           <div className="space-y-2">
-            {pool1Active.map((p) => (
+            {eligibleActive.map((p) => (
               <div
                 key={p.id.toString()}
                 className="flex items-center gap-3 p-2 rounded border border-foreground/10 bg-foreground/[0.04]"
@@ -99,6 +143,16 @@ export function Pool2Tab() {
                   onCheckedChange={() => toggle(p.id)}
                 />
                 <div className="text-xs text-muted-foreground">#{p.id.toString()}</div>
+                <Badge
+                  variant="outline"
+                  className={
+                    p.poolType === 1
+                      ? "border-amber-400/40 text-amber-600 dark:text-amber-400 text-[10px] px-1.5 py-0"
+                      : "border-emerald-400/40 text-emerald-600 dark:text-emerald-400 text-[10px] px-1.5 py-0"
+                  }
+                >
+                  {p.poolType === 1 ? "CLASS-A" : "CLASS-B"}
+                </Badge>
                 <div className="text-sm flex-1">本金 {fmt(p.principal)}</div>
                 <div className="text-sm text-emerald-600 dark:text-emerald-400">利息 {fmt(p.pending)}</div>
               </div>
@@ -130,8 +184,20 @@ export function Pool2Tab() {
             <AlertDescription>最低复投 200 USDT</AlertDescription>
           </Alert>
         )}
+        {tooHigh && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>复投金额不能超过所选仓位的未领利息合计</AlertDescription>
+          </Alert>
+        )}
         <Button
-          disabled={busy !== null || selectedIds.length === 0 || tooLow || amountNum <= 0}
+          disabled={
+            busy !== null ||
+            selectedIds.length === 0 ||
+            tooLow ||
+            tooHigh ||
+            amountNum <= 0
+          }
           onClick={async () => {
             const ok = await compoundToPool2(selectedIds, amount);
             if (ok) {
