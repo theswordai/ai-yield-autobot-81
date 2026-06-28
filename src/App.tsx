@@ -9,7 +9,6 @@ import Dashboard from "./pages/Dashboard";
 import Trade from "./pages/Trade";
 import Referral from "./pages/Referral";
 import Stake from "./pages/Stake";
-import StakeA from "./pages/StakeA";
 import StakeNew from "./pages/StakeNew";
 import Whitepaper from "./pages/Whitepaper";
 import Audit from "./pages/Audit";
@@ -101,8 +100,6 @@ const App = () => (
           <Route path="/trade" element={<Navigate to="/zh/invest" replace />} />
           <Route path="/zh/stake" element={<Stake />} />
           <Route path="/en/stake" element={<Stake />} />
-          <Route path="/zh/stake-a" element={<StakeA />} />
-          <Route path="/en/stake-a" element={<StakeA />} />
           <Route path="/stake" element={<Navigate to="/zh/stake" replace />} />
 
 

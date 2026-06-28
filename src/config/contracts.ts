@@ -1,7 +1,5 @@
 export const USDT_ADDRESS = "0x55d398326f99059fF775485246999027B3197955";
 export const LOCK_ADDRESS = "0x7cbab1b8dfd2d7e571846f73f0cc11386b774d59";
-// V3 staking contract — currently used only on the "创世资本A" page (StakeA).
-export const LOCK_ADDRESS_V3 = "0x0bc2f3de4e1a1201c420346f5da7a6732a5eb70f";
 export const VAULT_ADDRESS = "0xab5db579043607bd722485d8782ed482860beb4c";
 export const REFERRAL_ADDRESS = "0x7a7cad6e164dd9e65cc03b8686a6abf4074233b9";
 
