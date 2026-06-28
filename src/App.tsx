@@ -101,6 +101,8 @@ const App = () => (
           <Route path="/trade" element={<Navigate to="/zh/invest" replace />} />
           <Route path="/zh/stake" element={<Stake />} />
           <Route path="/en/stake" element={<Stake />} />
+          <Route path="/zh/stake-a" element={<StakeA />} />
+          <Route path="/en/stake-a" element={<StakeA />} />
           <Route path="/stake" element={<Navigate to="/zh/stake" replace />} />
 
 
