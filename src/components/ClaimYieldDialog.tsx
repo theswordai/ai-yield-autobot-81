@@ -73,9 +73,11 @@ export function ClaimYieldDialog({
 
 
           <Button
+            type="button"
+            aria-label="领取收益"
             onClick={onClaim}
             disabled={loading}
-            className="w-full h-auto py-4"
+            className="w-full h-auto py-4 disabled:opacity-60 disabled:cursor-not-allowed"
             variant="outline"
           >
             <DollarSign className="w-5 h-5 mr-2" />
