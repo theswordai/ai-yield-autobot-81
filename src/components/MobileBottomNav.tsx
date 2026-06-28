@@ -43,6 +43,15 @@ const MobileBottomNav = () => {
   // Secondary slots — surfaced via "More" drawer
   const moreItems = [
     {
+      id: "stake-a",
+      label: "创世资本A",
+      labelEn: "Genesis A",
+      desc: "测试环境 · 内部使用",
+      descEn: "Test environment",
+      icon: Heart,
+      path: `/${language}/stake-a`,
+    },
+    {
       id: "flexible",
       label: "自由资本",
       labelEn: "Flexible",
