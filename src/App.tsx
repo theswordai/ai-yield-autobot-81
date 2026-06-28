@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Trade from "./pages/Trade";
 import Referral from "./pages/Referral";
 import Stake from "./pages/Stake";
+import StakeA from "./pages/StakeA";
 import StakeNew from "./pages/StakeNew";
 import Whitepaper from "./pages/Whitepaper";
 import Audit from "./pages/Audit";
