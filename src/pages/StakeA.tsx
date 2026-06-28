@@ -856,7 +856,7 @@ export default function StakeA({
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <PositionsList account={account} lock={lock as any} chainId={chainId} targetChain={TARGET_CHAIN} usdtDecimals={USDT_DECIMALS} />
+                <PositionsListV3 account={account} lockV3={lock as any} lockLegacy={lockLegacyRead as any} chainId={chainId} targetChain={TARGET_CHAIN} usdtDecimals={USDT_DECIMALS} />
               </CardContent>
             </Card>
 
