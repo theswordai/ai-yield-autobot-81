@@ -25,14 +25,7 @@ export function useChatRoom(opts?: { enabled?: boolean }) {
   const [unreadCount, setUnreadCount] = useState(0);
   const lastSentRef = useRef<number>(0);
 
-  const canChat = useMemo(() => {
-    if (!account) return false;
-    if (!staking) return false;
-    const hasInviter = !!staking.referralStats?.inviterAddress
-      && staking.referralStats.inviterAddress.toLowerCase() !== ZERO;
-    const hasStake = (staking.activePositions?.length || 0) > 0;
-    return hasInviter || hasStake;
-  }, [account, staking]);
+  const canChat = useMemo(() => false, []);
 
   const load = useCallback(async () => {
     setLoading(true);

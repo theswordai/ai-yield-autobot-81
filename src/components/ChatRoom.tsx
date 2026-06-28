@@ -121,7 +121,7 @@ export function ChatRoom() {
           ) : !chat.canChat ? (
             <div className="p-3 text-xs text-center text-muted-foreground flex items-center justify-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5" />
-              需绑定邀请人或拥有有效质押才能发言
+              聊天大厅已暂停发言
             </div>
           ) : (
             <>
