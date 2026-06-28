@@ -504,27 +504,6 @@ export default function Stake({
   return <PageWrapper>
       {!embedded && <Navbar />}
       <main className={`container mx-auto px-4 ${topPad} pb-12 max-w-6xl`}>
-        {/* 尊享入口 */}
-        <div className="max-w-xl mx-auto px-2 mb-4">
-          <button
-            onClick={() => navigate(`/${language}/user`)}
-            className="group relative w-full rounded-2xl border border-primary/40 bg-gradient-to-r from-primary/20 via-accent/15 to-primary/20 backdrop-blur-md p-5 sm:p-6 text-left transition-all duration-300 hover:shadow-[0_8px_30px_-8px_hsl(var(--primary)/0.5)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--accent)/0.2),transparent_60%)] pointer-events-none" />
-            <div className="relative flex items-center gap-4">
-              <div className="shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-                <Shield className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  {t("nav.user")}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">{t("vipClub.subtitle")}</p>
-              </div>
-              <ArrowRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-all shrink-0" />
-            </div>
-          </button>
-        </div>
 
 
         <div className="mb-8 text-center px-2">
