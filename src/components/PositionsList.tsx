@@ -222,43 +222,15 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
   };
 
   const handleDirectClaim = async () => {
-    console.log('🚀 handleDirectClaim 触发', selectedPosition);
-    if (!selectedPosition) {
-      toast.warning("未选中仓位，请重试");
-      return;
-    }
+    if (!selectedPosition) return;
+    
     try {
       if (!lock || !account) throw new Error(t("positions.connectWallet"));
       if (chainId !== targetChain) {
         toast.warning("请切换到 BSC 主网再操作");
         return;
       }
-      const pendingNum = Number(selectedPosition.yieldAmount);
-      if (!(pendingNum > 0)) {
-        toast.warning("当前无可领取收益");
-        setShowClaimDialog(false);
-        setSelectedPosition(null);
-        return;
-      }
       setBusy((s) => ({ ...s, [selectedPosition.posId.toString()+":claim"]: true }));
-
-      try {
-        await (lock as any).claim.estimateGas(selectedPosition.posId);
-      } catch (estErr: any) {
-        console.error('❌ estimateGas 失败', estErr);
-        const reason =
-          estErr?.reason ||
-          estErr?.info?.error?.message ||
-          estErr?.shortMessage ||
-          estErr?.message ||
-          "未知原因";
-        toast.error("合约拒绝执行", {
-          description: `可能尚无可领取收益或仓位状态异常：${reason}`,
-          duration: 6000,
-        });
-        return;
-      }
-
       const tx = await (lock as any).claim(selectedPosition.posId);
       toast.info("提交中：" + tx.hash);
       await tx.wait();
@@ -267,15 +239,9 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
       setSelectedPosition(null);
       await load();
     } catch (e: any) {
-      console.error('❌ handleDirectClaim 异常', e);
-      toast.error("领取失败", {
-        description: e?.reason || e?.shortMessage || e?.message || "未知错误",
-        duration: 6000,
-      });
+      toast.error(e?.shortMessage || e?.message || "领取失败");
     } finally {
-      if (selectedPosition) {
-        setBusy((s) => ({ ...s, [selectedPosition.posId.toString()+":claim"]: false }));
-      }
+      setBusy((s) => ({ ...s, [selectedPosition.posId.toString()+":claim"]: false }));
     }
   };
 
@@ -404,12 +370,10 @@ export function PositionsList({ account, lock, chainId, targetChain, usdtDecimal
                 </div>
                 <div className="flex gap-2 pt-1">
                   <Button 
-                    type="button"
                     variant="secondary" 
                     size="sm" 
                     onClick={() => handleClaimClick(it.id, realTimePending, it.lockDuration)} 
-                    disabled={!canInteract || busy[it.id.toString()+":claim"] || !(pending > 0)}
-                    title={!(pending > 0) ? "暂无可领取收益" : undefined}
+                    disabled={!canInteract || busy[it.id.toString()+":claim"]}
                   >
                     {t("positions.claimRewards")}
                   </Button>
