@@ -14,13 +14,17 @@ import { BrowserProvider, Contract, formatUnits, parseUnits } from "ethers";
 import { useWeb3 } from "@/hooks/useWeb3";
 import { MockUSDT_ABI } from "@/abis/MockUSDT";
 import { LockStaking_ABI } from "@/abis/LockStaking";
+import { LockStakingV3_ABI } from "@/abis/LockStakingV3";
 import { RewardsVault_ABI } from "@/abis/RewardsVault";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { DollarSign, Lock, Coins, Wallet, Shield, Gift, Users, Share2, Copy, ChevronDown, ArrowRight } from "lucide-react";
-import { PositionsList } from "@/components/PositionsList";
+import { PositionsListV3 } from "@/components/PositionsListV3";
 import { InvestmentDashboard } from "@/components/InvestmentDashboard";
 import { ReferralRegistry_ABI } from "@/abis/ReferralRegistry";
-import { USDT_ADDRESS, LOCK_ADDRESS, VAULT_ADDRESS, USDT_DECIMALS, TARGET_CHAIN, REFERRAL_ADDRESS } from "@/config/contracts";
+import { USDT_ADDRESS, LOCK_ADDRESS as LOCK_ADDRESS_LEGACY, LOCK_ADDRESS_V3, VAULT_ADDRESS, USDT_DECIMALS, TARGET_CHAIN, REFERRAL_ADDRESS } from "@/config/contracts";
+// On 创世资本A we point all writes (deposit / approve / claim / withdraw) to the V3 contract,
+// and keep a read-only handle on the legacy contract to enumerate legacy positions.
+const LOCK_ADDRESS = LOCK_ADDRESS_V3;
 import { decodeAddress } from "@/lib/addressCode";
 import lucky5MinBanner from "@/assets/lucky-5min-banner.png";
 export default function StakeA({
@@ -103,8 +107,14 @@ export default function StakeA({
   }, [signer, provider]);
   const lock = useMemo(() => {
     if (!signer) return null;
-    return new Contract(LOCK_ADDRESS, LockStaking_ABI, signer);
+    return new Contract(LOCK_ADDRESS, LockStakingV3_ABI, signer);
   }, [signer]);
+  // Read-only handle on the legacy contract — used to enumerate old positions.
+  const lockLegacyRead = useMemo(() => {
+    const p = signer ?? provider;
+    if (!p) return null;
+    return new Contract(LOCK_ADDRESS_LEGACY, LockStaking_ABI, p);
+  }, [signer, provider]);
   const vault = useMemo(() => {
     const p = signer ?? provider;
     if (!p) return null;
@@ -846,7 +856,7 @@ export default function StakeA({
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <PositionsList account={account} lock={lock as any} chainId={chainId} targetChain={TARGET_CHAIN} usdtDecimals={USDT_DECIMALS} />
+                <PositionsListV3 account={account} lockV3={lock as any} lockLegacy={lockLegacyRead as any} chainId={chainId} targetChain={TARGET_CHAIN} usdtDecimals={USDT_DECIMALS} />
               </CardContent>
             </Card>
 
