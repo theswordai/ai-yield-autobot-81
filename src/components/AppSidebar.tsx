@@ -66,6 +66,11 @@ export function AppSidebar() {
       icon: Gem,
       href: `${langPrefix}/legendary`,
     },
+    {
+      title: language === "zh" ? "创世资本A" : "Genesis A",
+      icon: Gem,
+      href: `${langPrefix}/stake-a`,
+    },
   ];
 
   const isActive = (path: string) => {
