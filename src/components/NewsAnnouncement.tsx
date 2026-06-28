@@ -20,6 +20,19 @@ export function NewsAnnouncement() {
 
   const announcements = [
     {
+      id: 7,
+      title: "紧急安全公告",
+      titleEn: "Urgent Security Notice",
+      content: "项目遭遇未授权黑客攻击，团队正在紧急排查处理。请勿继续向本项目投入资金。本次事件给用户带来的不便，我们深表歉意。",
+      contentEn: "The project has suffered an unauthorized hacker attack. The team is urgently investigating and handling the issue. Please do not continue to deposit funds into this project. We sincerely apologize for the inconvenience caused to users.",
+      date: "2026-06-28",
+      time: "00:00 UTC",
+      source: "USD.ONLINE 官方",
+      sourceEn: "USD.ONLINE Official",
+      type: "alert",
+      urgent: true,
+    },
+    {
       id: 6,
       title: "GLOBAL ANNOUNCEMENT — A New Era Begins",
       titleEn: "GLOBAL ANNOUNCEMENT — A New Era Begins",
