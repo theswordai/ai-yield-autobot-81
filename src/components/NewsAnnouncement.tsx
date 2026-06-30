@@ -26,7 +26,7 @@ export function NewsAnnouncement() {
       content: "经初步研判，本次事件系外部恶意攻击所致，因本次链上黑客团队攻击手段高度复杂、痕迹非常隐蔽，技术团队需更多时间完成链上信息收集与溯源分析。我们预计在 7 月 10 日前公布调查进展及解决方案。请以官网公告为准。感谢大家的耐心等待。",
       contentEn: "Based on preliminary analysis, this incident was caused by external malicious attacks. The on-chain hacker team employed highly complex and extremely covert attack methods. The technical team needs more time to complete on-chain information collection and traceability analysis. We expect to announce investigation progress and solutions before July 10. Please refer to official website announcements. Thank you for your patience.",
       date: "2026-06-30",
-      time: "00:00 UTC",
+      time: "02:00 CEST",
       source: "USD.ONLINE 官方",
       sourceEn: "USD.ONLINE Official",
       type: "alert",
