@@ -196,31 +196,25 @@ export type Database = {
       prediction_accounts: {
         Row: {
           balance: number
-          claimed_initial_balance_at: string | null
+          claimed_initial_balance: boolean
           created_at: string
-          realized_pnl: number
-          total_invested: number
-          total_payout: number
+          total_pnl: number
           updated_at: string
           wallet_address: string
         }
         Insert: {
           balance?: number
-          claimed_initial_balance_at?: string | null
+          claimed_initial_balance?: boolean
           created_at?: string
-          realized_pnl?: number
-          total_invested?: number
-          total_payout?: number
+          total_pnl?: number
           updated_at?: string
           wallet_address: string
         }
         Update: {
           balance?: number
-          claimed_initial_balance_at?: string | null
+          claimed_initial_balance?: boolean
           created_at?: string
-          realized_pnl?: number
-          total_invested?: number
-          total_payout?: number
+          total_pnl?: number
           updated_at?: string
           wallet_address?: string
         }
@@ -232,9 +226,9 @@ export type Database = {
           balance_after: number
           created_at: string
           id: string
-          market_id: string | null
           note: string | null
-          order_id: string | null
+          reference_id: string | null
+          reference_type: string | null
           type: string
           wallet_address: string
         }
@@ -243,9 +237,9 @@ export type Database = {
           balance_after: number
           created_at?: string
           id?: string
-          market_id?: string | null
           note?: string | null
-          order_id?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
           type: string
           wallet_address: string
         }
@@ -254,9 +248,9 @@ export type Database = {
           balance_after?: number
           created_at?: string
           id?: string
-          market_id?: string | null
           note?: string | null
-          order_id?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
           type?: string
           wallet_address?: string
         }
@@ -264,60 +258,45 @@ export type Database = {
       }
       prediction_markets: {
         Row: {
-          category: string | null
           created_at: string
-          description: string | null
           end_date: string | null
-          icon: string | null
-          image: string | null
-          liquidity: number | null
-          market_id: string
           no_price: number | null
           outcomes: Json
+          polymarket_id: string
+          settled_at: string | null
           slug: string | null
           status: string
           title: string
           updated_at: string
-          volume: number | null
-          volume_24hr: number | null
+          winning_outcome: string | null
           yes_price: number | null
         }
         Insert: {
-          category?: string | null
           created_at?: string
-          description?: string | null
           end_date?: string | null
-          icon?: string | null
-          image?: string | null
-          liquidity?: number | null
-          market_id: string
           no_price?: number | null
           outcomes?: Json
+          polymarket_id: string
+          settled_at?: string | null
           slug?: string | null
           status?: string
           title: string
           updated_at?: string
-          volume?: number | null
-          volume_24hr?: number | null
+          winning_outcome?: string | null
           yes_price?: number | null
         }
         Update: {
-          category?: string | null
           created_at?: string
-          description?: string | null
           end_date?: string | null
-          icon?: string | null
-          image?: string | null
-          liquidity?: number | null
-          market_id?: string
           no_price?: number | null
           outcomes?: Json
+          polymarket_id?: string
+          settled_at?: string | null
           slug?: string | null
           status?: string
           title?: string
           updated_at?: string
-          volume?: number | null
-          volume_24hr?: number | null
+          winning_outcome?: string | null
           yes_price?: number | null
         }
         Relationships: []
@@ -327,11 +306,10 @@ export type Database = {
           amount: number
           created_at: string
           id: string
-          market_id: string
-          outcome_index: number
-          outcome_label: string
+          outcome: string
           payout: number
           pnl: number
+          polymarket_id: string
           price: number
           settled_at: string | null
           shares: number
@@ -342,11 +320,10 @@ export type Database = {
           amount: number
           created_at?: string
           id?: string
-          market_id: string
-          outcome_index: number
-          outcome_label: string
+          outcome: string
           payout?: number
           pnl?: number
+          polymarket_id: string
           price: number
           settled_at?: string | null
           shares: number
@@ -357,11 +334,10 @@ export type Database = {
           amount?: number
           created_at?: string
           id?: string
-          market_id?: string
-          outcome_index?: number
-          outcome_label?: string
+          outcome?: string
           payout?: number
           pnl?: number
+          polymarket_id?: string
           price?: number
           settled_at?: string | null
           shares?: number
@@ -370,52 +346,90 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "prediction_orders_market_id_fkey"
-            columns: ["market_id"]
+            foreignKeyName: "prediction_orders_polymarket_id_fkey"
+            columns: ["polymarket_id"]
             isOneToOne: false
             referencedRelation: "prediction_markets"
-            referencedColumns: ["market_id"]
+            referencedColumns: ["polymarket_id"]
+          },
+        ]
+      }
+      prediction_positions: {
+        Row: {
+          avg_price: number
+          invested: number
+          outcome: string
+          polymarket_id: string
+          realized_pnl: number
+          shares: number
+          status: string
+          updated_at: string
+          wallet_address: string
+        }
+        Insert: {
+          avg_price?: number
+          invested?: number
+          outcome: string
+          polymarket_id: string
+          realized_pnl?: number
+          shares?: number
+          status?: string
+          updated_at?: string
+          wallet_address: string
+        }
+        Update: {
+          avg_price?: number
+          invested?: number
+          outcome?: string
+          polymarket_id?: string
+          realized_pnl?: number
+          shares?: number
+          status?: string
+          updated_at?: string
+          wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_positions_polymarket_id_fkey"
+            columns: ["polymarket_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_markets"
+            referencedColumns: ["polymarket_id"]
           },
         ]
       }
       prediction_settlements: {
         Row: {
+          created_at: string
           id: string
-          market_id: string
-          note: string | null
-          settled_at: string
-          settled_by_wallet: string | null
+          polymarket_id: string
+          settled_by: string
           source: string
-          winning_outcome_index: number
-          winning_outcome_label: string
+          winning_outcome: string
         }
         Insert: {
+          created_at?: string
           id?: string
-          market_id: string
-          note?: string | null
-          settled_at?: string
-          settled_by_wallet?: string | null
+          polymarket_id: string
+          settled_by: string
           source?: string
-          winning_outcome_index: number
-          winning_outcome_label: string
+          winning_outcome: string
         }
         Update: {
+          created_at?: string
           id?: string
-          market_id?: string
-          note?: string | null
-          settled_at?: string
-          settled_by_wallet?: string | null
+          polymarket_id?: string
+          settled_by?: string
           source?: string
-          winning_outcome_index?: number
-          winning_outcome_label?: string
+          winning_outcome?: string
         }
         Relationships: [
           {
-            foreignKeyName: "prediction_settlements_market_id_fkey"
-            columns: ["market_id"]
+            foreignKeyName: "prediction_settlements_polymarket_id_fkey"
+            columns: ["polymarket_id"]
             isOneToOne: false
             referencedRelation: "prediction_markets"
-            referencedColumns: ["market_id"]
+            referencedColumns: ["polymarket_id"]
           },
         ]
       }
@@ -486,27 +500,7 @@ export type Database = {
       }
     }
     Views: {
-      prediction_positions: {
-        Row: {
-          avg_price: number | null
-          market_id: string | null
-          order_count: number | null
-          outcome_index: number | null
-          outcome_label: string | null
-          total_amount: number | null
-          total_shares: number | null
-          wallet_address: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "prediction_orders_market_id_fkey"
-            columns: ["market_id"]
-            isOneToOne: false
-            referencedRelation: "prediction_markets"
-            referencedColumns: ["market_id"]
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Functions: {
       get_read_announcement_ids: {
