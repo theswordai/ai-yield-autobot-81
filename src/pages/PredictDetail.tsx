@@ -327,7 +327,7 @@ export default function PredictDetail() {
                   {marketOrders.slice(0, 20).map((o) => (
                     <div key={o.id} className="flex justify-between items-center text-xs bg-muted/50 rounded-lg px-3 py-2">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-[10px]">{o.outcome_label}</Badge>
+                        <Badge variant="outline" className="text-[10px]">{o.outcome}</Badge>
                         <span className="text-muted-foreground">{o.status}</span>
                       </div>
                       <div className="text-right">
