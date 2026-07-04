@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "usd-online-mcp",
+      "version": "0.1.0",
+      "title": "USD.ONLINE MCP"
+    },
+    "tools": [
+      {
+        "name": "get_latest_news",
+        "title": "Get latest announcements",
+        "description": "Fetch the most recent USD.ONLINE announcements/news items published to the platform.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 5,
+              "description": "Number of most recent announcements to return (1-20)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_featured_prices",
+        "title": "Get featured crypto prices",
+        "description": "Get current spot prices (USD) for featured cryptocurrencies from Binance. Supports BTC, ETH, BNB, SOL, XRP, DOGE.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "symbols": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Optional list of ticker symbols like ['BTC','ETH']. Defaults to all featured symbols."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_yield_info",
+        "title": "Get USD.ONLINE yield strategies",
+        "description": "Get USD.ONLINE staking strategies with APR, daily-compounded APY, minimum deposit, and lock period.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
