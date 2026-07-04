@@ -1,0 +1,1 @@
+ALTER VIEW public.prediction_positions SET (security_invoker = true);

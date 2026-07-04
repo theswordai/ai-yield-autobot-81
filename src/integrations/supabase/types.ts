@@ -193,6 +193,232 @@ export type Database = {
         }
         Relationships: []
       }
+      prediction_accounts: {
+        Row: {
+          balance: number
+          claimed_initial_balance_at: string | null
+          created_at: string
+          realized_pnl: number
+          total_invested: number
+          total_payout: number
+          updated_at: string
+          wallet_address: string
+        }
+        Insert: {
+          balance?: number
+          claimed_initial_balance_at?: string | null
+          created_at?: string
+          realized_pnl?: number
+          total_invested?: number
+          total_payout?: number
+          updated_at?: string
+          wallet_address: string
+        }
+        Update: {
+          balance?: number
+          claimed_initial_balance_at?: string | null
+          created_at?: string
+          realized_pnl?: number
+          total_invested?: number
+          total_payout?: number
+          updated_at?: string
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      prediction_ledger: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          id: string
+          market_id: string | null
+          note: string | null
+          order_id: string | null
+          type: string
+          wallet_address: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          id?: string
+          market_id?: string | null
+          note?: string | null
+          order_id?: string | null
+          type: string
+          wallet_address: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          id?: string
+          market_id?: string | null
+          note?: string | null
+          order_id?: string | null
+          type?: string
+          wallet_address?: string
+        }
+        Relationships: []
+      }
+      prediction_markets: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          end_date: string | null
+          icon: string | null
+          image: string | null
+          liquidity: number | null
+          market_id: string
+          no_price: number | null
+          outcomes: Json
+          slug: string | null
+          status: string
+          title: string
+          updated_at: string
+          volume: number | null
+          volume_24hr: number | null
+          yes_price: number | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          icon?: string | null
+          image?: string | null
+          liquidity?: number | null
+          market_id: string
+          no_price?: number | null
+          outcomes?: Json
+          slug?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          volume?: number | null
+          volume_24hr?: number | null
+          yes_price?: number | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          icon?: string | null
+          image?: string | null
+          liquidity?: number | null
+          market_id?: string
+          no_price?: number | null
+          outcomes?: Json
+          slug?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          volume?: number | null
+          volume_24hr?: number | null
+          yes_price?: number | null
+        }
+        Relationships: []
+      }
+      prediction_orders: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          market_id: string
+          outcome_index: number
+          outcome_label: string
+          payout: number
+          pnl: number
+          price: number
+          settled_at: string | null
+          shares: number
+          status: string
+          wallet_address: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          market_id: string
+          outcome_index: number
+          outcome_label: string
+          payout?: number
+          pnl?: number
+          price: number
+          settled_at?: string | null
+          shares: number
+          status?: string
+          wallet_address: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          market_id?: string
+          outcome_index?: number
+          outcome_label?: string
+          payout?: number
+          pnl?: number
+          price?: number
+          settled_at?: string | null
+          shares?: number
+          status?: string
+          wallet_address?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_orders_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_markets"
+            referencedColumns: ["market_id"]
+          },
+        ]
+      }
+      prediction_settlements: {
+        Row: {
+          id: string
+          market_id: string
+          note: string | null
+          settled_at: string
+          settled_by_wallet: string | null
+          source: string
+          winning_outcome_index: number
+          winning_outcome_label: string
+        }
+        Insert: {
+          id?: string
+          market_id: string
+          note?: string | null
+          settled_at?: string
+          settled_by_wallet?: string | null
+          source?: string
+          winning_outcome_index: number
+          winning_outcome_label: string
+        }
+        Update: {
+          id?: string
+          market_id?: string
+          note?: string | null
+          settled_at?: string
+          settled_by_wallet?: string | null
+          source?: string
+          winning_outcome_index?: number
+          winning_outcome_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_settlements_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_markets"
+            referencedColumns: ["market_id"]
+          },
+        ]
+      }
       support_messages: {
         Row: {
           content: string
@@ -260,7 +486,27 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      prediction_positions: {
+        Row: {
+          avg_price: number | null
+          market_id: string | null
+          order_count: number | null
+          outcome_index: number | null
+          outcome_label: string | null
+          total_amount: number | null
+          total_shares: number | null
+          wallet_address: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_orders_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "prediction_markets"
+            referencedColumns: ["market_id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_read_announcement_ids: {

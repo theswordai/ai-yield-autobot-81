@@ -10,6 +10,7 @@ import { InboxAdmin } from "@/components/admin/InboxAdmin";
 import { SupportAdmin } from "@/components/admin/SupportAdmin";
 import { ChatBotAdmin } from "@/components/admin/ChatBotAdmin";
 import { BlockedWalletsAdmin } from "@/components/admin/BlockedWalletsAdmin";
+import { PredictionAdmin } from "@/components/admin/PredictionAdmin";
 import { callAdminAction } from "@/lib/adminAction";
 
 export default function Admin() {
@@ -56,12 +57,14 @@ export default function Admin() {
             <TabsTrigger value="support">客服会话</TabsTrigger>
             <TabsTrigger value="chatbot">聊天机器人</TabsTrigger>
             <TabsTrigger value="blocked">群发</TabsTrigger>
+            <TabsTrigger value="prediction">预测市场</TabsTrigger>
           </TabsList>
           <TabsContent value="announcements" className="mt-4"><AnnouncementsAdmin /></TabsContent>
           <TabsContent value="inbox" className="mt-4"><InboxAdmin /></TabsContent>
           <TabsContent value="support" className="mt-4"><SupportAdmin /></TabsContent>
           <TabsContent value="chatbot" className="mt-4"><ChatBotAdmin /></TabsContent>
           <TabsContent value="blocked" className="mt-4"><BlockedWalletsAdmin /></TabsContent>
+          <TabsContent value="prediction" className="mt-4"><PredictionAdmin /></TabsContent>
         </Tabs>
       )}
     </main>
