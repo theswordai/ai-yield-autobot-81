@@ -75,6 +75,17 @@ export default function Predict() {
       <Navbar />
 
       <main className="container mx-auto px-3 sm:px-4 pt-16 sm:pt-20 pb-24">
+        {/* FutureDAO simulated banner */}
+        <div className="mb-4 rounded-xl border border-border bg-card/60 backdrop-blur px-3 py-2 sm:px-4 sm:py-2.5 flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary/15 text-primary text-[11px] font-bold">F</span>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-snug">
+            <span className="font-semibold text-foreground">FutureDAO</span>{' '}
+            {language === 'zh'
+              ? '· 使用站内模拟 USDV 交易真实 Polymarket 事件，无真实 USDT，无提现。'
+              : '· Trade real-world Polymarket events with simulated USDV. No real USDT is used.'}
+          </p>
+        </div>
+
         {/* Category Nav Bar - Polymarket style */}
         <div className="relative mb-6 border-b border-border">
           <button onClick={() => scrollTabs('left')} className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-1 bg-background/90 hidden sm:block">
