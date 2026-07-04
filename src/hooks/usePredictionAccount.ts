@@ -4,10 +4,8 @@ import { callPredictionAction } from "@/lib/predictionAction";
 export interface PredictionAccount {
   wallet_address: string;
   balance: number;
-  total_invested: number;
-  total_payout: number;
-  realized_pnl: number;
-  claimed_initial_balance_at: string | null;
+  total_pnl: number;
+  claimed_initial_balance: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -15,38 +13,38 @@ export interface PredictionAccount {
 export interface PredictionOrder {
   id: string;
   wallet_address: string;
-  market_id: string;
-  outcome_index: number;
-  outcome_label: string;
+  polymarket_id: string;
+  outcome: string;
   amount: number;
   price: number;
   shares: number;
   status: "open" | "won" | "lost" | "refunded";
-  settled_at: string | null;
   payout: number;
   pnl: number;
   created_at: string;
+  settled_at: string | null;
 }
 
 export interface PredictionPosition {
   wallet_address: string;
-  market_id: string;
-  outcome_index: number;
-  outcome_label: string;
-  order_count: number;
-  total_amount: number;
-  total_shares: number;
+  polymarket_id: string;
+  outcome: string;
+  shares: number;
+  invested: number;
   avg_price: number;
+  realized_pnl: number;
+  status: "open" | "won" | "lost" | "refunded";
+  updated_at: string;
 }
 
 export interface PredictionLedgerEntry {
   id: string;
   wallet_address: string;
-  market_id: string | null;
-  order_id: string | null;
   type: string;
   amount: number;
   balance_after: number;
+  reference_type: string | null;
+  reference_id: string | null;
   note: string | null;
   created_at: string;
 }
@@ -54,8 +52,13 @@ export interface PredictionLedgerEntry {
 interface Snapshot {
   account: PredictionAccount | null;
   orders: PredictionOrder[];
-  ledger: PredictionLedgerEntry[];
   positions: PredictionPosition[];
+  ledger: PredictionLedgerEntry[];
+}
+
+function toNum(v: unknown, d = 0): number {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : d;
 }
 
 export function usePredictionAccount(account: string | null) {
@@ -70,26 +73,33 @@ export function usePredictionAccount(account: string | null) {
     try {
       const res = await callPredictionAction("account.get");
       setData({
-        account: res.account,
+        account: res.account
+          ? {
+              ...res.account,
+              balance: toNum(res.account.balance),
+              total_pnl: toNum(res.account.total_pnl),
+              claimed_initial_balance: !!res.account.claimed_initial_balance,
+            }
+          : null,
         orders: (res.orders || []).map((o: any) => ({
           ...o,
-          amount: Number(o.amount),
-          price: Number(o.price),
-          shares: Number(o.shares),
-          payout: Number(o.payout),
-          pnl: Number(o.pnl),
-        })),
-        ledger: (res.ledger || []).map((l: any) => ({
-          ...l,
-          amount: Number(l.amount),
-          balance_after: Number(l.balance_after),
+          amount: toNum(o.amount),
+          price: toNum(o.price),
+          shares: toNum(o.shares),
+          payout: toNum(o.payout),
+          pnl: toNum(o.pnl),
         })),
         positions: (res.positions || []).map((p: any) => ({
           ...p,
-          order_count: Number(p.order_count),
-          total_amount: Number(p.total_amount),
-          total_shares: Number(p.total_shares),
-          avg_price: Number(p.avg_price),
+          shares: toNum(p.shares),
+          invested: toNum(p.invested),
+          avg_price: toNum(p.avg_price),
+          realized_pnl: toNum(p.realized_pnl),
+        })),
+        ledger: (res.ledger || []).map((l: any) => ({
+          ...l,
+          amount: toNum(l.amount),
+          balance_after: toNum(l.balance_after),
         })),
       });
     } catch (e: any) {
