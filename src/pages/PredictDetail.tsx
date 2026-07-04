@@ -73,25 +73,16 @@ export default function PredictDetail() {
     try {
       await callPredictionAction("trade.place", {
         market: {
-          market_id: market.id,
+          polymarket_id: market.id,
           title: market.title,
           slug: market.slug,
-          description: market.description,
-          category: market.category,
           outcomes: market.outcomes,
           end_date: market.endDate || null,
           yes_price: market.yesPrice,
           no_price: market.noPrice,
-          volume: market.volume,
-          volume_24hr: market.volume24hr,
-          liquidity: market.liquidity,
-          image: market.image,
-          icon: market.icon,
         },
-        outcome_index: outcomeIndex,
-        outcome_label: market.outcomes[outcomeIndex],
+        outcome: market.outcomes[outcomeIndex],
         amount: num,
-        price: Math.max(0.01, Math.min(0.99, price)),
       });
       toast({ title: language === 'zh' ? '下单成功' : 'Trade placed' });
       setAmount('');
