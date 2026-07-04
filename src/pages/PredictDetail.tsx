@@ -296,16 +296,16 @@ export default function PredictDetail() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {marketPositions.map((p) => {
-                    const isYes = p.outcome_index === 0;
+                    const isYes = market && p.outcome === market.outcomes[0];
                     return (
-                      <div key={`${p.market_id}-${p.outcome_index}`} className="flex justify-between items-center text-sm bg-muted rounded-lg px-3 py-2.5">
+                      <div key={`${p.polymarket_id}-${p.outcome}`} className="flex justify-between items-center text-sm bg-muted rounded-lg px-3 py-2.5">
                         <Badge className={`text-xs border-0 ${isYes ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'}`}>
-                          {p.outcome_label}
+                          {p.outcome}
                         </Badge>
                         <span className="text-muted-foreground text-xs">
-                          {p.total_shares.toFixed(2)} {language === 'zh' ? '份' : 'shares'}
+                          {p.shares.toFixed(2)} {language === 'zh' ? '份' : 'shares'}
                         </span>
-                        <span className="font-medium text-foreground">${p.total_amount.toFixed(2)}</span>
+                        <span className="font-medium text-foreground">${p.invested.toFixed(2)}</span>
                         <span className="text-muted-foreground text-xs">
                           @ {Math.round(p.avg_price * 100)}¢
                         </span>
