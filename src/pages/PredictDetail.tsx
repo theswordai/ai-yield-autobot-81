@@ -38,15 +38,15 @@ export default function PredictDetail() {
   const [placing, setPlacing] = useState<number | null>(null);
 
   const marketOrders = useMemo(() =>
-    (acctData?.orders || []).filter((o) => o.market_id === id),
+    (acctData?.orders || []).filter((o) => o.polymarket_id === id),
   [acctData, id]);
 
   const marketPositions = useMemo(() =>
-    (acctData?.positions || []).filter((p) => p.market_id === id),
+    (acctData?.positions || []).filter((p) => p.polymarket_id === id),
   [acctData, id]);
 
   const balance = Number(acctData?.account?.balance ?? 0);
-  const claimed = !!acctData?.account?.claimed_initial_balance_at;
+  const claimed = !!acctData?.account?.claimed_initial_balance;
 
   const handleClaim = async () => {
     setClaiming(true);
