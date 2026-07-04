@@ -10,6 +10,7 @@ import { InboxAdmin } from "@/components/admin/InboxAdmin";
 import { SupportAdmin } from "@/components/admin/SupportAdmin";
 import { ChatBotAdmin } from "@/components/admin/ChatBotAdmin";
 import { BlockedWalletsAdmin } from "@/components/admin/BlockedWalletsAdmin";
+import { PredictionAdmin } from "@/components/admin/PredictionAdmin";
 import { callAdminAction } from "@/lib/adminAction";
 
 export default function Admin() {
