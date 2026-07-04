@@ -38,15 +38,15 @@ export default function PredictDetail() {
   const [placing, setPlacing] = useState<number | null>(null);
 
   const marketOrders = useMemo(() =>
-    (acctData?.orders || []).filter((o) => o.market_id === id),
+    (acctData?.orders || []).filter((o) => o.polymarket_id === id),
   [acctData, id]);
 
   const marketPositions = useMemo(() =>
-    (acctData?.positions || []).filter((p) => p.market_id === id),
+    (acctData?.positions || []).filter((p) => p.polymarket_id === id),
   [acctData, id]);
 
   const balance = Number(acctData?.account?.balance ?? 0);
-  const claimed = !!acctData?.account?.claimed_initial_balance_at;
+  const claimed = !!acctData?.account?.claimed_initial_balance;
 
   const handleClaim = async () => {
     setClaiming(true);
@@ -73,25 +73,16 @@ export default function PredictDetail() {
     try {
       await callPredictionAction("trade.place", {
         market: {
-          market_id: market.id,
+          polymarket_id: market.id,
           title: market.title,
           slug: market.slug,
-          description: market.description,
-          category: market.category,
           outcomes: market.outcomes,
           end_date: market.endDate || null,
           yes_price: market.yesPrice,
           no_price: market.noPrice,
-          volume: market.volume,
-          volume_24hr: market.volume24hr,
-          liquidity: market.liquidity,
-          image: market.image,
-          icon: market.icon,
         },
-        outcome_index: outcomeIndex,
-        outcome_label: market.outcomes[outcomeIndex],
+        outcome: market.outcomes[outcomeIndex],
         amount: num,
-        price: Math.max(0.01, Math.min(0.99, price)),
       });
       toast({ title: language === 'zh' ? '下单成功' : 'Trade placed' });
       setAmount('');
@@ -305,16 +296,16 @@ export default function PredictDetail() {
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {marketPositions.map((p) => {
-                    const isYes = p.outcome_index === 0;
+                    const isYes = market && p.outcome === market.outcomes[0];
                     return (
-                      <div key={`${p.market_id}-${p.outcome_index}`} className="flex justify-between items-center text-sm bg-muted rounded-lg px-3 py-2.5">
+                      <div key={`${p.polymarket_id}-${p.outcome}`} className="flex justify-between items-center text-sm bg-muted rounded-lg px-3 py-2.5">
                         <Badge className={`text-xs border-0 ${isYes ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'}`}>
-                          {p.outcome_label}
+                          {p.outcome}
                         </Badge>
                         <span className="text-muted-foreground text-xs">
-                          {p.total_shares.toFixed(2)} {language === 'zh' ? '份' : 'shares'}
+                          {p.shares.toFixed(2)} {language === 'zh' ? '份' : 'shares'}
                         </span>
-                        <span className="font-medium text-foreground">${p.total_amount.toFixed(2)}</span>
+                        <span className="font-medium text-foreground">${p.invested.toFixed(2)}</span>
                         <span className="text-muted-foreground text-xs">
                           @ {Math.round(p.avg_price * 100)}¢
                         </span>
@@ -336,7 +327,7 @@ export default function PredictDetail() {
                   {marketOrders.slice(0, 20).map((o) => (
                     <div key={o.id} className="flex justify-between items-center text-xs bg-muted/50 rounded-lg px-3 py-2">
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-[10px]">{o.outcome_label}</Badge>
+                        <Badge variant="outline" className="text-[10px]">{o.outcome}</Badge>
                         <span className="text-muted-foreground">{o.status}</span>
                       </div>
                       <div className="text-right">

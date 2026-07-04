@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { callPredictionAction } from "@/lib/predictionAction";
 
 interface AdminMarketRow {
-  market_id: string;
+  polymarket_id: string;
   title: string;
   status: string;
   outcomes: string[];
+  winning_outcome: string | null;
+  settled_at: string | null;
   open_order_count: number;
-  settlement: { winning_outcome_index: number; winning_outcome_label: string; note: string | null } | null;
 }
 
 export function PredictionAdmin() {
@@ -24,7 +24,7 @@ export function PredictionAdmin() {
 
   // Adjust balance form state
   const [adjustWallet, setAdjustWallet] = useState("");
-  const [adjustDelta, setAdjustDelta] = useState("");
+  const [adjustAmount, setAdjustAmount] = useState("");
   const [adjustNote, setAdjustNote] = useState("");
   const [adjusting, setAdjusting] = useState(false);
 
@@ -42,13 +42,12 @@ export function PredictionAdmin() {
 
   useEffect(() => { void refresh(); }, []);
 
-  const settle = async (m: AdminMarketRow, idx: number, note: string) => {
-    setBusy(m.market_id);
+  const settle = async (m: AdminMarketRow, outcome: string, note: string) => {
+    setBusy(m.polymarket_id);
     try {
       await callPredictionAction("admin.settle_market", {
-        market_id: m.market_id,
-        winning_outcome_index: idx,
-        winning_outcome_label: m.outcomes[idx],
+        polymarket_id: m.polymarket_id,
+        winning_outcome: outcome,
         note: note || null,
       });
       toast({ title: "已结算" });
@@ -61,24 +60,24 @@ export function PredictionAdmin() {
   };
 
   const adjust = async () => {
-    const delta = parseFloat(adjustDelta);
+    const amt = parseFloat(adjustAmount);
     if (!/^0x[a-fA-F0-9]{40}$/.test(adjustWallet)) {
       toast({ title: "无效钱包地址", variant: "destructive" });
       return;
     }
-    if (!Number.isFinite(delta) || delta === 0) {
-      toast({ title: "delta 必须为非零数字", variant: "destructive" });
+    if (!Number.isFinite(amt) || amt === 0) {
+      toast({ title: "amount 必须为非零数字", variant: "destructive" });
       return;
     }
     setAdjusting(true);
     try {
       const res = await callPredictionAction("admin.adjust_balance", {
         wallet_address: adjustWallet,
-        delta,
+        amount: amt,
         note: adjustNote || null,
       });
       toast({ title: "已调整", description: `新余额: ${res.balance}` });
-      setAdjustWallet(""); setAdjustDelta(""); setAdjustNote("");
+      setAdjustWallet(""); setAdjustAmount(""); setAdjustNote("");
     } catch (e: any) {
       toast({ title: "调整失败", description: e?.message, variant: "destructive" });
     } finally {
@@ -92,7 +91,7 @@ export function PredictionAdmin() {
         <h3 className="font-semibold">调整钱包模拟余额</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <Input placeholder="0x... 钱包地址" value={adjustWallet} onChange={(e) => setAdjustWallet(e.target.value)} />
-          <Input type="number" placeholder="delta (可为负)" value={adjustDelta} onChange={(e) => setAdjustDelta(e.target.value)} />
+          <Input type="number" placeholder="amount (可为负)" value={adjustAmount} onChange={(e) => setAdjustAmount(e.target.value)} />
           <Input placeholder="备注（可选）" value={adjustNote} onChange={(e) => setAdjustNote(e.target.value)} />
         </div>
         <Button onClick={adjust} disabled={adjusting}>
@@ -112,7 +111,7 @@ export function PredictionAdmin() {
         )}
         <div className="space-y-3">
           {markets.map((m) => (
-            <MarketSettleRow key={m.market_id} market={m} busy={busy === m.market_id} onSettle={settle} />
+            <MarketSettleRow key={m.polymarket_id} market={m} busy={busy === m.polymarket_id} onSettle={settle} />
           ))}
         </div>
       </Card>
@@ -122,34 +121,35 @@ export function PredictionAdmin() {
 
 function MarketSettleRow({
   market, busy, onSettle,
-}: { market: AdminMarketRow; busy: boolean; onSettle: (m: AdminMarketRow, idx: number, note: string) => void }) {
+}: { market: AdminMarketRow; busy: boolean; onSettle: (m: AdminMarketRow, outcome: string, note: string) => void }) {
   const [note, setNote] = useState("");
+  const outcomes = Array.isArray(market.outcomes) ? market.outcomes : [];
   return (
     <div className="border border-border rounded-lg p-3 space-y-2">
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <p className="font-medium text-sm truncate">{market.title}</p>
-          <p className="text-[11px] text-muted-foreground font-mono truncate">{market.market_id}</p>
+          <p className="text-[11px] text-muted-foreground font-mono truncate">{market.polymarket_id}</p>
         </div>
         <Badge variant={market.status === "settled" ? "secondary" : "default"}>{market.status}</Badge>
       </div>
       <div className="text-xs text-muted-foreground">
         Open orders: {market.open_order_count}
-        {market.settlement && (
-          <span className="ml-2">· Winner: <b>{market.settlement.winning_outcome_label}</b></span>
+        {market.winning_outcome && (
+          <span className="ml-2">· Winner: <b>{market.winning_outcome}</b></span>
         )}
       </div>
       {market.status !== "settled" && (
         <div className="space-y-2">
           <Input placeholder="结算备注（可选）" value={note} onChange={(e) => setNote(e.target.value)} className="h-8 text-xs" />
           <div className="flex flex-wrap gap-2">
-            {market.outcomes.map((o, i) => (
+            {outcomes.map((o) => (
               <Button
-                key={i}
+                key={o}
                 size="sm"
                 variant="outline"
                 disabled={busy}
-                onClick={() => onSettle(market, i, note)}
+                onClick={() => onSettle(market, o, note)}
               >
                 {busy && <Loader2 className="w-3 h-3 animate-spin mr-1" />}
                 结算为 {o}

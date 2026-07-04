@@ -42,6 +42,7 @@ Deno.serve(async (req) => {
   if (!parsed.success) return json({ error: parsed.error.flatten() }, 400);
   const { wallet, signature, message, op, payload = {} } = parsed.data;
 
+  // Verify message format: "USD.ONLINE prediction action\nop=<op>\nts=<ms>\nnonce=<hex>"
   const m = message.match(/^USD\.ONLINE prediction action\nop=([\w.]+)\nts=(\d+)\nnonce=[a-f0-9]{8,}$/);
   if (!m) return json({ error: "Bad message format" }, 400);
   if (m[1] !== op) return json({ error: "op mismatch" }, 400);
@@ -84,43 +85,50 @@ Deno.serve(async (req) => {
     return !!data;
   }
 
+  async function writeLedger(entry: {
+    wallet_address: string;
+    type: string;
+    amount: number;
+    balance_after: number;
+    reference_type?: string | null;
+    reference_id?: string | null;
+    note?: string | null;
+  }) {
+    await supabase.from("prediction_ledger").insert(entry);
+  }
+
   try {
+    // ── account.claim_initial_balance ─────────────────────────────
     if (op === "account.claim_initial_balance") {
       const acct = await ensureAccount();
-      if (acct.claimed_initial_balance_at) {
+      if (acct.claimed_initial_balance) {
         return json({ error: "Already claimed" }, 409);
       }
-      const newBal = Number(acct.balance) + INITIAL_BALANCE;
+      const newBal = round(Number(acct.balance) + INITIAL_BALANCE, 6);
       const { data: upd, error: uerr } = await supabase
         .from("prediction_accounts")
-        .update({
-          balance: newBal,
-          claimed_initial_balance_at: new Date().toISOString(),
-        })
+        .update({ balance: newBal, claimed_initial_balance: true })
         .eq("wallet_address", walletLc)
-        .is("claimed_initial_balance_at", null)
+        .eq("claimed_initial_balance", false)
         .select("*")
         .single();
       if (uerr || !upd) return json({ error: "Already claimed" }, 409);
-      await supabase.from("prediction_ledger").insert({
+      await writeLedger({
         wallet_address: walletLc,
         type: "initial_claim",
         amount: INITIAL_BALANCE,
         balance_after: newBal,
+        reference_type: "system",
         note: "Initial 10,000 simulated USDV",
       });
       return json({ ok: true, account: upd });
     }
 
+    // ── account.get ───────────────────────────────────────────────
     if (op === "account.get") {
       const acct = await ensureAccount();
-      const [ordersRes, ledgerRes, positionsRes] = await Promise.all([
+      const [ordersRes, positionsRes, ledgerRes] = await Promise.all([
         supabase.from("prediction_orders")
-          .select("*")
-          .eq("wallet_address", walletLc)
-          .order("created_at", { ascending: false })
-          .limit(100),
-        supabase.from("prediction_ledger")
           .select("*")
           .eq("wallet_address", walletLc)
           .order("created_at", { ascending: false })
@@ -128,66 +136,88 @@ Deno.serve(async (req) => {
         supabase.from("prediction_positions")
           .select("*")
           .eq("wallet_address", walletLc),
+        supabase.from("prediction_ledger")
+          .select("*")
+          .eq("wallet_address", walletLc)
+          .order("created_at", { ascending: false })
+          .limit(100),
       ]);
       return json({
         ok: true,
         account: acct,
         orders: ordersRes.data || [],
-        ledger: ledgerRes.data || [],
         positions: positionsRes.data || [],
+        ledger: ledgerRes.data || [],
       });
     }
 
+    // ── trade.place ───────────────────────────────────────────────
     if (op === "trade.place") {
       const Schema = z.object({
         market: z.object({
-          market_id: z.string().min(1),
-          title: z.string(),
+          polymarket_id: z.string().min(1),
+          title: z.string().min(1),
           slug: z.string().optional().nullable(),
-          description: z.string().optional().nullable(),
-          category: z.string().optional().nullable(),
           outcomes: z.array(z.string()).min(2),
           end_date: z.string().optional().nullable(),
-          yes_price: z.number().optional().nullable(),
-          no_price: z.number().optional().nullable(),
-          volume: z.number().optional().nullable(),
-          volume_24hr: z.number().optional().nullable(),
-          liquidity: z.number().optional().nullable(),
-          image: z.string().optional().nullable(),
-          icon: z.string().optional().nullable(),
+          yes_price: z.number().min(0).max(1).optional().nullable(),
+          no_price: z.number().min(0).max(1).optional().nullable(),
         }),
-        outcome_index: z.number().int().min(0),
-        outcome_label: z.string().min(1),
+        outcome: z.string().min(1),
         amount: z.number().positive(),
-        price: z.number().min(0.01).max(0.99),
       });
       const p = Schema.safeParse(payload);
       if (!p.success) return json({ error: p.error.flatten() }, 400);
-      const { market, outcome_index, outcome_label, amount, price } = p.data;
+      const { market, outcome, amount } = p.data;
 
-      // Upsert market snapshot
-      const { data: mktRow, error: mktErr } = await supabase
+      // Validate outcome belongs to market
+      if (!market.outcomes.includes(outcome)) {
+        return json({ error: "Outcome not in market" }, 400);
+      }
+
+      // Server-side price selection from snapshot (do not trust client price directly)
+      const outcomeIdx = market.outcomes.indexOf(outcome);
+      let price: number | null = null;
+      if (outcomeIdx === 0) price = market.yes_price ?? null;
+      else if (outcomeIdx === 1) price = market.no_price ?? null;
+      if (price == null || !(price > 0) || price > 1) {
+        return json({ error: "Invalid price" }, 400);
+      }
+      // Clamp to safe trading band
+      price = Math.max(0.01, Math.min(0.99, price));
+
+      // Upsert market snapshot (do not overwrite settled markets' resolution)
+      const { data: existingMarket } = await supabase
         .from("prediction_markets")
-        .upsert({
-          market_id: market.market_id,
+        .select("*")
+        .eq("polymarket_id", market.polymarket_id)
+        .maybeSingle();
+
+      if (existingMarket && existingMarket.status !== "open") {
+        return json({ error: "Market not open" }, 400);
+      }
+
+      if (existingMarket) {
+        await supabase.from("prediction_markets").update({
+          title: market.title,
+          slug: market.slug ?? existingMarket.slug,
+          outcomes: market.outcomes,
+          end_date: market.end_date ?? existingMarket.end_date,
+          yes_price: market.yes_price ?? existingMarket.yes_price,
+          no_price: market.no_price ?? existingMarket.no_price,
+        }).eq("polymarket_id", market.polymarket_id);
+      } else {
+        const { error: insErr } = await supabase.from("prediction_markets").insert({
+          polymarket_id: market.polymarket_id,
           title: market.title,
           slug: market.slug ?? null,
-          description: market.description ?? null,
-          category: market.category ?? null,
           outcomes: market.outcomes,
           end_date: market.end_date ?? null,
           yes_price: market.yes_price ?? null,
           no_price: market.no_price ?? null,
-          volume: market.volume ?? null,
-          volume_24hr: market.volume_24hr ?? null,
-          liquidity: market.liquidity ?? null,
-          image: market.image ?? null,
-          icon: market.icon ?? null,
-        }, { onConflict: "market_id" })
-        .select("*")
-        .single();
-      if (mktErr) return json({ error: mktErr.message }, 500);
-      if (mktRow.status !== "open") return json({ error: "Market not open" }, 400);
+        });
+        if (insErr) return json({ error: insErr.message }, 500);
+      }
 
       const acct = await ensureAccount();
       const bal = Number(acct.balance);
@@ -196,21 +226,21 @@ Deno.serve(async (req) => {
 
       const shares = round(roundedAmount / price, 8);
       const newBal = round(bal - roundedAmount, 6);
-      const newInvested = round(Number(acct.total_invested) + roundedAmount, 6);
 
+      // Deduct balance
       const { error: updErr } = await supabase
         .from("prediction_accounts")
-        .update({ balance: newBal, total_invested: newInvested })
+        .update({ balance: newBal })
         .eq("wallet_address", walletLc);
       if (updErr) return json({ error: updErr.message }, 500);
 
+      // Insert order
       const { data: order, error: oerr } = await supabase
         .from("prediction_orders")
         .insert({
           wallet_address: walletLc,
-          market_id: market.market_id,
-          outcome_index,
-          outcome_label,
+          polymarket_id: market.polymarket_id,
+          outcome,
           amount: roundedAmount,
           price,
           shares,
@@ -220,138 +250,190 @@ Deno.serve(async (req) => {
         .single();
       if (oerr) return json({ error: oerr.message }, 500);
 
-      await supabase.from("prediction_ledger").insert({
+      // Update/create position with weighted average
+      const { data: pos } = await supabase
+        .from("prediction_positions")
+        .select("*")
+        .eq("wallet_address", walletLc)
+        .eq("polymarket_id", market.polymarket_id)
+        .eq("outcome", outcome)
+        .maybeSingle();
+
+      if (pos) {
+        const newShares = round(Number(pos.shares) + shares, 8);
+        const newInvested = round(Number(pos.invested) + roundedAmount, 6);
+        const newAvg = newShares > 0 ? round(newInvested / newShares, 8) : 0;
+        await supabase.from("prediction_positions").update({
+          shares: newShares,
+          invested: newInvested,
+          avg_price: newAvg,
+          status: "open",
+        })
+          .eq("wallet_address", walletLc)
+          .eq("polymarket_id", market.polymarket_id)
+          .eq("outcome", outcome);
+      } else {
+        await supabase.from("prediction_positions").insert({
+          wallet_address: walletLc,
+          polymarket_id: market.polymarket_id,
+          outcome,
+          shares,
+          invested: roundedAmount,
+          avg_price: price,
+          status: "open",
+        });
+      }
+
+      await writeLedger({
         wallet_address: walletLc,
-        market_id: market.market_id,
-        order_id: order.id,
         type: "trade_open",
         amount: -roundedAmount,
         balance_after: newBal,
-        note: `Buy ${outcome_label} @ ${price}`,
+        reference_type: "order",
+        reference_id: order.id,
+        note: `Buy ${outcome} @ ${price}`,
       });
 
       return json({ ok: true, order, balance: newBal });
     }
 
+    // ── admin.settle_market ───────────────────────────────────────
     if (op === "admin.settle_market") {
       if (!(await isAdmin())) return json({ error: "Not admin" }, 403);
       const Schema = z.object({
-        market_id: z.string().min(1),
-        winning_outcome_index: z.number().int().min(0),
-        winning_outcome_label: z.string().min(1),
+        polymarket_id: z.string().min(1),
+        winning_outcome: z.string().min(1),
         note: z.string().max(500).optional().nullable(),
       });
       const p = Schema.safeParse(payload);
       if (!p.success) return json({ error: p.error.flatten() }, 400);
-      const { market_id, winning_outcome_index, winning_outcome_label, note } = p.data;
+      const { polymarket_id, winning_outcome, note } = p.data;
 
       const { data: mkt } = await supabase
         .from("prediction_markets")
         .select("*")
-        .eq("market_id", market_id)
+        .eq("polymarket_id", polymarket_id)
         .maybeSingle();
       if (!mkt) return json({ error: "Market not found" }, 404);
       if (mkt.status === "settled") return json({ error: "Already settled" }, 409);
+      const outcomes = mkt.outcomes as string[];
+      if (!Array.isArray(outcomes) || !outcomes.includes(winning_outcome)) {
+        return json({ error: "Winning outcome not in market" }, 400);
+      }
 
-      const { data: settlement, error: serr } = await supabase
+      const nowIso = new Date().toISOString();
+
+      // Mark market settled first (idempotency guard via status)
+      const { data: mktUpd, error: mktErr } = await supabase
+        .from("prediction_markets")
+        .update({
+          status: "settled",
+          winning_outcome,
+          settled_at: nowIso,
+        })
+        .eq("polymarket_id", polymarket_id)
+        .eq("status", "open")
+        .select("*")
+        .single();
+      if (mktErr || !mktUpd) return json({ error: "Market already settled" }, 409);
+
+      // Insert settlement audit
+      const { data: settlement } = await supabase
         .from("prediction_settlements")
         .insert({
-          market_id,
-          winning_outcome_index,
-          winning_outcome_label,
+          polymarket_id,
+          winning_outcome,
+          settled_by: walletLc,
           source: "admin",
-          settled_by_wallet: walletLc,
-          note: note ?? null,
         })
         .select("*")
         .single();
-      if (serr) return json({ error: serr.message }, 500);
 
+      // Fetch open orders
       const { data: orders } = await supabase
         .from("prediction_orders")
         .select("*")
-        .eq("market_id", market_id)
+        .eq("polymarket_id", polymarket_id)
         .eq("status", "open");
 
-      const walletDeltas = new Map<string, { payout: number; won: number; lost: number }>();
+      // Aggregate per-wallet: payout, pnl
+      const walletDeltas = new Map<string, { payout: number; pnl: number }>();
       for (const o of orders || []) {
-        const isWin = o.outcome_index === winning_outcome_index;
+        const isWin = o.outcome === winning_outcome;
         const payout = isWin ? round(Number(o.shares) * 1, 6) : 0;
         const pnl = round(payout - Number(o.amount), 6);
+
         await supabase.from("prediction_orders").update({
           status: isWin ? "won" : "lost",
-          settled_at: new Date().toISOString(),
           payout,
           pnl,
+          settled_at: nowIso,
         }).eq("id", o.id);
 
-        const d = walletDeltas.get(o.wallet_address) ?? { payout: 0, won: 0, lost: 0 };
-        d.payout += payout;
-        if (isWin) d.won += pnl; else d.lost += pnl;
+        const d = walletDeltas.get(o.wallet_address) ?? { payout: 0, pnl: 0 };
+        d.payout = round(d.payout + payout, 6);
+        d.pnl = round(d.pnl + pnl, 6);
         walletDeltas.set(o.wallet_address, d);
-
-        if (payout > 0) {
-          const { data: acct } = await supabase
-            .from("prediction_accounts")
-            .select("balance")
-            .eq("wallet_address", o.wallet_address)
-            .maybeSingle();
-          const newBal = round(Number(acct?.balance ?? 0) + payout, 6);
-          await supabase.from("prediction_ledger").insert({
-            wallet_address: o.wallet_address,
-            market_id,
-            order_id: o.id,
-            type: "trade_settle_win",
-            amount: payout,
-            balance_after: newBal,
-            note: `Won ${o.outcome_label}`,
-          });
-        } else {
-          const { data: acct } = await supabase
-            .from("prediction_accounts")
-            .select("balance")
-            .eq("wallet_address", o.wallet_address)
-            .maybeSingle();
-          await supabase.from("prediction_ledger").insert({
-            wallet_address: o.wallet_address,
-            market_id,
-            order_id: o.id,
-            type: "trade_settle_loss",
-            amount: 0,
-            balance_after: Number(acct?.balance ?? 0),
-            note: `Lost ${o.outcome_label}`,
-          });
-        }
       }
 
-      // Update account aggregates + balances
+      // Update positions per (wallet, outcome) in this market
+      const { data: positions } = await supabase
+        .from("prediction_positions")
+        .select("*")
+        .eq("polymarket_id", polymarket_id);
+      for (const p of positions || []) {
+        const isWin = p.outcome === winning_outcome;
+        const payout = isWin ? round(Number(p.shares) * 1, 6) : 0;
+        const realized = round(payout - Number(p.invested), 6);
+        await supabase.from("prediction_positions").update({
+          status: isWin ? "won" : "lost",
+          realized_pnl: realized,
+        })
+          .eq("wallet_address", p.wallet_address)
+          .eq("polymarket_id", polymarket_id)
+          .eq("outcome", p.outcome);
+      }
+
+      // Credit accounts + write ledger
       for (const [w, d] of walletDeltas) {
         const { data: acct } = await supabase
           .from("prediction_accounts")
-          .select("*")
+          .select("balance,total_pnl")
           .eq("wallet_address", w)
           .maybeSingle();
         if (!acct) continue;
         const newBal = round(Number(acct.balance) + d.payout, 6);
-        const newPayout = round(Number(acct.total_payout) + d.payout, 6);
-        const newPnl = round(Number(acct.realized_pnl) + d.won + d.lost, 6);
+        const newPnl = round(Number(acct.total_pnl) + d.pnl, 6);
         await supabase.from("prediction_accounts").update({
           balance: newBal,
-          total_payout: newPayout,
-          realized_pnl: newPnl,
+          total_pnl: newPnl,
         }).eq("wallet_address", w);
+
+        await writeLedger({
+          wallet_address: w,
+          type: d.payout > 0 ? "settle_payout" : "settle_loss",
+          amount: d.payout,
+          balance_after: newBal,
+          reference_type: "market",
+          reference_id: polymarket_id,
+          note: `Settled ${polymarket_id} → ${winning_outcome}${note ? ` (${note})` : ""}`,
+        });
       }
 
-      await supabase.from("prediction_markets").update({ status: "settled" }).eq("market_id", market_id);
-
-      return json({ ok: true, settlement, affected_orders: orders?.length ?? 0 });
+      return json({
+        ok: true,
+        settlement,
+        market: mktUpd,
+        affected_orders: orders?.length ?? 0,
+      });
     }
 
+    // ── admin.adjust_balance ──────────────────────────────────────
     if (op === "admin.adjust_balance") {
       if (!(await isAdmin())) return json({ error: "Not admin" }, 403);
       const Schema = z.object({
         wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
-        delta: z.number().refine((n) => n !== 0, "delta must be non-zero"),
+        amount: z.number().refine((n) => n !== 0, "amount must be non-zero"),
         note: z.string().max(500).optional().nullable(),
       });
       const p = Schema.safeParse(payload);
@@ -369,21 +451,24 @@ Deno.serve(async (req) => {
       } else {
         currBal = Number(acct.balance);
       }
-      const newBal = round(currBal + p.data.delta, 6);
+      const newBal = round(currBal + p.data.amount, 6);
       if (newBal < 0) return json({ error: "Would go negative" }, 400);
       await supabase.from("prediction_accounts")
         .update({ balance: newBal })
         .eq("wallet_address", targetLc);
-      await supabase.from("prediction_ledger").insert({
+      await writeLedger({
         wallet_address: targetLc,
         type: "admin_adjust",
-        amount: p.data.delta,
+        amount: p.data.amount,
         balance_after: newBal,
+        reference_type: "admin",
+        reference_id: walletLc,
         note: p.data.note ?? `Admin adjust by ${walletLc}`,
       });
       return json({ ok: true, balance: newBal });
     }
 
+    // ── admin.list_markets ────────────────────────────────────────
     if (op === "admin.list_markets") {
       if (!(await isAdmin())) return json({ error: "Not admin" }, 403);
       const { data: markets } = await supabase
@@ -391,28 +476,23 @@ Deno.serve(async (req) => {
         .select("*")
         .order("updated_at", { ascending: false })
         .limit(500);
-      const ids = (markets || []).map((m) => m.market_id);
-      let counts: Record<string, number> = {};
-      let settlements: Record<string, any> = {};
+      const ids = (markets || []).map((m) => m.polymarket_id);
+      const counts: Record<string, number> = {};
       if (ids.length) {
         const { data: openOrders } = await supabase
           .from("prediction_orders")
-          .select("market_id")
-          .in("market_id", ids)
+          .select("polymarket_id")
+          .in("polymarket_id", ids)
           .eq("status", "open");
-        for (const r of openOrders || []) counts[r.market_id] = (counts[r.market_id] || 0) + 1;
-        const { data: sets } = await supabase
-          .from("prediction_settlements")
-          .select("*")
-          .in("market_id", ids);
-        for (const s of sets || []) settlements[s.market_id] = s;
+        for (const r of openOrders || []) {
+          counts[r.polymarket_id] = (counts[r.polymarket_id] || 0) + 1;
+        }
       }
       return json({
         ok: true,
         markets: (markets || []).map((m) => ({
           ...m,
-          open_order_count: counts[m.market_id] || 0,
-          settlement: settlements[m.market_id] || null,
+          open_order_count: counts[m.polymarket_id] || 0,
         })),
       });
     }
