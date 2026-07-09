@@ -20,6 +20,32 @@ export function NewsAnnouncement() {
 
   const announcements = [
     {
+      id: 10,
+      title: "关于 USDV 兑换 BULL 安排的通知",
+      titleEn: "Notice on USDV to BULL Conversion Arrangements",
+      content: "尊敬的各位合伙人：\n\n第一步：现就 USDV 兑换 BULL 相关安排通知如下：\n\n功能开发进度\n\n因 USDV 合约受到污染，相关兑换通道需重新部署与校验。技术团队正加紧开发与安全测试，预计在 十个工作日内 完成 USDV 兑换 BULL 功能上线。\n\n领币功能继续开放，请已满足条件的用户按指引正常操作与领取，等待完成兑换重要步骤。\n\n第二步与第三步会逐步展开，敬请期待。\n\n请广大合伙人以官网公告为准，谨防非官方链接与虚假信息。功能上线时间如有调整，将第一时间另行通知。\n\n感谢大家的理解与支持。再次表示感谢",
+      contentEn: "Dear Partners:\n\nStep 1: We hereby notify you of the arrangements for USDV to BULL conversion:\n\nDevelopment Progress\n\nDue to contamination of the USDV contract, the relevant conversion channels need to be redeployed and verified. The technical team is accelerating development and security testing, and expects to complete the USDV to BULL conversion feature launch within ten working days.\n\nThe token claiming function remains open. Eligible users please follow the instructions to operate and claim normally, and await the completion of this important conversion step.\n\nStep 2 and Step 3 will be rolled out gradually. Please stay tuned.\n\nAll partners are requested to refer to official website announcements and beware of unofficial links and false information. If the launch time is adjusted, a further notice will be issued at the earliest opportunity.\n\nThank you for your understanding and support. Once again, thank you.",
+      date: "2026-07-09",
+      time: "12:00 CEST",
+      source: "USD.ONLINE 官方",
+      sourceEn: "USD.ONLINE Official",
+      type: "alert",
+      urgent: true,
+    },
+    {
+      id: 9,
+      title: "平台功能恢复公告",
+      titleEn: "Platform Function Recovery Announcement",
+      content: "尊敬的各位合伙人：\n\n平台目前使大部分功能恢复正常运行，团队各项工作有序推进。\n\n针对近期链上安全事件，鉴于黑客攻击与链上博弈的复杂性、多样性，技术团队正全力推进系统修复与功能恢复。我们对未来逐步实现全部功能充满信心。\n\n感谢大家的耐心等待，不便之处敬请谅解，谢谢。请以官网公告为准。",
+      contentEn: "Dear Partners:\n\nMost platform functions have now returned to normal operation, and all team work is proceeding in an orderly manner.\n\nRegarding the recent on-chain security incident, given the complexity and diversity of hacker attacks and on-chain games, the technical team is making every effort to advance system repair and function recovery. We are fully confident that all functions will be gradually restored in the future.\n\nThank you for your patience, and we apologize for any inconvenience caused. Please refer to official website announcements.",
+      date: "2026-07-09",
+      time: "10:00 CEST",
+      source: "USD.ONLINE 官方",
+      sourceEn: "USD.ONLINE Official",
+      type: "alert",
+      urgent: true,
+    },
+    {
       id: 8,
       title: "关于遭受有预谋链上恶意攻击的紧急公告",
       titleEn: "Urgent Announcement on Pre-Planned On-Chain Malicious Attack",
