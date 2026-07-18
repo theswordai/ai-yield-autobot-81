@@ -3,7 +3,6 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { AnnouncementPopup } from "@/components/AnnouncementPopup";
 import { MessageCenter } from "@/components/MessageCenter";
-import { ChatRoom } from "@/components/ChatRoom";
 import { WalletAccessGate } from "@/components/WalletAccessGate";
 
 function SidebarToggleButton() {
@@ -41,7 +40,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
         <AnnouncementPopup />
         <MessageCenter />
-        <ChatRoom />
         <WalletAccessGate />
       </div>
     </SidebarProvider>
