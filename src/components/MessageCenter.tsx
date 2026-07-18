@@ -27,11 +27,6 @@ export function MessageCenter({ floating = true }: MessageCenterProps = {}) {
           >
             <span className="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90 transition-colors">
               <MessageSquareMore className="w-5 h-5" />
-              {mc.totalUnread > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-bold ring-2 ring-background">
-                  {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
-                </span>
-              )}
             </span>
           </button>
         ) : (
