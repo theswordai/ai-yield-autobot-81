@@ -53,7 +53,6 @@ export function MessageCenter({ floating = true }: MessageCenterProps = {}) {
           <TabsList className="grid grid-cols-3 mx-4 mt-3">
             <TabsTrigger value="announcements" className="text-xs">
               <Megaphone className="w-3.5 h-3.5 mr-1" />公告
-              {mc.unreadAnnouncements.length > 0 && <Badge className="ml-1 h-4 px-1 text-[10px]" variant="destructive">{mc.unreadAnnouncements.length}</Badge>}
             </TabsTrigger>
             <TabsTrigger value="inbox" className="text-xs">
               <Mail className="w-3.5 h-3.5 mr-1" />站内信
