@@ -24,11 +24,12 @@ export function MessageCenter({ floating = true }: MessageCenterProps = {}) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="联系客服 Telegram @usdvonline"
-        className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50"
+        className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50 flex flex-col items-center gap-1"
       >
         <span className="relative flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-lg ring-2 ring-background hover:scale-105 transition-transform overflow-hidden">
           <Headphones className="w-6 h-6" />
         </span>
+        <span className="text-[10px] font-medium text-foreground bg-background/80 backdrop-blur px-1.5 py-0.5 rounded shadow-sm">在线客服</span>
       </a>
     );
   }
