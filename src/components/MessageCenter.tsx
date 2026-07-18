@@ -17,28 +17,33 @@ export function MessageCenter({ floating = true }: MessageCenterProps = {}) {
   const [open, setOpen] = useState(false);
   const mc = useMessageCenter();
 
+  if (floating) {
+    return (
+      <a
+        href="https://t.me/usdvonline"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="联系客服 Telegram @usdvonline"
+        className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50"
+      >
+        <span className="relative flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-lg ring-2 ring-background hover:scale-105 transition-transform overflow-hidden">
+          <Headphones className="w-6 h-6" />
+        </span>
+      </a>
+    );
+  }
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        {floating ? (
-          <button
-            aria-label="在线客服"
-            className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-50"
-          >
-            <span className="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90 transition-colors">
-              <MessageSquareMore className="w-5 h-5" />
+        <Button variant="ghost" size="icon" className="relative h-9 w-9" aria-label="消息中心">
+          <MessageSquareMore className="w-5 h-5" />
+          {mc.totalUnread > 0 && (
+            <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-bold">
+              {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
             </span>
-          </button>
-        ) : (
-          <Button variant="ghost" size="icon" className="relative h-9 w-9" aria-label="消息中心">
-            <MessageSquareMore className="w-5 h-5" />
-            {mc.totalUnread > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-bold">
-                {mc.totalUnread > 99 ? "99+" : mc.totalUnread}
-              </span>
-            )}
-          </Button>
-        )}
+          )}
+        </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col">
         <SheetHeader className="p-4 border-b border-border">
