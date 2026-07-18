@@ -60,11 +60,6 @@ export function ChatRoom() {
         >
           <span className="relative flex items-center justify-center w-10 h-10 rounded-full bg-secondary text-secondary-foreground border border-border/60 backdrop-blur-md shadow-md hover:bg-secondary/80 transition-colors">
             <Users className="w-5 h-5" />
-            {badge.unreadCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-destructive text-destructive-foreground text-[11px] leading-[18px] font-bold text-center ring-2 ring-background tabular-nums">
-                {badge.unreadCount > 99 ? "99+" : badge.unreadCount}
-              </span>
-            )}
           </span>
         </button>
       </SheetTrigger>
