@@ -389,75 +389,8 @@ export default function Bull() {
           </Card>
         )}
 
-        {/* Vesting details */}
-        {account && isWhitelisted && hasMigrated && (
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Lock className="w-4 h-4 text-primary" />
-                {zh ? "锁仓解锁进度" : "Vesting Progress"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-                  <span>{zh ? "已解锁" : "Unlocked"} {unlockedPct.toFixed(2)}%</span>
-                  <span>
-                    {fmt(vestedAmount)} / {fmt(vestTotal)} $BULL
-                  </span>
-                </div>
-                <Progress value={unlockedPct} className="h-2" />
-              </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <Stat
-                  label={zh ? "锁仓总量" : "Vesting Total"}
-                  value={fmt(vestTotal)}
-                  sub={usd(priceValue(vestTotal))}
-                />
-                <Stat
-                  label={zh ? "剩余未解锁" : "Still Locked"}
-                  value={fmt(remainingLocked)}
-                  sub={usd(priceValue(remainingLocked))}
-                />
-                <Stat
-                  label={zh ? "预计 24h 新增可领" : "Est. 24h Unlock"}
-                  value={fmt(daily)}
-                  sub={usd(priceValue(daily))}
-                />
-              </div>
 
-              <div className="text-xs text-muted-foreground border-t border-border pt-3 space-y-1">
-                <div>
-                  {zh ? "开始时间：" : "Start: "}
-                  {vestStart > 0n
-                    ? new Date(Number(vestStart) * 1000).toLocaleString()
-                    : "—"}
-                </div>
-                <div>
-                  {zh ? "完全解锁：" : "Fully unlocked: "}
-                  {fullyUnlockedAt ? fullyUnlockedAt.toLocaleString() : "—"}
-                </div>
-                <div>
-                  {zh ? "当前 $BULL 价格：" : "$BULL price: "}
-                  {priceUsdt != null
-                    ? `${priceUsdt.toLocaleString(undefined, { maximumFractionDigits: 8 })} USDT`
-                    : "—"}
-                  {pairAddress && (
-                    <a
-                      href={bscLink(pairAddress)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 ml-2 text-primary hover:underline"
-                    >
-                      {zh ? "查看 Pair" : "View Pair"} <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
         {/* Actions */}
         {account && (
