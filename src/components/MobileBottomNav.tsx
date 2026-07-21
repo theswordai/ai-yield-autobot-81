@@ -10,6 +10,7 @@ import {
   Crown,
   Wallet,
   Gem,
+  Flame,
   MoreHorizontal,
   MessageCircleQuestion,
   X,
@@ -68,6 +69,15 @@ const MobileBottomNav = () => {
       descEn: "365-day lock · 260%+ APR",
       icon: Gem,
       path: `/${language}/legendary`,
+    },
+    {
+      id: "bull",
+      label: "BULL 领取",
+      labelEn: "BULL Claim",
+      desc: "白名单兑换 · 36个月线性解锁",
+      descEn: "Whitelist migrate · 36-month vesting",
+      icon: Flame,
+      path: `/${language}/bull`,
     },
     {
       id: "whitepaper",
