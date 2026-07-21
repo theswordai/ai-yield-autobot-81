@@ -525,7 +525,7 @@ export default function Bull() {
             <ContractRow label="Vesting" addr={BULL_VESTING_ADDRESS} onCopy={copyAddr} />
             <ContractRow label="Migration" addr={BULL_MIGRATION_ADDRESS} onCopy={copyAddr} />
             <ContractRow label="USDT" addr={BULL_USDT_ADDRESS} onCopy={copyAddr} />
-            {pairAddress && <ContractRow label="Pair (BULL/USDT)" addr={pairAddress} onCopy={copyAddr} />}
+            {pairAddress && <ContractRow label="Pair ($BULL/USDT)" addr={pairAddress} onCopy={copyAddr} />}
           </CardContent>
         </Card>
 
