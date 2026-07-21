@@ -479,7 +479,7 @@ export default function Bull() {
                   {pending === "migrate" ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{zh ? "兑换中..." : "Migrating..."}</>
                   ) : (
-                    <>{zh ? `兑换 BULL（立即 ${BULL_INSTANT_PCT}%）` : `Migrate BULL (${BULL_INSTANT_PCT}% instant)`}</>
+                    <>{zh ? `兑换 $BULL（立即 ${BULL_INSTANT_PCT}%）` : `Migrate $BULL (${BULL_INSTANT_PCT}% instant)`}</>
                   )}
                 </Button>
               ) : (
