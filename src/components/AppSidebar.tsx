@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { Rocket, Heart, Coins, Crown, FileText, TrendingUp, User, BarChart3, Gem } from "lucide-react";
+import { Rocket, Heart, Coins, Crown, FileText, TrendingUp, User, BarChart3, Gem, Flame } from "lucide-react";
 import { useI18n } from "@/hooks/useI18n";
 import {
   Sidebar,
@@ -65,6 +65,11 @@ export function AppSidebar() {
       title: language === "zh" ? "增值资本" : "Legendary",
       icon: Gem,
       href: `${langPrefix}/legendary`,
+    },
+    {
+      title: language === "zh" ? "BULL 领取" : "BULL Claim",
+      icon: Flame,
+      href: `${langPrefix}/bull`,
     },
   ];
 
