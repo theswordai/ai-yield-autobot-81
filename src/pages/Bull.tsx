@@ -236,7 +236,7 @@ export default function Bull() {
       const tx = await c.migrate(entitlementWei, entry.proof);
       toast.info(zh ? "兑换交易已发送，等待确认..." : "Migrate tx submitted, waiting...");
       await tx.wait();
-      toast.success(zh ? "兑换成功！已收到 3% BULL，其余进入线性解锁" : "Migrated! 3% BULL received, rest vesting linearly");
+      toast.success(zh ? "兑换成功！已收到 3% $BULL，其余进入线性解锁" : "Migrated! 3% $BULL received, rest vesting linearly");
       await refresh();
     } catch (e: any) {
       const msg = e?.shortMessage || e?.reason || e?.message || "Migrate failed";
