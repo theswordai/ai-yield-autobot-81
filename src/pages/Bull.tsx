@@ -294,12 +294,12 @@ export default function Bull() {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-                  {zh ? "BULL 领取中心" : "BULL Claim Center"}
+                  {zh ? "$BULL 领取中心" : "$BULL Claim Center"}
                 </h1>
                 <p className="text-xs md:text-sm text-muted-foreground mt-1">
                   {zh
                     ? "白名单地址可兑换 $BULL，即时到账 3%，其余 97% 陆续线性解锁\u00a0"
-                    : "Whitelisted wallets can migrate to BULL — 3% instant, 97% vests linearly over 36 months"}
+                    : "Whitelisted wallets can migrate to $BULL — 3% instant, 97% vests linearly"}
                 </p>
               </div>
             </div>
