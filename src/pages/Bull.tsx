@@ -236,7 +236,7 @@ export default function Bull() {
       const tx = await c.migrate(entitlementWei, entry.proof);
       toast.info(zh ? "兑换交易已发送，等待确认..." : "Migrate tx submitted, waiting...");
       await tx.wait();
-      toast.success(zh ? "兑换成功！已收到 3% BULL，其余进入线性解锁" : "Migrated! 3% BULL received, rest vesting linearly");
+      toast.success(zh ? "兑换成功！已收到 3% $BULL，其余进入线性解锁" : "Migrated! 3% $BULL received, rest vesting linearly");
       await refresh();
     } catch (e: any) {
       const msg = e?.shortMessage || e?.reason || e?.message || "Migrate failed";
@@ -294,12 +294,12 @@ export default function Bull() {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-                  {zh ? "BULL 领取中心" : "BULL Claim Center"}
+                  {zh ? "$BULL 领取中心" : "$BULL Claim Center"}
                 </h1>
                 <p className="text-xs md:text-sm text-muted-foreground mt-1">
                   {zh
-                    ? "白名单地址可兑换 BULL，即时到账 3%，其余 97% 线性解锁 36 个月"
-                    : "Whitelisted wallets can migrate to BULL — 3% instant, 97% vests linearly over 36 months"}
+                    ? "白名单地址可兑换 $BULL，即时到账 3%，其余 97% 陆续线性解锁\u00a0"
+                    : "Whitelisted wallets can migrate to $BULL — 3% instant, 97% vests linearly"}
                 </p>
               </div>
             </div>
@@ -339,7 +339,7 @@ export default function Bull() {
                   {zh ? "当前地址不符合领取条件" : "Address not eligible"}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  {shortHash(account)} {zh ? "不在 BULL 兑换白名单中。" : "is not in the BULL migration whitelist."}
+                  {shortHash(account)} {zh ? "不在 $BULL 兑换白名单中。" : "is not in the $BULL migration whitelist."}
                 </div>
               </div>
             </CardContent>
@@ -365,7 +365,7 @@ export default function Bull() {
             </CardHeader>
             <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Stat
-                label={zh ? "总额度 (BULL)" : "Total (BULL)"}
+                label={zh ? "总额度 ($BULL)" : "Total ($BULL)"}
                 value={fmt(entitlementWei)}
                 sub={usd(priceValue(entitlementWei))}
               />
@@ -403,7 +403,7 @@ export default function Bull() {
                 <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
                   <span>{zh ? "已解锁" : "Unlocked"} {unlockedPct.toFixed(2)}%</span>
                   <span>
-                    {fmt(vestedAmount)} / {fmt(vestTotal)} BULL
+                    {fmt(vestedAmount)} / {fmt(vestTotal)} $BULL
                   </span>
                 </div>
                 <Progress value={unlockedPct} className="h-2" />
@@ -439,7 +439,7 @@ export default function Bull() {
                   {fullyUnlockedAt ? fullyUnlockedAt.toLocaleString() : "—"}
                 </div>
                 <div>
-                  {zh ? "当前 BULL 价格：" : "BULL price: "}
+                  {zh ? "当前 $BULL 价格：" : "$BULL price: "}
                   {priceUsdt != null
                     ? `${priceUsdt.toLocaleString(undefined, { maximumFractionDigits: 8 })} USDT`
                     : "—"}
@@ -479,7 +479,7 @@ export default function Bull() {
                   {pending === "migrate" ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{zh ? "兑换中..." : "Migrating..."}</>
                   ) : (
-                    <>{zh ? `兑换 BULL（立即 ${BULL_INSTANT_PCT}%）` : `Migrate BULL (${BULL_INSTANT_PCT}% instant)`}</>
+                    <>{zh ? `兑换 $BULL（立即 ${BULL_INSTANT_PCT}%）` : `Migrate $BULL (${BULL_INSTANT_PCT}% instant)`}</>
                   )}
                 </Button>
               ) : (
@@ -492,7 +492,7 @@ export default function Bull() {
                   {pending === "claim" ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{zh ? "领取中..." : "Claiming..."}</>
                   ) : claimable > 0n ? (
-                    <>{zh ? `领取解锁 ${fmt(claimable)} BULL` : `Claim ${fmt(claimable)} BULL`}</>
+                    <>{zh ? `领取解锁 ${fmt(claimable)} $BULL` : `Claim ${fmt(claimable)} $BULL`}</>
                   ) : (
                     <>{zh ? `暂无可领（已解锁 ${unlockedPct.toFixed(2)}%）` : `Nothing to claim (${unlockedPct.toFixed(2)}% unlocked)`}</>
                   )}
@@ -525,15 +525,15 @@ export default function Bull() {
             <ContractRow label="Vesting" addr={BULL_VESTING_ADDRESS} onCopy={copyAddr} />
             <ContractRow label="Migration" addr={BULL_MIGRATION_ADDRESS} onCopy={copyAddr} />
             <ContractRow label="USDT" addr={BULL_USDT_ADDRESS} onCopy={copyAddr} />
-            {pairAddress && <ContractRow label="Pair (BULL/USDT)" addr={pairAddress} onCopy={copyAddr} />}
+            {pairAddress && <ContractRow label="Pair ($BULL/USDT)" addr={pairAddress} onCopy={copyAddr} />}
           </CardContent>
         </Card>
 
         {/* Disclaimer */}
         <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
           {zh
-            ? "免责声明：锁仓 BULL 估值仅按 PancakeSwap 现价换算，不构成任何保证兑付；卖出可能有 10% 卖税；请自行核验合约与交易细节。"
-            : "Disclaimer: Vesting BULL valuation is a live PancakeSwap price estimate only, not a guarantee. Sells may incur a 10% tax. Verify contracts independently."}
+            ? "免责声明：锁仓 $BULL 估值仅按 PancakeSwap 现价换算，不构成任何保证兑付；卖出可能有 10% 卖税；请自行核验合约与交易细节。"
+            : "Disclaimer: Vesting $BULL valuation is a live PancakeSwap price estimate only, not a guarantee. Sells may incur a 10% tax. Verify contracts independently."}
         </p>
       </div>
     </PageWrapper>
