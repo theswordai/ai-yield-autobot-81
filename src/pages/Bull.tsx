@@ -403,7 +403,7 @@ export default function Bull() {
                 <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
                   <span>{zh ? "已解锁" : "Unlocked"} {unlockedPct.toFixed(2)}%</span>
                   <span>
-                    {fmt(vestedAmount)} / {fmt(vestTotal)} BULL
+                    {fmt(vestedAmount)} / {fmt(vestTotal)} $BULL
                   </span>
                 </div>
                 <Progress value={unlockedPct} className="h-2" />
