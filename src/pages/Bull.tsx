@@ -339,7 +339,7 @@ export default function Bull() {
                   {zh ? "当前地址不符合领取条件" : "Address not eligible"}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  {shortHash(account)} {zh ? "不在 BULL 兑换白名单中。" : "is not in the BULL migration whitelist."}
+                  {shortHash(account)} {zh ? "不在 $BULL 兑换白名单中。" : "is not in the $BULL migration whitelist."}
                 </div>
               </div>
             </CardContent>
