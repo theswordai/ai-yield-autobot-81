@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { BrowserProvider, Contract, JsonRpcProvider, formatUnits, parseUnits } from "ethers";
+import { Contract, formatUnits } from "ethers";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { useWeb3 } from "@/hooks/useWeb3";
 import { useI18n } from "@/hooks/useI18n";
 import { WalletConnector } from "@/components/WalletConnector";
 import { PageWrapper } from "@/components/PageWrapper";
-import { getBscProvider } from "@/lib/rpcClient";
+import { getReadProvider } from "@/lib/rpcClient";
 import {
   BULL_ADDRESS,
   BULL_VESTING_ADDRESS,
