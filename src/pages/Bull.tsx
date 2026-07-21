@@ -298,7 +298,7 @@ export default function Bull() {
                 </h1>
                 <p className="text-xs md:text-sm text-muted-foreground mt-1">
                   {zh
-                    ? "白名单地址可兑换 BULL，即时到账 3%，其余 97% 线性解锁 36 个月"
+                    ? "白名单地址可兑换 $BULL，即时到账 3%，其余 97% 陆续线性解锁\u00a0"
                     : "Whitelisted wallets can migrate to BULL — 3% instant, 97% vests linearly over 36 months"}
                 </p>
               </div>
