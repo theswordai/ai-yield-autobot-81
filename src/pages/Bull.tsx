@@ -365,7 +365,7 @@ export default function Bull() {
             </CardHeader>
             <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Stat
-                label={zh ? "总额度 (BULL)" : "Total (BULL)"}
+                label={zh ? "总额度 ($BULL)" : "Total ($BULL)"}
                 value={fmt(entitlementWei)}
                 sub={usd(priceValue(entitlementWei))}
               />
