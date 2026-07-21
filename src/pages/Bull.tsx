@@ -439,7 +439,7 @@ export default function Bull() {
                   {fullyUnlockedAt ? fullyUnlockedAt.toLocaleString() : "—"}
                 </div>
                 <div>
-                  {zh ? "当前 BULL 价格：" : "BULL price: "}
+                  {zh ? "当前 $BULL 价格：" : "$BULL price: "}
                   {priceUsdt != null
                     ? `${priceUsdt.toLocaleString(undefined, { maximumFractionDigits: 8 })} USDT`
                     : "—"}
