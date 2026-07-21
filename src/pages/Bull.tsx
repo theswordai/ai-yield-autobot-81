@@ -532,8 +532,8 @@ export default function Bull() {
         {/* Disclaimer */}
         <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
           {zh
-            ? "免责声明：锁仓 BULL 估值仅按 PancakeSwap 现价换算，不构成任何保证兑付；卖出可能有 10% 卖税；请自行核验合约与交易细节。"
-            : "Disclaimer: Vesting BULL valuation is a live PancakeSwap price estimate only, not a guarantee. Sells may incur a 10% tax. Verify contracts independently."}
+            ? "免责声明：锁仓 $BULL 估值仅按 PancakeSwap 现价换算，不构成任何保证兑付；卖出可能有 10% 卖税；请自行核验合约与交易细节。"
+            : "Disclaimer: Vesting $BULL valuation is a live PancakeSwap price estimate only, not a guarantee. Sells may incur a 10% tax. Verify contracts independently."}
         </p>
       </div>
     </PageWrapper>
