@@ -106,7 +106,7 @@ export default function Bull() {
     if (!account) return;
     setLoading(true);
     try {
-      const provider = getBscProvider();
+      const provider = getReadProvider();
       const migration = new Contract(BULL_MIGRATION_ADDRESS, BULL_MIGRATION_ABI, provider);
       const vesting = new Contract(BULL_VESTING_ADDRESS, BULL_VESTING_ABI, provider);
       const bull = new Contract(BULL_ADDRESS, BULL_ERC20_ABI, provider);
