@@ -492,7 +492,7 @@ export default function Bull() {
                   {pending === "claim" ? (
                     <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{zh ? "领取中..." : "Claiming..."}</>
                   ) : claimable > 0n ? (
-                    <>{zh ? `领取解锁 ${fmt(claimable)} BULL` : `Claim ${fmt(claimable)} BULL`}</>
+                    <>{zh ? `领取解锁 ${fmt(claimable)} $BULL` : `Claim ${fmt(claimable)} $BULL`}</>
                   ) : (
                     <>{zh ? `暂无可领（已解锁 ${unlockedPct.toFixed(2)}%）` : `Nothing to claim (${unlockedPct.toFixed(2)}% unlocked)`}</>
                   )}
