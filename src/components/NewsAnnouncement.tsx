@@ -179,7 +179,7 @@ export function NewsAnnouncement() {
 
   const latest = announcements[0];
   const rest = announcements.slice(1);
-  const visibleItems = expanded ? announcements : [latest];
+  const visibleItems = expanded ? announcements : announcements.slice(0, 3);
 
   const toggleDetail = (id: number) => {
     setDetailIds((prev) => {
